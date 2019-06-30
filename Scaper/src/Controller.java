@@ -7,6 +7,9 @@
  * File Name: TextureObject.java
  */
 
+import tabs.TexturesTab;
+import tabs.TerrainTab;
+import tabs.RenderTab;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -47,12 +50,11 @@ public class Controller
     final int PREVIEW_WIDTH = 800;
     // The height of the preview of the model
     final int PREVIEW_HEIGHT = 630;
-    
     // Instantiate an object for each tab. Each of these objects control the
     // functionality relating to that tab.
-    TexturesTab texTab = new TexturesTab();
-    TerrainTab terTab = new TerrainTab();
-    RenderTab renTab = new RenderTab();
+    TexturesTab texTab;
+    TerrainTab terTab;
+    RenderTab renTab;
     
     // Whether or not the controls on the form are currently "listening" for
     // actions. Setting this to false will disable most of the action listeners
@@ -101,6 +103,9 @@ public class Controller
      */
     public Controller()
     {
+        this.renTab = new RenderTab();
+        this.terTab = new TerrainTab();
+        this.texTab = new TexturesTab();
         listen = true;
     }
     
