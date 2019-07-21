@@ -6,3 +6,7 @@ Project Scaper will allow graphic designers that are familiar with image editing
 
 v0.5 (6/23/2019)
   - beta release
+  
+v0.51 (7/21/2019)
+  - multi-threading functionality for vertex calculations
+  - minor bug fixes and improvements
