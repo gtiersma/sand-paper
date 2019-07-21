@@ -1,6 +1,13 @@
 package graphics;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
@@ -9,31 +16,21 @@ import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 
-/*
- * Programmer: Tiersma, George
- * Chemeketa Community College
- * May 10, 2019
- * Class: CIS234J
- * Assignment: Final Project
- * File Name: MeshObject.java
- */
-
 /**
  * The 3D object designed from the materials imported from the user
  * 
- * @author <a href= "mailto:gtiersma@my.chemeketa.edu" >George Tiersma</a>
+ * @author George Tiersma
  */
 public class MeshObject
 {
     // The number of integers in the face array that are needed to define each
     // face
     private final int INTS_PER_FACE = 6;
-    // A multiplier that is used for the size of each face
-    private final int FACE_SIZE = 10;
     private final int DIMENSIONS = 3;
     
-    // A multiplier for how strong the displacement map will shift vertices
-    private final double STRENGTH_MULTIPLIER = 10;
+    // Multiplied to the user-defined displacement strength variable to increase
+    // distance between vertices
+    private final float DISPLACEMENT_MULTIPLIER = 10;
     
     // The width of the mesh in vertices
     private int width;
@@ -44,7 +41,7 @@ public class MeshObject
     private int facesNum;
     
     // The multiplier for the displacement map strength that is set by the user
-    private double displacementStrength;
+    private float displacementStrength;
     
     // The distance on the x scale in number of pixels in the displacement map
     // that one vertex would retrieve from that of an adjacent vertex.
@@ -136,89 +133,6 @@ public class MeshObject
         viewster.setMaterial(texture);
         
         return viewster;
-    }
-    
-    /**
-     * Gets the position of a vertex on either the x, y, or z scale taking into
-     * consideration how far the displacement map should shift it
-     * 
-     * @param x The vertex's row on the x axis
-     * @param z The vertex's row on the z axis
-     * @param dimension The dimension to which the value being returned is to be
-     *                  used to shift the vertex.
-     *                  For example, a value of 'x' would mean that the value
-     *                  being returned should be applied to the vertex's x
-     *                  position.
-     * 
-     * @return The vertex's position
-     */
-    private double getRelativePositioning(int x, int z, char dimension)
-    {
-        // Calculate the row and column of the pixel that should be retrieved
-        // for this particular vertex
-        int pixelRow = (int)(widthPixels * x);
-        int pixelColumn = (int)(heightPixels * z);
-        
-        // The position of the vertex if no displacement map was going to be
-        // applied
-        int originalPosition;
-        
-        // How far the vertex should be shifted. It may be negative.
-        double shiftAmount;
-        
-        // The new position of the vertex
-        double vertexPosition = 0;
-        
-        switch (dimension)
-        {
-            // If the x position is being retrieved...
-            case 'x':
-                
-                // ...get the red amount in the correct pixel.
-                double redAmount
-                        = vertexRelatives[pixelRow][pixelColumn].getRed();
-                
-                originalPosition = x * FACE_SIZE;
-                
-                // Calculate the amount to be shifted
-                shiftAmount = (redAmount - 0.5) * displacementStrength
-                        * STRENGTH_MULTIPLIER;
-                
-                vertexPosition = originalPosition + shiftAmount;
-                
-                break;
-                
-            // If the y position is being retrieved...
-            case 'y':
-                
-                // ...get the green amount in the correct pixel.
-                double greenAmount
-                        = vertexRelatives[pixelRow][pixelColumn].getGreen();
-                
-                vertexPosition = (greenAmount - 0.5) * displacementStrength
-                        * STRENGTH_MULTIPLIER;
-                
-                break;
-                
-            // If the z position is being retrieved...
-            case 'z':
-                
-                // ...get the blue amount in the correct pixel.
-                double blueAmount
-                        = vertexRelatives[pixelRow][pixelColumn].getBlue();
-                
-                originalPosition = z * FACE_SIZE;
-                
-                // Calculate the amount to be shifted
-                shiftAmount = (blueAmount - 0.5) * displacementStrength
-                        * STRENGTH_MULTIPLIER;
-                
-                vertexPosition = originalPosition + shiftAmount;
-                
-                break;
-        }
-        
-        return vertexPosition;
     }
     
     /**
@@ -315,12 +229,15 @@ public class MeshObject
     }
     
     /**
-     * Calculate the vertices and load them into the mesh
+     * Calculates the vertex positions and loads them into the mesh
      */
     public void loadPoints()
     {
-        // The index to which a value is currently being assigned
-        int index = 0;
+        // Arraylist of objects that will retrieve the values of the threads
+        List<Future<Float>> threadResults = new ArrayList<>();
+        
+        // Pool of threads for calculating the positions of the vertices
+        ExecutorService exster = Executors.newCachedThreadPool();
         
         // For each column of vertices in the mesh...
         for (int z = 0; z < depth; z++)
@@ -328,29 +245,72 @@ public class MeshObject
             // ...and for each row of vertices...
             for (int x = 0; x < width; x++)
             {
-                // ...get the x position.
-                points[index] = (x * FACE_SIZE)
-                        + (float)getRelativePositioning(x, z, 'x');
+                // Calculate the row and column of the pixel that should be
+                // retrieved for this particular vertex
+                int pixelRow = (int)(widthPixels * x);
+                int pixelColumn = (int)(heightPixels * z);
                 
-                index++;
+                // Multiply the user-defined displacement strength with the
+                // system-defined strength
+                float strengthster = displacementStrength
+                        * DISPLACEMENT_MULTIPLIER;
                 
-                // Get the y position
-                points[index] = (float)getRelativePositioning(x, z, 'y');
+                // Thread for finding the x position of the vertex
+                Callable<Float> xThread = new VertexThread(x, z, strengthster,
+                        'x', vertexRelatives[pixelRow][pixelColumn]);
                 
-                index++;
+                // Thread for finding the y position of the vertex
+                Callable<Float> yThread = new VertexThread(x, z, strengthster,
+                        'y', vertexRelatives[pixelRow][pixelColumn]);
                 
-                // Get the z position
-                points[index] = (z * FACE_SIZE)
-                        + (float)getRelativePositioning(x, z, 'z');
+                // Thread for finding the z position of the vertex
+                Callable<Float> zThread = new VertexThread(x, z, strengthster,
+                        'z', vertexRelatives[pixelRow][pixelColumn]);
                 
-                index++;
+                // Get the calculations as they become available
+                Future<Float> xFuture = exster.submit(xThread);
+                Future<Float> yFuture = exster.submit(yThread);
+                Future<Float> zFuture = exster.submit(zThread);
+                
+                // Add them to the arraylists
+                threadResults.add(xFuture);
+                threadResults.add(yFuture);
+                threadResults.add(zFuture);
             }
         }
         
         // Clear any points that may already be in the mesh
         meshster.getPoints().clear();
-        // Add the new points
-        meshster.getPoints().addAll(points);
+        
+        // Incremation variable
+        int i = 0;
+        // For each calculation...
+        for (Future<Float> vertexResult : threadResults)
+        {
+            try
+            {
+                // ...get it.
+                points[i] = vertexResult.get();
+                
+                // Vertex positions must be added to the mesh view individually
+                // for some reason. I tried adding the entire array to the mesh
+                // view after this loop, and all of the vertices were left
+                // positioned at 0,0,0.
+                meshster.getPoints().addAll(points[i]);
+            }
+            catch (InterruptedException ex)
+            {
+                points[i] = 0;
+            }
+            catch (ExecutionException ex)
+            {
+                points[i] = 0;
+            }
+            
+            i++;
+        }
+        
+        exster.shutdown();
     }
     
     /**
@@ -450,7 +410,7 @@ public class MeshObject
      * 
      * @param strengthster The strength of the displacement map
      */
-    public void setDisplacementStrength(double strengthster)
+    public void setDisplacementStrength(float strengthster)
     {
         displacementStrength = strengthster;
         

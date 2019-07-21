@@ -10,19 +10,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
-/*
- * Programmer: Tiersma, George
- * Chemeketa Community College
- * April 28, 2019
- * Class: CIS234J
- * Assignment: Final Project
- * File Name: TexturesTab.java
- */
-
 /**
  * Controls the operations involving the controls present on the textures tab
  * 
- * @author <a href= "mailto:gtiersma@my.chemeketa.edu" >George Tiersma</a>
+ * @author George Tiersma
  */
 public class TexturesTab
 {

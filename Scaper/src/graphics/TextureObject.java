@@ -6,19 +6,10 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-/*
- * Programmer: Tiersma, George
- * Chemeketa Community College
- * April 28, 2019
- * Class: CIS234J
- * Assignment: Final Project
- * File Name: TextureObject.java
- */
-
 /**
  * A texture to be used as a map for the mesh
  * 
- * @author <a href= "mailto:gtiersma@my.chemeketa.edu" >George Tiersma</a>
+ * @author George Tiersma
  */
 public class TextureObject
 {

@@ -6,19 +6,10 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.shape.MeshView;
 
-/*
- * Programmer: Tiersma, George
- * Chemeketa Community College
- * May 4, 2019
- * Class: CIS234J
- * Assignment: Final Project
- * File Name: TerrainTab.java
- */
-
 /**
  * Controls the operations involving the controls present on the terrain tab
  * 
- * @author <a href= "mailto:gtiersma@my.chemeketa.edu" >George Tiersma</a>
+ * @author George Tiersma
  */
 public class TerrainTab
 {
@@ -74,7 +65,7 @@ public class TerrainTab
     }
     
     /**
-     * Prepares the mesh to be displayed initially 
+     * Prepares the initial mesh to be displayed
      */
     public void prepareMesh()
     {
@@ -117,7 +108,7 @@ public class TerrainTab
      * 
      * @param displacementStrength The displacement map's strength
      */
-    public void setDisplacementStrength(double displacementStrength)
+    public void setDisplacementStrength(float displacementStrength)
     {
         meshster.setDisplacementStrength(displacementStrength);
     }

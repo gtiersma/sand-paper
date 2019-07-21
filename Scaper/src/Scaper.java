@@ -7,21 +7,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-/*
- * Programmer: Tiersma, George
- * Chemeketa Community College
- * April 27, 2019
- * Class: CIS234J
- * Assignment: Final Project
- * File Name: Scaper.java
- */
-
 /**
  * Project Scaper - Allows graphic artists not familiar with 3D modeling to
  * easily create their own rendered images of a 3D model they create using only
  * 2D images.
  * 
- * @author <a href= "mailto:gtiersma@my.chemeketa.edu" >George Tiersma</a>
+ * @author George Tiersma
  */
 public class Scaper extends Application
 {

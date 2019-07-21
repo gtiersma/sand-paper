@@ -10,19 +10,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 
-/*
- * Programmer: Tiersma, George
- * Chemeketa Community College
- * May 29, 2019
- * Class: CIS234J
- * Assignment: Final Project
- * File Name: RenderTab.java
- */
-
 /**
  * Controls the operations involving the controls present on the render tab
  * 
- * @author <a href= "mailto:gtiersma@my.chemeketa.edu" >George Tiersma</a>
+ * @author George Tiersma
  */
 public class RenderTab
 {

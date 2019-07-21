@@ -1,11 +1,4 @@
-/*
- * Programmer: Tiersma, George
- * Chemeketa Community College
- * April 26, 2019
- * Class: CIS234J
- * Assignment: Final Project
- * File Name: TextureObject.java
- */
+
 
 import tabs.TexturesTab;
 import tabs.TerrainTab;
@@ -42,7 +35,7 @@ import javafx.stage.Stage;
  * sets up the part of the scene that the FXML document is unable to. It also
  * uses event listeners and event methods for the controls that need them.
  * 
- * @author <a href= "mailto:gtiersma@my.chemeketa.edu" >George Tiersma</a>
+ * @author George Tiersma
  */
 public class Controller
 {
@@ -144,7 +137,7 @@ public class Controller
         terrainSliderDMS.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
-            terTab.setDisplacementStrength((double) newster);
+            terTab.setDisplacementStrength(newster.floatValue());
             refreshPreview();
         });
         
