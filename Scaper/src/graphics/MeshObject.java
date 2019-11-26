@@ -15,6 +15,7 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
+import javafx.scene.transform.Rotate;
 
 /**
  * The 3D object designed from the materials imported from the user
@@ -38,7 +39,7 @@ public class MeshObject
     private int depth;
     
     // The number of faces in the mesh
-    private int facesNum;
+    private int facesAmount;
     
     // The multiplier for the displacement map strength that is set by the user
     private float displacementStrength;
@@ -93,10 +94,10 @@ public class MeshObject
         displacementStrength = strengthster;
         
         // Calculate number of faces
-        facesNum = ((width - 1) * (depth - 1) * 2);
+        facesAmount = ((width - 1) * (depth - 1) * 2);
         
         // Calculate number of integers needed for the face data
-        faces = new int[facesNum * INTS_PER_FACE];
+        faces = new int[facesAmount * INTS_PER_FACE];
         
         // Calculate number of floats needed for the float data
         points = new float[width * depth * DIMENSIONS];
@@ -121,18 +122,189 @@ public class MeshObject
     }
     
     /**
+     * Gets the approximate center position of the mesh.
+     * 
+     * Instead of calculating the exact center of the mesh by averaging the
+     * position of every point on the mesh, this function only samples several
+     * points at particular positions in the mesh, increasing performance.
+     * 
+     * @param dimension The dimension of the position to be returned (x, y or z)
+     * 
+     * @return The approximate center position of the mesh
+     */
+    public double getCenter(char dimension)
+    {
+        // The number of points of the mesh of which their position will be
+        // gathered.
+        final int CENTER_POINTS_AMOUNT = 5;
+        
+        // The average of the positions of the points
+        double average;
+        // The sum of all of the positions of the points
+        double total = 0;
+        
+        // The indexes of the points
+        int[] indexes = new int[CENTER_POINTS_AMOUNT];
+        
+        // The index of the point at the center of the mesh
+        indexes[0] = (width * depth) / 2;
+        
+        // If the width is even...
+        if (width % 2 == 0)
+        {
+            // ...half of the width must be subtracted to get the center-most
+            // point.
+            indexes[0] = indexes[0] - (width / 2);
+        }
+        
+        // The point between the center and the back edge of the mesh
+        indexes[1] = indexes[0] - width * (depth / 4);
+        // The point between the center and the left edge of the mesh
+        indexes[2] = indexes[0] - width / 4;
+        // The point between the center and the right edge of the mesh
+        indexes[3] = indexes[0] + width / 4;
+        // The point between the center and the front edge of the mesh
+        indexes[4] = indexes[0] + width * (depth / 4);
+        
+        // For each point...
+        for (int i = 0; i < CENTER_POINTS_AMOUNT; i++)
+        {
+            // ...calculate the index for the correct dimension.
+            indexes[i] = indexes[i] * DIMENSIONS + getDimensionValue(dimension);
+            
+            // Add that point's position to the total
+            total = total + points[indexes[i]];
+        }
+        
+        // Get the average position of the points
+        average = total / CENTER_POINTS_AMOUNT;
+        
+        return average;
+    }
+    
+    /**
+     * Gets 0 if an 'x' is given, 1 for a 'y' and 2 for a 'z'
+     * 
+     * @param dimension The dimension of which to return a value (x, y or z)
+     * 
+     * @return 0 if an 'x' is given, 1 for a 'y' and 2 for a 'z'
+     */
+    private int getDimensionValue(char dimension)
+    {
+        int value = 0;
+        
+        if (dimension == 'y')
+        {
+            value = 1;
+        }
+        else if (dimension == 'z')
+        {
+            value = 2;
+        }
+        
+        return value;
+    }
+    
+    /**
+     * Gets the approximate furthest distance of a point of any dimension from
+     * the center of the mesh.
+     * 
+     * @return The approximate furthest distance
+     */
+    public double getFurthestPoint()
+    {
+        // The furthest distance for each dimension
+        double furthestX = getFurthestPoint('x');
+        double furthestY = getFurthestPoint('y');
+        double furthestZ = getFurthestPoint('z');
+        
+        // The furthest distance of any of the dimension
+        double furthest;
+        
+        if (furthestX < furthestY)
+        {
+            if (furthestY < furthestZ)
+            {
+                furthest = furthestZ;
+            }
+            else
+            {
+                furthest = furthestY;
+            }
+        }
+        else
+        {
+            furthest = furthestX;
+        }
+        
+        return furthest;
+    }
+    
+    /**
+     * Gets the approximate furthest distance of a point of the given dimension
+     * from the center of the mesh.
+     * 
+     * @return The approximate furthest distance
+     */
+    private double getFurthestPoint(char dimension)
+    {
+        double center = getCenter(dimension);
+        
+        // The furthest point
+        double far = 0;
+        
+        // The 4 corner points of the mesh
+        int[] cornerPoints = {
+                0,
+                (width - 1),
+                (width * (depth - 1)),
+                ((width * depth) - 1)
+                };
+        
+        // For each point in a corner...
+        for (int i = 0; i < cornerPoints.length; i++)
+        {
+            // The index of the position of this corner point of the given
+            // dimension
+            int farIndex = cornerPoints[i] * DIMENSIONS
+                    + getDimensionValue(dimension);
+            
+            // The distance this point is from the center
+            double possibleFar = Math.abs(points[farIndex] - center);
+            
+            // If it is the furthest from the mesh center so far...
+            if (far < possibleFar)
+            {
+                // ...it's currently the furthest point.
+                far = possibleFar;
+            }
+        }
+        
+        return far;
+    }
+    
+    /**
      * Prepares and then gets the mesh view
      * 
      * @return The mesh view
      */
     public MeshView getMeshView()
     {
-        // Re-initialize the mesh view
-        viewster = new MeshView(meshster);
-        viewster.setDrawMode(DrawMode.FILL);
-        viewster.setMaterial(texture);
-        
         return viewster;
+    }
+    
+    /**
+     * Initialize the Rotation objects that will be used with the MeshView to
+     * simulate the rotation and orbit of the camera. This must be executed
+     * before any rotations can be assigned.
+     */
+    private void initializeRotations()
+    {
+        Rotate xRotate = new Rotate(0, Rotate.X_AXIS);
+        Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
+        
+        viewster.getTransforms().add(xRotate);
+        viewster.getTransforms().add(yRotate);
     }
     
     /**
@@ -145,6 +317,10 @@ public class MeshObject
         loadPoints();
         loadTexturePositions();
         loadFaces();
+        initializeRotations();
+        
+        viewster.setDrawMode(DrawMode.FILL);
+        viewster.setMaterial(texture);
     }
     
     /**
@@ -182,11 +358,11 @@ public class MeshObject
         int point = 0;
         
         // For every set of values for each 2 faces in the face array...
-        for (int i = 0; i + 1 < facesNum * INTS_PER_FACE;
+        for (int i = 0; i + 1 < facesAmount * INTS_PER_FACE;
                 i = i + INTS_PER_FACE * 2)
         {
             // ...if the point the face is being built off of is not at the
-            // verticle edge on the right side of the mesh...
+            // vertical edge on the right side of the mesh...
             if (!((point + 1) % width == 0))
             {
                 // ...get the points for the first of the 2 faces.
@@ -256,16 +432,16 @@ public class MeshObject
                         * DISPLACEMENT_MULTIPLIER;
                 
                 // Thread for finding the x position of the vertex
-                Callable<Float> xThread = new VertexThread(x, z, strengthster,
-                        'x', vertexRelatives[pixelRow][pixelColumn]);
+                Callable<Float> xThread = new VertexThread(x, strengthster, 'x',
+                        vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Thread for finding the y position of the vertex
-                Callable<Float> yThread = new VertexThread(x, z, strengthster,
-                        'y', vertexRelatives[pixelRow][pixelColumn]);
+                Callable<Float> yThread = new VertexThread(0, strengthster, 'y',
+                        vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Thread for finding the z position of the vertex
-                Callable<Float> zThread = new VertexThread(x, z, strengthster,
-                        'z', vertexRelatives[pixelRow][pixelColumn]);
+                Callable<Float> zThread = new VertexThread(z, strengthster, 'z',
+                        vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Get the calculations as they become available
                 Future<Float> xFuture = exster.submit(xThread);
@@ -298,11 +474,7 @@ public class MeshObject
                 // positioned at 0,0,0.
                 meshster.getPoints().addAll(points[i]);
             }
-            catch (InterruptedException ex)
-            {
-                points[i] = 0;
-            }
-            catch (ExecutionException ex)
+            catch (InterruptedException | ExecutionException ex)
             {
                 points[i] = 0;
             }
@@ -371,12 +543,12 @@ public class MeshObject
         
         // Re-initialize and re-calculate the variables that rely on the mesh's
         // depth in their calculations
-        facesNum = ((width - 1) * 2) * (depth - 1);
+        facesAmount = ((width - 1) * 2) * (depth - 1);
         widthPixels = displacement.getWidth() / width;
         heightPixels = displacement.getHeight() / depth;
         points = new float[width * depth * DIMENSIONS];
         texturePositions = new float[width * depth * 2];
-        faces = new int[facesNum * INTS_PER_FACE];
+        faces = new int[facesAmount * INTS_PER_FACE];
         
         loadDisplacementPixels();
         loadTexturePositions();
@@ -422,6 +594,26 @@ public class MeshObject
     }
     
     /**
+     * Rotates the mesh
+     * 
+     * @param dimension The dimension of which the Rotate parameter belongs
+     * @param rotster The Rotate object to be applied
+     */
+    public void setRotation(char dimension, Rotate rotster)
+    {
+        // The index of the MeshView's transforms to which the rotation should
+        // be assigned
+        int index = 0;
+        
+        if (dimension == 'y')
+        {
+            index = 1;
+        }
+                    
+        viewster.getTransforms().set(index, rotster);
+    }
+    
+    /**
      * Set the mesh's specular map
      * 
      * @param specster The specular map
@@ -452,12 +644,12 @@ public class MeshObject
         
         // Re-initialize and re-calculate the variables that rely on the mesh's
         // width in their calculations
-        facesNum = ((width - 1) * 2) * (depth - 1);
+        facesAmount = ((width - 1) * 2) * (depth - 1);
         widthPixels = displacement.getWidth() / width;
         heightPixels = displacement.getHeight() / depth;
         points = new float[width * depth * DIMENSIONS];
         texturePositions = new float[width * depth * 2];
-        faces = new int[facesNum * INTS_PER_FACE];
+        faces = new int[facesAmount * INTS_PER_FACE];
         
         loadDisplacementPixels();
         loadTexturePositions();
@@ -477,7 +669,7 @@ public class MeshObject
                 + "\n--------------------------------------------------"
                 + "\nModel Width in Vertices: " + width
                 + "\nModel Depth in Vertices: " + depth
-                + "\n\nNumber of Faces: " + facesNum
+                + "\n\nNumber of Faces: " + facesAmount
                 + "\n\nDisplacement Strength: " + displacementStrength + "\n";
         
         // These variables are taken from the mesh object instead of the

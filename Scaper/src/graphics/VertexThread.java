@@ -14,11 +14,6 @@ public class VertexThread implements Callable<Float>
     // A multiplier that is used for the size of each face
     private final int FACE_SIZE = 10;
    
-    // The numbered position of the vertex being calculated on the x axis
-    private int x;
-    // The numbered position of the vertex being calculated on the z axis
-    private int z;
-    
     // The position of the vertex on the provided axis
     private float position;
     
@@ -35,22 +30,16 @@ public class VertexThread implements Callable<Float>
     /**
      * CONSTRUCTOR
      * 
-     * @param exster The numbered position of the vertex being calculated on the
-     *               x axis
-     * @param zeester The numbered position of the vertex being calculated on
-     *                the z axis
+     * @param poser The numbered position of the vertex
      * @param strengthster The user-defined strength of the displacement map
      * @param dimster The dimension being calculated
      * @param colster The color of the pixel on the displacement map that
      *                belongs to this vertex
      */
-    public VertexThread(int exster, int zeester, float strengthster,
-            char dimster, Color colster)
+    public VertexThread(int poser, float strengthster, char dimster,
+            Color colster)
     {
-        x = exster;
-        z = zeester;
-        
-        position = 0;
+        position = poser;
         displacementStrength = strengthster;
         
         dimension = dimster;
@@ -69,7 +58,7 @@ public class VertexThread implements Callable<Float>
     {
         // The position of the vertex if no displacement map was going to be
         // applied
-        int originalPosition;
+        float originalPosition;
         
         // How far the vertex should be shifted. It may be negative.
         float shiftAmount;
@@ -82,10 +71,10 @@ public class VertexThread implements Callable<Float>
                 // ...get the red amount in the correct pixel.
                 double redAmount = displacementColor.getRed();
                 
-                originalPosition = x * FACE_SIZE;
+                originalPosition = position * FACE_SIZE;
                 
                 // Calculate the amount to be shifted
-                shiftAmount = (float)(redAmount - 0.5) * displacementStrength;
+                shiftAmount = (float)(redAmount - 0.5) * -displacementStrength;
                 
                 position = originalPosition + shiftAmount;
                 
@@ -97,7 +86,7 @@ public class VertexThread implements Callable<Float>
                 // ...get the green amount in the correct pixel.
                 double greenAmount = displacementColor.getGreen();
                 
-                position = (float)(greenAmount - 0.5) * displacementStrength;
+                position = (float)(greenAmount - 0.5) * -displacementStrength;
                 
                 break;
                 
@@ -107,10 +96,10 @@ public class VertexThread implements Callable<Float>
                 // ...get the blue amount in the correct pixel.
                 double blueAmount = displacementColor.getBlue();
                 
-                originalPosition = z * FACE_SIZE;
+                originalPosition = position * FACE_SIZE;
                 
                 // Calculate the amount to be shifted
-                shiftAmount = (float)(blueAmount - 0.5) * displacementStrength;
+                shiftAmount = (float)(blueAmount - 0.5) * -displacementStrength;
                 
                 position = originalPosition + shiftAmount;
                 

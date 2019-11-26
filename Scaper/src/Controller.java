@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.SubScene;
@@ -18,17 +17,19 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import tabs.CameraTab;
 
 /**
  * This is the controller class for Project Scaper. This class programmatically
@@ -43,11 +44,13 @@ public class Controller
     final int PREVIEW_WIDTH = 800;
     // The height of the preview of the model
     final int PREVIEW_HEIGHT = 630;
+    
     // Instantiate an object for each tab. Each of these objects control the
     // functionality relating to that tab.
     TexturesTab texTab;
     TerrainTab terTab;
     RenderTab renTab;
+    CameraTab camTab;
     
     // Whether or not the controls on the form are currently "listening" for
     // actions. Setting this to false will disable most of the action listeners
@@ -78,12 +81,21 @@ public class Controller
     @FXML private ImageView terrainImageBM;
     @FXML private ImageView terrainImageSM;
     
+    @FXML private RadioButton cameraRadioFOVH;
+    @FXML private RadioButton cameraRadioFOVV;
+    
     @FXML private Slider terrainSliderDMS;
+    @FXML private Slider cameraSliderAH;
+    @FXML private Slider cameraSliderAV;
+    @FXML private Slider cameraSliderFOVD;
     
     @FXML private Spinner<Integer> terrainSpinnerVRW;
     @FXML private Spinner<Integer> terrainSpinnerVRD;
     @FXML private Spinner<Integer> renderSpinnerRW;
     @FXML private Spinner<Integer> renderSpinnerRH;
+    @FXML private Spinner<Integer> cameraSpinnerPAH;
+    @FXML private Spinner<Integer> cameraSpinnerPAV;
+    @FXML private Spinner<Integer> cameraSpinnerPAZ;
     
     @FXML private SplitPane splitster;
     
@@ -96,9 +108,11 @@ public class Controller
      */
     public Controller()
     {
-        this.renTab = new RenderTab();
-        this.terTab = new TerrainTab();
-        this.texTab = new TexturesTab();
+        camTab = new CameraTab();
+        renTab = new RenderTab();
+        terTab = new TerrainTab();
+        texTab = new TexturesTab();
+        
         listen = true;
     }
     
@@ -112,54 +126,174 @@ public class Controller
         terrainTab.setGraphic(buildIcon("icons/terrain.png"));
         texturesTab.setGraphic(buildIcon("icons/textures.png"));
         
-        // Loads the default values for the mesh
-        terTab.prepareMesh();
-        refreshPreview();
+        preview = new SubScene(new Group(), PREVIEW_WIDTH, PREVIEW_HEIGHT, true,
+                SceneAntialiasing.BALANCED);
+        // Place the preview in the split pane in the scene
+        splitster.getItems().set(0, preview);
         
-        // Listener for the spinner that sets the width of the vertex resolution
+        preparePreview();
+        
+        // Create group for field of view radio buttons
+        ToggleGroup cameraRadiosFOV = new ToggleGroup();
+        cameraRadioFOVH.setToggleGroup(cameraRadiosFOV);
+        cameraRadioFOVV.setToggleGroup(cameraRadiosFOV);
+        
+        
+        
+        //----------------------------------------------------------------------
+        // Terrain Tab Listeners
+        //----------------------------------------------------------------------
         terrainSpinnerVRW.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
             terTab.setWidth(newster);
+            
             refreshPreview();
         });
+        // The second listeners for the spinners are executed when the value is
+        // changed and then the focus is left from the control. This particular
+        // action is not triggered by the first listener.
+        terrainSpinnerVRW.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                terTab.setWidth(terrainSpinnerVRW.getEditor().getText());
+            
+                refreshPreview();
+            }
+        });
         
-        // Listener for the spinner that sets the depth of the vertex resolution
         terrainSpinnerVRD.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
             terTab.setDepth(newster);
+            
             refreshPreview();
         });
+        terrainSpinnerVRD.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                terTab.setDepth(terrainSpinnerVRD.getEditor().getText());
+            
+                refreshPreview();
+            }
+        });
         
-        // Listener for the slider that sets the strength of the displacement
-        // map
         terrainSliderDMS.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
             terTab.setDisplacementStrength(newster.floatValue());
+            
             refreshPreview();
         });
         
-        // Listener for the spinner that sets the width of the rendered image
-        renderSpinnerRW.valueProperty().addListener((obster, oldster, newster)
-                ->
-        {
-            renTab.setWidth(newster);
-        });
-        
-        // Listener for the spinner that sets the height of the rendered image
-        renderSpinnerRH.valueProperty().addListener((obster, oldster, newster)
-                ->
-        {
-            renTab.setHeight(newster);
-        });
-        
-        // Listener for the color chooser that sets the background color
+        //----------------------------------------------------------------------
+        // Render Tab Listeners
+        //----------------------------------------------------------------------
         renderColorBC.valueProperty().addListener((obster, oldster, newster) ->
         {
             renTab.setBackColor(newster);
-            refreshPreview();
+            preview.setFill(renTab.getBackColor());
+        });
+        
+        //----------------------------------------------------------------------
+        // Camera Tab Listeners
+        //----------------------------------------------------------------------
+        cameraSliderAH.valueProperty().addListener((obster, oldster, newster) ->
+        {
+            if (listen)
+            {
+                camTab.setHorizontalAngle(newster.doubleValue());
+            
+                terTab.setRotation('y', camTab.getYRotate());
+            
+                preview.setRoot(terTab.getMesh());
+            }
+        });
+        
+        cameraSliderAV.valueProperty().addListener((obster, oldster, newster) ->
+        {
+            if (listen)
+            {
+                camTab.setVerticalAngle(newster.doubleValue());
+            
+                terTab.setRotation('x', camTab.getXRotate());
+            
+                preview.setRoot(terTab.getMesh());
+            }
+        });
+        
+        cameraSpinnerPAH.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            camTab.setXAdjustment(newster.doubleValue());
+            preview.setCamera(camTab.getCamera());
+        });
+        cameraSpinnerPAH.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                camTab.setXAdjustment(cameraSpinnerPAH.getEditor().getText());
+                preview.setCamera(camTab.getCamera());
+            }
+        });
+        
+        cameraSpinnerPAV.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            camTab.setYAdjustment(newster.doubleValue());
+            preview.setCamera(camTab.getCamera());
+        });
+        cameraSpinnerPAV.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                camTab.setYAdjustment(cameraSpinnerPAV.getEditor().getText());
+                preview.setCamera(camTab.getCamera());
+            }
+        });
+        
+        cameraSpinnerPAZ.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            camTab.setZoom(newster.doubleValue());
+            preview.setCamera(camTab.getCamera());
+        });
+        cameraSpinnerPAZ.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                camTab.setZoom(cameraSpinnerPAZ.getEditor().getText());
+                preview.setCamera(camTab.getCamera());
+            }
+        });
+        
+        cameraSliderFOVD.valueProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            camTab.setFieldOfView(newster.doubleValue());
+            
+            preview.setCamera(camTab.getCamera());
+        });
+        
+        cameraRadioFOVH.setOnAction((evster) ->
+        {
+            camTab.setOrientation(cameraRadioFOVH.isSelected());
+            
+            preview.setCamera(camTab.getCamera());
+        });
+        
+        cameraRadioFOVV.setOnAction((evster) ->
+        {
+            camTab.setOrientation(cameraRadioFOVH.isSelected());
+            
+            preview.setCamera(camTab.getCamera());
         });
         
     }
@@ -260,7 +394,7 @@ public class Controller
 
             // Set the image as the displacement map
             terTab.setDisplacement(imster);
-
+            
             refreshPreview();
         }
     }
@@ -287,7 +421,7 @@ public class Controller
             // Set the image as the texture
             terTab.setTexture(imster);
 
-            refreshPreview();
+            preview.setRoot(terTab.getMesh());
         }
     }
     
@@ -313,7 +447,7 @@ public class Controller
             // Set the image as the bump map
             terTab.setBump(imster);
 
-            refreshPreview();
+            preview.setRoot(terTab.getMesh());
         }
     }
     
@@ -349,7 +483,7 @@ public class Controller
             // Set the image as the specular map
             terTab.setSpecular(terrainImageSM.getImage());
 
-            refreshPreview();
+            preview.setRoot(terTab.getMesh());
         }
     }
     
@@ -393,7 +527,7 @@ public class Controller
         alster.setHeaderText("Generates 3D meshes from 2D images");
         alster.setContentText("2019 - Created by George Tiersma\n\n"
         + "This program is not copyrighted. It can be used for any purpose"
-        + " other than profited redistribution.\n\nversion 0.5 beta");
+        + " other than profited redistribution.\n\nversion 0.51 beta");
         
         // Sets the dialog box's icon
         ((Stage)alster.getDialogPane().getScene().getWindow()).getIcons().add(
@@ -403,33 +537,34 @@ public class Controller
     }
     
     /**
-     * Refreshes the preview of the mesh
+     * Prepares the preview for its initial presentation
      */
-    @FXML
+    protected void preparePreview()
+    {
+        terTab.prepareMesh();
+        
+        terTab.setRotation('x', camTab.getXRotate());
+        terTab.setRotation('y', camTab.getYRotate());
+        
+        // To be centered, the mesh must be adjusted by half of the preview's
+        // size
+        camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
+        
+        refreshPreview();
+        preview.setFill(renTab.getBackColor());
+    }
+    
+    /**
+     * Reloads the preview to show changes made. This should be used each time
+     * after a change is made to the shape of the 3d object.
+     */
     protected void refreshPreview()
     {
-        // Create a group containing the mesh
-        Group groupster = terTab.getMesh();
+        camTab.setOrigin(terTab.getCenterX(), terTab.getCenterY(), terTab.getCenterZ());
+        camTab.setFurthestPoint(terTab.getFurthestPoint());
         
-        // Create the camera. This block of code is only temporary. I plan to
-        // create a camera tab in Project Scaper soon, allowing the user to
-        // define many of the camera's properties. Once I do, this block will be
-        // removed.
-        PerspectiveCamera perster = new PerspectiveCamera();
-        perster.setTranslateX(400);
-        perster.setTranslateY(-800);
-        perster.setTranslateZ(-30);
-        perster.setRotationAxis(Rotate.X_AXIS);
-        perster.setRotate(-45);
-        
-        // Initialize the preview
-        preview = new SubScene(groupster, PREVIEW_WIDTH, PREVIEW_HEIGHT, true,
-                SceneAntialiasing.BALANCED);
-        preview.setCamera(perster);
-        preview.setFill(renTab.getBackColor());
-        
-        // Place the preview in the split pane in the scene
-        splitster.getItems().set(0, preview);
+        preview.setRoot(terTab.getMesh());
+        preview.setCamera(camTab.getCamera());
     }
     
     /**
@@ -460,6 +595,7 @@ public class Controller
             texTab = new TexturesTab();
             terTab = new TerrainTab();
             renTab = new RenderTab();
+            camTab = new CameraTab();
             
             terrainComboDM.setItems(null);
             terrainComboT.setItems(null);
@@ -488,6 +624,9 @@ public class Controller
             terrainImageSM.setImage(null);
             
             terrainSliderDMS.setValue(terTab.getDefaultStrength());
+            cameraSliderAH.setValue(camTab.getDefaultHorizontalAngle());
+            cameraSliderAV.setValue(camTab.getDefaultVerticalAngle());
+            cameraSliderFOVD.setValue(camTab.getDefaultField());
             
             terrainSpinnerVRW.getValueFactory().setValue(
                     terTab.getDefaultSize());
@@ -497,11 +636,13 @@ public class Controller
                     renTab.getDefaultWidth());
             renderSpinnerRH.getValueFactory().setValue(
                     renTab.getDefaultHeight());
+            cameraSpinnerPAH.getValueFactory().setValue(0);
+            cameraSpinnerPAV.getValueFactory().setValue(0);
+            cameraSpinnerPAZ.getValueFactory().setValue(0);
             
-            // Set up the mesh
-            terTab.prepareMesh();
-            // Display the preview
-            refreshPreview();
+            cameraRadioFOVH.setSelected(true);
+            
+            preparePreview();
             
             // Begin listening to action events
             listen = true;
@@ -516,6 +657,9 @@ public class Controller
     @FXML
     protected void save()
     {
+        renTab.setWidth(renderSpinnerRW.getValue());
+        renTab.setHeight(renderSpinnerRH.getValue());
+        
         // Set the dimensions of the preview to the resolution entered by the
         // user
         preview.setWidth(renTab.getWidth());
