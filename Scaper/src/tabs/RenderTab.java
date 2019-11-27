@@ -11,7 +11,7 @@ import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 
 /**
- * Controls the operations for the render tab
+ * Controls the operations involving the controls present on the render tab
  * 
  * @author George Tiersma
  */

@@ -30,7 +30,7 @@ public class Scaper extends Application
         Scene scenster = new Scene(parster, 1200, 850);
         
         // Prepare the stage
-        stagester.setTitle("Project Scaper v0.51");
+        stagester.setTitle("Project Scaper v0.5");
         stagester.getIcons().add(new Image(Scaper.class.getResourceAsStream(
                 "icons/icon.png")));
         stagester.setScene(scenster);
