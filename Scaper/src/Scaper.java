@@ -27,7 +27,7 @@ public class Scaper extends Application
         
         Parent parster = FXMLLoader.load(getClass().getResource("GUI.fxml"));
     
-        Scene scenster = new Scene(parster, 1200, 850);
+        Scene scenster = new Scene(parster, 1200, 600);
         
         // Prepare the stage
         stagester.setTitle("Project Scaper v0.51");

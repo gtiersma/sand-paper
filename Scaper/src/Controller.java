@@ -43,7 +43,7 @@ public class Controller
     // The width of the preview of the model
     final int PREVIEW_WIDTH = 800;
     // The height of the preview of the model
-    final int PREVIEW_HEIGHT = 630;
+    final int PREVIEW_HEIGHT = 400;
     
     // Instantiate an object for each tab. Each of these objects control the
     // functionality relating to that tab.

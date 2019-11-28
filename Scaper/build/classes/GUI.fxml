@@ -24,7 +24,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<VBox id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <MenuBar id="menuBarster">
         <menus>
@@ -58,7 +58,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane id="splitster" fx:id="splitster" dividerPositions="0.5" prefHeight="640.0" prefWidth="200.0">
+      <SplitPane id="splitster" fx:id="splitster" dividerPositions="0.5" prefHeight="300.0" prefWidth="200.0">
         <items>
             <Pane prefHeight="200.0" prefWidth="200.0" />
             <TabPane id="creationTabs" prefHeight="200.0" prefWidth="756.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">
