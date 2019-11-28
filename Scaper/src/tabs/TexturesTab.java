@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 /**
- * Controls the operations involving the controls present on the textures tab
+ * Controls the operations for the textures tab
  * 
  * @author George Tiersma
  */
@@ -70,13 +70,13 @@ public class TexturesTab
         chooster.getExtensionFilters().add(imageExtensions);
         chooster.getExtensionFilters().add(allExtensions);
         
-        // Get the file from the file chooser
-        filster = chooster.showOpenDialog(null);
-        
-        // If a file was retrieved...
-        if (filster != null)
+        try
         {
-            try
+            // Get the file from the file chooser
+            filster = chooster.showOpenDialog(null);
+        
+            // If a file was retrieved...
+            if (filster != null)
             {
                 // ...create a new texture object out of it.
                 TextureObject texster = new TextureObject(filster);
@@ -103,19 +103,19 @@ public class TexturesTab
                 previousDirectory = filster.getAbsolutePath().substring(0,
                         filster.getAbsolutePath().lastIndexOf("\\") + 1);
             }
-            // If something goes wrong...
-            catch (Exception e)
-            {
-                // ...alert the user.
-                Alert alster = new Alert(Alert.AlertType.ERROR);
+        }
+        // If something goes wrong...
+        catch (Exception e)
+        {
+            // ...alert the user.
+            Alert alster = new Alert(Alert.AlertType.ERROR);
         
-                alster.setTitle("Error");
-                alster.setHeaderText("");
-                alster.setContentText(
-                        "The file chosen appears to not be an image.");
+            alster.setTitle("Error");
+            alster.setHeaderText("");
+            alster.setContentText(
+                "The file chosen appears to not be an image.");
         
-                alster.showAndWait();
-            }
+            alster.showAndWait();
         }
         
         return textureAdded;
