@@ -537,6 +537,24 @@ public class Controller
     }
     
     /**
+     * Prepares the preview for saving a rendered image. This should be executed
+     * immediately before an image is to be saved.
+     */
+    protected void prepareForRender()
+    {
+        renTab.setWidth(renderSpinnerRW.getEditor().getText());
+        renTab.setHeight(renderSpinnerRH.getEditor().getText());
+        
+        int width = renTab.getWidth();
+        int height = renTab.getHeight();
+        
+        camTab.setCameraOffset(width / 2, height / 2);
+        
+        preview.setWidth(width);
+        preview.setHeight(height);
+    }
+    
+    /**
      * Prepares the preview for its initial presentation
      */
     protected void preparePreview()
@@ -650,6 +668,19 @@ public class Controller
     }
     
     /**
+     * Resets the preview's size, re-centering the camera on the mesh
+     */
+    protected void resetPreviewSize()
+    {
+        // To be centered, the mesh must be adjusted by half of the preview's
+        // size
+        camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
+        
+        preview.setWidth(PREVIEW_WIDTH);
+        preview.setHeight(PREVIEW_HEIGHT);
+    }
+    
+    /**
      * Saves a rendered image, replacing the last image that was saved. If there
      * is no image that was saved before this one, it functions the same as the
      * saveAs method.
@@ -657,13 +688,7 @@ public class Controller
     @FXML
     protected void save()
     {
-        renTab.setWidth(renderSpinnerRW.getValue());
-        renTab.setHeight(renderSpinnerRH.getValue());
-        
-        // Set the dimensions of the preview to the resolution entered by the
-        // user
-        preview.setWidth(renTab.getWidth());
-        preview.setHeight(renTab.getHeight());
+        prepareForRender();
         
         // Create a screenshot of the preview
         WritableImage writster
@@ -672,9 +697,7 @@ public class Controller
         // Save the screenshot
         renTab.save(writster);
         
-        // Reset the dimensions of the preview
-        preview.setWidth(PREVIEW_WIDTH);
-        preview.setHeight(PREVIEW_HEIGHT);
+        resetPreviewSize();
     }
     
     /**
@@ -683,10 +706,7 @@ public class Controller
     @FXML
     protected void saveAs()
     {
-        // Set the dimensions of the preview to the resolution entered by the
-        // user
-        preview.setWidth(renTab.getWidth());
-        preview.setHeight(renTab.getHeight());
+        prepareForRender();
         
         // Create a screenshot of the preview
         WritableImage writster
@@ -695,8 +715,6 @@ public class Controller
         // Save the screenshot
         renTab.saveAs(writster);
         
-        // Reset the dimensions of the preview
-        preview.setWidth(PREVIEW_WIDTH);
-        preview.setHeight(PREVIEW_HEIGHT);
+        resetPreviewSize();
     }
 }

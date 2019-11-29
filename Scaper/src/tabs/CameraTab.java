@@ -176,8 +176,8 @@ public class CameraTab
     {
         // Percentage variable of how far the default camera position should be
         // zoomed in relative to the farthest point from the mesh center
-        final double FURTHEST_POINT_ADJUSTMENT = -0.03;
-    
+        final double FURTHEST_POINT_ADJUSTMENT = -1.03;
+        
         double z = originZ + zoom + (furthest * FURTHEST_POINT_ADJUSTMENT);
         
         camster.setTranslateZ(z);
