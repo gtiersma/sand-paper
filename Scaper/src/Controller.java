@@ -14,7 +14,9 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
@@ -51,6 +53,7 @@ public class Controller
     TerrainTab terTab;
     RenderTab renTab;
     CameraTab camTab;
+    LightTab ligTab;
     
     // Whether or not the controls on the form are currently "listening" for
     // actions. Setting this to false will disable most of the action listeners
@@ -65,6 +68,11 @@ public class Controller
     
     // Below are the controls taken from the FXML file. They are sorted
     // alphabetically by control type
+    
+    @FXML private Button lightButtonLD;
+    @FXML private Button lightButtonLN;
+    
+    @FXML private ChoiceBox lightChoiceL;
     
     @FXML private ColorPicker renderColorBC;
     
@@ -96,6 +104,10 @@ public class Controller
     @FXML private Spinner<Integer> cameraSpinnerPAH;
     @FXML private Spinner<Integer> cameraSpinnerPAV;
     @FXML private Spinner<Integer> cameraSpinnerPAZ;
+    @FXML private Spinner<Double> lightSpinnerPX;
+    @FXML private Spinner<Double> lightSpinnerPY;
+    @FXML private Spinner<Double> lightSpinnerPZ;
+    @FXML private Spinner<Double> lightSpinnerI;
     
     @FXML private SplitPane splitster;
     
@@ -108,6 +120,7 @@ public class Controller
      */
     public Controller()
     {
+        ligTab = new LightTab();
         camTab = new CameraTab();
         renTab = new RenderTab();
         terTab = new TerrainTab();
@@ -210,7 +223,7 @@ public class Controller
             
                 terTab.setRotation('y', camTab.getYRotate());
             
-                preview.setRoot(terTab.getMesh());
+                preview.setRoot(getPreview());
             }
         });
         
@@ -222,14 +235,14 @@ public class Controller
             
                 terTab.setRotation('x', camTab.getXRotate());
             
-                preview.setRoot(terTab.getMesh());
+                preview.setRoot(getPreview());
             }
         });
         
         cameraSpinnerPAH.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            camTab.setXAdjustment(newster.doubleValue());
+            camTab.setXAdjustment(newster);
             preview.setCamera(camTab.getCamera());
         });
         cameraSpinnerPAH.focusedProperty().addListener(
@@ -245,7 +258,7 @@ public class Controller
         cameraSpinnerPAV.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            camTab.setYAdjustment(newster.doubleValue());
+            camTab.setYAdjustment(newster);
             preview.setCamera(camTab.getCamera());
         });
         cameraSpinnerPAV.focusedProperty().addListener(
@@ -261,7 +274,7 @@ public class Controller
         cameraSpinnerPAZ.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            camTab.setZoom(newster.doubleValue());
+            camTab.setZoom(newster);
             preview.setCamera(camTab.getCamera());
         });
         cameraSpinnerPAZ.focusedProperty().addListener(
@@ -296,6 +309,113 @@ public class Controller
             preview.setCamera(camTab.getCamera());
         });
         
+        //----------------------------------------------------------------------
+        // Light Tab Listeners
+        //----------------------------------------------------------------------
+        lightChoiceL.setOnAction((evster) ->
+        {
+            ligTab.setActiveLight(lightChoiceL.getValue());
+            
+            loadLight();
+        });
+        
+        lightButtonLN.setOnAction((evster) ->
+        {
+            ligTab.createLight();
+            
+            String name = ligTab.getActiveLightName();
+            
+            if (name != null && !name.equals(""))
+            {
+                lightChoiceL.getItems().add(name);
+                
+                clearLightControls();
+                
+                refreshPreview();
+            }
+        });
+        
+        lightButtonLD.setOnAction((evster) ->
+        {
+            ligTab.deleteActiveLight();
+            
+            loadLight();
+            
+            refreshPreview();
+        });
+        
+        lightSpinnerPX.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            ligTab.setActiveLightX(newster);
+            
+            refreshPreview();
+        });
+        lightSpinnerPX.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                ligTab.setActiveLightX(lightSpinnerPX.getEditor().getText());
+                
+                refreshPreview();
+            }
+        });
+        
+        lightSpinnerPY.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            ligTab.setActiveLightY(newster);
+            
+            refreshPreview();
+        });
+        lightSpinnerPY.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                ligTab.setActiveLightY(lightSpinnerPY.getEditor().getText());
+                
+                refreshPreview();
+            }
+        });
+        
+        lightSpinnerPZ.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            ligTab.setActiveLightZ(newster);
+            
+            refreshPreview();
+        });
+        lightSpinnerPZ.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                ligTab.setActiveLightZ(lightSpinnerPZ.getEditor().getText());
+                
+                refreshPreview();
+            }
+        });
+        
+        lightSpinnerI.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            ligTab.setActiveLightIntensity(newster);
+            
+            refreshPreview();
+        });
+        lightSpinnerI.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                ligTab.setActiveLightIntensity(
+                        lightSpinnerI.getEditor().getText());
+                
+                refreshPreview();
+            }
+        });
     }
     
     /**
@@ -421,7 +541,7 @@ public class Controller
             // Set the image as the texture
             terTab.setTexture(imster);
 
-            preview.setRoot(terTab.getMesh());
+            preview.setRoot(getPreview());
         }
     }
     
@@ -447,7 +567,7 @@ public class Controller
             // Set the image as the bump map
             terTab.setBump(imster);
 
-            preview.setRoot(terTab.getMesh());
+            preview.setRoot(getPreview());
         }
     }
     
@@ -483,8 +603,17 @@ public class Controller
             // Set the image as the specular map
             terTab.setSpecular(terrainImageSM.getImage());
 
-            preview.setRoot(terTab.getMesh());
+            preview.setRoot(getPreview());
         }
+    }
+    
+    protected void clearLightControls()
+    {
+        lightSpinnerPX.valueFactoryProperty().setValue(ligTab.getDefaultX());
+        lightSpinnerPY.valueFactoryProperty().setValue(ligTab.getDefaultY());
+        lightSpinnerPZ.valueFactoryProperty().setValue(ligTab.getDefaultZ());
+        lightSpinnerI.valueFactoryProperty().setValue(
+                ligTab.getDefaultIntensity());
     }
     
     /**
@@ -511,6 +640,26 @@ public class Controller
         {
             Platform.exit();
         }
+    }
+    
+    protected Group getPreview()
+    {
+        Group previewControls = new Group();
+        
+        previewControls.getChildren().add(terTab.getMesh());
+        previewControls.getChildren().add(ligTab.getActiveLight());
+        
+        return previewControls;
+    }
+    
+    protected void loadLight()
+    {
+        lightSpinnerPX.getValueFactory().setValue(ligTab.getActiveLightX);
+        lightSpinnerPY.getValueFactory().setValue(ligTab.getActiveLightY);
+        lightSpinnerPZ.getValueFactory().setValue(ligTab.getActiveLightZ);
+        lightSpinnerI.getValueFactory().setValue(
+                ligTab.getActiveLightIntensity);
+        
     }
     
     /**
@@ -581,7 +730,7 @@ public class Controller
         camTab.setOrigin(terTab.getCenterX(), terTab.getCenterY(), terTab.getCenterZ());
         camTab.setFurthestPoint(terTab.getFurthestPoint());
         
-        preview.setRoot(terTab.getMesh());
+        preview.setRoot(getPreview());
         preview.setCamera(camTab.getCamera());
     }
     

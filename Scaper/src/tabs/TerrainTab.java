@@ -2,7 +2,6 @@ package tabs;
 
 
 import graphics.MeshObject;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.shape.MeshView;
 import javafx.scene.transform.Rotate;
@@ -19,10 +18,9 @@ public class TerrainTab
     
     final Image BLANK_IMAGE = new Image("graphics/blank.png");
     
-    Group meshGroup;
-    
-    // The mesh
     MeshObject meshster;
+    
+    MeshView viewster;
     
     /**
      * CONSTRUCTOR
@@ -31,7 +29,6 @@ public class TerrainTab
     {
         meshster = new MeshObject(DEFAULT_SIZE, DEFAULT_SIZE, DEFAULT_STRENGTH,
                 BLANK_IMAGE, BLANK_IMAGE, BLANK_IMAGE);
-        meshGroup = new Group();
     }
     
     /**
@@ -100,9 +97,9 @@ public class TerrainTab
      * 
      * @return The mesh
      */
-    public Group getMesh()
+    public MeshView getMesh()
     {
-        return meshGroup;
+        return viewster;
     }
     
     /**
@@ -110,12 +107,10 @@ public class TerrainTab
      */
     public void prepareMesh()
     {
-        MeshView viewster = meshster.getMeshView();
-        
         meshster.setTexture(BLANK_IMAGE);
         meshster.load();
         
-        meshGroup.getChildren().add(viewster);
+        viewster = meshster.getMeshView();
     }
     
     /**
