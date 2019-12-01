@@ -20,8 +20,6 @@ public class RenderTab
     final private int DEFAULT_WIDTH = 1920;
     final private int DEFAULT_HEIGHT = 1080;
     
-    final private Color DEFAULT_BACK_COLOR = Color.WHITE;
-    
     private int width;
     private int height;
     
@@ -44,7 +42,7 @@ public class RenderTab
         
         previousDirectory = System.getProperty("user.home");
         
-        backColor = DEFAULT_BACK_COLOR;
+        backColor = Color.WHITE;
     }
     
     /**

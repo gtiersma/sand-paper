@@ -440,13 +440,13 @@
                            </children>
                         </VBox>
                         <Separator layoutX="229.0" layoutY="10.0" orientation="VERTICAL" prefHeight="200.0" />
-                        <VBox id="lightBoxS" alignment="CENTER" layoutX="255.0" layoutY="10.0" prefHeight="200.0" spacing="10.0">
+                        <VBox id="lightBoxI" alignment="CENTER" layoutX="255.0" layoutY="10.0" prefHeight="200.0" spacing="10.0">
                            <padding>
                               <Insets bottom="10.0" left="20.0" right="20.0" />
                            </padding>
                            <children>
-                              <Label id="lightLabelS" text="Strength:" />
-                              <Spinner id="lightSpinnerS" fx:id="lightSpinnerS" editable="true" initialValue="0" max="99999" min="-9999" prefWidth="100.0" />
+                              <Label id="lightLabelI" text="Intensity:" />
+                              <Spinner id="lightSpinnerI" fx:id="lightSpinnerI" editable="true" initialValue="1" max="1" min="0" prefWidth="100.0" />
                            </children>
                            <HBox.margin>
                               <Insets />
