@@ -5,7 +5,6 @@ import java.util.Optional;
 import javafx.scene.PointLight;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 
 /**
  * Controls the operations for the light tab
@@ -71,7 +70,6 @@ public class LightTab
             LightObject newLight = new LightObject(DEFAULT_COLOR, name, 
                     DEFAULT_X_PERCENTAGE, DEFAULT_Y_PERCENTAGE,
                     DEFAULT_Z_PERCENTAGE);
-            newLight.initializeRotations();
             
             // Create a new array with room for another light
             LightObject[] newLights = new LightObject[lights.length + 1];
@@ -411,21 +409,6 @@ public class LightTab
         centerX = x;
         centerY = y;
         centerZ = z;
-    }
-    
-    /**
-     * Sets the Rotation objects for the lights
-     * 
-     * @param dimension The dimension of which the light rotates on ('x', 'y' or
-     *                  'z')
-     * @param rotster The Rotation object to be set
-     */
-    public void setRotation(char dimension, Rotate rotster)
-    {
-        for (LightObject light : lights)
-        {
-            light.setRotation(dimension, rotster);
-        }
     }
     
     /**

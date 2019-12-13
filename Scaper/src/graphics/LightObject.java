@@ -2,7 +2,6 @@ package graphics;
 
 import javafx.scene.PointLight;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 
 /**
  * Controls a light in the scene
@@ -143,18 +142,6 @@ public class LightObject
     }
     
     /**
-     * Create the Rotation objects for the light
-     */
-    public void initializeRotations()
-    {
-        Rotate xRotate = new Rotate(0, Rotate.X_AXIS);
-        Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
-        
-        lightster.getTransforms().add(xRotate);
-        lightster.getTransforms().add(yRotate);
-    }
-    
-    /**
      * Sets the light's color
      * 
      * @param colster The color to be set
@@ -162,27 +149,6 @@ public class LightObject
     public void setColor(Color colster)
     {
         lightster.setColor(colster);
-    }
-    
-    /**
-     * Set a Rotation object for this light
-     * 
-     * @param dimension The dimension of which the light rotates on ('x', 'y' or
-     *                  'z')
-     * @param rotster The Rotation object to be set
-     */
-    public void setRotation(char dimension, Rotate rotster)
-    {
-        // The index of the light's transforms to which the rotation should be
-        // assigned
-        int index = 0;
-        
-        if (dimension == 'y')
-        {
-            index = 1;
-        }
-                    
-        lightster.getTransforms().set(index, rotster);
     }
     
     /**

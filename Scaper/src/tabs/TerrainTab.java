@@ -4,7 +4,6 @@ package tabs;
 import graphics.MeshObject;
 import javafx.scene.image.Image;
 import javafx.scene.shape.MeshView;
-import javafx.scene.transform.Rotate;
 
 /**
  * Controls the operations for the terrain tab
@@ -160,18 +159,6 @@ public class TerrainTab
     public void setDisplacementStrength(float displacementStrength)
     {
         meshster.setDisplacementStrength(displacementStrength);
-    }
-    
-    /**
-     * Applies a Rotation object to the mesh
-     * 
-     * @param dimension The dimension to which this rotation is being applied (x
-     * or y)
-     * @param rotster The Rotation object
-     */
-    public void setRotation(char dimension, Rotate rotster)
-    {
-        meshster.setRotation(dimension, rotster);
     }
     
     /**

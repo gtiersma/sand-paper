@@ -15,7 +15,6 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
-import javafx.scene.transform.Rotate;
 
 /**
  * The 3D object designed from the materials imported from the user
@@ -294,20 +293,6 @@ public class MeshObject
     }
     
     /**
-     * Initialize the Rotation objects that will be used with the MeshView to
-     * simulate the rotation and orbit of the camera. This must be executed
-     * before any rotations can be assigned.
-     */
-    private void initializeRotations()
-    {
-        Rotate xRotate = new Rotate(0, Rotate.X_AXIS);
-        Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
-        
-        viewster.getTransforms().add(xRotate);
-        viewster.getTransforms().add(yRotate);
-    }
-    
-    /**
      * Loads the data needed to construct the mesh into most all of the
      * variables and objects in this MeshObject
      */
@@ -317,7 +302,6 @@ public class MeshObject
         loadPoints();
         loadTexturePositions();
         loadFaces();
-        initializeRotations();
         
         viewster.setDrawMode(DrawMode.FILL);
         viewster.setMaterial(texture);
@@ -591,26 +575,6 @@ public class MeshObject
         loadDisplacementPixels();
         loadPoints();
         loadFaces();
-    }
-    
-    /**
-     * Rotates the mesh
-     * 
-     * @param dimension The dimension of which the Rotate parameter belongs
-     * @param rotster The Rotate object to be applied
-     */
-    public void setRotation(char dimension, Rotate rotster)
-    {
-        // The index of the MeshView's transforms to which the rotation should
-        // be assigned
-        int index = 0;
-        
-        if (dimension == 'y')
-        {
-            index = 1;
-        }
-                    
-        viewster.getTransforms().set(index, rotster);
     }
     
     /**

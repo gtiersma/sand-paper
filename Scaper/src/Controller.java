@@ -222,8 +222,6 @@ public class Controller
             {
                 camTab.setHorizontalAngle(newster.doubleValue());
             
-                ligTab.setRotation('y', camTab.getYRotate());
-            
                 preview.setRoot(getPreview());
             }
         });
@@ -233,8 +231,6 @@ public class Controller
             if (listen)
             {
                 camTab.setVerticalAngle(newster.doubleValue());
-            
-                ligTab.setRotation('x', camTab.getXRotate());
             
                 preview.setRoot(getPreview());
             }
@@ -735,6 +731,10 @@ public class Controller
         
         Group previewItems = new Group();
         
+        // Rotate to the correct position
+        previewItems.getTransforms().add(camTab.getXRotate());
+        previewItems.getTransforms().add(camTab.getYRotate());
+        
         // Add the mesh
         previewItems.getChildren().add(terTab.getMesh());
         
@@ -805,13 +805,6 @@ public class Controller
     protected void preparePreview()
     {
         terTab.prepareMesh();
-        
-        // Initialize the mesh's rotation objects
-        terTab.setRotation('x', camTab.getXRotate());
-        terTab.setRotation('y', camTab.getYRotate());
-        // The light's rotation objects are currently malfunctioning
-        ligTab.setRotation('x', camTab.getXRotate());
-        ligTab.setRotation('y', camTab.getYRotate());
         
         // To be centered, the mesh must be adjusted by half of the previewItems's
         // size
