@@ -14,8 +14,6 @@ import javafx.scene.transform.Rotate;
  */
 public class LightTab
 {
-    private final double DEFAULT_INTENSITY = 1.0;
-    
     private final double DEFAULT_X_PERCENTAGE = 75.0;
     private final double DEFAULT_Y_PERCENTAGE = 75.0;
     private final double DEFAULT_Z_PERCENTAGE = 75.0;
@@ -71,8 +69,8 @@ public class LightTab
             
             // Create a new light.
             LightObject newLight = new LightObject(DEFAULT_COLOR, name, 
-                    DEFAULT_INTENSITY, DEFAULT_X_PERCENTAGE,
-                    DEFAULT_Y_PERCENTAGE, DEFAULT_Z_PERCENTAGE);
+                    DEFAULT_X_PERCENTAGE, DEFAULT_Y_PERCENTAGE,
+                    DEFAULT_Z_PERCENTAGE);
             newLight.initializeRotations();
             
             // Create a new array with room for another light
@@ -136,16 +134,6 @@ public class LightTab
     }
     
     /**
-     * Gets the intensity of the chosen light
-     * 
-     * @return The chosen light's intensity
-     */
-    public double getActiveLightIntensity()
-    {
-        return activeLight.getIntensity();
-    }
-    
-    /**
      * Gets the name of the currently chosen light
      * 
      * @return The chosen light's name
@@ -193,16 +181,6 @@ public class LightTab
     public Color getDefaultColor()
     {
         return DEFAULT_COLOR;
-    }
-    
-    /**
-     * Gets the intensity level that each light is created with
-     * 
-     * @return The lights' initial intensity
-     */
-    public double getDefaultIntensity()
-    {
-        return DEFAULT_INTENSITY;
     }
     
     /**
@@ -332,29 +310,6 @@ public class LightTab
     public void setActiveLightColor(Color colster)
     {
         activeLight.setColor(colster);
-    }
-    
-    /**
-     * Sets the currently selected light's intensity
-     * 
-     * @param intensity The intensity to be set
-     */
-    public void setActiveLightIntensity(double intensity)
-    {
-        activeLight.setIntensity(intensity);
-    }
-    
-    /**
-     * Sets the currently selected light's intensity. For use when a string is
-     * given.
-     * 
-     * @param intensity The intensity to be set
-     */
-    public void setActiveLightIntensity(String intensity)
-    {
-        double newIntensity = Double.valueOf(intensity);
-        
-        activeLight.setIntensity(newIntensity);
     }
     
     /**

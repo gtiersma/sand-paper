@@ -11,8 +11,6 @@ import javafx.scene.transform.Rotate;
  */
 public class LightObject
 {
-    private double intensity;
-    
     private double x;
     private double y;
     private double z;
@@ -36,15 +34,12 @@ public class LightObject
      * @param colster The color the light should begin as
      * @param namster The name of the light
      * @param exster The starting position of the light on the X scale
-     * @param intster The starting intensity of the light
      * @param zeester The starting position of the light on the Z scale
      * @param waister The starting position of the light on the Y scale
      */
-    public LightObject(Color colster, String namster, double intster,
-            double exster, double waister, double zeester)
+    public LightObject(Color colster, String namster, double exster,
+            double waister, double zeester)
     {
-        intensity = intster;
-        
         x = 0;
         y = 0;
         z = 0;
@@ -95,16 +90,6 @@ public class LightObject
         double position = (percentage * onePercent) + zeroPercentPosition;
         
         return position;
-    }
-    
-    /**
-     * Gets the current intensity of the light
-     * 
-     * @return The current intensity of the light
-     */
-    public double getIntensity()
-    {
-        return intensity;
     }
     
     /**
@@ -177,27 +162,6 @@ public class LightObject
     public void setColor(Color colster)
     {
         lightster.setColor(colster);
-    }
-    
-    /**
-     * Sets the lights intensity
-     * 
-     * @param intster The light's intensity (a value from 0-1)
-     */
-    public void setIntensity(double intster)
-    {
-        final double MAX_COLOR_VALUE = 255;
-        
-        int red = (int)(lightColor.getRed() * MAX_COLOR_VALUE);
-        int green = (int)(lightColor.getGreen() * MAX_COLOR_VALUE);
-        int blue = (int)(lightColor.getBlue() * MAX_COLOR_VALUE);
-        
-        intensity = intster;
-        
-        // The intensity is assigned as the opacity value of the color
-        lightColor = Color.rgb(red, green, blue, intensity);
-        
-        lightster.setColor(lightColor);
     }
     
     /**

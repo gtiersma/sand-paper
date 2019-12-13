@@ -109,7 +109,6 @@ public class Controller
     @FXML private Spinner<Double> lightSpinnerPX;
     @FXML private Spinner<Double> lightSpinnerPY;
     @FXML private Spinner<Double> lightSpinnerPZ;
-    @FXML private Spinner<Double> lightSpinnerI;
     
     @FXML private SplitPane splitster;
     
@@ -397,27 +396,6 @@ public class Controller
                 refreshPreview();
                 
                 lightSpinnerPZ.increment(0);
-            }
-        });
-        
-        lightSpinnerI.valueProperty().addListener(
-                (obster, oldster, newster) ->
-        {
-            ligTab.setActiveLightIntensity(newster);
-            
-            refreshPreview();
-        });
-        lightSpinnerI.focusedProperty().addListener(
-                (obster, oldster, newster) ->
-        {
-            if (newster == false)
-            {
-                ligTab.setActiveLightIntensity(
-                        lightSpinnerI.getEditor().getText());
-                
-                refreshPreview();
-                
-                lightSpinnerI.increment(0);
             }
         });
         
@@ -757,8 +735,6 @@ public class Controller
         lightSpinnerPX.getValueFactory().setValue(ligTab.getActiveLightX());
         lightSpinnerPY.getValueFactory().setValue(ligTab.getActiveLightY());
         lightSpinnerPZ.getValueFactory().setValue(ligTab.getActiveLightZ());
-        lightSpinnerI.getValueFactory().setValue(
-                ligTab.getActiveLightIntensity());
     }
     
     /**
@@ -941,7 +917,6 @@ public class Controller
         lightSpinnerPX.getValueFactory().setValue(ligTab.getDefaultX());
         lightSpinnerPY.getValueFactory().setValue(ligTab.getDefaultY());
         lightSpinnerPZ.getValueFactory().setValue(ligTab.getDefaultZ());
-        lightSpinnerI.getValueFactory().setValue(ligTab.getDefaultIntensity());
         lightColorC.setValue(ligTab.getDefaultColor());
     }
     
