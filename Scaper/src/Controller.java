@@ -570,19 +570,10 @@ public class Controller
             // ...get the selected image name from the combo box
             String name = terrainComboSM.getValue().toString();
             
-            // For some reason, if an ImageView of a grayscale image is
-            // retrieved from the Texture Tab object, the image gains its color
-            // again. To prevent that, the grayscale effect is declared here in
-            // this class as well, and the adjustment is re-applied to the
-            // ImageView.
-            ColorAdjust grayscale = new ColorAdjust();
-            grayscale.setSaturation(-1);
-            
             // Get the image belonging to that name
             Image imster = texTab.getImageByName(false, name);
             
             terrainImageSM.setImage(imster);
-            terrainImageSM.setEffect(grayscale);
             
             // Set the image as the specular map
             terTab.setSpecular(terrainImageSM.getImage());
