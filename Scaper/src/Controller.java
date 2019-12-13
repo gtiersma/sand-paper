@@ -32,6 +32,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import tabs.CameraTab;
+import tabs.LightTab;
 
 /**
  * This is the controller class for Project Scaper. This class programmatically
@@ -42,9 +43,9 @@ import tabs.CameraTab;
  */
 public class Controller
 {
-    // The width of the preview of the model
+    // The width of the previewItems of the model
     final int PREVIEW_WIDTH = 800;
-    // The height of the preview of the model
+    // The height of the previewItems of the model
     final int PREVIEW_HEIGHT = 400;
     
     // Instantiate an object for each tab. Each of these objects control the
@@ -75,6 +76,7 @@ public class Controller
     @FXML private ChoiceBox lightChoiceL;
     
     @FXML private ColorPicker renderColorBC;
+    @FXML private ColorPicker lightColorC;
     
     @FXML private ComboBox terrainComboDM;
     @FXML private ComboBox terrainComboT;
@@ -141,7 +143,7 @@ public class Controller
         
         preview = new SubScene(new Group(), PREVIEW_WIDTH, PREVIEW_HEIGHT, true,
                 SceneAntialiasing.BALANCED);
-        // Place the preview in the split pane in the scene
+        // Place the previewItems in the split pane in the scene
         splitster.getItems().set(0, preview);
         
         preparePreview();
@@ -221,7 +223,7 @@ public class Controller
             {
                 camTab.setHorizontalAngle(newster.doubleValue());
             
-                terTab.setRotation('y', camTab.getYRotate());
+                ligTab.setRotation('y', camTab.getYRotate());
             
                 preview.setRoot(getPreview());
             }
@@ -233,7 +235,7 @@ public class Controller
             {
                 camTab.setVerticalAngle(newster.doubleValue());
             
-                terTab.setRotation('x', camTab.getXRotate());
+                ligTab.setRotation('x', camTab.getXRotate());
             
                 preview.setRoot(getPreview());
             }
@@ -314,34 +316,26 @@ public class Controller
         //----------------------------------------------------------------------
         lightChoiceL.setOnAction((evster) ->
         {
-            ligTab.setActiveLight(lightChoiceL.getValue());
+            if (listen == true)
+            {
+                // Index of currently selected light
+                int selectedIndex =
+                        lightChoiceL.getSelectionModel().getSelectedIndex();
             
-            loadLight();
+                ligTab.setActiveLight(selectedIndex);
+            
+                loadLight();
+            }
         });
         
         lightButtonLN.setOnAction((evster) ->
         {
-            ligTab.createLight();
-            
-            String name = ligTab.getActiveLightName();
-            
-            if (name != null && !name.equals(""))
-            {
-                lightChoiceL.getItems().add(name);
-                
-                clearLightControls();
-                
-                refreshPreview();
-            }
+            createLight();
         });
         
         lightButtonLD.setOnAction((evster) ->
         {
-            ligTab.deleteActiveLight();
-            
-            loadLight();
-            
-            refreshPreview();
+            deleteLight();
         });
         
         lightSpinnerPX.valueProperty().addListener(
@@ -354,11 +348,15 @@ public class Controller
         lightSpinnerPX.focusedProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            if (newster == false)
+            if (!newster)
             {
                 ligTab.setActiveLightX(lightSpinnerPX.getEditor().getText());
                 
                 refreshPreview();
+                
+                // Fixes an issue in JavaFX of the Spinner's value not being
+                // returned after it was changed.
+                lightSpinnerPX.increment(0);
             }
         });
         
@@ -377,6 +375,8 @@ public class Controller
                 ligTab.setActiveLightY(lightSpinnerPY.getEditor().getText());
                 
                 refreshPreview();
+                
+                lightSpinnerPY.increment(0);
             }
         });
         
@@ -395,6 +395,8 @@ public class Controller
                 ligTab.setActiveLightZ(lightSpinnerPZ.getEditor().getText());
                 
                 refreshPreview();
+                
+                lightSpinnerPZ.increment(0);
             }
         });
         
@@ -414,7 +416,15 @@ public class Controller
                         lightSpinnerI.getEditor().getText());
                 
                 refreshPreview();
+                
+                lightSpinnerI.increment(0);
             }
+        });
+        
+        lightColorC.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            ligTab.setActiveLightColor(newster);
         });
     }
     
@@ -607,13 +617,86 @@ public class Controller
         }
     }
     
-    protected void clearLightControls()
+    /**
+     * Creates a new light. For use when the user clicks the "New" button on the
+     * light tab.
+     */
+    protected void createLight()
     {
-        lightSpinnerPX.valueFactoryProperty().setValue(ligTab.getDefaultX());
-        lightSpinnerPY.valueFactoryProperty().setValue(ligTab.getDefaultY());
-        lightSpinnerPZ.valueFactoryProperty().setValue(ligTab.getDefaultZ());
-        lightSpinnerI.valueFactoryProperty().setValue(
-                ligTab.getDefaultIntensity());
+        String name = ligTab.createLight();
+            
+        // As long as a name was given by the user...
+        if (!name.equals(""))
+        {
+            // ...pause on listening to events.
+            listen = false;
+                
+            // Add the name to the list of lights in the choice box
+            lightChoiceL.getItems().add(name);
+            // Set the new name in the choice box
+            lightChoiceL.setValue(name);
+                
+            // Continue listening to events
+            listen = true;
+                
+            resetLightControls();
+                
+            refreshPreview();
+        }
+    }
+    
+    /**
+     * Deletes the currently selected light
+     */
+    protected void deleteLight()
+    {
+        // The index of the currently selected index
+        int selectedIndex
+                = lightChoiceL.getSelectionModel().getSelectedIndex();
+
+        int lightAmount = ligTab.getLightAmount();
+
+        // Delete the light
+        ligTab.deleteActiveLight(selectedIndex);
+
+        // Pause on listening to events
+        listen = false;
+
+        // If the first light was the deleted light...
+        if (selectedIndex == 0)
+        {
+            // ...and if there was only 1 light...
+            if (lightAmount == 1)
+            {
+                // ...there are now no lights, so make the choice box blank.
+                lightChoiceL.setValue("");
+            }
+            // ...otherwise, if there is more than 1 light...
+            else
+            {
+                // ...set the active light to the last light in the list.
+                ligTab.setActiveLight(lightAmount - 2);
+                lightChoiceL.setValue(ligTab.getActiveLightName());
+            }
+        }
+        // ...otherwise, if the first light was not chosen...
+        else
+        {
+            // ...set the active light to the light on the list before the
+            // deleted one.
+            ligTab.setActiveLight(selectedIndex - 1);
+            lightChoiceL.setValue(ligTab.getActiveLightName());
+        }
+
+        // Remove the light from the choice box's list
+        lightChoiceL.getItems().remove(selectedIndex);
+
+        // Continue listening to events
+        listen = true;
+
+        loadLight();
+
+        refreshPreview();
     }
     
     /**
@@ -642,24 +725,40 @@ public class Controller
         }
     }
     
+    /**
+     * Creates a group of objects to be used as the preview in the viewport
+     * 
+     * @return A group of everything to be used in the preview
+     */
     protected Group getPreview()
     {
-        Group previewControls = new Group();
+        int lightAmount = ligTab.getLightAmount();
         
-        previewControls.getChildren().add(terTab.getMesh());
-        previewControls.getChildren().add(ligTab.getActiveLight());
+        Group previewItems = new Group();
         
-        return previewControls;
+        // Add the mesh
+        previewItems.getChildren().add(terTab.getMesh());
+        
+        // Add each light
+        for (int i = 0; i < lightAmount; i++)
+        {
+            previewItems.getChildren().add(ligTab.getLight(i));
+        }
+        
+        return previewItems;
     }
     
+    /**
+     * Loads the properties of the light chosen in the choice box on the light
+     * tab into the light tab's controls
+     */
     protected void loadLight()
     {
-        lightSpinnerPX.getValueFactory().setValue(ligTab.getActiveLightX);
-        lightSpinnerPY.getValueFactory().setValue(ligTab.getActiveLightY);
-        lightSpinnerPZ.getValueFactory().setValue(ligTab.getActiveLightZ);
+        lightSpinnerPX.getValueFactory().setValue(ligTab.getActiveLightX());
+        lightSpinnerPY.getValueFactory().setValue(ligTab.getActiveLightY());
+        lightSpinnerPZ.getValueFactory().setValue(ligTab.getActiveLightZ());
         lightSpinnerI.getValueFactory().setValue(
-                ligTab.getActiveLightIntensity);
-        
+                ligTab.getActiveLightIntensity());
     }
     
     /**
@@ -686,7 +785,7 @@ public class Controller
     }
     
     /**
-     * Prepares the preview for saving a rendered image. This should be executed
+     * Prepares the previewItems for saving a rendered image. This should be executed
      * immediately before an image is to be saved.
      */
     protected void prepareForRender()
@@ -704,31 +803,48 @@ public class Controller
     }
     
     /**
-     * Prepares the preview for its initial presentation
+     * Gets the preview ready to be shown
      */
     protected void preparePreview()
     {
         terTab.prepareMesh();
         
+        // Initialize the mesh's rotation objects
         terTab.setRotation('x', camTab.getXRotate());
         terTab.setRotation('y', camTab.getYRotate());
+        // The light's rotation objects are currently malfunctioning
+        ligTab.setRotation('x', camTab.getXRotate());
+        ligTab.setRotation('y', camTab.getYRotate());
         
-        // To be centered, the mesh must be adjusted by half of the preview's
+        // To be centered, the mesh must be adjusted by half of the previewItems's
         // size
         camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
         
         refreshPreview();
+        
         preview.setFill(renTab.getBackColor());
     }
     
     /**
-     * Reloads the preview to show changes made. This should be used each time
-     * after a change is made to the shape of the 3d object.
+     * Refreshes the model preview. This should be used each time after a change
+     * is made to the shape of the 3d object.
      */
     protected void refreshPreview()
     {
-        camTab.setOrigin(terTab.getCenterX(), terTab.getCenterY(), terTab.getCenterZ());
+        // Re-center the camera
+        camTab.setOrigin(terTab.getCenterX(), terTab.getCenterY(),
+                terTab.getCenterZ());
         camTab.setFurthestPoint(terTab.getFurthestPoint());
+        
+        // Re-position lights
+        ligTab.setOrigin(terTab.getCenterX(), terTab.getCenterY(),
+                terTab.getCenterZ());
+        ligTab.setFurthestPoint(terTab.getFurthestPoint());
+        
+        if (ligTab.lightExists())
+        {
+            ligTab.repositionLights();
+        }
         
         preview.setRoot(getPreview());
         preview.setCamera(camTab.getCamera());
@@ -817,11 +933,24 @@ public class Controller
     }
     
     /**
-     * Resets the preview's size, re-centering the camera on the mesh
+     * Resets the controls on the light tab to their default values (excluding
+     * the choice box)
+     */
+    protected void resetLightControls()
+    {
+        lightSpinnerPX.getValueFactory().setValue(ligTab.getDefaultX());
+        lightSpinnerPY.getValueFactory().setValue(ligTab.getDefaultY());
+        lightSpinnerPZ.getValueFactory().setValue(ligTab.getDefaultZ());
+        lightSpinnerI.getValueFactory().setValue(ligTab.getDefaultIntensity());
+        lightColorC.setValue(ligTab.getDefaultColor());
+    }
+    
+    /**
+     * Resets the previewItems's size, re-centering the camera on the mesh
      */
     protected void resetPreviewSize()
     {
-        // To be centered, the mesh must be adjusted by half of the preview's
+        // To be centered, the mesh must be adjusted by half of the previewItems's
         // size
         camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
         
@@ -839,7 +968,7 @@ public class Controller
     {
         prepareForRender();
         
-        // Create a screenshot of the preview
+        // Create a screenshot of the previewItems
         WritableImage writster
                 = preview.snapshot(new SnapshotParameters(), null);
         
@@ -857,7 +986,7 @@ public class Controller
     {
         prepareForRender();
         
-        // Create a screenshot of the preview
+        // Create a screenshot of the previewItems
         WritableImage writster
                 = preview.snapshot(new SnapshotParameters(), null);
         

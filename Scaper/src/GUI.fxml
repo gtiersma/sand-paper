@@ -430,9 +430,9 @@
                                     </VBox>
                                     <VBox id="lightBoxPS" spacing="10.0">
                                        <children>
-                                          <Spinner id="lightSpinnerPX" fx:id="lightSpinnerPX" editable="true" initialValue="0" max="99999" min="-9999" prefWidth="100.0" />
-                                          <Spinner id="lightSpinnerPY" fx:id="lightSpinnerPY" editable="true" initialValue="0" max="99999" min="-9999" prefWidth="100.0" />
-                                          <Spinner id="lightSpinnerPZ" fx:id="lightSpinnerPZ" editable="true" initialValue="0" max="99999" min="-9999" prefWidth="100.0" />
+                                          <Spinner id="lightSpinnerPX" fx:id="lightSpinnerPX" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
+                                          <Spinner id="lightSpinnerPY" fx:id="lightSpinnerPY" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
+                                          <Spinner id="lightSpinnerPZ" fx:id="lightSpinnerPZ" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -446,7 +446,7 @@
                            </padding>
                            <children>
                               <Label id="lightLabelI" text="Intensity:" />
-                              <Spinner id="lightSpinnerI" fx:id="lightSpinnerI" editable="true" initialValue="1" max="1" min="0" prefWidth="100.0" />
+                              <Spinner id="lightSpinnerI" fx:id="lightSpinnerI" editable="true" initialValue="1.0" max="1.0" min="0.0" prefWidth="100.0" />
                            </children>
                            <HBox.margin>
                               <Insets />
