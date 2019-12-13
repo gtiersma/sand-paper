@@ -613,6 +613,8 @@ public class Controller
             lightChoiceL.getItems().add(name);
             // Set the new name in the choice box
             lightChoiceL.setValue(name);
+            
+            enableLightControls(true);
                 
             // Continue listening to events
             listen = true;
@@ -648,6 +650,8 @@ public class Controller
             {
                 // ...there are now no lights, so make the choice box blank.
                 lightChoiceL.setValue("");
+                
+                enableLightControls(false);
             }
             // ...otherwise, if there is more than 1 light...
             else
@@ -675,6 +679,23 @@ public class Controller
         loadLight();
 
         refreshPreview();
+    }
+    
+    /**
+     * Either enables or disables the controls for manipulating lights. This
+     * does not include the "new" button, as that button should always be
+     * available.
+     * 
+     * @param toEnable Whether or not to enable or disable the controls
+     */
+    protected void enableLightControls(boolean toEnable)
+    {
+        lightChoiceL.setDisable(!toEnable);
+        lightButtonLD.setDisable(!toEnable);
+        lightSpinnerPX.setDisable(!toEnable);
+        lightSpinnerPY.setDisable(!toEnable);
+        lightSpinnerPZ.setDisable(!toEnable);
+        lightColorC.setDisable(!toEnable);
     }
     
     /**

@@ -400,11 +400,11 @@
                            </padding>
                            <children>
                               <Label id="lightLabelL" text="Lights" />
-                              <ChoiceBox id="lightChoiceL" fx:id="lightChoiceL" prefWidth="150.0" />
+                              <ChoiceBox id="lightChoiceL" fx:id="lightChoiceL" disable="true" prefWidth="150.0" />
                               <HBox id="lightBoxAH" alignment="CENTER" spacing="10.0">
                                  <children>
                                     <Button id="lightButtonLN" fx:id="lightButtonLN" mnemonicParsing="false" text="New" />
-                                    <Button id="lightButtonLD" fx:id="lightButtonLD" layoutX="10.0" layoutY="14.0" mnemonicParsing="false" text="Delete" />
+                                    <Button id="lightButtonLD" fx:id="lightButtonLD" disable="true" layoutX="10.0" layoutY="14.0" mnemonicParsing="false" text="Delete" />
                                  </children>
                               </HBox>
                            </children>
@@ -430,9 +430,9 @@
                                     </VBox>
                                     <VBox id="lightBoxPS" spacing="10.0">
                                        <children>
-                                          <Spinner id="lightSpinnerPX" fx:id="lightSpinnerPX" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
-                                          <Spinner id="lightSpinnerPY" fx:id="lightSpinnerPY" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
-                                          <Spinner id="lightSpinnerPZ" fx:id="lightSpinnerPZ" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
+                                          <Spinner id="lightSpinnerPX" fx:id="lightSpinnerPX" disable="true" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
+                                          <Spinner id="lightSpinnerPY" fx:id="lightSpinnerPY" disable="true" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
+                                          <Spinner id="lightSpinnerPZ" fx:id="lightSpinnerPZ" disable="true" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -443,7 +443,7 @@
                         <VBox id="lightBoxC" alignment="CENTER" prefHeight="200.0" spacing="10.0">
                            <children>
                               <Label id="lightLabelC" text="Color:" />
-                              <ColorPicker id="lightColorC" fx:id="lightColorC" />
+                              <ColorPicker id="lightColorC" fx:id="lightColorC" disable="true" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" left="20.0" right="20.0" />
