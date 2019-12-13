@@ -13,9 +13,9 @@ import javafx.scene.paint.Color;
  */
 public class LightTab
 {
-    private final double DEFAULT_X_PERCENTAGE = 75.0;
-    private final double DEFAULT_Y_PERCENTAGE = 75.0;
-    private final double DEFAULT_Z_PERCENTAGE = 75.0;
+    private final double DEFAULT_X_PERCENTAGE = 120.0;
+    private final double DEFAULT_Y_PERCENTAGE = 10.0;
+    private final double DEFAULT_Z_PERCENTAGE = -20.0;
     
     private final Color DEFAULT_COLOR = Color.WHITE;
     
