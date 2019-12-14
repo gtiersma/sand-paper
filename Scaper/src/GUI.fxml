@@ -418,7 +418,7 @@
                               <Label id="lightLabelP" text="Position:" />
                               <HBox id="lightLabelP2" alignment="CENTER" spacing="10.0">
                                  <children>
-                                    <VBox id="lightBoxDL" alignment="TOP_RIGHT" spacing="18.0">
+                                    <VBox id="lightBoxPD" alignment="TOP_RIGHT" spacing="18.0">
                                        <children>
                                           <Label id="lightLabelPX" text="X:" />
                                           <Label id="lightLabelPY" layoutX="10.0" layoutY="13.0" text="Y:" />
@@ -434,6 +434,16 @@
                                           <Spinner id="lightSpinnerPY" fx:id="lightSpinnerPY" disable="true" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
                                           <Spinner id="lightSpinnerPZ" fx:id="lightSpinnerPZ" disable="true" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
                                        </children>
+                                    </VBox>
+                                    <VBox id="lightBoxPP" alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" spacing="18.0">
+                                       <children>
+                                          <Label id="lightLabelPPX" text="\%" />
+                                          <Label id="lightLabelPPY" layoutX="10.0" layoutY="13.0" text="\%" />
+                                          <Label id="lightLabelPPZ" text="\%" />
+                                       </children>
+                                       <padding>
+                                          <Insets top="3.0" />
+                                       </padding>
                                     </VBox>
                                  </children>
                               </HBox>
