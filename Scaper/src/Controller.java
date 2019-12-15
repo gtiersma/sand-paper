@@ -860,6 +860,7 @@ public class Controller
             terTab = new TerrainTab();
             renTab = new RenderTab();
             camTab = new CameraTab();
+            ligTab = new LightTab();
             
             terrainComboDM.setItems(null);
             terrainComboT.setItems(null);
@@ -905,6 +906,10 @@ public class Controller
             cameraSpinnerPAZ.getValueFactory().setValue(0);
             
             cameraRadioFOVH.setSelected(true);
+            
+            lightChoiceL.getItems().clear();
+            resetLightControls();
+            enableLightControls(false);
             
             preparePreview();
             
