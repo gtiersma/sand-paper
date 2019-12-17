@@ -10,3 +10,8 @@ v0.5 (6/23/2019)
 v0.51 (7/21/2019)
   - multi-threading functionality for vertex calculations
   - minor bug fixes and improvements
+
+v0.6 (12/16/2019)
+  - camera tab implemented, allowing the user to control the camera
+  - light tab implemented, allowing the user to control the lighting
+  - minor bug fixes and improvements

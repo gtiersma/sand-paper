@@ -1,6 +1,6 @@
 
 
-import tabs.TexturesTab;
+import tabs.TextureTab;
 import tabs.TerrainTab;
 import tabs.RenderTab;
 import java.util.Optional;
@@ -50,7 +50,7 @@ public class Controller
     
     // Instantiate an object for each tab. Each of these objects control the
     // functionality relating to that tab.
-    TexturesTab texTab;
+    TextureTab texTab;
     TerrainTab terTab;
     RenderTab renTab;
     CameraTab camTab;
@@ -125,7 +125,7 @@ public class Controller
         camTab = new CameraTab();
         renTab = new RenderTab();
         terTab = new TerrainTab();
-        texTab = new TexturesTab();
+        texTab = new TextureTab();
         
         listen = true;
     }
@@ -323,22 +323,15 @@ public class Controller
             }
         });
         
-        lightButtonLN.setOnAction((evster) ->
-        {
-            createLight();
-        });
-        
-        lightButtonLD.setOnAction((evster) ->
-        {
-            deleteLight();
-        });
-        
         lightSpinnerPX.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            ligTab.setActiveLightX(newster);
+            if (listen)
+            {
+                ligTab.setActiveLightX(newster);
             
-            refreshPreview();
+                refreshPreview();
+            }
         });
         lightSpinnerPX.focusedProperty().addListener(
                 (obster, oldster, newster) ->
@@ -358,9 +351,12 @@ public class Controller
         lightSpinnerPY.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            ligTab.setActiveLightY(newster);
+            if (listen)
+            {
+                ligTab.setActiveLightY(newster);
             
-            refreshPreview();
+                refreshPreview();
+            }
         });
         lightSpinnerPY.focusedProperty().addListener(
                 (obster, oldster, newster) ->
@@ -378,9 +374,12 @@ public class Controller
         lightSpinnerPZ.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            ligTab.setActiveLightZ(newster);
+            if (listen)
+            {
+                ligTab.setActiveLightZ(newster);
             
-            refreshPreview();
+                refreshPreview();
+            }
         });
         lightSpinnerPZ.focusedProperty().addListener(
                 (obster, oldster, newster) ->
@@ -398,7 +397,10 @@ public class Controller
         lightColorC.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            ligTab.setActiveLightColor(newster);
+            if (listen)
+            {
+                ligTab.setActiveLightColor(newster);
+            }
         });
     }
     
@@ -421,10 +423,11 @@ public class Controller
         
             // Create a list of the names of the color textures imported so far
             ObservableList<String> obster = texTab.getTextureNames(true);
-            // Add the list to the combo boxes for maps that use color
+            // Add the list to the combo boxes for maps
             terrainComboT.setItems(obster);
             terrainComboDM.setItems(obster);
             terrainComboBM.setItems(obster);
+            terrainComboSM.setItems(obster);
             
             // Begin listening to action events again
             listen = true;
@@ -447,10 +450,6 @@ public class Controller
             
             // Add the texture that the user just chose to the pane
             texturesFlowG.getChildren().add(texTab.getLastView(false));
-        
-            // Have the combo box for specular maps load a list of all of the
-            // imported grayscale images
-            terrainComboSM.setItems(texTab.getTextureNames(false));
             
             // Begin listening to action events again
             listen = true;
@@ -571,7 +570,7 @@ public class Controller
             String name = terrainComboSM.getValue().toString();
             
             // Get the image belonging to that name
-            Image imster = texTab.getImageByName(false, name);
+            Image imster = texTab.getImageByName(true, name);
             
             terrainImageSM.setImage(imster);
             
@@ -586,6 +585,7 @@ public class Controller
      * Creates a new light. For use when the user clicks the "New" button on the
      * light tab.
      */
+    @FXML
     protected void createLight()
     {
         String name = ligTab.createLight();
@@ -615,6 +615,7 @@ public class Controller
     /**
      * Deletes the currently selected light
      */
+    @FXML
     protected void deleteLight()
     {
         // The index of the currently selected index
@@ -727,6 +728,7 @@ public class Controller
         previewItems.getTransforms().add(camTab.getYRotate());
         
         // Add the mesh
+        terTab.prepareMesh();
         previewItems.getChildren().add(terTab.getMesh());
         
         // Add each light
@@ -763,7 +765,7 @@ public class Controller
         alster.setHeaderText("Generates 3D meshes from 2D images");
         alster.setContentText("2019 - Created by George Tiersma\n\n"
         + "This program is not copyrighted. It can be used for any purpose"
-        + " other than profited redistribution.\n\nversion 0.51 beta");
+        + " other than profited redistribution.\n\nversion 0.6 beta");
         
         // Sets the dialog box's icon
         ((Stage)alster.getDialogPane().getScene().getWindow()).getIcons().add(
@@ -856,7 +858,7 @@ public class Controller
             listen = false;
             
             // Reset all of the variables in the tab objects
-            texTab = new TexturesTab();
+            texTab = new TextureTab();
             terTab = new TerrainTab();
             renTab = new RenderTab();
             camTab = new CameraTab();
@@ -911,6 +913,7 @@ public class Controller
             resetLightControls();
             enableLightControls(false);
             
+            // Now that everything has been reset, prepare the preview again
             preparePreview();
             
             // Begin listening to action events
