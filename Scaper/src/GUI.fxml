@@ -25,7 +25,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<VBox id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <MenuBar id="menuBarster">
         <menus>
@@ -218,6 +218,176 @@
                                        </children>
                                     </HBox>
                                     <ImageView id="terrainImageSM" fx:id="terrainImageSM" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="588.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </content></Tab>
+               <Tab id="populationTab" fx:id="populationTab" text="Populations">
+               <content>
+               </content>
+                     <content>
+                        <ScrollPane id="populationScroll" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <VBox id="populationBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="364.0" spacing="20.0">
+                                 <padding>
+                                    <Insets bottom="20.0" top="20.0" />
+                                 </padding>
+                                 <children>
+                                    <Label id="populationLabelP" text="Populations:" />
+                                    <ChoiceBox id="populationChoiceP" prefWidth="150.0" />
+                                    <HBox id="populationBoxPB" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <Button id="populationButtonPN" fx:id="populationButtonPN" mnemonicParsing="false" text="New" />
+                                          <Button id="populationButtonPD" fx:id="populationButtonPD" mnemonicParsing="false" text="Repeat Generation" />
+                                          <Button id="populationButtonPD" fx:id="populationButtonPD1" layoutX="192.0" layoutY="10.0" mnemonicParsing="false" text="Delete" />
+                                       </children>
+                                    </HBox>
+                                    <Separator prefWidth="200.0" />
+                                    <HBox id="populationBoxPl" alignment="CENTER" layoutX="10.0" layoutY="642.0" spacing="10.0">
+                                       <children>
+                                          <Label id="populationLabelPl" text="Placement:" />
+                                          <ComboBox id="populationComboPl" fx:id="terrainComboT11" onAction="#changeTexture" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <ImageView id="populationImagePl" fx:id="terrainImageT11" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                                    <Separator layoutX="10.0" layoutY="157.0" prefWidth="200.0" />
+                                    <HBox id="populationBoxE" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
+                                       <children>
+                                          <Label id="populationLabelE" text="Evalation:" />
+                                          <ComboBox id="populationComboE" fx:id="terrainComboT112" onAction="#changeTexture" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <ImageView id="populationImageE" fx:id="terrainImageT112" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
+                                    <Separator layoutX="10.0" layoutY="320.0" prefWidth="200.0" />
+                                    <Label id="populationLabelS" text="Size:" />
+                                    <HBox id="populationBoxSW" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
+                                       <children>
+                                          <Label id="populationLabelSW" text="Width:" />
+                                          <ComboBox id="populationComboSW" fx:id="terrainComboT111" onAction="#changeTexture" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <ImageView id="populationImageSW" fx:id="terrainImageT111" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                                    <HBox id="populationBoxSH" alignment="CENTER" layoutX="10.0" layoutY="380.0" spacing="10.0">
+                                       <children>
+                                          <Label id="populationLabelSH" text="Height:" />
+                                          <ComboBox id="populationComboSH" fx:id="terrainComboT1111" onAction="#changeTexture" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <ImageView id="populationImageSH" fx:id="terrainImageT1111" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
+                                    <HBox id="populationBoxSR" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <Label id="populationLabelSR" text="Randomness:" />
+                                          <Slider id="populationSliderSR" fx:id="terrainSliderDMS11" minorTickCount="1" showTickLabels="true" snapToTicks="true" value="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <Separator layoutX="10.0" layoutY="320.0" prefWidth="200.0" />
+                                    <Label id="populationLabelVR" text="Vertex Resolution:" />
+                                    <HBox id="populationBoxVRW" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/width.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label id="populationLabelVRW" text="Width:" />
+                                          <Spinner id="populationSpinnerVRW" fx:id="terrainSpinnerVRW1" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox id="populationBoxVRH" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/depth.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label id="populationLabelVRD" text="Depth:" />
+                                          <Spinner id="populationSpinnerVRD" fx:id="terrainSpinnerVRD1" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
+                                       </children>
+                                    </HBox>
+                                    <Separator prefWidth="200.0" />
+                                    <HBox id="populationBoxDRC" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/displacement.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label id="populationLabelDR" text="Displacement Range:" />
+                                       </children>
+                                    </HBox>
+                                    <HBox id="populationBoxDRC" alignment="CENTER" layoutX="10.0" layoutY="344.0" spacing="10.0">
+                                       <children>
+                                          <ComboBox id="populationComboDR1" fx:id="terrainComboDM11" onAction="#changeDisplacement" prefWidth="150.0" />
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/displacement.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ComboBox id="populationComboDR2" fx:id="terrainComboDM111" layoutX="178.0" layoutY="10.0" onAction="#changeDisplacement" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox id="populationBoxDRC" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView id="populationImageDR1" fx:id="terrainImageDM1" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/displacement.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView id="populationImageDR2" fx:id="terrainImageDM11" fitHeight="75.0" fitWidth="100.0" layoutX="121.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </HBox>
+                                    <HBox id="populationBoxDMS" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/strength.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label id="populationLabelDMS" text="Strength:" />
+                                          <Slider id="populationSliderDMS" fx:id="terrainSliderDMS1" minorTickCount="1" showTickLabels="true" snapToTicks="true" value="50.0" />
+                                       </children>
+                                    </HBox>
+                                    <Separator id="terrainSeparator2" prefWidth="200.0" />
+                                    <HBox id="populationBoxT" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/textures.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label id="populationLabelT" text="Texture:" />
+                                          <ComboBox id="populationComboT" fx:id="terrainComboT1" onAction="#changeTexture" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <ImageView id="populationImageT" fx:id="terrainImageT1" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                                    <Separator id="terrainSeparator3" prefWidth="200.0" />
+                                    <HBox id="populationBoxBM" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/bump.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label id="populationLabelBM" text="Bump Map:" />
+                                          <ComboBox id="populationComboBM" fx:id="terrainComboBM1" onAction="#changeBump" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <ImageView id="populationImageBM" fx:id="terrainImageBM1" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                                    <Separator prefWidth="200.0" />
+                                    <HBox id="populationBoxSM" alignment="CENTER" spacing="10.0">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/specular.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label id="populationLabelSM" text="Specular Map:" />
+                                          <ComboBox id="populationComboSM" fx:id="terrainComboSM1" onAction="#changeSpecular" prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <ImageView id="populationImageSM" fx:id="terrainImageSM1" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </VBox>
                            </content>
