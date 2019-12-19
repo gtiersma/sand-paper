@@ -1,7 +1,7 @@
 package tabs;
 
 
-import graphics.MeshObject;
+import graphics.Terrain;
 import javafx.scene.image.Image;
 import javafx.scene.shape.MeshView;
 
@@ -17,7 +17,7 @@ public class TerrainTab
     
     final Image BLANK_IMAGE = new Image("graphics/blank.png");
     
-    MeshObject meshster;
+    Terrain terster;
     
     MeshView viewster;
     
@@ -26,42 +26,42 @@ public class TerrainTab
      */
     public TerrainTab()
     {
-        meshster = new MeshObject(DEFAULT_SIZE, DEFAULT_SIZE, DEFAULT_STRENGTH,
+        terster = new Terrain(DEFAULT_SIZE, DEFAULT_SIZE, DEFAULT_STRENGTH,
                 BLANK_IMAGE, BLANK_IMAGE, BLANK_IMAGE);
     }
     
     /**
-     * Gets the approximate position of the center of the mesh on the x scale
+     * Gets the approximate position of the center of the terrain on the x scale
      * 
-     * @return The center position of the mesh on the x scale
+     * @return The center position of the terrain on the x scale
      */
     public double getCenterX()
     {
-        return meshster.getCenter('x');
+        return terster.getCenter('x');
     }
     
     /**
-     * Gets the approximate position of the center of the mesh on the y scale
+     * Gets the approximate position of the center of the terrain on the y scale
      * 
-     * @return The center position of the mesh on the y scale
+     * @return The center position of the terrain on the y scale
      */
     public double getCenterY()
     {
-        return meshster.getCenter('y');
+        return terster.getCenter('y');
     }
     
     /**
-     * Gets the approximate position of the center of the mesh on the z scale
+     * Gets the approximate position of the center of the terrain on the z scale
      * 
-     * @return The center position of the mesh on the z scale
+     * @return The center position of the terrain on the z scale
      */
     public double getCenterZ()
     {
-        return meshster.getCenter('z');
+        return terster.getCenter('z');
     }
     
     /**
-     * Gets the default size of the mesh in vertices
+     * Gets the default size of the terrain in vertices
      * 
      * @return The default size
      */
@@ -81,35 +81,35 @@ public class TerrainTab
     }
     
     /**
-     * Gets the greatest distance that any point is from the center of the mesh
-     * on any of the 3 scales (x, y or z)
+     * Gets the greatest distance that any point is from the center of the
+     * terrain on any of the 3 scales (x, y or z)
      * 
-     * @return The greatest distance from the mesh's center
+     * @return The greatest distance from the terrain's center
      */
     public double getFurthestPoint()
     {
-        return meshster.getFurthestPoint();
+        return terster.getFurthestPoint();
     }
     
     /**
-     * Gets the mesh in the form of a group
+     * Gets the terrain in the form of a group
      * 
-     * @return The mesh
+     * @return The terrain
      */
-    public MeshView getMesh()
+    public MeshView getTerrain()
     {
         return viewster;
     }
     
     /**
-     * Prepares the initial mesh to be displayed
+     * Prepares the initial terrain to be displayed
      */
-    public void prepareMesh()
+    public void prepareTerrain()
     {
-        meshster.setTexture(BLANK_IMAGE);
-        meshster.load();
+        terster.setTexture(BLANK_IMAGE);
+        terster.load();
         
-        viewster = meshster.getMeshView();
+        viewster = terster.getMeshView();
     }
     
     /**
@@ -119,17 +119,17 @@ public class TerrainTab
      */
     public void setBump(Image bumpster)
     {
-        meshster.setBump(bumpster);
+        terster.setBump(bumpster);
     }
     
     /**
-     * Sets the depth of the mesh in vertices
+     * Sets the depth of the terrain in vertices
      * 
-     * @param depth The depth of the mesh
+     * @param depth The depth of the terrain
      */
     public void setDepth(int depth)
     {
-        meshster.setDepth(depth);
+        terster.setDepth(depth);
     }
     
     /**
@@ -138,7 +138,7 @@ public class TerrainTab
      */
     public void setDepth(String depth)
     {
-        meshster.setDepth(Integer.parseInt(depth));
+        terster.setDepth(Integer.parseInt(depth));
     }
     
     /**
@@ -148,7 +148,7 @@ public class TerrainTab
      */
     public void setDisplacement(Image displacement)
     {
-        meshster.setDisplacement(displacement);
+        terster.setDisplacement(displacement);
     }
     
     /**
@@ -158,7 +158,7 @@ public class TerrainTab
      */
     public void setDisplacementStrength(float displacementStrength)
     {
-        meshster.setDisplacementStrength(displacementStrength);
+        terster.setDisplacementStrength(displacementStrength);
     }
     
     /**
@@ -168,7 +168,7 @@ public class TerrainTab
      */
     public void setSpecular(Image specster)
     {
-        meshster.setSpecular(specster);
+        terster.setSpecular(specster);
     }
     
     /**
@@ -178,26 +178,26 @@ public class TerrainTab
      */
     public void setTexture(Image texture)
     {
-        meshster.setTexture(texture);
+        terster.setTexture(texture);
     }
     
     /**
-     * Sets the width of the mesh in vertices
+     * Sets the width of the terrain in vertices
      * 
-     * @param width The width of the mesh
+     * @param width The width of the terrain
      */
     public void setWidth(int width)
     {
-        meshster.setWidth(width);
+        terster.setWidth(width);
     }
     
     /**
-     * Sets the width of the mesh in vertices
+     * Sets the width of the terrain in vertices
      * 
-     * @param width The width of the mesh
+     * @param width The width of the terrain
      */
     public void setWidth(String width)
     {
-        meshster.setWidth(Integer.parseInt(width));
+        terster.setWidth(Integer.parseInt(width));
     }
 }

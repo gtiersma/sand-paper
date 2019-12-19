@@ -43,9 +43,9 @@ import tabs.LightTab;
  */
 public class Controller
 {
-    // The width of the previewItems of the model
+    // The width of the preview of the model
     final int PREVIEW_WIDTH = 800;
-    // The height of the previewItems of the model
+    // The height of the preview of the model
     final int PREVIEW_HEIGHT = 400;
     
     // Instantiate an object for each tab. Each of these objects control the
@@ -142,7 +142,7 @@ public class Controller
         
         preview = new SubScene(new Group(), PREVIEW_WIDTH, PREVIEW_HEIGHT, true,
                 SceneAntialiasing.BALANCED);
-        // Place the previewItems in the split pane in the scene
+        // Place the preview in the split pane in the scene
         splitster.getItems().set(0, preview);
         
         preparePreview();
@@ -727,9 +727,9 @@ public class Controller
         previewItems.getTransforms().add(camTab.getXRotate());
         previewItems.getTransforms().add(camTab.getYRotate());
         
-        // Add the mesh
-        terTab.prepareMesh();
-        previewItems.getChildren().add(terTab.getMesh());
+        // Add the terrain
+        terTab.prepareTerrain();
+        previewItems.getChildren().add(terTab.getTerrain());
         
         // Add each light
         for (int i = 0; i < lightAmount; i++)
@@ -762,7 +762,7 @@ public class Controller
         Alert alster = new Alert(AlertType.INFORMATION);
         
         alster.setTitle("About Project Scaper");
-        alster.setHeaderText("Generates 3D meshes from 2D images");
+        alster.setHeaderText("Generates 3D objects from 2D images");
         alster.setContentText("2019 - Created by George Tiersma\n\n"
         + "This program is not copyrighted. It can be used for any purpose"
         + " other than profited redistribution.\n\nversion 0.6 beta");
@@ -775,7 +775,7 @@ public class Controller
     }
     
     /**
-     * Prepares the previewItems for saving a rendered image. This should be executed
+     * Prepares the preview for saving a rendered image. This should be executed
      * immediately before an image is to be saved.
      */
     protected void prepareForRender()
@@ -797,9 +797,9 @@ public class Controller
      */
     protected void preparePreview()
     {
-        terTab.prepareMesh();
+        terTab.prepareTerrain();
         
-        // To be centered, the mesh must be adjusted by half of the previewItems's
+        // To be centered, the terrain must be adjusted by half of the preview's
         // size
         camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
         
@@ -934,11 +934,11 @@ public class Controller
     }
     
     /**
-     * Resets the previewItems's size, re-centering the camera on the mesh
+     * Resets the preview's size, re-centering the camera on the terrain
      */
     protected void resetPreviewSize()
     {
-        // To be centered, the mesh must be adjusted by half of the previewItems's
+        // To be centered, the terrain must be adjusted by half of the preview's
         // size
         camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
         
@@ -956,7 +956,7 @@ public class Controller
     {
         prepareForRender();
         
-        // Create a screenshot of the previewItems
+        // Create a screenshot of the preview
         WritableImage writster
                 = preview.snapshot(new SnapshotParameters(), null);
         
@@ -967,14 +967,14 @@ public class Controller
     }
     
     /**
-     * Has the user save a rendered image of the mesh through a file chooser
+     * Has the user save a rendered image through a file chooser
      */
     @FXML
     protected void saveAs()
     {
         prepareForRender();
         
-        // Create a screenshot of the previewItems
+        // Create a screenshot of the preview
         WritableImage writster
                 = preview.snapshot(new SnapshotParameters(), null);
         

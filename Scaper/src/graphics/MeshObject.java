@@ -1,6 +1,5 @@
 package graphics;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -17,7 +16,8 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 
 /**
- * The 3D object designed from the materials imported from the user
+ * Parent class containing the similarities between the terrain and the
+ * population objects
  * 
  * @author George Tiersma
  */
@@ -25,54 +25,54 @@ public class MeshObject
 {
     // The number of integers in the face array that are needed to define each
     // face
-    private final int INTS_PER_FACE = 6;
-    private final int DIMENSIONS = 3;
+    protected final int INTS_PER_FACE = 6;
+    protected final int DIMENSIONS = 3;
     
     // Multiplied to the user-defined displacement strength variable to increase
     // distance between vertices
-    private final float DISPLACEMENT_MULTIPLIER = 10;
+    protected final float DISPLACEMENT_MULTIPLIER = 10;
     
     // The width of the mesh in vertices
-    private int width;
+    protected int width;
     // The depth of the mesh in vertices
-    private int depth;
+    protected int depth;
     
     // The number of faces in the mesh
-    private int facesAmount;
+    protected int facesAmount;
     
     // The multiplier for the displacement map strength that is set by the user
-    private float displacementStrength;
+    protected float displacementStrength;
     
     // The distance on the x scale in number of pixels in the displacement map
     // that one vertex would retrieve from that of an adjacent vertex.
-    private double widthPixels;
+    protected double widthPixels;
     // The distance on the y scale in number of pixels in the displacement map
     // that one vertex would retrieve from that of an adjacent vertex.
-    private double heightPixels;
+    protected double heightPixels;
     
     // Face data
-    private int[] faces;
+    protected int[] faces;
     
     // Point data
-    private float[] points;
+    protected float[] points;
     // UV data
-    private float[] texturePositions;
+    protected float[] texturePositions;
     
     // Displacement map
-    private Image displacement;
+    protected Image displacement;
     
     // Contains the texture, bump map and displacement map
-    private PhongMaterial texture;
+    protected PhongMaterial texture;
     
     // The mesh
-    private TriangleMesh meshster;
+    protected TriangleMesh meshster;
     
     // The view containing the mesh
-    private MeshView viewster;
+    protected MeshView viewster;
     
     // The x & y matrix of the color data for each pixel in the displacement
     // map. It is used to shift the relative position of each vertex.
-    private Color[][] vertexRelatives;
+    protected Color[][] vertexRelatives;
     
     /**
      * CONSTRUCTOR
@@ -118,168 +118,6 @@ public class MeshObject
         // Make the array big enough to hold the color data for each pixel
         vertexRelatives = new Color[(int)displacement.getWidth()]
                 [(int)displacement.getHeight()];
-    }
-    
-    /**
-     * Gets the approximate center position of the mesh.
-     * 
-     * Instead of calculating the exact center of the mesh by averaging the
-     * position of every point on the mesh, this function only samples several
-     * points at particular positions in the mesh, increasing performance.
-     * 
-     * @param dimension The dimension of the position to be returned (x, y or z)
-     * 
-     * @return The approximate center position of the mesh
-     */
-    public double getCenter(char dimension)
-    {
-        // The number of points of the mesh of which their position will be
-        // gathered.
-        final int CENTER_POINTS_AMOUNT = 5;
-        
-        // The average of the positions of the points
-        double average;
-        // The sum of all of the positions of the points
-        double total = 0;
-        
-        // The indexes of the points
-        int[] indexes = new int[CENTER_POINTS_AMOUNT];
-        
-        // The index of the point at the center of the mesh
-        indexes[0] = (width * depth) / 2;
-        
-        // If the width is even...
-        if (width % 2 == 0)
-        {
-            // ...half of the width must be subtracted to get the center-most
-            // point.
-            indexes[0] = indexes[0] - (width / 2);
-        }
-        
-        // The point between the center and the back edge of the mesh
-        indexes[1] = indexes[0] - width * (depth / 4);
-        // The point between the center and the left edge of the mesh
-        indexes[2] = indexes[0] - width / 4;
-        // The point between the center and the right edge of the mesh
-        indexes[3] = indexes[0] + width / 4;
-        // The point between the center and the front edge of the mesh
-        indexes[4] = indexes[0] + width * (depth / 4);
-        
-        // For each point...
-        for (int i = 0; i < CENTER_POINTS_AMOUNT; i++)
-        {
-            // ...calculate the index for the correct dimension.
-            indexes[i] = indexes[i] * DIMENSIONS + getDimensionValue(dimension);
-            
-            // Add that point's position to the total
-            total = total + points[indexes[i]];
-        }
-        
-        // Get the average position of the points
-        average = total / CENTER_POINTS_AMOUNT;
-        
-        return average;
-    }
-    
-    /**
-     * Gets 0 if an 'x' is given, 1 for a 'y' and 2 for a 'z'
-     * 
-     * @param dimension The dimension of which to return a value (x, y or z)
-     * 
-     * @return 0 if an 'x' is given, 1 for a 'y' and 2 for a 'z'
-     */
-    private int getDimensionValue(char dimension)
-    {
-        int value = 0;
-        
-        if (dimension == 'y')
-        {
-            value = 1;
-        }
-        else if (dimension == 'z')
-        {
-            value = 2;
-        }
-        
-        return value;
-    }
-    
-    /**
-     * Gets the approximate furthest distance of a point of any dimension from
-     * the center of the mesh.
-     * 
-     * @return The approximate furthest distance
-     */
-    public double getFurthestPoint()
-    {
-        // The furthest distance for each dimension
-        double furthestX = getFurthestPoint('x');
-        double furthestY = getFurthestPoint('y');
-        double furthestZ = getFurthestPoint('z');
-        
-        // The furthest distance of any of the dimension
-        double furthest;
-        
-        if (furthestX < furthestY)
-        {
-            if (furthestY < furthestZ)
-            {
-                furthest = furthestZ;
-            }
-            else
-            {
-                furthest = furthestY;
-            }
-        }
-        else
-        {
-            furthest = furthestX;
-        }
-        
-        return furthest;
-    }
-    
-    /**
-     * Gets the approximate furthest distance of a point of the given dimension
-     * from the center of the mesh.
-     * 
-     * @return The approximate furthest distance
-     */
-    private double getFurthestPoint(char dimension)
-    {
-        double center = getCenter(dimension);
-        
-        // The furthest point
-        double far = 0;
-        
-        // The 4 corner points of the mesh
-        int[] cornerPoints = {
-                0,
-                (width - 1),
-                (width * (depth - 1)),
-                ((width * depth) - 1)
-                };
-        
-        // For each point in a corner...
-        for (int i = 0; i < cornerPoints.length; i++)
-        {
-            // The index of the position of this corner point of the given
-            // dimension
-            int farIndex = cornerPoints[i] * DIMENSIONS
-                    + getDimensionValue(dimension);
-            
-            // The distance this point is from the center
-            double possibleFar = Math.abs(points[farIndex] - center);
-            
-            // If it is the furthest from the mesh center so far...
-            if (far < possibleFar)
-            {
-                // ...it's currently the furthest point.
-                far = possibleFar;
-            }
-        }
-        
-        return far;
     }
     
     /**
@@ -627,6 +465,7 @@ public class MeshObject
      * @return A string representation of all of the variables in this
      * MeshObject
      */
+    @Override
     public String toString()
     {
         String stringster = "Project Scaper - MeshObject Properties"
