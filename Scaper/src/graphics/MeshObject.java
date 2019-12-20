@@ -40,6 +40,10 @@ public class MeshObject
     // The number of faces in the mesh
     protected int facesAmount;
     
+    // The length of each side of each face on the mesh when the mesh is not
+    // displaced
+    protected int faceSize;
+    
     // The multiplier for the displacement map strength that is set by the user
     protected float displacementStrength;
     
@@ -79,13 +83,15 @@ public class MeshObject
      * 
      * @param widthster The width of the mesh in vertices
      * @param depthster The depth of the mesh in vertices
+     * @param fSize The length of each side of each face on the mesh when the
+     *              mesh is not displaced
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
      * @param dister The displacement map
      * @param bumpster The bump map
      * @param specster The specular map
      */
-    public MeshObject(int widthster, int depthster, int strengthster,
+    public MeshObject(int widthster, int depthster, int fSize, int strengthster,
             Image dister, Image bumpster, Image specster)
     {
         width = widthster;
@@ -94,6 +100,8 @@ public class MeshObject
         
         // Calculate number of faces
         facesAmount = ((width - 1) * (depth - 1) * 2);
+        
+        faceSize = fSize;
         
         // Calculate number of integers needed for the face data
         faces = new int[facesAmount * INTS_PER_FACE];
@@ -132,7 +140,7 @@ public class MeshObject
     
     /**
      * Loads the data needed to construct the mesh into most all of the
-     * variables and objects in this MeshObject
+     * variables and objects within this MeshObject
      */
     public void load()
     {
@@ -254,15 +262,18 @@ public class MeshObject
                         * DISPLACEMENT_MULTIPLIER;
                 
                 // Thread for finding the x position of the vertex
-                Callable<Float> xThread = new VertexThread(x, strengthster, 'x',
+                Callable<Float> xThread = new VertexThread(faceSize, x,
+                        strengthster, 'x',
                         vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Thread for finding the y position of the vertex
-                Callable<Float> yThread = new VertexThread(0, strengthster, 'y',
+                Callable<Float> yThread = new VertexThread(faceSize, 0,
+                        strengthster, 'y',
                         vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Thread for finding the z position of the vertex
-                Callable<Float> zThread = new VertexThread(z, strengthster, 'z',
+                Callable<Float> zThread = new VertexThread(faceSize, z,
+                        strengthster, 'z',
                         vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Get the calculations as they become available

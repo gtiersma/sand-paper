@@ -12,6 +12,10 @@ import javafx.scene.shape.MeshView;
  */
 public class TerrainTab
 {
+    // The length of each side of each face on the mesh when the mesh is not
+    // displaced
+    final int FACE_SIZE = 10;
+    
     final int DEFAULT_SIZE = 50;
     final int DEFAULT_STRENGTH = 50;
     
@@ -26,8 +30,8 @@ public class TerrainTab
      */
     public TerrainTab()
     {
-        terster = new Terrain(DEFAULT_SIZE, DEFAULT_SIZE, DEFAULT_STRENGTH,
-                BLANK_IMAGE, BLANK_IMAGE, BLANK_IMAGE);
+        terster = new Terrain(DEFAULT_SIZE, DEFAULT_SIZE, FACE_SIZE,
+                DEFAULT_STRENGTH, BLANK_IMAGE, BLANK_IMAGE, BLANK_IMAGE);
     }
     
     /**

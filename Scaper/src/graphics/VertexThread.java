@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 public class VertexThread implements Callable<Float>
 {
     // A multiplier that is used for the size of each face
-    private final int FACE_SIZE = 10;
+    private int faceSize;
    
     // The position of the vertex on the provided axis
     private float position;
@@ -30,15 +30,18 @@ public class VertexThread implements Callable<Float>
     /**
      * CONSTRUCTOR
      * 
+     * @param fSize A multiplier that is used for the size of each face
      * @param poser The numbered position of the vertex
      * @param strengthster The user-defined strength of the displacement map
      * @param dimster The dimension being calculated
      * @param colster The color of the pixel on the displacement map that
      *                belongs to this vertex
      */
-    public VertexThread(int poser, float strengthster, char dimster,
+    public VertexThread(int fSize, int poser, float strengthster, char dimster,
             Color colster)
     {
+        faceSize = fSize;
+        
         position = poser;
         displacementStrength = strengthster;
         
@@ -71,7 +74,7 @@ public class VertexThread implements Callable<Float>
                 // ...get the red amount in the correct pixel.
                 double redAmount = displacementColor.getRed();
                 
-                originalPosition = position * FACE_SIZE;
+                originalPosition = position * faceSize;
                 
                 // Calculate the amount to be shifted
                 shiftAmount = (float)(redAmount - 0.5) * -displacementStrength;
@@ -96,7 +99,7 @@ public class VertexThread implements Callable<Float>
                 // ...get the blue amount in the correct pixel.
                 double blueAmount = displacementColor.getBlue();
                 
-                originalPosition = position * FACE_SIZE;
+                originalPosition = position * faceSize;
                 
                 // Calculate the amount to be shifted
                 shiftAmount = (float)(blueAmount - 0.5) * -displacementStrength;

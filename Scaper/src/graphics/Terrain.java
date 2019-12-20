@@ -15,16 +15,19 @@ public class Terrain extends MeshObject
      * 
      * @param widthster The width of the terrain in vertices
      * @param depthster The depth of the terrain in vertices
+     * @param fSize The length of each side of each face on the mesh when the
+     * mesh is not displaced
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
      * @param dister The displacement map
      * @param bumpster The bump map
      * @param specster The specular map
      */
-    public Terrain(int widthster, int depthster, int strengthster,
+    public Terrain(int widthster, int depthster, int fSize, int strengthster,
             Image dister, Image bumpster, Image specster)
     {
-        super(widthster, depthster, strengthster, dister, bumpster, specster);
+        super(widthster, depthster, fSize, strengthster, dister, bumpster,
+                specster);
     }
     
     /**
