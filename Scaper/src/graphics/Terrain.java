@@ -20,14 +20,11 @@ public class Terrain extends MeshObject
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
      * @param dister The displacement map
-     * @param bumpster The bump map
-     * @param specster The specular map
      */
     public Terrain(int widthster, int depthster, int fSize, int strengthster,
-            Image dister, Image bumpster, Image specster)
+            Image dister)
     {
-        super(widthster, depthster, fSize, strengthster, dister, bumpster,
-                specster);
+        super(widthster, depthster, fSize, fSize, strengthster, dister);
     }
     
     /**

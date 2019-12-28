@@ -295,8 +295,8 @@
                                                 <Image url="@icons/depth.png" />
                                              </image>
                                           </ImageView>
-                                          <Label id="populationLabelVRD" text="Depth:" />
-                                          <Spinner id="populationSpinnerVRD" fx:id="terrainSpinnerVRD1" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
+                                          <Label id="populationLabelVRH" text="Height:" />
+                                          <Spinner id="populationSpinnerVRH" fx:id="terrainSpinnerVRD1" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
                                        </children>
                                     </HBox>
                                     <Separator prefWidth="200.0" />

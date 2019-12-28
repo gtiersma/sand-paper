@@ -31,7 +31,7 @@ public class TerrainTab
     public TerrainTab()
     {
         terster = new Terrain(DEFAULT_SIZE, DEFAULT_SIZE, FACE_SIZE,
-                DEFAULT_STRENGTH, BLANK_IMAGE, BLANK_IMAGE, BLANK_IMAGE);
+                DEFAULT_STRENGTH, BLANK_IMAGE);
     }
     
     /**

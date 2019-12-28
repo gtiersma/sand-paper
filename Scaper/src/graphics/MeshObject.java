@@ -40,9 +40,10 @@ public class MeshObject
     // The number of faces in the mesh
     protected int facesAmount;
     
-    // The length of each side of each face on the mesh when the mesh is not
+    // The size of each side of each face on the mesh when the mesh is not
     // displaced
-    protected int faceSize;
+    protected int faceWidth;
+    protected int faceDepth;
     
     // The multiplier for the displacement map strength that is set by the user
     protected float displacementStrength;
@@ -83,25 +84,26 @@ public class MeshObject
      * 
      * @param widthster The width of the mesh in vertices
      * @param depthster The depth of the mesh in vertices
-     * @param fSize The length of each side of each face on the mesh when the
-     *              mesh is not displaced
+     * @param fWidth The width of each face on the mesh when the mesh is not
+     *               displaced
+     * @param fDepth The depth of each face on the mesh when the mesh is not
+     *                displaced
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
      * @param dister The displacement map
-     * @param bumpster The bump map
-     * @param specster The specular map
      */
-    public MeshObject(int widthster, int depthster, int fSize, int strengthster,
-            Image dister, Image bumpster, Image specster)
+    public MeshObject(int widthster, int depthster, int fWidth, int fDepth,
+            int strengthster, Image dister)
     {
         width = widthster;
         depth = depthster;
-        displacementStrength = strengthster;
+        displacementStrength = strengthster * DISPLACEMENT_MULTIPLIER;
         
         // Calculate number of faces
         facesAmount = ((width - 1) * (depth - 1) * 2);
         
-        faceSize = fSize;
+        faceWidth = fWidth;
+        faceDepth = fDepth;
         
         // Calculate number of integers needed for the face data
         faces = new int[facesAmount * INTS_PER_FACE];
@@ -256,24 +258,19 @@ public class MeshObject
                 int pixelRow = (int)(widthPixels * x);
                 int pixelColumn = (int)(heightPixels * z);
                 
-                // Multiply the user-defined displacement strength with the
-                // system-defined strength
-                float strengthster = displacementStrength
-                        * DISPLACEMENT_MULTIPLIER;
-                
                 // Thread for finding the x position of the vertex
-                Callable<Float> xThread = new VertexThread(faceSize, x,
-                        strengthster, 'x',
+                Callable<Float> xThread = new VertexThread(faceWidth, x,
+                        displacementStrength, 'x',
                         vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Thread for finding the y position of the vertex
-                Callable<Float> yThread = new VertexThread(faceSize, 0,
-                        strengthster, 'y',
+                Callable<Float> yThread = new VertexThread(0, 0,
+                        displacementStrength, 'y',
                         vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Thread for finding the z position of the vertex
-                Callable<Float> zThread = new VertexThread(faceSize, z,
-                        strengthster, 'z',
+                Callable<Float> zThread = new VertexThread(faceDepth, z,
+                        displacementStrength, 'z',
                         vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Get the calculations as they become available
@@ -417,7 +414,7 @@ public class MeshObject
      */
     public void setDisplacementStrength(float strengthster)
     {
-        displacementStrength = strengthster;
+        displacementStrength = strengthster * DISPLACEMENT_MULTIPLIER;
         
         // Re-initialize and re-calculate the variables that rely on the
         // displacement map's strength in their calculations
