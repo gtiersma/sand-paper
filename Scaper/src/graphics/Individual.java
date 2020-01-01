@@ -20,7 +20,7 @@ public class Individual extends MeshObject
     private int centerY;
     
     // How high the mesh should be lifted above the terrain
-    private int evalation;
+    private int elevation;
     
     // The position of the vertex point on the terrain of where this mesh will
     // be placed
@@ -60,7 +60,7 @@ public class Individual extends MeshObject
         super(widthster, heightster, faceWidth, faceHeight, strengthster,
                 dister);
         
-        evalation = evster;
+        elevation = evster;
         
         x = eckster;
         y = whyster;
@@ -118,8 +118,8 @@ public class Individual extends MeshObject
     {
         viewster.setTranslateX(x);
         // This calculation ensures that the mesh appears directly on top of the
-        // terrain when the evalation is set to 0
-        viewster.setTranslateY(y + evalation + (depth * faceDepth));
+        // terrain when the elevation is set to 0
+        viewster.setTranslateY(y + elevation + (depth * faceDepth));
         viewster.setTranslateX(z);
     }
 }

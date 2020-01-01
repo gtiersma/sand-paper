@@ -42,7 +42,7 @@ public class Population
     Image placement;
     // A grayscale image for determining how high or low each Individual should
     // be raised or lowered
-    Image evalation;
+    Image elevation;
     
     // Grayscale images for determining the width and height of each Individual
     Image width;
@@ -50,7 +50,7 @@ public class Population
     
     // Pixel readers for the images
     PixelReader placementPixels;
-    PixelReader evalationPixels;
+    PixelReader elevationPixels;
     
     PixelReader widthPixels;
     PixelReader heightPixels;
@@ -106,13 +106,13 @@ public class Population
         specular = specster;
         texture = texster;
         
-        evalation = evster;
+        elevation = evster;
         placement = placementster;
         
         width = widthster;
         height = heightster;
         
-        evalationPixels = evster.getPixelReader();
+        elevationPixels = evster.getPixelReader();
         placementPixels = evster.getPixelReader();
         
         widthPixels = evster.getPixelReader();
@@ -219,7 +219,7 @@ public class Population
                 // ...if an Individual is to be created there...
                 if (locations[i][j])
                 {
-                    // The evalation adjustment for the Individual
+                    // The elevation adjustment for the Individual
                     int evster;
                     
                     // Calculates the index of the point on the terrain to which
@@ -238,15 +238,15 @@ public class Population
                     double z = terrainPoints[pointIndex + 2];
                     
                     // Get the correct pixel colors for this Individual
-                    Color evalationColor = getPixelColor(terrainWidth,
-                            terrainHeight, i, j, evalation, evalationPixels);
+                    Color elevationColor = getPixelColor(terrainWidth,
+                            terrainHeight, i, j, elevation, elevationPixels);
                     
                     Color widthColor = getPixelColor(terrainWidth,
                             terrainHeight, i, j, width, widthPixels);
                     Color heightColor = getPixelColor(terrainWidth,
                             terrainHeight, i, j, height, heightPixels);
                     
-                    evster = getBrightness(evalationColor);
+                    evster = getBrightness(elevationColor);
                     
                     widthster = getBrightness(widthColor);
                     heightster = getBrightness(heightColor);

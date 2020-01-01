@@ -55,6 +55,7 @@ public class Controller
     RenderTab renTab;
     CameraTab camTab;
     LightTab ligTab;
+    PopulationTab popTab;
     
     // Whether or not the controls on the form are currently "listening" for
     // actions. Setting this to false will disable most of the action listeners
@@ -71,9 +72,11 @@ public class Controller
     // alphabetically by control type
     
     @FXML private Button lightButtonLD;
-    @FXML private Button lightButtonLN;
+    @FXML private Button populationButtonPRG;
+    @FXML private Button populationButtonPD;
     
     @FXML private ChoiceBox lightChoiceL;
+    @FXML private ChoiceBox populationChoiceP;
     
     @FXML private ColorPicker renderColorBC;
     @FXML private ColorPicker lightColorC;
@@ -82,6 +85,15 @@ public class Controller
     @FXML private ComboBox terrainComboT;
     @FXML private ComboBox terrainComboBM;
     @FXML private ComboBox terrainComboSM;
+    @FXML private ComboBox populationComboP;
+    @FXML private ComboBox populationComboE;
+    @FXML private ComboBox populationComboSW;
+    @FXML private ComboBox populationComboSH;
+    @FXML private ComboBox populationComboDR1;
+    @FXML private ComboBox populationComboDR2;
+    @FXML private ComboBox populationComboT;
+    @FXML private ComboBox populationComboBM;
+    @FXML private ComboBox populationComboSM;
     
     @FXML private FlowPane texturesFlowC;
     @FXML private FlowPane texturesFlowG;
@@ -90,6 +102,15 @@ public class Controller
     @FXML private ImageView terrainImageT;
     @FXML private ImageView terrainImageBM;
     @FXML private ImageView terrainImageSM;
+    @FXML private ImageView populationImageP;
+    @FXML private ImageView populationImageE;
+    @FXML private ImageView populationImageSW;
+    @FXML private ImageView populationImageSH;
+    @FXML private ImageView populationImageDR1;
+    @FXML private ImageView populationImageDR2;
+    @FXML private ImageView populationImageT;
+    @FXML private ImageView populationImageBM;
+    @FXML private ImageView populationImageSM;
     
     @FXML private RadioButton cameraRadioFOVH;
     @FXML private RadioButton cameraRadioFOVV;
@@ -98,6 +119,7 @@ public class Controller
     @FXML private Slider cameraSliderAH;
     @FXML private Slider cameraSliderAV;
     @FXML private Slider cameraSliderFOVD;
+    @FXML private Slider populationSliderDRS;
     
     @FXML private Spinner<Integer> terrainSpinnerVRW;
     @FXML private Spinner<Integer> terrainSpinnerVRD;
@@ -109,6 +131,8 @@ public class Controller
     @FXML private Spinner<Double> lightSpinnerPX;
     @FXML private Spinner<Double> lightSpinnerPY;
     @FXML private Spinner<Double> lightSpinnerPZ;
+    @FXML private Spinner<Integer> populationSpinnerVRW;
+    @FXML private Spinner<Integer> populationSpinnerVRH;
     
     @FXML private SplitPane splitster;
     
@@ -126,6 +150,7 @@ public class Controller
         renTab = new RenderTab();
         terTab = new TerrainTab();
         texTab = new TextureTab();
+        popTab = new PopulationTab();
         
         listen = true;
     }
@@ -402,6 +427,72 @@ public class Controller
                 ligTab.setActiveLightColor(newster);
             }
         });
+        
+        //----------------------------------------------------------------------
+        // Population Tab Listeners
+        //----------------------------------------------------------------------
+        populationChoiceP.setOnAction((evster) ->
+        {
+            if (listen == true)
+            {
+                // Index of currently selected population
+                int selectedIndex =
+                        populationChoiceP.getSelectionModel()
+                                .getSelectedIndex();
+            
+                popTab.setActivePopulation(selectedIndex);
+            
+                loadPopulation();
+            }
+        });
+        
+        populationSpinnerVRW.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            popTab.setActivePopulationVertexWidth(newster);
+            
+            refreshPreview();
+        });
+        populationSpinnerVRW.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                popTab.setActivePopulationVertexWidth(
+                        populationSpinnerVRW.getEditor().getText());
+            
+                refreshPreview();
+            }
+        });
+        
+        populationSpinnerVRH.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            popTab.setActivePopulationVertexHeight(newster);
+            
+            refreshPreview();
+        });
+        populationSpinnerVRH.focusedProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            if (newster == false)
+            {
+                popTab.setActivePopulationVertexHeight(
+                        populationSpinnerVRH.getEditor().getText());
+            
+                refreshPreview();
+            }
+        });
+        
+        populationSliderDRS.valueProperty().addListener(
+                (obster, oldster, newster) ->
+        {
+            popTab.setActivePopulationDisplacementStrength(
+                    newster.floatValue());
+            
+            refreshPreview();
+        });
+        
     }
     
     /**
@@ -423,11 +514,17 @@ public class Controller
         
             // Create a list of the names of the color textures imported so far
             ObservableList<String> obster = texTab.getTextureNames(true);
-            // Add the list to the combo boxes for maps
+            
+            // Set the list to the combo boxes for maps
             terrainComboT.setItems(obster);
             terrainComboDM.setItems(obster);
             terrainComboBM.setItems(obster);
             terrainComboSM.setItems(obster);
+            populationComboDR1.setItems(obster);
+            populationComboDR2.setItems(obster);
+            populationComboT.setItems(obster);
+            populationComboBM.setItems(obster);
+            populationComboSM.setItems(obster);
             
             // Begin listening to action events again
             listen = true;
@@ -450,6 +547,16 @@ public class Controller
             
             // Add the texture that the user just chose to the pane
             texturesFlowG.getChildren().add(texTab.getLastView(false));
+            
+            // Create a list of the names of the grayscale textures imported so
+            // far
+            ObservableList<String> obster = texTab.getTextureNames(false);
+            
+            // Set the list to the combo boxes for maps
+            populationComboP.setItems(obster);
+            populationComboE.setItems(obster);
+            populationComboSW.setItems(obster);
+            populationComboSH.setItems(obster);
             
             // Begin listening to action events again
             listen = true;
@@ -476,8 +583,8 @@ public class Controller
     }
     
     /**
-     * Changes the displacement map to what is currently set in the displacement
-     * combo box
+     * Changes the terrain's displacement map to what is currently set in the
+     * terrain tab's displacement combo box
      * 
      * @param eventster The event listener
      */
@@ -487,7 +594,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
-            // ...get the selected image name from the combo box
+            // ...get the selected image name from the combo box.
             String name = terrainComboDM.getValue().toString();
             
             // Get the image belonging to that name
@@ -503,43 +610,236 @@ public class Controller
     }
     
     /**
-     * Changes the texture to what is currently set in the texture combo box
+     * Changes the currently-selected population's elevation image to what is
+     * currently set in the population tab's elevation combo box
      * 
-     * @param eventster The action event
+     * @param eventster The event listener
      */
     @FXML
-    protected void changeTexture(ActionEvent eventster)
+    protected void changeElevation(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
-            // ...get the selected image name from the combo box
-            String name = terrainComboT.getValue().toString();
+            // ...get the selected image name from the combo box.
+            String name = populationComboE.getValue().toString();
             
             // Get the image belonging to that name
-            Image imster = texTab.getImageByName(true, name);
+            Image imster = texTab.getImageByName(false, name);
 
-            terrainImageT.setImage(imster);
-
-            // Set the image as the texture
-            terTab.setTexture(imster);
+            populationImageE.setImage(imster);
+            
+            // Set the image as the population's elevation determinant
+            popTab.setActivePopulationElevation(imster);
 
             preview.setRoot(getPreview());
         }
     }
     
     /**
-     * Changes the bump map to what is currently set in the bump map combo box
+     * Changes the currently-selected population's first displacement map in its
+     * displacement range to what is currently set in the population tab's first
+     * displacement map combo box
      * 
-     * @param eventster The action event
+     * @param eventster The event listener
      */
     @FXML
-    protected void changeBump(ActionEvent eventster)
+    protected void changeFirstDisplacement(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = populationComboDR1.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(true, name);
+
+            populationImageDR1.setImage(imster);
+            
+            // Set the image as the first of the 2 displacement range maps
+            popTab.setActivePopulationFirstDisplacement(imster);
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the currently-selected population's height image to what is
+     * currently set in the population tab's height combo box
+     * 
+     * @param eventster The event listener
+     */
+    @FXML
+    protected void changeHeight(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
             // ...get the selected image name from the combo box
+            String name = populationComboSH.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(false, name);
+
+            populationImageSH.setImage(imster);
+            
+            // Set the image as the population's height determinant
+            popTab.setActivePopulationHeight(imster);
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the currently-selected population's placement image to what is
+     * currently set in the population tab's placement combo box
+     * 
+     * @param eventster The event listener
+     */
+    @FXML
+    protected void changePlacement(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = populationComboP.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(false, name);
+
+            populationImageP.setImage(imster);
+            
+            // Set the image as the population's placement determinant
+            popTab.setActivePopulationPlacement(imster);
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the currently-selected population's bump map to what is currently
+     * set in the population tab's bump map combo box
+     * 
+     * @param eventster The event listener
+     */
+    @FXML
+    protected void changePopulationBump(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = populationComboBM.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(true, name);
+
+            populationImageBM.setImage(imster);
+            
+            // Set the image as the population's bump map
+            popTab.setActivePopulationBump(imster);
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the currently-selected population's specular map to what is
+     * currently set in the population tab's specular map combo box
+     * 
+     * @param eventster The event listener
+     */
+    @FXML
+    protected void changePopulationSpecular(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = populationComboSM.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(true, name);
+
+            populationImageSM.setImage(imster);
+            
+            // Set the image as the specular map
+            popTab.setActivePopulationSpecular(imster);
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the currently-selected population's texture to what is currently
+     * set in the population tab's texture combo box
+     * 
+     * @param eventster The event listener
+     */
+    @FXML
+    protected void changePopulationTexture(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = populationComboT.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(true, name);
+
+            populationImageT.setImage(imster);
+            
+            // Set the image as the population's texture
+            popTab.setActivePopulationTexture(imster);
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the currently-selected population's second displacement map in
+     * its displacement range to what is currently set in the population tab's
+     * second displacement map combo box
+     * 
+     * @param eventster The event listener
+     */
+    @FXML
+    protected void changeSecondDisplacement(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = populationComboDR2.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(true, name);
+
+            populationImageDR2.setImage(imster);
+            
+            // Set the image as the second of the 2 displacement range maps
+            popTab.setActivePopulationSecondDisplacement(imster);
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the terrain's bump map to what is currently set in the terrain
+     * tab's bump map combo box
+     * 
+     * @param eventster The action event
+     */
+    @FXML
+    protected void changeTerrainBump(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
             String name = terrainComboBM.getValue().toString();
             
             // Get the image belonging to that name
@@ -555,18 +855,18 @@ public class Controller
     }
     
     /**
-     * Changes the specular map to what is currently set in the specular map
-     * combo box
+     * Changes the terrain's specular map to what is currently set in the
+     * specular map combo box
      * 
      * @param eventster The action event
      */
     @FXML
-    protected void changeSpecular(ActionEvent eventster)
+    protected void changeTerrainSpecular(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
-            // ...get the selected image name from the combo box
+            // ...get the selected image name from the combo box.
             String name = terrainComboSM.getValue().toString();
             
             // Get the image belonging to that name
@@ -576,6 +876,60 @@ public class Controller
             
             // Set the image as the specular map
             terTab.setSpecular(terrainImageSM.getImage());
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the terrain's texture to what is currently set in the texture
+     * combo box
+     * 
+     * @param eventster The action event
+     */
+    @FXML
+    protected void changeTerrainTexture(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = terrainComboT.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(true, name);
+
+            terrainImageT.setImage(imster);
+
+            // Set the image as the texture
+            terTab.setTexture(imster);
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the currently-selected population's width image to what is
+     * currently set in the population tab's width combo box
+     * 
+     * @param eventster The event listener
+     */
+    @FXML
+    protected void changeWidth(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = populationComboSW.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(false, name);
+
+            populationImageSW.setImage(imster);
+            
+            // Set the image as the population's width determinant
+            popTab.setActivePopulationWidth(imster);
 
             preview.setRoot(getPreview());
         }
@@ -613,12 +967,43 @@ public class Controller
     }
     
     /**
-     * Deletes the currently selected light
+     * Creates a new population. For use when the user clicks the "New" button
+     * on the population tab.
+     */
+    @FXML
+    protected void createPopulation()
+    {
+        String name = popTab.createPopulation();
+            
+        // As long as a name was given by the user...
+        if (!name.equals(""))
+        {
+            // ...pause on listening to events.
+            listen = false;
+                
+            // Add the name to the list of populations in the choice box
+            populationChoiceP.getItems().add(name);
+            // Set the new name in the choice box
+            populationChoiceP.setValue(name);
+            
+            enablePopulationControls(true);
+                
+            // Continue listening to events
+            listen = true;
+                
+            resetPopulationControls();
+                
+            refreshPreview();
+        }
+    }
+    
+    /**
+     * Deletes the currently-selected light
      */
     @FXML
     protected void deleteLight()
     {
-        // The index of the currently selected index
+        // The index of the currently selected light
         int selectedIndex
                 = lightChoiceL.getSelectionModel().getSelectedIndex();
 
@@ -636,7 +1021,7 @@ public class Controller
             // ...and if there was only 1 light...
             if (lightAmount == 1)
             {
-                // ...there are now no lights, so make the choice box blank.
+                // ...there are now no lights, so make the choice box empty.
                 lightChoiceL.setValue("");
                 
                 enableLightControls(false);
@@ -670,9 +1055,68 @@ public class Controller
     }
     
     /**
+     * Deletes the currently-selected population
+     */
+    @FXML
+    protected void deletePopulation()
+    {
+        // The index of the currently selected population
+        int selectedIndex
+                = populationChoiceP.getSelectionModel().getSelectedIndex();
+
+        int populationAmount = popTab.getPopulationAmount();
+
+        // Delete the population
+        popTab.deleteActiveLight(selectedIndex);
+
+        // Pause on listening to events
+        listen = false;
+
+        // If the first population was the deleted population...
+        if (selectedIndex == 0)
+        {
+            // ...and if there was only 1 population...
+            if (populationAmount == 1)
+            {
+                // ...there are now no populations, so make the choice box
+                // empty.
+                populationChoiceP.setValue("");
+                
+                enablePopulationControls(false);
+            }
+            // ...otherwise, if there is more than 1 population...
+            else
+            {
+                // ...set the active population to the last population in the
+                // list.
+                popTab.setActiveLight(populationAmount - 2);
+                populationChoiceP.setValue(popTab.getActivePopulationName());
+            }
+        }
+        // ...otherwise, if the first population was not chosen...
+        else
+        {
+            // ...set the active population to the population on the list before
+            // the deleted one.
+            popTab.setActivePopulation(selectedIndex - 1);
+            populationChoiceP.setValue(popTab.getActivePopulationName());
+        }
+
+        // Remove the population from the choice box's list
+        populationChoiceP.getItems().remove(selectedIndex);
+
+        // Continue listening to events
+        listen = true;
+
+        loadPopulation();
+
+        refreshPreview();
+    }
+    
+    /**
      * Either enables or disables the controls for manipulating lights. This
      * does not include the "new" button, as that button should always be
-     * available.
+     * enabled.
      * 
      * @param toEnable Whether or not to enable or disable the controls
      */
@@ -684,6 +1128,32 @@ public class Controller
         lightSpinnerPY.setDisable(!toEnable);
         lightSpinnerPZ.setDisable(!toEnable);
         lightColorC.setDisable(!toEnable);
+    }
+    
+    /**
+     * Either enables or disables the controls for manipulating populations.
+     * This does not include the "new" button, as that button should always be
+     * enabled.
+     * 
+     * @param toEnable Whether or not to enable or disable the controls
+     */
+    protected void enablePopulationControls(boolean toEnable)
+    {
+        populationChoiceP.setDisable(!toEnable);
+        populationButtonPRG.setDisable(!toEnable);
+        populationButtonPD.setDisable(!toEnable);
+        populationComboP.setDisable(!toEnable);
+        populationComboE.setDisable(!toEnable);
+        populationComboSW.setDisable(!toEnable);
+        populationComboSH.setDisable(!toEnable);
+        populationSpinnerVRW.setDisable(!toEnable);
+        populationSpinnerVRH.setDisable(!toEnable);
+        populationComboDR1.setDisable(!toEnable);
+        populationComboDR2.setDisable(!toEnable);
+        populationSliderDRS.setDisable(!toEnable);
+        populationComboT.setDisable(!toEnable);
+        populationComboBM.setDisable(!toEnable);
+        populationComboSM.setDisable(!toEnable);
     }
     
     /**
@@ -720,6 +1190,7 @@ public class Controller
     protected Group getPreview()
     {
         int lightAmount = ligTab.getLightAmount();
+        int populationAmount = popTab.getPopulationAmount();
         
         Group previewItems = new Group();
         
@@ -737,18 +1208,46 @@ public class Controller
             previewItems.getChildren().add(ligTab.getLight(i));
         }
         
+        // Add each population
+        for (int i = 0; i < populationAmount; i++)
+        {
+            previewItems.getChildren().add(popTab.getPopulation(i));
+        }
+        
         return previewItems;
     }
     
     /**
-     * Loads the properties of the light chosen in the choice box on the light
-     * tab into the light tab's controls
+     * Loads the properties of the active light into the light tab's controls
      */
     protected void loadLight()
     {
         lightSpinnerPX.getValueFactory().setValue(ligTab.getActiveLightX());
         lightSpinnerPY.getValueFactory().setValue(ligTab.getActiveLightY());
         lightSpinnerPZ.getValueFactory().setValue(ligTab.getActiveLightZ());
+    }
+    
+    /**
+     * Loads the properties of the active population into the population tab's
+     * controls
+     */
+    protected void loadPopulation()
+    {
+        populationComboP.setValue(popTab.getActivePopulationPlacementName());
+        populationComboE.setValue(popTab.getActivePopulationElavationName());
+        populationComboSW.setValue(popTab.getActivePopulationWidthName());
+        populationComboSH.setValue(popTab.getActivePopulationHeightName());
+        populationSpinnerVRW.setValue(popTab.getActivePopulationVertexWidth());
+        populationSpinnerVRH.setValue(popTab.getActivePopulationVertexHeight());
+        populationComboDR1.setValue(
+                popTab.getActivePopulationDisplacementName(false));
+        populationComboDR2.setValue(
+                popTab.getActivePopulationDisplacementName(true));
+        populationSliderDRS.setValue(
+                popTab.getActivePopulationDisplacementStrength());
+        populationComboT.setValue(popTab.getActivePopulationTextureName());
+        populationComboBM.setValue(popTab.getActivePopulationBumpName());
+        populationComboSM.setValue(popTab.getActivePopulationSpecularName());
     }
     
     /**
@@ -829,8 +1328,23 @@ public class Controller
             ligTab.repositionLights();
         }
         
+        popTab.setOrigin(terTab.getCenterX(), terTab.getCenterY(),
+                terTab.getCenterZ());
+        popTab.setFurthestPoint(popTab.getFurthestPoint());
+        
+        if (popTab.populationExists())
+        {
+            popTab.repositionPopulations();
+        }
+        
         preview.setRoot(getPreview());
         preview.setCamera(camTab.getCamera());
+    }
+    
+    @FXML
+    protected void regeneratePopulation()
+    {
+        popTab.regenerateActivePopulation();
     }
     
     /**
@@ -913,6 +1427,10 @@ public class Controller
             resetLightControls();
             enableLightControls(false);
             
+            populationChoiceP.getItems().clear();
+            resetPopulationControls();
+            enablePopulationControls(false);
+            
             // Now that everything has been reset, prepare the preview again
             preparePreview();
             
@@ -931,6 +1449,28 @@ public class Controller
         lightSpinnerPY.getValueFactory().setValue(ligTab.getDefaultY());
         lightSpinnerPZ.getValueFactory().setValue(ligTab.getDefaultZ());
         lightColorC.setValue(ligTab.getDefaultColor());
+    }
+    
+    /**
+     * Resets the controls on the population tab to their default values
+     * (excluding the choice box listing all of the populations)
+     */
+    protected void resetPopulationControls()
+    {
+        populationComboP.setValue(null);
+        populationComboE.setValue(null);
+        populationComboSW.setValue(null);
+        populationComboSH.setValue(null);
+        populationSpinnerVRW.getValueFactory().setValue(
+                popTab.getDefaultVertexWidth());
+        populationSpinnerVRH.getValueFactory().setValue(
+                popTab.getDefaultVertexHeight());
+        populationComboDR1.setValue(null);
+        populationComboDR2.setValue(null);
+        populationSliderDRS.setValue(popTab.getDefaultDisplacementStrength());
+        populationComboT.setValue(null);
+        populationComboBM.setValue(null);
+        populationComboSM.setValue(null);
     }
     
     /**
