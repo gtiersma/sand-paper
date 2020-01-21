@@ -10,17 +10,19 @@ import javafx.scene.transform.Rotate;
  */
 public class Individual extends MeshObject
 {
-    // The initial rotation values
-    final private int DEFAULT_X_ROTATE = 0;
-    final private int DEFAULT_Y_ROTATE = 90;
-    final private int DEFAULT_Z_ROTATE = 0;
+    // Used to repositon the Individual so that if the pixel's color assigned to
+    // it from the elevation map is exactly between white and black, the
+    // Individual would rest upon the terrain
+    final private int BASE_ELEVATION = -25;
     
-    // The x and y position in the center of the mesh
-    private int centerX;
-    private int centerY;
+    // Added to the X rotation to ensure the Individual is facing the camera
+    final private int BASE_X_ROTATION = 90;
     
     // How high the mesh should be lifted above the terrain
     private int elevation;
+    
+    // The Z position to assign the X rotational pivot point to
+    private double pivotCenterZ;
     
     // The position of the vertex point on the terrain of where this mesh will
     // be placed
@@ -31,17 +33,14 @@ public class Individual extends MeshObject
     // Rotations used to keep the mesh facing forward with all camera positions
     private Rotate xRotate;
     private Rotate yRotate;
-    private Rotate zRotate;
     
     /**
      * CONSTRUCTOR
      * 
      * @param widthster The width of the mesh in vertices
      * @param heightster The depth of the mesh in vertices
-     * @param faceWidth The width of each face on the mesh when the mesh is not
-     *                  displaced
-     * @param faceHeight The height of each face on the mesh when the mesh is
-     *                   not displaced
+     * @param fWidth The width of each face in the mesh when not displaced
+     * @param fHeight The height of each face in the mesh when not displaced
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
      * @param evster How high the mesh should be lifted above the terrain
@@ -49,16 +48,17 @@ public class Individual extends MeshObject
      *                this mesh will be placed
      * @param whyster The y position of the vertex point on the terrain of where
      *                this mesh will be placed
+     * @param xRot How much the camera is rotated on the x scale
+     * @param yRot How much the camera is rotated on the y scale
      * @param zeester The z position of the vertex point on the terrain of where
      *                this mesh will be placed
      * @param dister The displacement map
      */
-    public Individual(int widthster, int heightster, int faceWidth,
-            int faceHeight, int strengthster, int evster, double eckster,
-            double whyster, double zeester, Image dister)
+    public Individual(int widthster, int heightster, int fWidth, int fHeight,
+            int strengthster, int evster, double eckster, double whyster,
+            double zeester, double xRot, double yRot, Image dister)
     {
-        super(widthster, heightster, faceWidth, faceHeight, strengthster,
-                dister);
+        super(widthster, heightster, fWidth, fHeight, strengthster, dister);
         
         elevation = evster;
         
@@ -66,19 +66,18 @@ public class Individual extends MeshObject
         y = whyster;
         z = zeester;
         
-        // Adding half of the mesh's size to its position gets the center
-        centerX = (int)x + ((width * faceWidth) / 2);
-        centerY = (int)y + ((depth * faceHeight) / 2);
+        pivotCenterZ = 0;
         
-        xRotate = new Rotate(DEFAULT_X_ROTATE, Rotate.X_AXIS);
-        yRotate = new Rotate(DEFAULT_Y_ROTATE, Rotate.Y_AXIS);
-        zRotate = new Rotate(DEFAULT_Z_ROTATE, Rotate.Z_AXIS);
+        // Rotational values are made negative to rotate correctly
+        xRotate = new Rotate(BASE_X_ROTATION - xRot, Rotate.X_AXIS);
+        yRotate = new Rotate(-yRot, Rotate.Y_AXIS);
     }
     
     /**
      * Loads the data needed to construct the mesh into most of the variables
      * and objects within this Individual object
      */
+    @Override
     public void load()
     {
         super.load();
@@ -88,26 +87,31 @@ public class Individual extends MeshObject
     }
     
     /**
+     * Calculates the Z point to which the Individual is to be rotated on the x
+     * axis
+     */
+    private void preparePivotPoints()
+    {
+        // This should be the edge of the Individual. Having this be the pivot
+        // point will keep the bottom of the Individual on the terrain (if the
+        // Individual is to be placed there).
+        pivotCenterZ = (width * faceWidth) / 2;
+        
+        xRotate.setPivotX(pivotCenterZ);
+    }
+    
+    /**
      * Loads the data needed to construct the mesh into most of the variables
      * and objects within this Individual object
      */
     private void prepareRotations()
     {
-        xRotate.setPivotX(centerX);
-        xRotate.setPivotY(centerY);
-        xRotate.setPivotZ(z);
+        preparePivotPoints();
         
-        yRotate.setPivotX(centerX);
-        yRotate.setPivotY(centerY);
-        yRotate.setPivotZ(z);
-        
-        zRotate.setPivotX(centerX);
-        zRotate.setPivotY(centerY);
-        zRotate.setPivotZ(z);
-        
-        viewster.getTransforms().add(xRotate);
+        // yRotate must be added first. Otherwise, this won't work for some
+        // reason
         viewster.getTransforms().add(yRotate);
-        viewster.getTransforms().add(zRotate);
+        viewster.getTransforms().add(xRotate);
     }
     
     /**
@@ -116,10 +120,113 @@ public class Individual extends MeshObject
      */
     private void reposition()
     {
-        viewster.setTranslateX(x);
+        viewster.setTranslateX(x - faceWidth);
         // This calculation ensures that the mesh appears directly on top of the
         // terrain when the elevation is set to 0
-        viewster.setTranslateY(y + elevation + (depth * faceDepth));
-        viewster.setTranslateX(z);
+        viewster.setTranslateY(y + elevation);
+        viewster.setTranslateZ(z + faceDepth);
+    }
+    
+    /**
+     * Repositions this Individual based upon the coordinates provided
+     * 
+     * @param exster The x position of the vertex to which this Individual is to
+     *               be positioned to
+     * @param whyster The y position of the vertex to which this Individual is
+     *                to be positioned to
+     * @param zeester The z position of the vertex to which this Individual is
+     *                to be positioned to
+     */
+    public void reposition(float exster, float whyster, float zeester)
+    {
+        x = exster;
+        y = whyster;
+        z = zeester;
+        
+        preparePivotPoints();
+        
+        reposition();
+    }
+    
+    /**
+     * Repositions this Individual based upon the elevation provided
+     * 
+     * @param elster How much the Individual is to be elevated
+     */
+    public void setElevation(int elster)
+    {
+        elevation = elster + BASE_ELEVATION;
+        
+        viewster.setTranslateY(y + elevation);
+    }
+    
+    /**
+     * Sets how high each face on the Individual should be
+     * 
+     * @param heightster How high each face on the Individual should be
+     */
+    public void setFaceHeight(int heightster)
+    {
+        faceDepth = heightster;
+        
+        loadPoints();
+    }
+    
+    /**
+     * Sets how wide each face on the Individual should be
+     * 
+     * @param widthster How wide each face on the Individual should be
+     */
+    public void setFaceWidth(int widthster)
+    {
+        faceWidth = widthster;
+        
+        loadPoints();
+    }
+    
+    /**
+     * Sets how much the Individual should be rotated on the x scale
+     * 
+     * @param angle How much the camera is set to be rotated on the x scale
+     */
+    public void setRotationX(double angle)
+    {
+        xRotate.setAngle(BASE_X_ROTATION - angle);
+    }
+    
+    /**
+     * Sets how much the Individual should be rotated on the y scale
+     * 
+     * @param angle How much the camera is set to be rotated on the y scale
+     */
+    public void setRotationY(double angle)
+    {
+        yRotate.setAngle(-angle);
+    }
+    
+    /**
+     * Gets a string representation of all of the variables in this Individual
+     * 
+     * @return A string representation of all of the variables in this
+     * Individual
+     */
+    @Override
+    public String toString()
+    {
+        String stringster = super.toString() + "\n\n";
+        
+        stringster = stringster + "Individual properties:";
+        stringster = stringster + "---------------------------------------\n\n";
+        
+        stringster = stringster + "Position: " + x + "," + y + "," + z + "\n";
+        stringster = stringster + "Elevation: " + elevation + "\n\n";
+        
+        stringster = stringster + "X axis rotation: " + xRotate.getAngle();
+        stringster = stringster + "Y axis rotation: " + yRotate.getAngle();
+        
+        stringster = stringster + "Rotational pivot Z point of the mesh: "
+                + pivotCenterZ + "\n\n";
+        
+        return stringster;
     }
 }

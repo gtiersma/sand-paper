@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 /**
  * Controls the operations for the light tab
  * 
- * @author <a href= "mailto:gtiersma@my.chemeketa.edu" >George Tiersma</a>
+ * @author George Tiersma
  */
 public class LightTab
 {

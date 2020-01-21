@@ -26,6 +26,7 @@ public class MeshObject
     // The number of integers in the face array that are needed to define each
     // face
     protected final int INTS_PER_FACE = 6;
+    // The number of dimensions
     protected final int DIMENSIONS = 3;
     
     // Multiplied to the user-defined displacement strength variable to increase
@@ -476,7 +477,7 @@ public class MeshObject
     @Override
     public String toString()
     {
-        String stringster = "Project Scaper - MeshObject Properties"
+        String stringster = "MeshObject Properties"
                 + "\n--------------------------------------------------"
                 + "\nModel Width in Vertices: " + width
                 + "\nModel Depth in Vertices: " + depth

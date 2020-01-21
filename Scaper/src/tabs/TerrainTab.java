@@ -96,6 +96,17 @@ public class TerrainTab
     }
     
     /**
+     * Gets the coordinates of the points used in the creation of the terrain's
+     * mesh
+     * 
+     * @return The point coordinates
+     */
+    public float[] getPoints()
+    {
+        return terster.getPoints();
+    }
+    
+    /**
      * Gets the terrain in the form of a group
      * 
      * @return The terrain
@@ -103,6 +114,26 @@ public class TerrainTab
     public MeshView getTerrain()
     {
         return viewster;
+    }
+    
+    /**
+     * Gets the depth of the terrain (measured in vertices)
+     * 
+     * @return The height of the terrain
+     */
+    public int getTerrainDepth()
+    {
+        return terster.getDepth();
+    }
+    
+    /**
+     * Gets the width of the terrain (measured in vertices)
+     * 
+     * @return The width of the terrain
+     */
+    public int getTerrainWidth()
+    {
+        return terster.getWidth();
     }
     
     /**
@@ -137,8 +168,9 @@ public class TerrainTab
     }
     
     /**
-     *
-     * @param depth
+     * Sets the depth of the terrain in vertices
+     * 
+     * @param depth The depth of the terrain
      */
     public void setDepth(String depth)
     {

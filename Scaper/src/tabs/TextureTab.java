@@ -17,8 +17,6 @@ import javafx.stage.FileChooser;
  */
 public class TextureTab
 {
-    final Image BLANK_IMAGE = new Image("graphics/blank.png");
-    
     // The last directory that the user imported an image from
     private String previousDirectory;
     
@@ -129,7 +127,8 @@ public class TextureTab
      * 
      * @return The array of texture objects with the new texture object
      */
-    private TextureObject[] addToArray(TextureObject[] texsters, TextureObject texster)
+    private TextureObject[] addToArray(TextureObject[] texsters,
+            TextureObject texster)
     {
         // The current size
         int size = texsters.length;
@@ -156,44 +155,9 @@ public class TextureTab
      */
     public Image getImageByName(boolean color, String name)
     {
-        Image imster = BLANK_IMAGE;
+        TextureObject texster = getTexture(color, name);
         
-        // If the texture is colored...
-        if (color)
-        {
-            // ...for each colored texture object...
-            for (int i = 0; i < colorTextures.length; i++)
-            {
-                // ...if that texture objects name matches...
-                if (colorTextures[i].getName().equals(name))
-                {
-                    // ...get that image.
-                    imster = colorTextures[i].getImage();
-                    
-                    // Exit the loop
-                    i = colorTextures.length;
-                }
-            }
-        }
-        // ...otherwise, if it's grayscale...
-        else
-        {
-            // ...for each grayscaled texture object...
-            for (int i = 0; i < grayTextures.length; i++)
-            {
-                // ...if that texture objects name matches...
-                if (grayTextures[i].getName().equals(name))
-                {
-                    // ...get that image.
-                    imster = grayTextures[i].getImage();
-                    
-                    // Exit the loop
-                    i = grayTextures.length;
-                }
-            }
-        }
-        
-        return imster;
+        return texster.getImage();
     }
     
     /**
@@ -217,6 +181,56 @@ public class TextureTab
         }
         
         return viewster;
+    }
+    
+    /**
+     * Gets a TextureObject
+     * 
+     * @param color Whether or not it is a colored image
+     * @param name The name of the TextureObject to be returned
+     * 
+     * @return The TextureObject
+     */
+    public TextureObject getTexture(boolean color, String name)
+    {
+        TextureObject texster = new TextureObject();
+        
+        // If the texture is colored...
+        if (color)
+        {
+            // ...for each colored texture object...
+            for (int i = 0; i < colorTextures.length; i++)
+            {
+                // ...if that texture objects name matches...
+                if (colorTextures[i].getName().equals(name))
+                {
+                    // ...get that image.
+                    texster = colorTextures[i];
+                    
+                    // Exit the loop
+                    i = colorTextures.length;
+                }
+            }
+        }
+        // ...otherwise, if it's grayscale...
+        else
+        {
+            // ...for each grayscaled texture object...
+            for (int i = 0; i < grayTextures.length; i++)
+            {
+                // ...if that texture objects name matches...
+                if (grayTextures[i].getName().equals(name))
+                {
+                    // ...get that image.
+                    texster = grayTextures[i];
+                    
+                    // Exit the loop
+                    i = grayTextures.length;
+                }
+            }
+        }
+        
+        return texster;
     }
     
     /**

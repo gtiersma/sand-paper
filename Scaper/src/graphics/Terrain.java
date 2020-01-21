@@ -90,6 +90,16 @@ public class Terrain extends MeshObject
     }
     
     /**
+     * Gets the depth of the terrain (Measured in vertices)
+     * 
+     * @return The depth of the terrain (Measured in vertices)
+     */
+    public int getDepth()
+    {
+        return depth;
+    }
+    
+    /**
      * Gets 0 if an 'x' is given, 1 for a 'y' and 2 for a 'z'
      * 
      * @param dimension The dimension of which to return a value (x, y or z)
@@ -188,5 +198,26 @@ public class Terrain extends MeshObject
         }
         
         return far;
+    }
+    
+    /**
+     * Gets the array of point coordinates used in the creation of the terrain
+     * mesh
+     * 
+     * @return The array of point coordinates
+     */
+    public float[] getPoints()
+    {
+        return points;
+    }
+    
+    /**
+     * Gets the width of the terrain (Measured in vertices)
+     * 
+     * @return The width of the terrain (Measured in vertices)
+     */
+    public int getWidth()
+    {
+        return width;
     }
 }

@@ -188,7 +188,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="terrainLabelT" text="Texture:" />
-                                          <ComboBox id="terrainComboT" fx:id="terrainComboT" onAction="#changeTexture" prefWidth="150.0" />
+                                          <ComboBox id="terrainComboT" fx:id="terrainComboT" onAction="#changeTerrainTexture" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="terrainImageT" fx:id="terrainImageT" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
@@ -201,7 +201,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="terrainLabelBM" text="Bump Map:" />
-                                          <ComboBox id="terrainComboBM" fx:id="terrainComboBM" onAction="#changeBump" prefWidth="150.0" />
+                                          <ComboBox id="terrainComboBM" fx:id="terrainComboBM" onAction="#changeTerrainBump" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="terrainImageBM" fx:id="terrainImageBM" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
@@ -214,7 +214,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="terrainLabelSM" text="Specular Map:" />
-                                          <ComboBox id="terrainComboSM" fx:id="terrainComboSM" onAction="#changeSpecular" prefWidth="150.0" />
+                                          <ComboBox id="terrainComboSM" fx:id="terrainComboSM" onAction="#changeTerrainSpecular" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="terrainImageSM" fx:id="terrainImageSM" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="588.0" pickOnBounds="true" preserveRatio="true" />
@@ -254,7 +254,7 @@
                                     <Separator layoutX="10.0" layoutY="157.0" prefWidth="200.0" />
                                     <HBox id="populationBoxE" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
                                        <children>
-                                          <Label id="populationLabelE" text="elevation:" />
+                                          <Label id="populationLabelE" text="Elevation:" />
                                           <ComboBox id="populationComboE" fx:id="populationComboE" onAction="#changeElevation" prefWidth="150.0" />
                                        </children>
                                     </HBox>
