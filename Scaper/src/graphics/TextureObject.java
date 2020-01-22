@@ -161,15 +161,13 @@ public class TextureObject
     }
     
     /**
-     * Removes the color from the texture's image view. Does not always work for
-     * some reason.
+     * Removes the color from the texture's ImageView. It only changes the
+     * ImageView.
      */
     public void removeColor()
     {
         ColorAdjust grayscale = new ColorAdjust();
-        
         grayscale.setSaturation(-1);
-        
         viewster.setEffect(grayscale);
     }
 }

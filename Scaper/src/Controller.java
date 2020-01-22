@@ -26,6 +26,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -170,6 +171,8 @@ public class Controller
                 SceneAntialiasing.BALANCED);
         // Place the preview in the split pane in the scene
         splitster.getItems().set(0, preview);
+        
+        removeViewColor();
         
         preparePreview();
         
@@ -1417,6 +1420,21 @@ public class Controller
         popTab.loadActivePopulation(xRotate, yRotate, terTab.getPoints());
         
         refreshPreview();
+    }
+    
+    /**
+     * Removes the color from the ImageView previews for maps that are to be
+     * grayscale
+     */
+    protected void removeViewColor()
+    {
+        ColorAdjust grayscale = new ColorAdjust();
+        grayscale.setSaturation(-1);
+        
+        populationImageP.setEffect(grayscale);
+        populationImageE.setEffect(grayscale);
+        populationImageSW.setEffect(grayscale);
+        populationImageSH.setEffect(grayscale);
     }
     
     /**
