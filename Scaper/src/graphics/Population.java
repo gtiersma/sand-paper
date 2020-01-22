@@ -117,9 +117,16 @@ public class Population
             // ...and for each column of the terrain's vertices...
             for (int j = 0; j < locations[i].length; j++)
             {
+                // This is the inverse of the j variable (so it will refer to
+                // the pixel or Individual at the opposite end). It must be used
+                // with getting the pixel color instead of the regular j
+                // variable to prevent the population from having a mirrored
+                // position on the terrain.
+                int newJ = locations[i].length - j - 1;
+                
                 // ...get the shade of the corresponding pixel on the placement
                 // image.
-                Color pixelColor = getPixelColor(true, i, j, placement);
+                Color pixelColor = getPixelColor(true, i, newJ, placement);
                 
                 // Calculate whether or not an Individual should be created
                 // there

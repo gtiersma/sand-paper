@@ -254,7 +254,7 @@
                                     <Separator layoutX="10.0" layoutY="157.0" prefWidth="200.0" />
                                     <HBox id="populationBoxE" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
                                        <children>
-                                          <Label id="populationLabelE" text="elevation:" />
+                                          <Label id="populationLabelE" text="Elevation:" />
                                           <ComboBox id="populationComboE" fx:id="populationComboE" onAction="#changeElevation" prefWidth="150.0" />
                                        </children>
                                     </HBox>

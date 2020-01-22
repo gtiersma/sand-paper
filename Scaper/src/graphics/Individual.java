@@ -124,7 +124,7 @@ public class Individual extends MeshObject
         // This calculation ensures that the mesh appears directly on top of the
         // terrain when the elevation is set to 0
         viewster.setTranslateY(y + elevation);
-        viewster.setTranslateZ(z + faceDepth);
+        viewster.setTranslateZ(z - faceWidth);
     }
     
     /**
