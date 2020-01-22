@@ -239,15 +239,15 @@
                                     <HBox id="populationBoxPB" alignment="CENTER" spacing="10.0">
                                        <children>
                                           <Button id="populationButtonPN" fx:id="populationButtonPN" mnemonicParsing="false" onAction="#createPopulation" text="New" />
-                                          <Button id="populationButtonPD" fx:id="populationButtonPRG" mnemonicParsing="false" onAction="#regeneratePopulation" text="Repeat Generation" />
-                                          <Button id="populationButtonPD" fx:id="populationButtonPD" layoutX="192.0" layoutY="10.0" mnemonicParsing="false" onAction="#deletePopulation" text="Delete" />
+                                          <Button id="populationButtonPD" fx:id="populationButtonPRG" disable="true" mnemonicParsing="false" onAction="#regeneratePopulation" text="Repeat Generation" />
+                                          <Button id="populationButtonPD" fx:id="populationButtonPD" disable="true" layoutX="192.0" layoutY="10.0" mnemonicParsing="false" onAction="#deletePopulation" text="Delete" />
                                        </children>
                                     </HBox>
                                     <Separator prefWidth="200.0" />
                                     <HBox id="populationBoxPl" alignment="CENTER" layoutX="10.0" layoutY="642.0" spacing="10.0">
                                        <children>
                                           <Label id="populationLabelPl" text="Placement:" />
-                                          <ComboBox id="populationComboPl" fx:id="populationComboP" onAction="#changePlacement" prefWidth="150.0" />
+                                          <ComboBox id="populationComboPl" fx:id="populationComboP" disable="true" onAction="#changePlacement" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="populationImagePl" fx:id="populationImageP" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
@@ -255,7 +255,7 @@
                                     <HBox id="populationBoxE" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
                                        <children>
                                           <Label id="populationLabelE" text="Elevation:" />
-                                          <ComboBox id="populationComboE" fx:id="populationComboE" onAction="#changeElevation" prefWidth="150.0" />
+                                          <ComboBox id="populationComboE" fx:id="populationComboE" disable="true" onAction="#changeElevation" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="populationImageE" fx:id="populationImageE" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
@@ -264,14 +264,14 @@
                                     <HBox id="populationBoxSW" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
                                        <children>
                                           <Label id="populationLabelSW" text="Width:" />
-                                          <ComboBox id="populationComboSW" fx:id="populationComboSW" onAction="#changeWidth" prefWidth="150.0" />
+                                          <ComboBox id="populationComboSW" fx:id="populationComboSW" disable="true" onAction="#changeWidth" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="populationImageSW" fx:id="populationImageSW" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
                                     <HBox id="populationBoxSH" alignment="CENTER" layoutX="10.0" layoutY="380.0" spacing="10.0">
                                        <children>
                                           <Label id="populationLabelSH" text="Height:" />
-                                          <ComboBox id="populationComboSH" fx:id="populationComboSH" onAction="#changeHeight" prefWidth="150.0" />
+                                          <ComboBox id="populationComboSH" fx:id="populationComboSH" disable="true" onAction="#changeHeight" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="populationImageSH" fx:id="populationImageSH" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
@@ -285,7 +285,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelVRW" text="Width:" />
-                                          <Spinner id="populationSpinnerVRW" fx:id="populationSpinnerVRW" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
+                                          <Spinner id="populationSpinnerVRW" fx:id="populationSpinnerVRW" disable="true" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
                                        </children>
                                     </HBox>
                                     <HBox id="populationBoxVRH" alignment="CENTER" spacing="10.0">
@@ -296,7 +296,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelVRH" text="Height:" />
-                                          <Spinner id="populationSpinnerVRH" fx:id="populationSpinnerVRH" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
+                                          <Spinner id="populationSpinnerVRH" fx:id="populationSpinnerVRH" disable="true" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
                                        </children>
                                     </HBox>
                                     <Separator prefWidth="200.0" />
@@ -312,13 +312,13 @@
                                     </HBox>
                                     <HBox id="populationBoxDRC" alignment="CENTER" layoutX="10.0" layoutY="344.0" spacing="10.0">
                                        <children>
-                                          <ComboBox id="populationComboDR1" fx:id="populationComboDR1" onAction="#changeFirstDisplacement" prefWidth="150.0" />
+                                          <ComboBox id="populationComboDR1" fx:id="populationComboDR1" disable="true" onAction="#changeFirstDisplacement" prefWidth="150.0" />
                                           <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@icons/displacement.png" />
                                              </image>
                                           </ImageView>
-                                          <ComboBox id="populationComboDR2" fx:id="populationComboDR2" layoutX="178.0" layoutY="10.0" onAction="#changeSecondDisplacement" prefWidth="150.0" />
+                                          <ComboBox id="populationComboDR2" fx:id="populationComboDR2" disable="true" layoutX="178.0" layoutY="10.0" onAction="#changeSecondDisplacement" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <HBox id="populationBoxDRC" alignment="CENTER" spacing="10.0">
@@ -340,7 +340,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelDMS" text="Strength:" />
-                                          <Slider id="populationSliderDMS" fx:id="populationSliderDRS" minorTickCount="1" showTickLabels="true" snapToTicks="true" value="50.0" />
+                                          <Slider id="populationSliderDMS" fx:id="populationSliderDRS" disable="true" minorTickCount="1" showTickLabels="true" snapToTicks="true" value="50.0" />
                                        </children>
                                     </HBox>
                                     <Separator id="terrainSeparator2" prefWidth="200.0" />
@@ -352,7 +352,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelT" text="Texture:" />
-                                          <ComboBox id="populationComboT" fx:id="populationComboT" onAction="#changePopulationTexture" prefWidth="150.0" />
+                                          <ComboBox id="populationComboT" fx:id="populationComboT" disable="true" onAction="#changePopulationTexture" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="populationImageT" fx:id="populationImageT" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
@@ -365,7 +365,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelBM" text="Bump Map:" />
-                                          <ComboBox id="populationComboBM" fx:id="populationComboBM" onAction="#changePopulationBump" prefWidth="150.0" />
+                                          <ComboBox id="populationComboBM" fx:id="populationComboBM" disable="true" onAction="#changePopulationBump" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="populationImageBM" fx:id="populationImageBM" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
@@ -378,7 +378,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelSM" text="Specular Map:" />
-                                          <ComboBox id="populationComboSM" fx:id="populationComboSM" onAction="#changePopulationSpecular" prefWidth="150.0" />
+                                          <ComboBox id="populationComboSM" fx:id="populationComboSM" disable="true" onAction="#changePopulationSpecular" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="populationImageSM" fx:id="populationImageSM" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
