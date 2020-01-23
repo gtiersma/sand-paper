@@ -88,7 +88,7 @@ public class Controller
     @FXML private ComboBox terrainComboBM;
     @FXML private ComboBox terrainComboSM;
     @FXML private ComboBox populationComboP;
-    @FXML private ComboBox populationComboE;
+    @FXML private ComboBox populationComboS;
     @FXML private ComboBox populationComboSW;
     @FXML private ComboBox populationComboSH;
     @FXML private ComboBox populationComboDR1;
@@ -105,7 +105,7 @@ public class Controller
     @FXML private ImageView terrainImageBM;
     @FXML private ImageView terrainImageSM;
     @FXML private ImageView populationImageP;
-    @FXML private ImageView populationImageE;
+    @FXML private ImageView populationImageS;
     @FXML private ImageView populationImageSW;
     @FXML private ImageView populationImageSH;
     @FXML private ImageView populationImageDR1;
@@ -534,6 +534,7 @@ public class Controller
             terrainComboDM.setItems(obster);
             terrainComboBM.setItems(obster);
             terrainComboSM.setItems(obster);
+            populationComboS.setItems(obster);
             populationComboDR1.setItems(obster);
             populationComboDR2.setItems(obster);
             populationComboT.setItems(obster);
@@ -568,7 +569,6 @@ public class Controller
             
             // Set the list to the combo boxes for maps
             populationComboP.setItems(obster);
-            populationComboE.setItems(obster);
             populationComboSW.setItems(obster);
             populationComboSH.setItems(obster);
             
@@ -624,32 +624,6 @@ public class Controller
             popTab.repositionPopulations(terTab.getPoints());
             
             refreshPreview();
-        }
-    }
-    
-    /**
-     * Changes the currently-selected population's elevation image to what is
-     * currently set in the population tab's elevation combo box
-     * 
-     * @param eventster The event listener
-     */
-    @FXML
-    protected void changeElevation(ActionEvent eventster)
-    {
-        // If action listeners are not to be ignored at the moment...
-        if (listen)
-        {
-            // ...get the selected image name from the combo box.
-            String name = populationComboE.getValue().toString();
-            
-            TextureObject texster = texTab.getTexture(false, name);
-
-            populationImageE.setImage(texster.getImage());
-            
-            // Set the image as the population's elevation determinant
-            popTab.setActivePopulationElevation(texster);
-
-            preview.setRoot(getPreview());
         }
     }
     
@@ -844,6 +818,32 @@ public class Controller
             
             // Set the image as the second of the 2 displacement range maps
             popTab.setActivePopulationSecondDisplacement(texster);
+
+            preview.setRoot(getPreview());
+        }
+    }
+    
+    /**
+     * Changes the currently-selected population's shift image to what is
+     * currently set in the population tab's shift combo box
+     * 
+     * @param eventster The event listener
+     */
+    @FXML
+    protected void changeShift(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = populationComboS.getValue().toString();
+            
+            TextureObject texster = texTab.getTexture(true, name);
+
+            populationImageS.setImage(texster.getImage());
+            
+            // Set the image as the population's shift determinant
+            popTab.setActivePopulationShift(texster);
 
             preview.setRoot(getPreview());
         }
@@ -1171,7 +1171,7 @@ public class Controller
         populationButtonPRG.setDisable(!toEnable);
         populationButtonPD.setDisable(!toEnable);
         populationComboP.setDisable(!toEnable);
-        populationComboE.setDisable(!toEnable);
+        populationComboS.setDisable(!toEnable);
         populationComboSW.setDisable(!toEnable);
         populationComboSH.setDisable(!toEnable);
         populationSpinnerVRW.setDisable(!toEnable);
@@ -1265,7 +1265,7 @@ public class Controller
         
         // Gets the names of the maps to load
         String placementName = popTab.getActivePopulationPlacementName();
-        String elevationName = popTab.getActivePopulationElevationName();
+        String shiftName = popTab.getActivePopulationShiftName();
         String widthName = popTab.getActivePopulationWidthName();
         String heightName = popTab.getActivePopulationHeightName();
         String displacementName1
@@ -1279,8 +1279,8 @@ public class Controller
         // Get the texure objects for those maps
         TextureObject placementTexture
                 = texTab.getTexture(false, placementName);
-        TextureObject elevationTexture
-                = texTab.getTexture(false, elevationName);
+        TextureObject shiftTexture
+                = texTab.getTexture(false, shiftName);
         TextureObject widthTexture = texTab.getTexture(false, widthName);
         TextureObject heightTexture = texTab.getTexture(false, heightName);
         TextureObject displacementTexture1
@@ -1294,7 +1294,7 @@ public class Controller
         // Set the image previews to the correct image for the currently-
         // selected population
         populationImageP.setImage(placementTexture.getImage());
-        populationImageE.setImage(elevationTexture.getImage());
+        populationImageS.setImage(shiftTexture.getImage());
         populationImageSW.setImage(widthTexture.getImage());
         populationImageSH.setImage(heightTexture.getImage());
         populationImageDR1.setImage(displacementTexture1.getImage());
@@ -1305,7 +1305,7 @@ public class Controller
         
         // Set the combo boxes to the correct map name
         populationComboP.setValue(placementName);
-        populationComboE.setValue(elevationName);
+        populationComboS.setValue(shiftName);
         populationComboSW.setValue(widthName);
         populationComboSH.setValue(heightName);
         populationComboDR1.setValue(displacementName1);
@@ -1432,7 +1432,6 @@ public class Controller
         grayscale.setSaturation(-1);
         
         populationImageP.setEffect(grayscale);
-        populationImageE.setEffect(grayscale);
         populationImageSW.setEffect(grayscale);
         populationImageSH.setEffect(grayscale);
     }
@@ -1552,7 +1551,7 @@ public class Controller
     {
         // Clear map previews
         populationImageP.setImage(null);
-        populationImageE.setImage(null);
+        populationImageS.setImage(null);
         populationImageSW.setImage(null);
         populationImageSH.setImage(null);
         populationImageDR1.setImage(null);
@@ -1562,7 +1561,7 @@ public class Controller
         populationImageSM.setImage(null);
         
         populationComboP.setValue("");
-        populationComboE.setValue("");
+        populationComboS.setValue("");
         populationComboSW.setValue("");
         populationComboSH.setValue("");
         populationSpinnerVRW.getValueFactory().setValue(

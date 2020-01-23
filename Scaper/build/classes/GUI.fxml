@@ -252,13 +252,13 @@
                                     </HBox>
                                     <ImageView id="populationImagePl" fx:id="populationImageP" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
                                     <Separator layoutX="10.0" layoutY="157.0" prefWidth="200.0" />
-                                    <HBox id="populationBoxE" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
+                                    <HBox id="populationBoxS" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
                                        <children>
-                                          <Label id="populationLabelE" text="Elevation:" />
-                                          <ComboBox id="populationComboE" fx:id="populationComboE" disable="true" onAction="#changeElevation" prefWidth="150.0" />
+                                          <Label id="populationLabelS" text="Shift:" />
+                                          <ComboBox id="populationComboS" fx:id="populationComboS" disable="true" onAction="#changeShift" prefWidth="150.0" />
                                        </children>
                                     </HBox>
-                                    <ImageView id="populationImageE" fx:id="populationImageE" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView id="populationImageS" fx:id="populationImageS" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
                                     <Separator layoutX="10.0" layoutY="320.0" prefWidth="200.0" />
                                     <Label id="populationLabelS" text="Size:" />
                                     <HBox id="populationBoxSW" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
@@ -285,7 +285,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelVRW" text="Width:" />
-                                          <Spinner id="populationSpinnerVRW" fx:id="populationSpinnerVRW" disable="true" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
+                                          <Spinner id="populationSpinnerVRW" fx:id="populationSpinnerVRW" disable="true" editable="true" initialValue="5" max="99999" min="2" prefWidth="100.0" />
                                        </children>
                                     </HBox>
                                     <HBox id="populationBoxVRH" alignment="CENTER" spacing="10.0">
@@ -296,7 +296,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelVRH" text="Height:" />
-                                          <Spinner id="populationSpinnerVRH" fx:id="populationSpinnerVRH" disable="true" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
+                                          <Spinner id="populationSpinnerVRH" fx:id="populationSpinnerVRH" disable="true" editable="true" initialValue="5" max="99999" min="2" prefWidth="100.0" />
                                        </children>
                                     </HBox>
                                     <Separator prefWidth="200.0" />

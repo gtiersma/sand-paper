@@ -10,16 +10,13 @@ import javafx.scene.transform.Rotate;
  */
 public class Individual extends MeshObject
 {
-    // Used to repositon the Individual so that if the pixel's color assigned to
-    // it from the elevation map is exactly between white and black, the
-    // Individual would rest upon the terrain
-    final private int BASE_ELEVATION = -25;
-    
     // Added to the X rotation to ensure the Individual is facing the camera
     final private int BASE_X_ROTATION = 90;
     
-    // How high the mesh should be lifted above the terrain
-    private int elevation;
+    // How much the Individual should be shifted
+    private int shiftX;
+    private int shiftY;
+    private int shiftZ;
     
     // The Z position to assign the X rotational pivot point to
     private double pivotCenterZ;
@@ -43,7 +40,9 @@ public class Individual extends MeshObject
      * @param fHeight The height of each face in the mesh when not displaced
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
-     * @param evster How high the mesh should be lifted above the terrain
+     * @param xShift How much the mesh should be shifted on the x scale
+     * @param yShift How much the mesh should be shifted on the y scale
+     * @param zShift How much the mesh should be shifted on the z scale
      * @param eckster The x position of the vertex point on the terrain of where
      *                this mesh will be placed
      * @param whyster The y position of the vertex point on the terrain of where
@@ -55,12 +54,15 @@ public class Individual extends MeshObject
      * @param dister The displacement map
      */
     public Individual(int widthster, int heightster, int fWidth, int fHeight,
-            int strengthster, int evster, double eckster, double whyster,
-            double zeester, double xRot, double yRot, Image dister)
+            int strengthster, int xShift, int yShift, int zShift,
+            double eckster, double whyster, double zeester, double xRot,
+            double yRot, Image dister)
     {
         super(widthster, heightster, fWidth, fHeight, strengthster, dister);
         
-        elevation = evster;
+        shiftX = xShift;
+        shiftY = yShift;
+        shiftZ = zShift;
         
         x = eckster;
         y = whyster;
@@ -116,15 +118,14 @@ public class Individual extends MeshObject
     
     /**
      * Places the mesh at the correct position based upon its current variable
-     * values
+     * values. For some reason, the size of the face must be subtracted from
+     * each value to position the Individual correctly.
      */
     private void reposition()
     {
-        viewster.setTranslateX(x - faceWidth);
-        // This calculation ensures that the mesh appears directly on top of the
-        // terrain when the elevation is set to 0
-        viewster.setTranslateY(y + elevation);
-        viewster.setTranslateZ(z - faceWidth);
+        viewster.setTranslateX(x - faceWidth + shiftX);
+        viewster.setTranslateY(y - faceDepth + shiftY);
+        viewster.setTranslateZ(z - faceWidth + shiftZ);
     }
     
     /**
@@ -149,15 +150,20 @@ public class Individual extends MeshObject
     }
     
     /**
-     * Repositions this Individual based upon the elevation provided
+     * Sets how much this Individual should be shifted from the terrain's vertex
+     * that it was positioned at
      * 
-     * @param elster How much the Individual is to be elevated
+     * @param xShift How much the Individual is to be shifted on the x scale
+     * @param yShift How much the Individual is to be shifted on the y scale
+     * @param zShift How much the Individual is to be shifted on the z scale
      */
-    public void setElevation(int elster)
+    public void setShift(int xShift, int yShift, int zShift)
     {
-        elevation = elster + BASE_ELEVATION;
+        shiftX = xShift;
+        shiftY = yShift;
+        shiftZ = zShift;
         
-        viewster.setTranslateY(y + elevation);
+        reposition();
     }
     
     /**
@@ -170,6 +176,7 @@ public class Individual extends MeshObject
         faceDepth = heightster;
         
         loadPoints();
+        reposition();
     }
     
     /**
@@ -182,6 +189,7 @@ public class Individual extends MeshObject
         faceWidth = widthster;
         
         loadPoints();
+        reposition();
     }
     
     /**
@@ -219,7 +227,8 @@ public class Individual extends MeshObject
         stringster = stringster + "---------------------------------------\n\n";
         
         stringster = stringster + "Position: " + x + "," + y + "," + z + "\n";
-        stringster = stringster + "Elevation: " + elevation + "\n\n";
+        stringster = stringster + "Shift: " + shiftX + "," + shiftY + ","
+                + shiftZ + "\n\n";
         
         stringster = stringster + "X axis rotation: " + xRotate.getAngle();
         stringster = stringster + "Y axis rotation: " + yRotate.getAngle();

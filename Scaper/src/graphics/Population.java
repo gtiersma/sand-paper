@@ -16,7 +16,7 @@ public class Population
 {
     // A value used in calculations to get the correct value for the brightness
     // of a pixel
-    final double BRIGHTNESS_ADJUSTMENT = 100;
+    final double COLOR_ADJUSTMENT = 100;
     
     final TextureObject DEFAULT_TEXTURE = new TextureObject();
     
@@ -46,9 +46,9 @@ public class Population
     // A grayscale image for the probability of an Individual being created on a
     // specific vertex on the Terrain
     TextureObject placement;
-    // A grayscale image for determining how high or low each Individual should
-    // be raised or lowered
-    TextureObject elevation;
+    // An image for determining how much each Individual should be shifted on
+    // the x (red), y (green) or z (blue) scale.
+    TextureObject shift;
     
     // Grayscale images for determining the width and height of each Individual
     TextureObject width;
@@ -91,7 +91,7 @@ public class Population
         specular = DEFAULT_TEXTURE;
         texture = DEFAULT_TEXTURE;
         
-        elevation = DEFAULT_TEXTURE;
+        shift = DEFAULT_TEXTURE;
         placement = DEFAULT_TEXTURE;
         
         width = DEFAULT_TEXTURE;
@@ -147,8 +147,9 @@ public class Population
      * 
      * @param faceWidth The width of each face on the Individual
      * @param faceHeight The height of each face on the Individual
-     * @param evster How much the Individual should be raised or lowered over
-     *               the terrain
+     * @param shiftX How much the Individual is to be shifted on the x scale
+     * @param shiftY How much the Individual is to be shifted on the y scale
+     * @param shiftZ How much the Individual is to be shifted on the z scale
      * @param x The x position of the vertex on the terrain to which the
      *          Individual will be placed
      * @param y The y position of the vertex on the terrain to which the
@@ -158,14 +159,15 @@ public class Population
      * @param xRotate The currently set vertical rotation value
      * @param yRotate The currently set horizontal rotation value
      */
-    private void createIndividual(int faceWidth, int faceHeight, int evster,
-            double x, double y, double z, double xRotate, double yRotate)
+    private void createIndividual(int faceWidth, int faceHeight, int shiftX,
+            int shiftY, int shiftZ, double x, double y, double z,
+            double xRotate, double yRotate)
     {
         Image displacement = generateDisplacement();
         
         Individual newIndividual = new Individual(vertexWidth, vertexHeight,
-                faceWidth, faceHeight, displacementStrength, evster, x, y, z,
-                xRotate, yRotate, displacement);
+                faceWidth, faceHeight, displacementStrength, shiftX, shiftY,
+                shiftZ, x, y, z, xRotate, yRotate, displacement);
         
         newIndividual.load();
         
@@ -201,8 +203,10 @@ public class Population
                 // ...if an Individual is to be created there...
                 if (locations[i][j])
                 {
-                    // The elevation adjustment for the Individual
-                    int evster;
+                    // The shift adjustments for the Individual
+                    int shiftX;
+                    int shiftY;
+                    int shiftZ;
                     
                     // Calculates the index of the point on the terrain to which
                     // this Individual is to be created upon
@@ -220,18 +224,21 @@ public class Population
                     double z = terrainPoints[pointIndex + 2];
                     
                     // Get the correct pixel colors for this Individual
-                    Color elevationColor = getPixelColor(true, i, j, elevation);
+                    Color shiftColor = getPixelColor(true, i, j, shift);
                     Color widthColor = getPixelColor(true, i, j, width);
                     Color heightColor = getPixelColor(true, i, j, height);
                     
-                    evster = getBrightness(true, elevationColor);
+                    shiftX = getColorValue(true, 'r', shiftColor);
+                    shiftY = getColorValue(true, 'g', shiftColor);
+                    shiftZ = getColorValue(true, 'b', shiftColor);
+                    
                     // The values returned from these functions is too large
                     // for the width and height, so it is divided in half
-                    widthster = getBrightness(false, widthColor) / 2;
-                    heightster = getBrightness(false, heightColor) / 2;
+                    widthster = getColorValue(false, ' ', widthColor) / 2;
+                    heightster = getColorValue(false, ' ', heightColor) / 2;
                     
-                    createIndividual(widthster, heightster, evster, x, y, z,
-                            xRotate, yRotate);
+                    createIndividual(widthster, heightster, shiftX, shiftY,
+                            shiftZ, x, y, z, xRotate, yRotate);
                 }
             }
         }
@@ -280,35 +287,6 @@ public class Population
     }
     
     /**
-     * Gets a random number depending upon the brightness of the given color
-     * 
-     * @param negativeRange Whether or not the number being returned should have
-     * the possibility of being negative. If this is true, the range of the
-     * number that will be returned will be from -50 - +50. If this is false,
-     * the range of the number will be from 1 - 50.
-     * @param shade The given color
-     * 
-     * @return A random number
-     */
-    private int getBrightness(boolean negativeRange, Color shade)
-    {
-        // Gets a number of the range 0-100
-        int brightness = (int)(shade.getBrightness() * BRIGHTNESS_ADJUSTMENT);
-        
-        // Puts the value in the range of -50 - +50
-        brightness = brightness - (int)(BRIGHTNESS_ADJUSTMENT / 2);
-        
-        // If the value should not be negative...
-        if (!negativeRange)
-        {
-            // ...put the value in the range of 0 - +50.
-            brightness = Math.abs(brightness);
-        }
-        
-        return brightness;
-    }
-    
-    /**
      * Gets the bump map for this Population
      * 
      * @return A TextureObject of this Population's bump map
@@ -316,6 +294,54 @@ public class Population
     public TextureObject getBumpMap()
     {
         return bump;
+    }
+    
+    /**
+     * Gets a random number depending upon the brightness of the given color
+     * 
+     * @param negativeRange Whether or not the number being returned should have
+     *                      the possibility of being negative. If this is true,
+     *                      the range of the number that will be returned will
+     *                      be from -50 - +50. If this is false, the range of
+     *                      the number will be from 1 - 50.
+     * @param channel The color channel to perform the calculations from. 'r' is
+     *                for red. 'g' is for green. 'b' is for blue. Any other
+     *                character will return the brightness.
+     * @param colster The given color
+     * 
+     * @return A random number
+     */
+    private int getColorValue(boolean negativeRange, char channel,
+            Color colster)
+    {
+        int colorValue;
+        
+        switch (channel)
+        {
+            case 'r':
+                colorValue = (int)(colster.getRed() * COLOR_ADJUSTMENT);
+                break;
+            case 'g':
+                colorValue = (int)(colster.getGreen() * COLOR_ADJUSTMENT);
+                break;
+            case 'b':
+                colorValue = (int)(colster.getBlue() * COLOR_ADJUSTMENT);
+                break;
+            default:
+                colorValue = (int)(colster.getBrightness() * COLOR_ADJUSTMENT);
+        }
+        
+        // Puts the value in the range of -50 - +50
+        colorValue = colorValue - (int)(COLOR_ADJUSTMENT / 2);
+        
+        // If the value should not be negative...
+        if (!negativeRange)
+        {
+            // ...put the value in the range of 0 - +50.
+            colorValue = Math.abs(colorValue);
+        }
+        
+        return colorValue;
     }
     
     /**
@@ -340,16 +366,6 @@ public class Population
     private int getDistanceBetweenVertices(double length, double vertexAmount)
     {
         return (int)(length / vertexAmount);
-    }
-    
-    /**
-     * Gets the elevation map assigned to this population
-     * 
-     * @return A TextureObject of the elevation map assigned to this population
-     */
-    public TextureObject getElevation()
-    {
-        return elevation;
     }
     
     /**
@@ -546,6 +562,16 @@ public class Population
     }
     
     /**
+     * Gets the shift map assigned to this population
+     * 
+     * @return A TextureObject of the shift map assigned to this population
+     */
+    public TextureObject getShift()
+    {
+        return shift;
+    }
+    
+    /**
      * Gets the specular map
      * 
      * @return A TextureObject of the specular map
@@ -713,39 +739,6 @@ public class Population
     }
     
     /**
-     * Sets the elevation map
-     * 
-     * @param elster The elevation map
-     */
-    public void setElevation(TextureObject elster)
-    {
-        elevation = elster;
-        
-        int count = 0;
-        
-        // For each row of vertices on the terrain...
-        for (int i = 0; i < locations.length; i++)
-        {
-            // ...and for each column of vertices on the terrain...
-            for (int j = 0; j < locations[i].length; j++)
-            {
-                // ...if an Individual is to be created there...
-                if (locations[i][j])
-                {
-                    // Get the correct pixel color for this Individual
-                    Color elevationColor = getPixelColor(true, i, j, elevation);
-                    
-                    int evster = getBrightness(true, elevationColor);
-                    
-                    individuals[count].setElevation(evster);
-                    
-                    count++;
-                }
-            }
-        }
-    }
-    
-    /**
      * Sets the first displacement map to be used in the displacement range
      * 
      * @param dister A displacement map
@@ -785,7 +778,8 @@ public class Population
                     // Get the correct pixel color for this Individual
                     Color heightColor = getPixelColor(true, i, j, height);
                     
-                    int heightBrightness = getBrightness(false, heightColor);
+                    int heightBrightness = getColorValue(false, ' ',
+                            heightColor);
                     
                     individuals[count].setFaceHeight(heightBrightness);
                     
@@ -814,6 +808,42 @@ public class Population
         setTexture(texture);
         setBumpMap(bump);
         setSpecularMap(specular);
+    }
+    
+    /**
+     * Sets the shift map
+     * 
+     * @param shiftster The shift map
+     */
+    public void setShift(TextureObject shiftster)
+    {
+        shift = shiftster;
+        
+        int count = 0;
+        
+        // For each row of vertices on the terrain...
+        for (int i = 0; i < locations.length; i++)
+        {
+            // ...and for each column of vertices on the terrain...
+            for (int j = 0; j < locations[i].length; j++)
+            {
+                // ...if an Individual is to be created there...
+                if (locations[i][j])
+                {
+                    // ...get the correct pixel color for this Individual
+                    Color shiftColor = getPixelColor(true, i, j, shift);
+                    
+                    // Get the correct shift amounts for this color
+                    int shiftX = getColorValue(true, 'r', shiftColor);
+                    int shiftY = getColorValue(true, 'g', shiftColor);
+                    int shiftZ = getColorValue(true, 'b', shiftColor);
+                    
+                    individuals[count].setShift(shiftX, shiftY, shiftZ);
+                    
+                    count++;
+                }
+            }
+        }
     }
     
     /**
@@ -944,7 +974,7 @@ public class Population
                     // Get the correct pixel color for this Individual
                     Color widthColor = getPixelColor(true, i, j, width);
                     
-                    int widthBrightness = getBrightness(false, widthColor);
+                    int widthBrightness = getColorValue(false, ' ', widthColor);
                     
                     individuals[count].setFaceWidth(widthBrightness);
                     
@@ -1004,8 +1034,7 @@ public class Population
         stringster = stringster + "Specular map: " + specular.getName() + "\n";
         stringster = stringster + "Texture map: " + texture.getName() + "\n\n";
         
-        stringster = stringster + "Elevation image: " + elevation.getName()
-                + "\n";
+        stringster = stringster + "Shift image: " + shift.getName() + "\n";
         stringster = stringster + "Width image: " + width.getName() + "\n";
         stringster = stringster + "Height image: " + height.getName() + "\n\n";
         

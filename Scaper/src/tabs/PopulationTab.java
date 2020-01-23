@@ -173,17 +173,6 @@ public class PopulationTab
     }
     
     /**
-     * Gets the name of the elevation map used by the currently-selected
-     * population
-     * 
-     * @return The name of the elevation map
-     */
-    public String getActivePopulationElevationName()
-    {
-        return activePopulation.getElevation().getName();
-    }
-    
-    /**
      * Gets the name of the map used to determine the height of each Individual
      * 
      * @return The name of the map used to determine the height
@@ -239,6 +228,16 @@ public class PopulationTab
     public String getActivePopulationPlacementName()
     {
         return activePopulation.getPlacement().getName();
+    }
+    
+    /**
+     * Gets the name of the shift map used by the currently-selected population
+     * 
+     * @return The name of the shift map
+     */
+    public String getActivePopulationShiftName()
+    {
+        return activePopulation.getShift().getName();
     }
     
     /**
@@ -444,13 +443,13 @@ public class PopulationTab
     }
     
     /**
-     * Sets the currently-selected population's elevation map
+     * Sets the currently-selected population's shift map
      * 
-     * @param elevation The elevation map
+     * @param shift The shift map
      */
-    public void setActivePopulationElevation(TextureObject elevation)
+    public void setActivePopulationShift(TextureObject shift)
     {
-        activePopulation.setElevation(elevation);
+        activePopulation.setShift(shift);
     }
     
     /**
