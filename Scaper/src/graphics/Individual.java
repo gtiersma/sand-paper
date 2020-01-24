@@ -144,8 +144,6 @@ public class Individual extends MeshObject
         y = whyster;
         z = zeester;
         
-        preparePivotPoints();
-        
         reposition();
     }
     
@@ -177,6 +175,7 @@ public class Individual extends MeshObject
         
         loadPoints();
         reposition();
+        preparePivotPoints();
     }
     
     /**
@@ -190,6 +189,7 @@ public class Individual extends MeshObject
         
         loadPoints();
         reposition();
+        preparePivotPoints();
     }
     
     /**
