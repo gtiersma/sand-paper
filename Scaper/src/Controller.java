@@ -1227,7 +1227,6 @@ public class Controller
         previewItems.getTransforms().add(camTab.getYRotate());
         
         // Add the terrain
-        terTab.prepareTerrain();
         previewItems.getChildren().add(terTab.getTerrain());
         
         // Add each light
