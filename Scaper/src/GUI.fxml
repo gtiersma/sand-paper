@@ -340,7 +340,7 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelDMS" text="Strength:" />
-                                          <Slider id="populationSliderDMS" fx:id="populationSliderDRS" disable="true" minorTickCount="1" showTickLabels="true" snapToTicks="true" value="50.0" />
+                                          <Slider id="populationSliderDMS" fx:id="populationSliderDRS" blockIncrement="1.0" disable="true" majorTickUnit="5.0" max="20.0" minorTickCount="1" showTickLabels="true" snapToTicks="true" value="3.0" />
                                        </children>
                                     </HBox>
                                     <Separator id="terrainSeparator2" prefWidth="200.0" />
