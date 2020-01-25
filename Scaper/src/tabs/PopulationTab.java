@@ -358,6 +358,41 @@ public class PopulationTab
     }
     
     /**
+     * Gets the New Population name suggestion that should be presented to the
+     * user when the "New Population" dialog is displayed
+     * 
+     * @return The New Population name suggestion
+     */
+    private String getNameSuggestion()
+    {
+        // The very first name suggestion to present the user with
+        String firstSuggestion = "Population Name";
+        
+        // The name suggestion that should be used
+        String suggestion = firstSuggestion;
+        
+        // If a population named with the first suggestion already exists...
+        if (isDuplicateName(firstSuggestion))
+        {
+            // Each suggestion to be given after the first one
+            String sequentialSuggestion = firstSuggestion;
+            
+            // Until a name is found that is not already in use by a
+            // population...
+            for (int i = 2; isDuplicateName(sequentialSuggestion); i++)
+            {
+                // ...construct a name suggestion with the next number.
+                sequentialSuggestion = firstSuggestion + " " + i;
+                
+                // Make this suggestion the one to be used
+                suggestion = sequentialSuggestion;
+            }
+        }
+        
+        return suggestion;
+    }
+    
+    /**
      * Gets the population at the given index
      * 
      * @param index The index of which population to be returned
@@ -668,7 +703,7 @@ public class PopulationTab
      */
     private Optional showNameDialog()
     {
-        TextInputDialog nameDialog = new TextInputDialog("Population Name");
+        TextInputDialog nameDialog = new TextInputDialog(getNameSuggestion());
         
         nameDialog.setTitle("Create New Population");
         nameDialog.setHeaderText(null);

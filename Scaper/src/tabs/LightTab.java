@@ -292,6 +292,40 @@ public class LightTab
     }
     
     /**
+     * Gets the New Light name suggestion that should be presented to the user
+     * when the "New Light" dialog is displayed
+     * 
+     * @return The New Light name suggestion
+     */
+    private String getNameSuggestion()
+    {
+        // The very first name suggestion to present the user with
+        String firstSuggestion = "Population Name";
+        
+        // The name suggestion that should be used
+        String suggestion = firstSuggestion;
+        
+        // If a light named with the first suggestion already exists...
+        if (isDuplicateName(firstSuggestion))
+        {
+            // Each suggestion to be given after the first one
+            String sequentialSuggestion = firstSuggestion;
+            
+            // Until a name is found that is not already in use by a light...
+            for (int i = 2; isDuplicateName(sequentialSuggestion); i++)
+            {
+                // ...construct a name suggestion with the next number.
+                sequentialSuggestion = firstSuggestion + " " + i;
+                
+                // Make this suggestion the one to be used
+                suggestion = sequentialSuggestion;
+            }
+        }
+        
+        return suggestion;
+    }
+    
+    /**
      * Gets whether or not the given name is already a name of a light
      * 
      * @param name The name to be checked to see if it is a duplicate
@@ -470,7 +504,7 @@ public class LightTab
      */
     private Optional showNameDialog()
     {
-        TextInputDialog nameDialog = new TextInputDialog("Light Name");
+        TextInputDialog nameDialog = new TextInputDialog(getNameSuggestion());
         
         nameDialog.setTitle("Create New Light");
         nameDialog.setHeaderText(null);
