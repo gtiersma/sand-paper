@@ -1,5 +1,6 @@
 package graphics;
 
+import java.io.File;
 import java.util.Random;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -14,11 +15,18 @@ import javafx.scene.paint.Color;
  */
 public class Population
 {
+    // Divides the width and height values to keep Individuals from being too
+    // large
+    final int SIZE_DIVIDER = 3;
+    
     // A value used in calculations to get the correct value for the brightness
     // of a pixel
     final double COLOR_ADJUSTMENT = 100;
     
-    final TextureObject DEFAULT_TEXTURE = new TextureObject();
+    // Default textures to use for when no maps have been selected by the user
+    final TextureObject GRAY_TEXTURE
+            = new TextureObject(new File("src/graphics/gray.png"));
+    final TextureObject WHITE_TEXTURE = new TextureObject();
     
     // The number of Individuals that this Population consists of
     int size;
@@ -87,19 +95,19 @@ public class Population
         // ensure that there is 1 boolean for each vertex on the terrain
         locations = new boolean[terrainWidth][terrainHeight];
         
-        bump = DEFAULT_TEXTURE;
-        specular = DEFAULT_TEXTURE;
-        texture = DEFAULT_TEXTURE;
+        bump = WHITE_TEXTURE;
+        specular = WHITE_TEXTURE;
+        texture = WHITE_TEXTURE;
         
-        shift = DEFAULT_TEXTURE;
-        placement = DEFAULT_TEXTURE;
+        shift = GRAY_TEXTURE;
+        placement = WHITE_TEXTURE;
         
-        width = DEFAULT_TEXTURE;
-        height = DEFAULT_TEXTURE;
+        width = GRAY_TEXTURE;
+        height = GRAY_TEXTURE;
         
         displacementRange = new TextureObject[2];
-        displacementRange[0] = DEFAULT_TEXTURE;
-        displacementRange[1] = DEFAULT_TEXTURE;
+        displacementRange[0] = WHITE_TEXTURE;
+        displacementRange[1] = WHITE_TEXTURE;
         
         individuals = new Individual[0];
     }
@@ -232,10 +240,13 @@ public class Population
                     shiftY = getColorValue(true, 'g', shiftColor);
                     shiftZ = getColorValue(true, 'b', shiftColor);
                     
-                    // The values returned from these functions is too large
-                    // for the width and height, so it is divided in half
-                    widthster = getColorValue(false, ' ', widthColor) / 2;
-                    heightster = getColorValue(false, ' ', heightColor) / 2;
+                    // The values returned from these functions are too large
+                    // for the width and height, so it is divided to a smaller
+                    // value
+                    widthster = getColorValue(false, ' ', widthColor)
+                            / SIZE_DIVIDER;
+                    heightster = getColorValue(false, ' ', heightColor)
+                            / SIZE_DIVIDER;
                     
                     createIndividual(widthster, heightster, shiftX, shiftY,
                             shiftZ, x, y, z, xRotate, yRotate);
@@ -303,7 +314,7 @@ public class Population
      *                      the possibility of being negative. If this is true,
      *                      the range of the number that will be returned will
      *                      be from -50 - +50. If this is false, the range of
-     *                      the number will be from 1 - 50.
+     *                      the number will be from 1 - 100.
      * @param channel The color channel to perform the calculations from. 'r' is
      *                for red. 'g' is for green. 'b' is for blue. Any other
      *                character will return the brightness.
@@ -331,14 +342,11 @@ public class Population
                 colorValue = (int)(colster.getBrightness() * COLOR_ADJUSTMENT);
         }
         
-        // Puts the value in the range of -50 - +50
-        colorValue = colorValue - (int)(COLOR_ADJUSTMENT / 2);
-        
         // If the value should not be negative...
-        if (!negativeRange)
+        if (negativeRange)
         {
-            // ...put the value in the range of 0 - +50.
-            colorValue = Math.abs(colorValue);
+            // ...put the value in the range of -50 - +50
+            colorValue = colorValue - (int)(COLOR_ADJUSTMENT / 2);
         }
         
         return colorValue;
