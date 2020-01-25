@@ -4,6 +4,7 @@ import graphics.Population;
 import graphics.TextureObject;
 import java.util.Optional;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 
@@ -65,30 +66,43 @@ public class PopulationTab
             // ...get it.
             name = result.get();
             
-            // Create a new population
-            Population newPopulation = new Population(
-                    DEFAULT_DISPLACEMENT_STRENGTH, terrainWidth, terrainDepth,
-                    DEFAULT_VERTEX_WIDTH, DEFAULT_VERTEX_HEIGHT, name);
+            // As long as the name does not already exist...
+            if (!isDuplicateName(name))
+            {
+                // ...create a new population.
+                Population newPopulation = new Population(
+                        DEFAULT_DISPLACEMENT_STRENGTH, terrainWidth,
+                        terrainDepth, DEFAULT_VERTEX_WIDTH,
+                        DEFAULT_VERTEX_HEIGHT, name);
             
-            // Create a new array with room for another population
-            Population[] newPopulations
-                    = new Population[populations.length + 1];
+                // Create a new array with room for another population
+                Population[] newPopulations
+                        = new Population[populations.length + 1];
         
-            // Copy the old array into the new one
-            System.arraycopy(populations, 0, newPopulations, 0,
-                    populations.length);
+                // Copy the old array into the new one
+                System.arraycopy(populations, 0, newPopulations, 0,
+                        populations.length);
             
-            // Make the old array the new one
-            populations = newPopulations;
+                // Make the old array the new one
+                populations = newPopulations;
             
-            // Make the new population be the currently-selected population
-            activePopulation = newPopulation;
+                // Make the new population be the currently-selected population
+                activePopulation = newPopulation;
             
-            // Add the new population to the array
-            populations[populations.length - 1] = newPopulation;
+                // Add the new population to the array
+                populations[populations.length - 1] = newPopulation;
             
-            // Prepare the new population
-            activePopulation.load(xRotate, yRotate, terrainPoints);
+                // Prepare the new population
+                activePopulation.load(xRotate, yRotate, terrainPoints);
+            }
+            // ...otherwise, if the name given already exists...
+            else
+            {
+                // ...display an error dialog.
+                displayDuplicateNameError();
+                
+                name = "";
+            }
         }
         
         return name;
@@ -124,6 +138,21 @@ public class PopulationTab
         }
         
         populations = newPopulations;
+    }
+    
+    /**
+     * Displays an error dialog box for when the user tries to create a new
+     * population with the same name as a population that already exists
+     */
+    private void displayDuplicateNameError()
+    {
+        Alert alster = new Alert(Alert.AlertType.ERROR);
+        
+        alster.setTitle("Population Already Exists");
+        alster.setHeaderText("");
+        alster.setContentText("A population with that name already exists.");
+        
+        alster.show();
     }
     
     /**
@@ -348,6 +377,31 @@ public class PopulationTab
     public int getPopulationAmount()
     {
         return populations.length;
+    }
+    
+    /**
+     * Gets whether or not the given name is already a name of a population
+     * 
+     * @param name The name to be checked to see if it is a duplicate
+     * 
+     * @return Whether or not the given name is a duplicate
+     */
+    private boolean isDuplicateName(String name)
+    {
+        boolean duplicate = false;
+        
+        // For each population...
+        for (Population population : populations)
+        {
+            // ...if its name matches this function's parameter...
+            if (population.getName().equals(name))
+            {
+                // ...it is a duplicate.
+                duplicate = true;
+            }
+        }
+        
+        return duplicate;
     }
     
     /**

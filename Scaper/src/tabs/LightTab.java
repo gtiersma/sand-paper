@@ -3,6 +3,7 @@ package tabs;
 import graphics.LightObject;
 import java.util.Optional;
 import javafx.scene.PointLight;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
 
@@ -66,25 +67,38 @@ public class LightTab
             // ...get it.
             name = result.get();
             
-            // Create a new light.
-            LightObject newLight = new LightObject(DEFAULT_COLOR, name, 
-                    DEFAULT_X_PERCENTAGE, DEFAULT_Y_PERCENTAGE,
-                    DEFAULT_Z_PERCENTAGE);
+            // As long as the given name does not already exist...
+            if (!isDuplicateName(name))
+            {
+                // ...create a new light.
+                LightObject newLight = new LightObject(DEFAULT_COLOR, name, 
+                        DEFAULT_X_PERCENTAGE, DEFAULT_Y_PERCENTAGE,
+                        DEFAULT_Z_PERCENTAGE);
             
-            // Create a new array with room for another light
-            LightObject[] newLights = new LightObject[lights.length + 1];
+                // Create a new array with room for another light
+                LightObject[] newLights = new LightObject[lights.length + 1];
         
-            // Copy the old array into the new one
-            System.arraycopy(lights, 0, newLights, 0, lights.length);
+                // Copy the old array into the new one
+                System.arraycopy(lights, 0, newLights, 0, lights.length);
             
-            // Make the old array the new one
-            lights = newLights;
+                // Make the old array the new one
+                lights = newLights;
             
-            // Make the new light be the currently selected light
-            activeLight = newLight;
+                // Make the new light be the currently selected light
+                activeLight = newLight;
             
-            // Add the new light to the array
-            lights[lights.length - 1] = newLight;
+                // Add the new light to the array
+                lights[lights.length - 1] = newLight;
+            }
+            // ...otherwise, if the name given is the same name belonging to
+            // another light...
+            else
+            {
+                // ...display an error dialog.
+                displayDuplicateNameError();
+                
+                name = "";
+            }
         }
         
         return name;
@@ -119,6 +133,21 @@ public class LightTab
         }
         
         lights = newLights;
+    }
+    
+    /**
+     * Displays an error dialog box for when the user tries to create a new
+     * light with the same name as a light that already exists
+     */
+    private void displayDuplicateNameError()
+    {
+        Alert alster = new Alert(Alert.AlertType.ERROR);
+        
+        alster.setTitle("Light Already Exists");
+        alster.setHeaderText("");
+        alster.setContentText("A light with that name already exists.");
+        
+        alster.show();
     }
     
     /**
@@ -260,6 +289,31 @@ public class LightTab
         }
         
         return pointster;
+    }
+    
+    /**
+     * Gets whether or not the given name is already a name of a light
+     * 
+     * @param name The name to be checked to see if it is a duplicate
+     * 
+     * @return Whether or not the given name is a duplicate
+     */
+    public boolean isDuplicateName(String name)
+    {
+        boolean duplicate = false;
+        
+        // For each light...
+        for (LightObject light : lights)
+        {
+            // ...if its name matches this function's parameter...
+            if (light.getName().equals(name))
+            {
+                // ...it is a duplicate.
+                duplicate = true;
+            }
+        }
+        
+        return duplicate;
     }
     
     /**
