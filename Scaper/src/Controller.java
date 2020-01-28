@@ -234,8 +234,6 @@ public class Controller
             terTab.setDisplacementStrength(newster.floatValue());
             
             popTab.repositionPopulations(terTab.getPoints());
-            
-            refreshPreview();
         });
         
         //----------------------------------------------------------------------
@@ -379,8 +377,6 @@ public class Controller
             {
                 System.out.println("Light x position spinner triggered by value...");
                 ligTab.setActiveLightX(newster);
-            
-                refreshPreview();
             }
         });
         lightSpinnerPX.focusedProperty().addListener(
@@ -390,8 +386,6 @@ public class Controller
             {
                 System.out.println("Light x position spinner triggered by focus...");
                 ligTab.setActiveLightX(lightSpinnerPX.getEditor().getText());
-                
-                refreshPreview();
                 
                 // Fixes an issue in JavaFX of the Spinner's value not being
                 // returned after it was changed.
@@ -406,8 +400,6 @@ public class Controller
             {
                 System.out.println("Light y position spinner triggered by value...");
                 ligTab.setActiveLightY(newster);
-            
-                refreshPreview();
             }
         });
         lightSpinnerPY.focusedProperty().addListener(
@@ -417,8 +409,6 @@ public class Controller
             {
                 System.out.println("Light y position spinner triggered by focus...");
                 ligTab.setActiveLightY(lightSpinnerPY.getEditor().getText());
-                
-                refreshPreview();
                 
                 lightSpinnerPY.increment(0);
             }
@@ -431,8 +421,6 @@ public class Controller
             {
                 System.out.println("Light z position spinner triggered by value...");
                 ligTab.setActiveLightZ(newster);
-            
-                refreshPreview();
             }
         });
         lightSpinnerPZ.focusedProperty().addListener(
@@ -442,8 +430,6 @@ public class Controller
             {
                 System.out.println("Light z position spinner triggered by focus...");
                 ligTab.setActiveLightZ(lightSpinnerPZ.getEditor().getText());
-                
-                refreshPreview();
                 
                 lightSpinnerPZ.increment(0);
             }
@@ -485,8 +471,6 @@ public class Controller
             {
                 System.out.println("Population vertex resolution width spinner triggered by value...");
                 popTab.setActivePopulationVertexWidth(newster);
-            
-                refreshPreview();
             }
         });
         populationSpinnerVRW.focusedProperty().addListener(
@@ -497,8 +481,6 @@ public class Controller
                 System.out.println("Population vertex resolution width spinner triggered by focus...");
                 popTab.setActivePopulationVertexWidth(
                         populationSpinnerVRW.getEditor().getText());
-            
-                refreshPreview();
             }
         });
         
@@ -509,8 +491,6 @@ public class Controller
             {
                 System.out.println("Population vertex resolution height spinner triggered by value...");
                 popTab.setActivePopulationVertexHeight(newster);
-            
-                refreshPreview();
             }
         });
         populationSpinnerVRH.focusedProperty().addListener(
@@ -521,8 +501,6 @@ public class Controller
                 System.out.println("Population vertex resolution height spinner triggered by focus...");
                 popTab.setActivePopulationVertexHeight(
                         populationSpinnerVRH.getEditor().getText());
-            
-                refreshPreview();
             }
         });
         
@@ -532,8 +510,6 @@ public class Controller
             System.out.println("Population displacement range strength slider triggered...");
             popTab.setActivePopulationDisplacementStrength(
                     newster.intValue());
-            
-            refreshPreview();
         });
         
     }
@@ -654,8 +630,6 @@ public class Controller
             // Populations must be re-positioned since the shape of the terrain
             // has changed
             popTab.repositionPopulations(terTab.getPoints());
-            
-            refreshPreview();
         }
     }
     
