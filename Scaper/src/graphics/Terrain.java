@@ -172,6 +172,8 @@ public class Terrain extends MeshObject
     private double getFurthestPoint(char dimension)
     {
         System.out.println("Terrain -> Getting the greatest distance from the center on the " + dimension + " axis...");
+        int dimensionValue = getDimensionValue(dimension);
+        
         double center = getCenter(dimension);
         
         // The furthest point
@@ -190,8 +192,7 @@ public class Terrain extends MeshObject
         {
             // The index of the position of this corner point of the given
             // dimension
-            int farIndex = cornerPoints[i] * DIMENSIONS
-                    + getDimensionValue(dimension);
+            int farIndex = cornerPoints[i] * DIMENSIONS + dimensionValue;
             
             // The distance this point is from the center
             double possibleFar = Math.abs(points[farIndex] - center);
