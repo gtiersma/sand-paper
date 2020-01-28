@@ -46,6 +46,8 @@ public class Terrain extends MeshObject
         // gathered.
         final int CENTER_POINTS_AMOUNT = 5;
         
+        int dimensionValue = getDimensionValue(dimension);
+        
         // The average of the positions of the points
         double average;
         // The sum of all of the positions of the points
@@ -78,7 +80,7 @@ public class Terrain extends MeshObject
         for (int i = 0; i < CENTER_POINTS_AMOUNT; i++)
         {
             // ...calculate the index for the correct dimension.
-            indexes[i] = indexes[i] * DIMENSIONS + getDimensionValue(dimension);
+            indexes[i] = indexes[i] * DIMENSIONS + dimensionValue;
             
             // Add that point's position to the total
             total = total + points[indexes[i]];
