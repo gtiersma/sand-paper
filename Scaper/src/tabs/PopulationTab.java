@@ -473,7 +473,10 @@ public class PopulationTab
             float[] terrainPoints)
     {
         System.out.println("popTab -> Reloading the active population...");
-        activePopulation.load(xRotate, yRotate, terrainPoints);
+        if (populationExists())
+        {
+            activePopulation.load(xRotate, yRotate, terrainPoints);
+        }
     }
     
     /**
