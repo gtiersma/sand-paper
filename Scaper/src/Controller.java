@@ -1442,15 +1442,22 @@ public class Controller
     protected void refreshPreview()
     {
         System.out.println("Refreshing the preview...");
+        
+        // Estimation of the center point of the terrain
+        double terrainCenterX = terTab.getCenterX();
+        double terrainCenterY = terTab.getCenterY();
+        double terrainCenterZ = terTab.getCenterZ();
+        
+        // The greatest distance of a point from the terrain's center
+        double terrainFarPoint = terTab.getFurthestPoint();
+        
         // Re-center the camera
-        camTab.setOrigin(terTab.getCenterX(), terTab.getCenterY(),
-                terTab.getCenterZ());
-        camTab.setFurthestPoint(terTab.getFurthestPoint());
+        camTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
+        camTab.setFurthestPoint(terrainFarPoint);
         
         // Re-position lights
-        ligTab.setOrigin(terTab.getCenterX(), terTab.getCenterY(),
-                terTab.getCenterZ());
-        ligTab.setFurthestPoint(terTab.getFurthestPoint());
+        ligTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
+        ligTab.setFurthestPoint(terrainFarPoint);
         
         if (ligTab.lightExists())
         {
