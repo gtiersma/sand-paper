@@ -56,6 +56,7 @@ public class LightTab
      */
     public String createLight()
     {
+        System.out.println("ligTab -> Creating light...");
         String name = "";
         
         // Get the name from the user
@@ -111,6 +112,7 @@ public class LightTab
      */
     public void deleteActiveLight(int index)
     {
+        System.out.println("ligTab -> Deleting light at " + index + "...");
         // Create a new array with room for 1 less light
         LightObject[] newLights = new LightObject[lights.length - 1];
         
@@ -157,6 +159,7 @@ public class LightTab
      */
     public PointLight getActiveLight()
     {
+        System.out.println("ligTab -> Getting active light...");
         return activeLight.getLight();
     }
     
@@ -167,6 +170,7 @@ public class LightTab
      */
     public String getActiveLightName()
     {
+        System.out.println("ligTab -> Getting active light name " + activeLight.getName() + "...");
         return activeLight.getName();
     }
     
@@ -177,6 +181,7 @@ public class LightTab
      */
     public double getActiveLightX()
     {
+        System.out.println("ligTab -> Getting active light x position " + activeLight.getPercentageX() + "%...");
         return activeLight.getPercentageX();
     }
     
@@ -187,6 +192,7 @@ public class LightTab
      */
     public double getActiveLightY()
     {
+        System.out.println("ligTab -> Getting active light y position " + activeLight.getPercentageY() + "%...");
         return activeLight.getPercentageY();
     }
     
@@ -197,6 +203,7 @@ public class LightTab
      */
     public double getActiveLightZ()
     {
+        System.out.println("ligTab -> Getting active light z position " + activeLight.getPercentageZ() + "%...");
         return activeLight.getPercentageZ();
     }
     
@@ -207,6 +214,7 @@ public class LightTab
      */
     public Color getDefaultColor()
     {
+        System.out.println("ligTab -> Getting default color...");
         return DEFAULT_COLOR;
     }
     
@@ -217,6 +225,7 @@ public class LightTab
      */
     public double getDefaultX()
     {
+        System.out.println("ligTab -> Getting default x position...");
         return DEFAULT_X_PERCENTAGE;
     }
     
@@ -227,6 +236,7 @@ public class LightTab
      */
     public double getDefaultY()
     {
+        System.out.println("ligTab -> Getting default y position...");
         return DEFAULT_Y_PERCENTAGE;
     }
     
@@ -237,6 +247,7 @@ public class LightTab
      */
     public double getDefaultZ()
     {
+        System.out.println("ligTab -> Getting default z position...");
         return DEFAULT_Z_PERCENTAGE;
     }
     
@@ -249,6 +260,7 @@ public class LightTab
      */
     public PointLight getLight(int index)
     {
+        System.out.println("ligTab -> Getting light at position " + index + "...");
         return lights[index].getLight();
     }
     
@@ -259,6 +271,7 @@ public class LightTab
      */
     public int getLightAmount()
     {
+        System.out.println("ligTab -> Getting the number of lights " + lights.length + "...");
         return lights.length;
     }
     
@@ -271,6 +284,7 @@ public class LightTab
      */
     public String getLightName(int index)
     {
+        System.out.println("ligTab -> Getting name of light at position " + index + " " + lights[index].getName() + "...");
         return lights[index].getName();
     }
     
@@ -281,6 +295,7 @@ public class LightTab
      */
     public PointLight[] getLights()
     {
+        System.out.println("ligTab -> Getting all PointLights...");
         PointLight[] pointster = new PointLight[lights.length];
         
         for (int i = 0; i < lights.length; i++)
@@ -299,6 +314,7 @@ public class LightTab
      */
     private String getNameSuggestion()
     {
+        System.out.println("ligTab -> Getting light name suggestion...");
         // The very first name suggestion to present the user with
         String firstSuggestion = "Population Name";
         
@@ -334,6 +350,7 @@ public class LightTab
      */
     public boolean isDuplicateName(String name)
     {
+        System.out.println("ligTab -> Figuring out if " + name + "is already a light name...");
         boolean duplicate = false;
         
         // For each light...
@@ -357,6 +374,7 @@ public class LightTab
      */
     public boolean lightExists()
     {
+        System.out.println("ligTab -> Figuring out if a light currently exists...");
         boolean lightExists = false;
         
         if (lights.length > 0)
@@ -373,9 +391,13 @@ public class LightTab
      */
     public void repositionLights()
     {
-        activeLight.setXPosition(furthest, centerX);
-        activeLight.setYPosition(furthest, centerY);
-        activeLight.setZPosition(furthest, centerZ);
+        System.out.println("ligTab -> Repositioning lights...");
+        for (LightObject light : lights)
+        {
+            light.setXPosition(furthest, centerX);
+            light.setYPosition(furthest, centerY);
+            light.setZPosition(furthest, centerZ);
+        }
     }
     
     /**
@@ -385,6 +407,7 @@ public class LightTab
      */
     public void setActiveLight(int index)
     {
+        System.out.println("ligTab -> Making light " + index + " active...");
         activeLight = lights[index];
     }
     
@@ -395,6 +418,7 @@ public class LightTab
      */
     public void setActiveLightColor(Color colster)
     {
+        System.out.println("ligTab -> Setting the active light's color...");
         activeLight.setColor(colster);
     }
     
@@ -406,6 +430,7 @@ public class LightTab
      */
     public void setActiveLightX(double x)
     {
+        System.out.println("ligTab -> Setting the active light's x position to " + x + "...");
         activeLight.setXPosition(furthest, centerX, x);
     }
     
@@ -418,6 +443,7 @@ public class LightTab
      */
     public void setActiveLightX(String x)
     {
+        System.out.println("ligTab -> Setting the active light's x position as a string to " + x + "...");
         double newX = Double.valueOf(x);
         
         activeLight.setXPosition(furthest, centerX, newX);
@@ -431,6 +457,8 @@ public class LightTab
      */
     public void setActiveLightY(double y)
     {
+        System.out.println("ligTab -> Setting the active light's y position to " + y + "...");
+        
         activeLight.setYPosition(furthest, centerY, y);
     }
     
@@ -443,6 +471,7 @@ public class LightTab
      */
     public void setActiveLightY(String y)
     {
+        System.out.println("ligTab -> Setting the active light's y position as a string to " + y + "...");
         double newY = Double.valueOf(y);
         
         activeLight.setYPosition(furthest, centerY, newY);
@@ -456,6 +485,7 @@ public class LightTab
      */
     public void setActiveLightZ(double z)
     {
+        System.out.println("ligTab -> Setting the active light's z position to " + z + "...");
         activeLight.setZPosition(furthest, centerZ, z);
     }
     
@@ -468,6 +498,7 @@ public class LightTab
      */
     public void setActiveLightZ(String z)
     {
+        System.out.println("ligTab -> Setting the active light's z position as a string to " + z + "...");
         double newZ = Double.valueOf(z);
         
         activeLight.setZPosition(furthest, centerZ, newZ);
@@ -482,6 +513,7 @@ public class LightTab
      */
     public void setFurthestPoint(double distance)
     {
+        System.out.println("ligTab -> Setting the greatest distance to " + distance + "...");
         furthest = distance;
     }
     
@@ -494,6 +526,7 @@ public class LightTab
      */
     public void setOrigin(double x, double y, double z)
     {
+        System.out.println("ligTab -> Setting the terrain's origin to " + x + "," + y + "," + z + "...");
         centerX = x;
         centerY = y;
         centerZ = z;
@@ -504,6 +537,7 @@ public class LightTab
      */
     private Optional showNameDialog()
     {
+        System.out.println("ligTab -> Showing new light dialog...");
         TextInputDialog nameDialog = new TextInputDialog(getNameSuggestion());
         
         nameDialog.setTitle("Create New Light");

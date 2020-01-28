@@ -139,7 +139,6 @@ public class Controller
     @FXML private SplitPane splitster;
     
     @FXML private Tab terrainTab;
-    @FXML private Tab texturesTab;
     @FXML private Tab renderTab;
 
     /**
@@ -165,7 +164,6 @@ public class Controller
         // Create the icons for the tabs
         renderTab.setGraphic(buildIcon("icons/render.png"));
         terrainTab.setGraphic(buildIcon("icons/terrain.png"));
-        texturesTab.setGraphic(buildIcon("icons/textures.png"));
         
         preview = new SubScene(new Group(), PREVIEW_WIDTH, PREVIEW_HEIGHT, true,
                 SceneAntialiasing.BALANCED);
@@ -189,6 +187,7 @@ public class Controller
         terrainSpinnerVRW.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
+            System.out.println("Terrain vertex resolution width spinner triggered by value...");
             terTab.setWidth(newster);
             
             regeneratePopulation();
@@ -201,6 +200,7 @@ public class Controller
         {
             if (newster == false)
             {
+                System.out.println("Terrain vertex resolution width spinner triggered by focus...");
                 terTab.setWidth(terrainSpinnerVRW.getEditor().getText());
             
                 regeneratePopulation();
@@ -210,6 +210,7 @@ public class Controller
         terrainSpinnerVRD.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
+            System.out.println("Terrain vertex resolution depth spinner triggered by value...");
             terTab.setDepth(newster);
             
             regeneratePopulation();
@@ -219,6 +220,7 @@ public class Controller
         {
             if (newster == false)
             {
+                System.out.println("Terrain vertex resolution depth spinner triggered by focus...");
                 terTab.setDepth(terrainSpinnerVRD.getEditor().getText());
             
                 regeneratePopulation();
@@ -228,6 +230,7 @@ public class Controller
         terrainSliderDMS.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
+            System.out.println("Terrain displacement map slider triggered by focus...");
             terTab.setDisplacementStrength(newster.floatValue());
             
             popTab.repositionPopulations(terTab.getPoints());
@@ -240,6 +243,7 @@ public class Controller
         //----------------------------------------------------------------------
         renderColorBC.valueProperty().addListener((obster, oldster, newster) ->
         {
+            System.out.println("Render background color color picker triggered...");
             renTab.setBackColor(newster);
             preview.setFill(renTab.getBackColor());
         });
@@ -251,6 +255,7 @@ public class Controller
         {
             if (listen)
             {
+                System.out.println("Camera horizontal angle slider triggered...");
                 camTab.setHorizontalAngle(newster.doubleValue());
                 popTab.setRotationY(newster.doubleValue());
             
@@ -262,6 +267,7 @@ public class Controller
         {
             if (listen)
             {
+                System.out.println("Camera vertical angle slider triggered...");
                 camTab.setVerticalAngle(newster.doubleValue());
                 popTab.setRotationX(newster.doubleValue());
             
@@ -272,6 +278,7 @@ public class Controller
         cameraSpinnerPAH.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
+            System.out.println("Camera horizontal position adjustment spinner triggered by value...");
             camTab.setXAdjustment(newster);
             preview.setCamera(camTab.getCamera());
         });
@@ -280,6 +287,7 @@ public class Controller
         {
             if (newster == false)
             {
+                System.out.println("Camera horizontal position adjustment spinner triggered by focus...");
                 camTab.setXAdjustment(cameraSpinnerPAH.getEditor().getText());
                 preview.setCamera(camTab.getCamera());
             }
@@ -288,6 +296,7 @@ public class Controller
         cameraSpinnerPAV.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
+            System.out.println("Camera vertical position adjustment spinner triggered by value...");
             camTab.setYAdjustment(newster);
             preview.setCamera(camTab.getCamera());
         });
@@ -296,6 +305,7 @@ public class Controller
         {
             if (newster == false)
             {
+                System.out.println("Camera vertical position adjustment spinner triggered by focus...");
                 camTab.setYAdjustment(cameraSpinnerPAV.getEditor().getText());
                 preview.setCamera(camTab.getCamera());
             }
@@ -304,6 +314,7 @@ public class Controller
         cameraSpinnerPAZ.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
+            System.out.println("Camera zoom spinner triggered by value...");
             camTab.setZoom(newster);
             preview.setCamera(camTab.getCamera());
         });
@@ -312,6 +323,7 @@ public class Controller
         {
             if (newster == false)
             {
+                System.out.println("Camera zoom spinner triggered by focus...");
                 camTab.setZoom(cameraSpinnerPAZ.getEditor().getText());
                 preview.setCamera(camTab.getCamera());
             }
@@ -320,6 +332,7 @@ public class Controller
         cameraSliderFOVD.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
+            System.out.println("Camera field of view degrees slider triggered...");
             camTab.setFieldOfView(newster.doubleValue());
             
             preview.setCamera(camTab.getCamera());
@@ -327,6 +340,7 @@ public class Controller
         
         cameraRadioFOVH.setOnAction((evster) ->
         {
+            System.out.println("Camera horizontal field of view radio button triggered...");
             camTab.setOrientation(cameraRadioFOVH.isSelected());
             
             preview.setCamera(camTab.getCamera());
@@ -334,6 +348,7 @@ public class Controller
         
         cameraRadioFOVV.setOnAction((evster) ->
         {
+            System.out.println("Camera vertical field of view radio button triggered...");
             camTab.setOrientation(cameraRadioFOVH.isSelected());
             
             preview.setCamera(camTab.getCamera());
@@ -346,6 +361,7 @@ public class Controller
         {
             if (listen == true)
             {
+                System.out.println("Light choice box triggered...");
                 // Index of currently selected light
                 int selectedIndex =
                         lightChoiceL.getSelectionModel().getSelectedIndex();
@@ -361,6 +377,7 @@ public class Controller
         {
             if (listen)
             {
+                System.out.println("Light x position spinner triggered by value...");
                 ligTab.setActiveLightX(newster);
             
                 refreshPreview();
@@ -371,6 +388,7 @@ public class Controller
         {
             if (!newster)
             {
+                System.out.println("Light x position spinner triggered by focus...");
                 ligTab.setActiveLightX(lightSpinnerPX.getEditor().getText());
                 
                 refreshPreview();
@@ -386,6 +404,7 @@ public class Controller
         {
             if (listen)
             {
+                System.out.println("Light y position spinner triggered by value...");
                 ligTab.setActiveLightY(newster);
             
                 refreshPreview();
@@ -396,6 +415,7 @@ public class Controller
         {
             if (newster == false)
             {
+                System.out.println("Light y position spinner triggered by focus...");
                 ligTab.setActiveLightY(lightSpinnerPY.getEditor().getText());
                 
                 refreshPreview();
@@ -409,6 +429,7 @@ public class Controller
         {
             if (listen)
             {
+                System.out.println("Light z position spinner triggered by value...");
                 ligTab.setActiveLightZ(newster);
             
                 refreshPreview();
@@ -419,6 +440,7 @@ public class Controller
         {
             if (newster == false)
             {
+                System.out.println("Light z position spinner triggered by focus...");
                 ligTab.setActiveLightZ(lightSpinnerPZ.getEditor().getText());
                 
                 refreshPreview();
@@ -432,6 +454,7 @@ public class Controller
         {
             if (listen)
             {
+                System.out.println("Light color color picker triggered...");
                 ligTab.setActiveLightColor(newster);
             }
         });
@@ -443,6 +466,7 @@ public class Controller
         {
             if (listen == true)
             {
+                System.out.println("Population choice box triggered...");
                 // Index of currently selected population
                 int selectedIndex =
                         populationChoiceP.getSelectionModel()
@@ -459,6 +483,7 @@ public class Controller
         {
             if (listen)
             {
+                System.out.println("Population vertex resolution width spinner triggered by value...");
                 popTab.setActivePopulationVertexWidth(newster);
             
                 refreshPreview();
@@ -469,6 +494,7 @@ public class Controller
         {
             if (newster == false && popTab.populationExists())
             {
+                System.out.println("Population vertex resolution width spinner triggered by focus...");
                 popTab.setActivePopulationVertexWidth(
                         populationSpinnerVRW.getEditor().getText());
             
@@ -481,6 +507,7 @@ public class Controller
         {
             if (listen)
             {
+                System.out.println("Population vertex resolution height spinner triggered by value...");
                 popTab.setActivePopulationVertexHeight(newster);
             
                 refreshPreview();
@@ -491,6 +518,7 @@ public class Controller
         {
             if (newster == false && popTab.populationExists())
             {
+                System.out.println("Population vertex resolution height spinner triggered by focus...");
                 popTab.setActivePopulationVertexHeight(
                         populationSpinnerVRH.getEditor().getText());
             
@@ -501,6 +529,7 @@ public class Controller
         populationSliderDRS.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
+            System.out.println("Population displacement range strength slider triggered...");
             popTab.setActivePopulationDisplacementStrength(
                     newster.intValue());
             
@@ -520,6 +549,7 @@ public class Controller
         // If the user successfully supplied an image...
         if (texTab.addTexture(true))
         {
+            System.out.println("Adding color texture ...");
             // ...stop listening for action events.
             listen = false;
             
@@ -557,6 +587,7 @@ public class Controller
         // If the user successfully supplied an image...
         if (texTab.addTexture(false))
         {
+            System.out.println("Adding gray texture ...");
             // ...stop listening for action events.
             listen = false;
             
@@ -608,6 +639,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing terrain displacement map...");
             // ...get the selected image name from the combo box.
             String name = terrainComboDM.getValue().toString();
             
@@ -640,6 +672,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing first population displacement range map...");
             // ...get the selected image name from the combo box.
             String name = populationComboDR1.getValue().toString();
             
@@ -667,6 +700,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing population height map...");
             // ...get the selected image name from the combo box
             String name = populationComboSH.getValue().toString();
             
@@ -694,6 +728,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing population placment map...");
             // ...get the camera's rotation values.
             double xRotate = camTab.getXRotate().getAngle();
             double yRotate = camTab.getYRotate().getAngle();
@@ -726,6 +761,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing population bump map...");
             // ...get the selected image name from the combo box.
             String name = populationComboBM.getValue().toString();
             
@@ -753,6 +789,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing population specular map...");
             // ...get the selected image name from the combo box.
             String name = populationComboSM.getValue().toString();
             
@@ -780,6 +817,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing population texture...");
             // ...get the selected image name from the combo box.
             String name = populationComboT.getValue().toString();
             
@@ -808,6 +846,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing second population displacement range map...");
             // ...get the selected image name from the combo box.
             String name = populationComboDR2.getValue().toString();
             
@@ -835,6 +874,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing population shift map...");
             // ...get the selected image name from the combo box.
             String name = populationComboS.getValue().toString();
             
@@ -861,6 +901,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing terrain bump map...");
             // ...get the selected image name from the combo box.
             String name = terrainComboBM.getValue().toString();
             
@@ -888,6 +929,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing terrain specular map...");
             // ...get the selected image name from the combo box.
             String name = terrainComboSM.getValue().toString();
             
@@ -915,6 +957,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing terrain texture...");
             // ...get the selected image name from the combo box.
             String name = terrainComboT.getValue().toString();
             
@@ -942,6 +985,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {
+            System.out.println("Changing population width map...");
             // ...get the selected image name from the combo box.
             String name = populationComboSW.getValue().toString();
             
@@ -969,6 +1013,7 @@ public class Controller
         // As long as a name was given by the user...
         if (!name.equals(""))
         {
+            System.out.println("Creating a light...");
             // ...pause on listening to events.
             listen = false;
                 
@@ -1005,6 +1050,7 @@ public class Controller
         // As long as a name was given by the user...
         if (!name.equals(""))
         {
+            System.out.println("Creating a population...");
             // ...pause on listening to events.
             listen = false;
                 
@@ -1028,6 +1074,7 @@ public class Controller
     @FXML
     protected void deleteLight()
     {
+        System.out.println("Deleting a light...");
         // The index of the currently selected light
         int selectedIndex
                 = lightChoiceL.getSelectionModel().getSelectedIndex();
@@ -1085,6 +1132,7 @@ public class Controller
     @FXML
     protected void deletePopulation()
     {
+        System.out.println("Deleting a population...");
         // The index of the currently selected population
         int selectedIndex
                 = populationChoiceP.getSelectionModel().getSelectedIndex();
@@ -1150,6 +1198,7 @@ public class Controller
      */
     protected void enableLightControls(boolean toEnable)
     {
+        System.out.println("Enabling light controls: " + toEnable + "...");
         lightChoiceL.setDisable(!toEnable);
         lightButtonLD.setDisable(!toEnable);
         lightSpinnerPX.setDisable(!toEnable);
@@ -1167,6 +1216,7 @@ public class Controller
      */
     protected void enablePopulationControls(boolean toEnable)
     {
+        System.out.println("Enabling population controls: " + toEnable + "...");
         populationChoiceP.setDisable(!toEnable);
         populationButtonPRG.setDisable(!toEnable);
         populationButtonPD.setDisable(!toEnable);
@@ -1217,6 +1267,7 @@ public class Controller
      */
     protected Group getPreview()
     {
+        System.out.println("Getting the group of objects for the preview...");
         int lightAmount = ligTab.getLightAmount();
         int populationAmount = popTab.getPopulationAmount();
         
@@ -1249,6 +1300,7 @@ public class Controller
      */
     protected void loadLight()
     {
+        System.out.println("Loading a light...");
         lightSpinnerPX.getValueFactory().setValue(ligTab.getActiveLightX());
         lightSpinnerPY.getValueFactory().setValue(ligTab.getActiveLightY());
         lightSpinnerPZ.getValueFactory().setValue(ligTab.getActiveLightZ());
@@ -1260,6 +1312,7 @@ public class Controller
      */
     protected void loadPopulation()
     {
+        System.out.println("Loading a population...");
         listen = false;
         
         // Gets the names of the maps to load
@@ -1352,6 +1405,7 @@ public class Controller
      */
     protected void prepareForRender()
     {
+        System.out.println("Preparing for a render...");
         renTab.setWidth(renderSpinnerRW.getEditor().getText());
         renTab.setHeight(renderSpinnerRH.getEditor().getText());
         
@@ -1369,6 +1423,7 @@ public class Controller
      */
     protected void preparePreview()
     {
+        System.out.println("Preparing to display the preview...");
         terTab.prepareTerrain();
         
         // To be centered, the terrain must be adjusted by half of the preview's
@@ -1386,6 +1441,7 @@ public class Controller
      */
     protected void refreshPreview()
     {
+        System.out.println("Refreshing the preview...");
         // Re-center the camera
         camTab.setOrigin(terTab.getCenterX(), terTab.getCenterY(),
                 terTab.getCenterZ());
@@ -1412,6 +1468,7 @@ public class Controller
     @FXML
     protected void regeneratePopulation()
     {
+        System.out.println("Regenerating the active population...");
         // Get the camera's rotation value
         double xRotate = camTab.getXRotate().getAngle();
         double yRotate = camTab.getYRotate().getAngle();
@@ -1427,6 +1484,7 @@ public class Controller
      */
     protected void removeViewColor()
     {
+        System.out.println("Removing color from the grayscale image previews...");
         ColorAdjust grayscale = new ColorAdjust();
         grayscale.setSaturation(-1);
         
@@ -1456,6 +1514,7 @@ public class Controller
         // If the user chooses to continue...
         if (answer.get() == ButtonType.OK)
         {
+            System.out.println("Resetting controls...");
             // ...stop listening to action events.
             listen = false;
             
@@ -1536,6 +1595,7 @@ public class Controller
      */
     protected void resetLightControls()
     {
+        System.out.println("Resetting the light controls...");
         lightSpinnerPX.getValueFactory().setValue(ligTab.getDefaultX());
         lightSpinnerPY.getValueFactory().setValue(ligTab.getDefaultY());
         lightSpinnerPZ.getValueFactory().setValue(ligTab.getDefaultZ());
@@ -1548,6 +1608,7 @@ public class Controller
      */
     protected void resetPopulationControls()
     {
+        System.out.println("Resetting the population controls...");
         // Clear map previews
         populationImageP.setImage(null);
         populationImageS.setImage(null);
@@ -1580,6 +1641,7 @@ public class Controller
      */
     protected void resetPreviewSize()
     {
+        System.out.println("Resetting the preview size...");
         // To be centered, the terrain must be adjusted by half of the preview's
         // size
         camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
@@ -1596,6 +1658,7 @@ public class Controller
     @FXML
     protected void save()
     {
+        System.out.println("Saving...");
         prepareForRender();
         
         // Create a screenshot of the preview
@@ -1614,6 +1677,7 @@ public class Controller
     @FXML
     protected void saveAs()
     {
+        System.out.println("Saving as...");
         prepareForRender();
         
         // Create a screenshot of the preview

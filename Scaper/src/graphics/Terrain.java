@@ -41,6 +41,7 @@ public class Terrain extends MeshObject
      */
     public double getCenter(char dimension)
     {
+        System.out.println("Terrain -> Calculating the center...");
         // The number of points of the terrain of which their position will be
         // gathered.
         final int CENTER_POINTS_AMOUNT = 5;
@@ -96,6 +97,7 @@ public class Terrain extends MeshObject
      */
     public int getDepth()
     {
+        System.out.println("Terrain -> Getting the depth " + depth + "...");
         return depth;
     }
     
@@ -108,6 +110,7 @@ public class Terrain extends MeshObject
      */
     private int getDimensionValue(char dimension)
     {
+        System.out.println("Terrain -> Getting the dimensional value for " + dimension + "...");
         int value = 0;
         
         if (dimension == 'y')
@@ -130,6 +133,7 @@ public class Terrain extends MeshObject
      */
     public double getFurthestPoint()
     {
+        System.out.println("Terrain -> Getting the greatest distance from the center...");
         // The furthest distance for each dimension
         double furthestX = getFurthestPoint('x');
         double furthestY = getFurthestPoint('y');
@@ -165,6 +169,7 @@ public class Terrain extends MeshObject
      */
     private double getFurthestPoint(char dimension)
     {
+        System.out.println("Terrain -> Getting the greatest distance from the center on the " + dimension + " axis...");
         double center = getCenter(dimension);
         
         // The furthest point
@@ -208,6 +213,7 @@ public class Terrain extends MeshObject
      */
     public float[] getPoints()
     {
+        System.out.println("Terrain -> Getting the points array...");
         return points;
     }
     
@@ -218,6 +224,7 @@ public class Terrain extends MeshObject
      */
     public int getWidth()
     {
+        System.out.println("Terrain -> Getting the width " + width + "...");
         return width;
     }
 }
