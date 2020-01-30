@@ -507,9 +507,12 @@ public class Controller
         populationSliderDRS.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            System.out.println("Population displacement range strength slider triggered...");
-            popTab.setActivePopulationDisplacementStrength(
-                    newster.intValue());
+            if (listen)
+            {
+                System.out.println("Population displacement range strength slider triggered...");
+                popTab.setActivePopulationDisplacementStrength(
+                        newster.intValue());
+            }
         });
         
     }
