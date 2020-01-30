@@ -181,8 +181,6 @@ public class Individual extends MeshObject
         faceDepth = heightster;
         
         loadPoints();
-        reposition();
-        preparePivotPoints();
     }
     
     /**
@@ -196,7 +194,6 @@ public class Individual extends MeshObject
         faceWidth = widthster;
         
         loadPoints();
-        reposition();
         preparePivotPoints();
     }
     
