@@ -819,6 +819,8 @@ public class Population
                     
                     int heightBrightness = getColorValue(false, ' ',
                             heightColor);
+                            
+                    heightBrightness = heightBrightness / SIZE_DIVIDER;
                     
                     individuals[count].setFaceHeight(heightBrightness);
                     
@@ -1023,7 +1025,8 @@ public class Population
                     // Get the correct pixel color for this Individual
                     Color widthColor = getPixelColor(true, i, j, width);
                     
-                    int widthBrightness = getColorValue(false, ' ', widthColor);
+                    int widthBrightness = getColorValue(false, ' ', widthColor)
+                            / SIZE_DIVIDER;
                     
                     individuals[count].setFaceWidth(widthBrightness);
                     
