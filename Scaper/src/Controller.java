@@ -1006,7 +1006,7 @@ public class Controller
                 
             resetLightControls();
                 
-            refreshPreview();
+            preview.setRoot(getPreview());
         }
     }
     
@@ -1100,7 +1100,7 @@ public class Controller
 
         loadLight();
 
-        refreshPreview();
+        preview.setRoot(getPreview());
     }
     
     /**
@@ -1163,7 +1163,7 @@ public class Controller
         // Continue listening to events
         listen = true;
         
-        refreshPreview();
+        preview.setRoot(getPreview());
     }
     
     /**
@@ -1400,25 +1400,7 @@ public class Controller
      */
     protected void preparePreview()
     {
-        System.out.println("Preparing to display the preview...");
         terTab.prepareTerrain();
-        
-        // To be centered, the terrain must be adjusted by half of the preview's
-        // size
-        camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
-        
-        refreshPreview();
-        
-        preview.setFill(renTab.getBackColor());
-    }
-    
-    /**
-     * Refreshes the model preview. This should be used each time after a change
-     * is made to the shape of the 3d object.
-     */
-    protected void refreshPreview()
-    {
-        System.out.println("Refreshing the preview...");
         
         // Estimation of the center point of the terrain
         double terrainCenterX = terTab.getCenterX();
@@ -1428,21 +1410,19 @@ public class Controller
         // The greatest distance of a point from the terrain's center
         double terrainFarPoint = terTab.getFurthestPoint();
         
+        System.out.println("Preparing to display the preview...");
+        
+        // To be centered, the terrain must be adjusted by half of the preview's
+        // size
+        camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
+        
         // Re-center the camera
         camTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
         camTab.setFurthestPoint(terrainFarPoint);
         
-        // Re-position lights
-        ligTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
-        ligTab.setFurthestPoint(terrainFarPoint);
-        
-        if (ligTab.lightExists())
-        {
-            ligTab.repositionLights();
-        }
-        
         preview.setRoot(getPreview());
         preview.setCamera(camTab.getCamera());
+        preview.setFill(renTab.getBackColor());
     }
     
     /**
@@ -1459,7 +1439,7 @@ public class Controller
         
         popTab.loadActivePopulation(xRotate, yRotate, terTab.getPoints());
         
-        refreshPreview();
+        preview.setRoot(getPreview());
     }
     
     /**
