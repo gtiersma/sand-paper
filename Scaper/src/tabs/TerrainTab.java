@@ -41,7 +41,6 @@ public class TerrainTab
      */
     public double getCenterX()
     {
-        System.out.println("terTab -> Getting terrain center on x scale " + terster.getCenter('x') + "...");
         return terster.getCenter('x');
     }
     
@@ -52,7 +51,6 @@ public class TerrainTab
      */
     public double getCenterY()
     {
-        System.out.println("terTab -> Getting terrain center on y scale " + terster.getCenter('y') + "...");
         return terster.getCenter('y');
     }
     
@@ -63,7 +61,6 @@ public class TerrainTab
      */
     public double getCenterZ()
     {
-        System.out.println("terTab -> Getting terrain center on z scale " + terster.getCenter('z') + "...");
         return terster.getCenter('z');
     }
     
@@ -74,7 +71,6 @@ public class TerrainTab
      */
     public int getDefaultSize()
     {
-        System.out.println("terTab -> Getting the default terrain size...");
         return DEFAULT_SIZE;
     }
     
@@ -85,7 +81,6 @@ public class TerrainTab
      */
     public double getDefaultStrength()
     {
-        System.out.println("terTab -> Getting the default terrain displacement strength...");
         return DEFAULT_STRENGTH;
     }
     
@@ -97,7 +92,6 @@ public class TerrainTab
      */
     public double getFurthestPoint()
     {
-        System.out.println("terTab -> Getting the terrain's greatest distance " + terster.getFurthestPoint() + "...");
         return terster.getFurthestPoint();
     }
     
@@ -109,7 +103,6 @@ public class TerrainTab
      */
     public float[] getPoints()
     {
-        System.out.println("terTab -> Getting the terrain's points...");
         return terster.getPoints();
     }
     
@@ -120,7 +113,6 @@ public class TerrainTab
      */
     public MeshView getTerrain()
     {
-        System.out.println("terTab -> Getting the terrain's MeshView...");
         return viewster;
     }
     
@@ -131,7 +123,6 @@ public class TerrainTab
      */
     public int getTerrainDepth()
     {
-        System.out.println("terTab -> Getting the terrain's depth " + terster.getDepth() + "...");
         return terster.getDepth();
     }
     
@@ -142,7 +133,6 @@ public class TerrainTab
      */
     public int getTerrainWidth()
     {
-        System.out.println("terTab -> Getting the terrain's width " + terster.getWidth() + "...");
         return terster.getWidth();
     }
     
@@ -151,7 +141,6 @@ public class TerrainTab
      */
     public void prepareTerrain()
     {
-        System.out.println("terTab -> Preparing the terrain...");
         terster.setTexture(BLANK_IMAGE);
         terster.load();
         
@@ -165,7 +154,6 @@ public class TerrainTab
      */
     public void setBump(Image bumpster)
     {
-        System.out.println("terTab -> Setting the terrain's bump map...");
         terster.setBump(bumpster);
     }
     
@@ -176,7 +164,6 @@ public class TerrainTab
      */
     public void setDepth(int depth)
     {
-        System.out.println("terTab -> Setting the terrain's depth " + depth + "...");
         terster.setDepth(depth);
     }
     
@@ -187,7 +174,6 @@ public class TerrainTab
      */
     public void setDepth(String depth)
     {
-        System.out.println("terTab -> Setting the terrain's depth as a string " + depth + "...");
         terster.setDepth(Integer.parseInt(depth));
     }
     
@@ -198,7 +184,6 @@ public class TerrainTab
      */
     public void setDisplacement(Image displacement)
     {
-        System.out.println("terTab -> Setting the terrain's displacement strength...");
         terster.setDisplacement(displacement);
     }
     
@@ -209,7 +194,6 @@ public class TerrainTab
      */
     public void setDisplacementStrength(float displacementStrength)
     {
-        System.out.println("terTab -> Setting the terrain's displacement strength " + displacementStrength + "...");
         terster.setDisplacementStrength(displacementStrength);
     }
     
@@ -220,7 +204,6 @@ public class TerrainTab
      */
     public void setSpecular(Image specster)
     {
-        System.out.println("terTab -> Setting the terrain's specular map...");
         terster.setSpecular(specster);
     }
     
@@ -231,7 +214,6 @@ public class TerrainTab
      */
     public void setTexture(Image texture)
     {
-        System.out.println("terTab -> Setting the terrain's texture...");
         terster.setTexture(texture);
     }
     
@@ -242,7 +224,6 @@ public class TerrainTab
      */
     public void setWidth(int width)
     {
-        System.out.println("terTab -> Setting the terrain's width " + width + "...");
         terster.setWidth(width);
     }
     
@@ -253,7 +234,6 @@ public class TerrainTab
      */
     public void setWidth(String width)
     {
-        System.out.println("terTab -> Setting the terrain's width as a string " + width + "...");
         terster.setWidth(Integer.parseInt(width));
     }
 }

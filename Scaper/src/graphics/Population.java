@@ -117,7 +117,6 @@ public class Population
      */
     private void calculateLocations()
     {
-        System.out.println("Population -> Determining where to place Individuals for population " + name + "...");
         size = 0;
         
         // For each row of the terrain's vertices...
@@ -172,7 +171,6 @@ public class Population
             int shiftY, int shiftZ, double x, double y, double z,
             double xRotate, double yRotate)
     {
-        System.out.println("Population -> Creating an Individual for population " + name + "...");
         Image displacement = generateDisplacement();
         
         Individual newIndividual = new Individual(vertexWidth, vertexHeight,
@@ -208,7 +206,6 @@ public class Population
     private void createIndividuals(double xRotate,
             double yRotate, float[] terrainPoints)
     {
-        System.out.println("Population -> Creating all of the Individuals for population " + name + "...");
         // For each row of vertices on the terrain...
         for (int i = 0; i < locations.length; i++)
         {
@@ -271,7 +268,6 @@ public class Population
      */
     private Image generateDisplacement()
     {
-        System.out.println("Population -> Constructing a new displacement map for population " + name + "...");
         // The generated map
         WritableImage newDisplacement = new WritableImage(vertexWidth,
                 vertexHeight);
@@ -312,7 +308,6 @@ public class Population
      */
     public TextureObject getBumpMap()
     {
-        System.out.println("Population -> Getting population " + name + " bump map " + bump.getName() + "...");
         return bump;
     }
     
@@ -334,7 +329,6 @@ public class Population
     private int getColorValue(boolean negativeRange, char channel,
             Color colster)
     {
-        System.out.println("Population -> Calculating the value for a color for population " + name + "...");
         int colorValue;
         
         switch (channel)
@@ -369,7 +363,6 @@ public class Population
      */
     public int getDisplacementStrength()
     {
-        System.out.println("Population -> Getting population " + name + " displacement strength " + displacementStrength + "...");
         return displacementStrength;
     }
     
@@ -384,7 +377,6 @@ public class Population
      */
     private int getDistanceBetweenVertices(double length, double vertexAmount)
     {
-        System.out.println("Population -> Getting distance between 2 non-displaced vertices on the terrain " + (int)(length / vertexAmount) + "...");
         return (int)(length / vertexAmount);
     }
     
@@ -396,7 +388,6 @@ public class Population
      */
     public TextureObject getFirstDisplacement()
     {
-        System.out.println("Population -> Getting population " + name + " first displacement map in the displacement range " + displacementRange[0].getName() + "...");
         return displacementRange[0];
     }
     
@@ -409,7 +400,6 @@ public class Population
      */
     public TextureObject getHeight()
     {
-        System.out.println("Population -> Getting population " + name + " height map " + height.getName() + "...");
         return height;
     }
     
@@ -420,7 +410,6 @@ public class Population
      */
     public String getName()
     {
-        System.out.println("Population -> Getting population " + name + " name...");
         return name;
     }
     
@@ -440,7 +429,6 @@ public class Population
     private Color getPixelColor(boolean forTerrainVertices, int positionX,
             int positionY, TextureObject texster)
     {
-        System.out.println("Population -> Getting a pixel's color for population " + name + "...");
         // The number of UV points wide that the map will contain
         int widthUV;
         // The number of UV points high that the map will contain
@@ -484,7 +472,6 @@ public class Population
      */
     private int getPixelPosition(int distance, int vertexPosition)
     {
-        System.out.println("Population -> Getting population " + name + " UV coordinate " + (distance * vertexPosition) + "...");
         return distance * vertexPosition;
     }
     
@@ -495,7 +482,6 @@ public class Population
      */
     public TextureObject getPlacement()
     {
-        System.out.println("Population -> Getting population " + name + " placement map " + placement.getName() + "...");
         return placement;
     }
     
@@ -506,7 +492,6 @@ public class Population
      */
     public Group getPopulation()
     {
-        System.out.println("Population -> Getting population " + name + "...");
         Group groupster = new Group();
         
         for (Individual individual : individuals)
@@ -527,7 +512,6 @@ public class Population
      */
     private Color getRandomColor(Color[] colors)
     {
-        System.out.println("Population -> Getting a random color for population " + name + "...");
         // The color values for the random color
         double newRed;
         double newGreen;
@@ -567,7 +551,6 @@ public class Population
      */
     private double getRandomNumber(double min, double max)
     {
-        System.out.println("Population -> Getting a random number between " + min + " and " + max + " for population " + name + "...");
         double difference = max - min;
         
         double newNumber;
@@ -587,7 +570,6 @@ public class Population
      */
     public TextureObject getSecondDisplacement()
     {
-        System.out.println("Population -> Getting population " + name + " second displacement map in the displacement range " + displacementRange[1].getName() + "...");
         return displacementRange[1];
     }
     
@@ -598,7 +580,6 @@ public class Population
      */
     public TextureObject getShift()
     {
-        System.out.println("Population -> Getting population " + name + " shift map " + shift.getName() + "...");
         return shift;
     }
     
@@ -609,7 +590,6 @@ public class Population
      */
     public TextureObject getSpecularMap()
     {
-        System.out.println("Population -> Getting population " + name + " specular map " + specular.getName() + "...");
         return specular;
     }
     
@@ -620,7 +600,6 @@ public class Population
      */
     public TextureObject getTexture()
     {
-        System.out.println("Population -> Getting population " + name + " texture " + texture.getName() + "...");
         return texture;
     }
     
@@ -631,7 +610,6 @@ public class Population
      */
     public int getVertexHeight()
     {
-        System.out.println("Population -> Getting population " + name + " height " + vertexHeight + "...");
         return vertexHeight;
     }
     
@@ -642,7 +620,6 @@ public class Population
      */
     public int getVertexWidth()
     {
-        System.out.println("Population -> Getting population " + name + " width " + vertexWidth + "...");
         return vertexWidth;
     }
     
@@ -655,7 +632,6 @@ public class Population
      */
     public TextureObject getWidth()
     {
-        System.out.println("Population -> Getting population " + name + " width map " + width.getName() + "...");
         return width;
     }
     
@@ -670,7 +646,6 @@ public class Population
      */
     private boolean isRandomlyBrightEnough(Color shade)
     {
-        System.out.println("Population -> Determining if a color is bright enough for population " + name + "...");
         boolean brightEnough = false;
         
         double brightness = shade.getBrightness();
@@ -701,7 +676,6 @@ public class Population
      */
     public void load(double xRotate, double yRotate, float[] terrainPoints)
     {
-        System.out.println("Population -> Loading population " + name + "...");
         // Remove all Individuals
         individuals = new Individual[0];
         
@@ -718,7 +692,6 @@ public class Population
      */
     public void reposition(float[] terrainPoints)
     {
-        System.out.println("Population -> Repositioning population " + name + "...");
         // The index of the Individual currently being repositioned
         int index = 0;
         
@@ -754,7 +727,6 @@ public class Population
      */
     public void setBumpMap(TextureObject bumpster)
     {
-        System.out.println("Population -> Setting bump map to " + bumpster.getName() + " for population " + name + "...");
         bump = bumpster;
         
         for (Individual individual : individuals)
@@ -770,7 +742,6 @@ public class Population
      */
     public void setDisplacementStrength(int strength)
     {
-        System.out.println("Population -> Setting displacement strength to " + strength + " for population " + name + "...");
         displacementStrength = strength;
         
         for (Individual inster : individuals)
@@ -786,7 +757,6 @@ public class Population
      */
     public void setFirstDisplacement(TextureObject dister)
     {
-        System.out.println("Population -> Setting the first displacement map in the displacement range to " + dister.getName() + " for population " + name + "...");
         displacementRange[0] = dister;
         
         for (Individual inster : individuals)
@@ -804,7 +774,6 @@ public class Population
      */
     public void setHeight(TextureObject heightster)
     {
-        System.out.println("Population -> Setting the height map to " + heightster.getName() + " for population " + name + "...");
         height = heightster;
         
         int count = 0;
@@ -846,7 +815,6 @@ public class Population
     public void setPlacement(double xRotate, double yRotate,
             float terrainPoints[], TextureObject placster)
     {
-        System.out.println("Population -> Setting the placement map to " + placster.getName() + " for population " + name + "...");
         placement = placster;
         
         load(xRotate, yRotate, terrainPoints);
@@ -863,7 +831,6 @@ public class Population
      */
     public void setShift(TextureObject shiftster)
     {
-        System.out.println("Population -> Setting the shift map to " + shiftster.getName() + " for population " + name + "...");
         shift = shiftster;
         
         int count = 0;
@@ -901,7 +868,6 @@ public class Population
      */
     public void setRotationX(double angle)
     {
-        System.out.println("Population -> Setting the population " + name + " rotation on the x axis to " + angle + "...");
         for (Individual individual : individuals)
         {
             individual.setRotationX(angle);
@@ -916,7 +882,6 @@ public class Population
      */
     public void setRotationY(double angle)
     {
-        System.out.println("Population -> Setting the population " + name + " rotation on the y axis to " + angle + "...");
         for (Individual individual : individuals)
         {
             individual.setRotationY(angle);
@@ -930,7 +895,6 @@ public class Population
      */
     public void setSecondDisplacement(TextureObject dister)
     {
-        System.out.println("Population -> Setting the second displacement map in the displacement range to " + dister.getName() + " for the population " + name + "...");
         displacementRange[1] = dister;
         
         for (Individual inster : individuals)
@@ -946,7 +910,6 @@ public class Population
      */
     public void setSpecularMap(TextureObject specster)
     {
-        System.out.println("Population -> Setting the specular map to " + specster.getName() + " for the population " + name + "...");
         specular = specster;
         
         for (Individual individual : individuals)
@@ -962,7 +925,6 @@ public class Population
      */
     public void setTexture(TextureObject texster)
     {
-        System.out.println("Population -> Setting the texture to " + texster.getName() + " for the population " + name + "...");
         texture = texster;
         
         for (Individual individual : individuals)
@@ -978,7 +940,6 @@ public class Population
      */
     public void setVertexHeight(int heightster)
     {
-        System.out.println("Population -> Setting the population " + name + " height to " + heightster + "...");
         vertexHeight = heightster;
         
         for (Individual inster : individuals)
@@ -994,7 +955,6 @@ public class Population
      */
     public void setVertexWidth(int widthster)
     {
-        System.out.println("Population -> Setting the population " + name + " width to " + widthster + "...");
         vertexWidth = widthster;
         
         for (Individual inster : individuals)
@@ -1012,7 +972,6 @@ public class Population
      */
     public void setWidth(TextureObject widthster)
     {
-        System.out.println("Population -> Setting the width map to " + width.getName() + " the population " + name + "...");
         width = widthster;
         
         int count = 0;

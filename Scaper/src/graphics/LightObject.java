@@ -75,7 +75,6 @@ public class LightObject
     private double calculatePosition(double far, double origin,
             double percentage)
     {
-        System.out.println("LightObject -> Calculating " + name + " light position...");
         // How much percentage that the far variable's value makes up
         final double FAR_PERCENTAGE = 50;
         
@@ -99,7 +98,6 @@ public class LightObject
      */
     public PointLight getLight()
     {
-        System.out.println("LightObject -> Getting " + name + " PointLight...");
         return lightster;
     }
     
@@ -110,7 +108,6 @@ public class LightObject
      */
     public String getName()
     {
-        System.out.println("LightObject -> Getting " + name + " light name...");
         return name;
     }
     
@@ -121,7 +118,6 @@ public class LightObject
      */
     public double getPercentageX()
     {
-        System.out.println("LightObject -> Getting " + name + " light x position " + xPercentage + "%...");
         return xPercentage;
     }
     
@@ -132,7 +128,6 @@ public class LightObject
      */
     public double getPercentageY()
     {
-        System.out.println("LightObject -> Getting " + name + " light y position " + yPercentage + "%...");
         return yPercentage;
     }
     
@@ -143,7 +138,6 @@ public class LightObject
      */
     public double getPercentageZ()
     {
-        System.out.println("LightObject -> Getting " + name + " light z position " + zPercentage + "%...");
         return zPercentage;
     }
     
@@ -154,7 +148,6 @@ public class LightObject
      */
     public void setColor(Color colster)
     {
-        System.out.println("LightObject -> Changing " + name + " light color...");
         lightster.setColor(colster);
     }
     
@@ -168,7 +161,6 @@ public class LightObject
      */
     public void setXPosition(double far, double origin)
     {
-        System.out.println("LightObject -> Recalulating light " + name + " x position...");
         x = calculatePosition(far, origin, xPercentage);
         
         lightster.setTranslateX(x);
@@ -191,7 +183,6 @@ public class LightObject
      */
     public void setXPosition(double far, double origin, double percentage)
     {
-        System.out.println("LightObject -> Recalulating light " + name + " x position to percentage " + percentage + "%...");
         xPercentage = percentage;
         
         x = calculatePosition(far, origin, percentage);
@@ -209,7 +200,6 @@ public class LightObject
      */
     public void setYPosition(double far, double origin)
     {
-        System.out.println("LightObject -> Recalulating light " + name + " y position...");
         y = calculatePosition(far, origin, yPercentage);
         
         lightster.setTranslateY(y);
@@ -232,7 +222,6 @@ public class LightObject
      */
     public void setYPosition(double far, double origin, double percentage)
     {
-        System.out.println("LightObject -> Recalulating light " + name + " y position to position " + percentage + "%...");
         yPercentage = percentage;
         
         y = calculatePosition(far, origin, percentage);
@@ -250,7 +239,6 @@ public class LightObject
      */
     public void setZPosition(double far, double origin)
     {
-        System.out.println("LightObject -> Recalulating light " + name + " z position...");
         z = calculatePosition(far, origin, zPercentage);
         
         lightster.setTranslateZ(z);
@@ -273,7 +261,6 @@ public class LightObject
      */
     public void setZPosition(double far, double origin, double percentage)
     {
-        System.out.println("LightObject -> Recalulating light " + name + " z position to position " + percentage + "...");
         zPercentage = percentage;
         
         z = calculatePosition(far, origin, percentage);

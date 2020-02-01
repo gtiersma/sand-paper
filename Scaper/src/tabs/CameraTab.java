@@ -90,8 +90,6 @@ public class CameraTab
      */
     public PerspectiveCamera getCamera()
     {
-        System.out.println("camTab -> Getting camera...");
-        
         return camster;
     }
     
@@ -102,7 +100,6 @@ public class CameraTab
      */
     public double getDefaultField()
     {
-        System.out.println("camTab -> Getting default field of view...");
         return DEFAULT_FIELD_OF_VIEW;
     }
     
@@ -113,7 +110,6 @@ public class CameraTab
      */
     public double getDefaultHorizontalAngle()
     {
-        System.out.println("camTab -> Getting default horizontal angle...");
         return DEFAULT_HORIZONTAL_ANGLE;
     }
     
@@ -124,7 +120,6 @@ public class CameraTab
      */
     public double getDefaultVerticalAngle()
     {
-        System.out.println("camTab -> Getting default vertical angle...");
         return DEFAULT_VERTICAL_ANGLE;
     }
     
@@ -136,7 +131,6 @@ public class CameraTab
      */
     public Rotate getXRotate()
     {
-        System.out.println("camTab -> Getting x axis rotation " + xRotate + "...");
         return xRotate;
     }
     
@@ -148,7 +142,6 @@ public class CameraTab
      */
     public Rotate getYRotate()
     {
-        System.out.println("camTab -> Getting y axis rotation " + yRotate + "...");
         return yRotate;
     }
     
@@ -158,7 +151,6 @@ public class CameraTab
      */
     private void prepareRotations()
     {
-        System.out.println("camTab -> Preparing camera pivot points...");
         xRotate.setPivotX(originX);
         xRotate.setPivotY(originY);
         xRotate.setPivotZ(originZ);
@@ -173,7 +165,6 @@ public class CameraTab
      */
     private void refreshPosition()
     {
-        System.out.println("camTab -> Refreshing camera position...");
         camster.setTranslateX(xOffset + originX + xAdjustment);
         camster.setTranslateY(yOffset + originY + yAdjustment);
     }
@@ -183,7 +174,6 @@ public class CameraTab
      */
     private void refreshZoom()
     {
-        System.out.println("camTab -> Refreshing camera zoom...");
         // Percentage variable of how far the default camera position should be
         // zoomed in relative to the farthest point from the mesh center
         final double FURTHEST_POINT_ADJUSTMENT = -1.03;
@@ -204,7 +194,6 @@ public class CameraTab
      */
     public void setCameraOffset(double x, double y)
     {
-        System.out.println("camTab -> Setting camera offset to " + x + "," + y + "...");
         // Making these values negative allows for a positive parameter given in
         // this function to move the camera in the correct direction
         xOffset = -x;
@@ -220,7 +209,6 @@ public class CameraTab
      */
     public void setFieldOfView(double degrees)
     {
-        System.out.println("camTab -> Setting camera field of view to " + degrees + "...");
         camster.setFieldOfView(degrees);
     }
     
@@ -232,7 +220,6 @@ public class CameraTab
      */
     public void setFurthestPoint(double distance)
     {
-        System.out.println("camTab -> Setting greatest distance to " + distance + "...");
         furthest = distance;
         
         refreshZoom();
@@ -246,7 +233,6 @@ public class CameraTab
      */
     public void setHorizontalAngle(double angle)
     {
-        System.out.println("camTab -> Setting horizontal angle to " + angle + "...");
         horizontalAngle = angle;
         
         yRotate.setAngle(horizontalAngle);
@@ -261,7 +247,6 @@ public class CameraTab
      */
     public void setOrientation(boolean vertical)
     {
-        System.out.println("camTab -> Setting field of view orientation...");
         camster.setVerticalFieldOfView(vertical);
     }
     
@@ -275,8 +260,6 @@ public class CameraTab
      */
     public void setOrigin(double x, double y, double z)
     {        
-        System.out.println("camTab -> Setting center point of terrain to " + x + "," + y + "," + z + "...");
-
         originX = x;
         originY = y;
         originZ = z;
@@ -294,7 +277,6 @@ public class CameraTab
      */
     public void setVerticalAngle(double angle)
     {
-        System.out.println("camTab -> Setting vertical angle to " + angle + "...");
         verticalAngle = angle;
         
         xRotate.setAngle(angle);
@@ -309,7 +291,6 @@ public class CameraTab
      */
     public void setXAdjustment(double adjustment)
     {
-        System.out.println("camTab -> Setting x axis adjustment to " + adjustment + "...");
         xAdjustment = adjustment;
         
         refreshPosition();
@@ -324,7 +305,6 @@ public class CameraTab
      */
     public void setXAdjustment(String adjustment)
     {
-        System.out.println("camTab -> Setting x axis adjustment with String to " + adjustment + "...");
         xAdjustment = Double.parseDouble(adjustment);
         
         refreshPosition();
@@ -339,7 +319,6 @@ public class CameraTab
      */
     public void setYAdjustment(double adjustment)
     {
-        System.out.println("camTab -> Setting y axis adjustment to " + adjustment + "...");
         yAdjustment = adjustment;
         
         refreshPosition();
@@ -354,7 +333,6 @@ public class CameraTab
      */
     public void setYAdjustment(String adjustment)
     {
-        System.out.println("camTab -> Setting y axis adjustment with string to " + adjustment + "...");
         yAdjustment = Double.parseDouble(adjustment);
         
         refreshPosition();
@@ -368,7 +346,6 @@ public class CameraTab
      */
     public void setZoom(double zoomster)
     {
-        System.out.println("camTab -> Setting zoom to " + zoomster + "...");
         zoom = zoomster;
         
         refreshZoom();
@@ -382,7 +359,6 @@ public class CameraTab
      */
     public void setZoom(String zoomster)
     {
-        System.out.println("camTab -> Setting zoom with string " + zoomster + "...");
         this.zoom = Double.parseDouble(zoomster);
         
         refreshZoom();

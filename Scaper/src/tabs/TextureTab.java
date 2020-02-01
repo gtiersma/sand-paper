@@ -47,7 +47,6 @@ public class TextureTab
      */
     public boolean addTexture(boolean color)
     {
-        System.out.println("texTab -> Adding texture...");
         // Whether or not a texture has been successfully added to a texture
         // array
         boolean textureAdded = false;
@@ -131,7 +130,6 @@ public class TextureTab
     private TextureObject[] addToArray(TextureObject[] texsters,
             TextureObject texster)
     {
-        System.out.println("texTab -> Adding a TextureObject to the array...");
         // The current size
         int size = texsters.length;
         
@@ -157,7 +155,6 @@ public class TextureTab
      */
     public Image getImageByName(boolean color, String name)
     {
-        System.out.println("texTab -> Getting the image " + name + "...");
         TextureObject texster = getTexture(color, name);
         
         return texster.getImage();
@@ -172,7 +169,6 @@ public class TextureTab
      */
     public ImageView getLastView(boolean color)
     {
-        System.out.println("texTab -> Getting the ImageView of the last image imported...");
         ImageView viewster;
         
         if (color)
@@ -197,7 +193,6 @@ public class TextureTab
      */
     public TextureObject getTexture(boolean color, String name)
     {
-        System.out.println("texTab -> Getting the TextureObject " + name + "...");
         TextureObject texster = new TextureObject();
         
         // If the texture is colored...
@@ -247,7 +242,6 @@ public class TextureTab
      */
     public ObservableList getTextureNames(boolean color)
     {
-        System.out.println("texTab -> Getting all the texture names...");
         String[] names;
         
         // If the texture names should be of the colored textures...

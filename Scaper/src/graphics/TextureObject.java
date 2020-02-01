@@ -79,7 +79,6 @@ public class TextureObject
      */
     public Color getColor(int x, int y)
     {
-        System.out.println("TextureObject -> Getting color of pixel from " + name + " at position " + x + "," + y + "...");
         return pixster.getColor(x, y);
     }
     
@@ -90,7 +89,6 @@ public class TextureObject
      */
     public File getFile()
     {
-        System.out.println("TextureObject -> Getting File of " + name + "...");
         return filster;
     }
     
@@ -101,7 +99,6 @@ public class TextureObject
      */
     public double getHeight()
     {
-        System.out.println("TextureObject -> Getting height " + imster.getHeight() + " of " + name + "...");
         return imster.getHeight();
     }
     
@@ -112,7 +109,6 @@ public class TextureObject
      */
     public Image getImage()
     {
-        System.out.println("TextureObject -> Getting Image " + name + "...");
         return imster;
     }
     
@@ -124,7 +120,6 @@ public class TextureObject
      */
     public String getName()
     {
-        System.out.println("TextureObject -> Getting the name of " + name + "...");
         String namster = "";
         
         if (!Objects.equals(name, "blank.png"))
@@ -142,7 +137,6 @@ public class TextureObject
      */
     public String getPath()
     {
-        System.out.println("TextureObject -> Getting the path " + path + " of " + name + "...");
         return path;
     }
     
@@ -153,7 +147,6 @@ public class TextureObject
      */
     public ImageView getView()
     {
-        System.out.println("TextureObject -> Getting the ImageView of " + name + "...");
         return viewster;
     }
     
@@ -164,7 +157,6 @@ public class TextureObject
      */
     public double getWidth()
     {
-        System.out.println("TextureObject -> Getting width " + imster.getWidth() + " of " + name + "...");
         return imster.getWidth();
     }
     
@@ -174,7 +166,6 @@ public class TextureObject
      */
     public void removeColor()
     {
-        System.out.println("TextureObject -> Removing color from " + name + "...");
         ColorAdjust grayscale = new ColorAdjust();
         grayscale.setSaturation(-1);
         viewster.setEffect(grayscale);

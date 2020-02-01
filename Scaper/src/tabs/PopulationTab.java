@@ -55,7 +55,6 @@ public class PopulationTab
     public String createPopulation(int terrainWidth, int terrainDepth,
             double xRotate, double yRotate, float[] terrainPoints)
     {
-        System.out.println("popTab -> Creating a new population...");
         String name = "";
         
         // Get the name from the user
@@ -114,7 +113,6 @@ public class PopulationTab
      */
     public void deleteActivePopulation()
     {
-        System.out.println("popTab -> Deleting the active population...");
         int index = getActivePopulationIndex();
         
         // Create a new array with room for 1 less population
@@ -164,7 +162,6 @@ public class PopulationTab
      */
     public String getActivePopulationBumpName()
     {
-        System.out.println("popTab -> Getting the active population's bump map name " + activePopulation.getBumpMap().getName() + "...");
         return activePopulation.getBumpMap().getName();
     }
     
@@ -180,7 +177,6 @@ public class PopulationTab
      */
     public String getActivePopulationDisplacementName(boolean first)
     {
-        System.out.println("popTab -> Getting one of the active population's displacement map's names...");
         String name;
         
         if (first)
@@ -202,7 +198,6 @@ public class PopulationTab
      */
     public int getActivePopulationDisplacementStrength()
     {
-        System.out.println("popTab -> Getting the active population's displacement strength " + activePopulation.getDisplacementStrength() + "...");
         return activePopulation.getDisplacementStrength();
     }
     
@@ -213,7 +208,6 @@ public class PopulationTab
      */
     public String getActivePopulationHeightName()
     {
-        System.out.println("popTab -> Getting the active population's height map's name " + activePopulation.getHeight().getName() + "...");
         return activePopulation.getHeight().getName();
     }
     
@@ -225,7 +219,6 @@ public class PopulationTab
      */
     private int getActivePopulationIndex()
     {
-        System.out.println("popTab -> Getting the active population's index...");
         int index = 0;
         
         // For each population...
@@ -252,7 +245,6 @@ public class PopulationTab
      */
     public String getActivePopulationName()
     {
-        System.out.println("popTab -> Getting the active population's name " + activePopulation.getName() + "...");
         return activePopulation.getName();
     }
     
@@ -264,7 +256,6 @@ public class PopulationTab
      */
     public String getActivePopulationPlacementName()
     {
-        System.out.println("popTab -> Getting the active population's placement map name " + activePopulation.getPlacement().getName() + "...");
         return activePopulation.getPlacement().getName();
     }
     
@@ -275,7 +266,6 @@ public class PopulationTab
      */
     public String getActivePopulationShiftName()
     {
-        System.out.println("popTab -> Getting the active population's shift map name " + activePopulation.getShift().getName() + "...");
         return activePopulation.getShift().getName();
     }
     
@@ -287,7 +277,6 @@ public class PopulationTab
      */
     public String getActivePopulationSpecularName()
     {
-        System.out.println("popTab -> Getting the active population's specular map name " + activePopulation.getSpecularMap().getName() + "...");
         return activePopulation.getSpecularMap().getName();
     }
     
@@ -298,7 +287,6 @@ public class PopulationTab
      */
     public String getActivePopulationTextureName()
     {
-        System.out.println("popTab -> Getting the active population's texture's name " + activePopulation.getTexture().getName() + "...");
         return activePopulation.getTexture().getName();
     }
     
@@ -311,7 +299,6 @@ public class PopulationTab
      */
     public int getActivePopulationVertexHeight()
     {
-        System.out.println("popTab -> Getting the active population's height in vertices " + activePopulation.getVertexHeight() + "...");
         return activePopulation.getVertexHeight();
     }
     
@@ -324,7 +311,6 @@ public class PopulationTab
      */
     public int getActivePopulationVertexWidth()
     {
-        System.out.println("popTab -> Getting the active population's width in vertices " + activePopulation.getVertexWidth() + "...");
         return activePopulation.getVertexWidth();
     }
     
@@ -335,7 +321,6 @@ public class PopulationTab
      */
     public String getActivePopulationWidthName()
     {
-        System.out.println("popTab -> Getting the active population's width map's name " + activePopulation.getWidth().getName() + "...");
         return activePopulation.getWidth().getName();
     }
     
@@ -347,7 +332,6 @@ public class PopulationTab
      */
     public int getDefaultDisplacementStrength()
     {
-        System.out.println("popTab -> Getting the default displacement strength...");
         return DEFAULT_DISPLACEMENT_STRENGTH;
     }
     
@@ -359,7 +343,6 @@ public class PopulationTab
      */
     public int getDefaultVertexHeight()
     {
-        System.out.println("popTab -> Getting the default vertex height...");
         return DEFAULT_VERTEX_HEIGHT;
     }
     
@@ -371,7 +354,6 @@ public class PopulationTab
      */
     public int getDefaultVertexWidth()
     {
-        System.out.println("popTab -> Getting the default vertex width...");
         return DEFAULT_VERTEX_WIDTH;
     }
     
@@ -383,7 +365,6 @@ public class PopulationTab
      */
     private String getNameSuggestion()
     {
-        System.out.println("popTab -> Getting a name suggestion...");
         // The very first name suggestion to present the user with
         String firstSuggestion = "Population Name";
         
@@ -420,7 +401,6 @@ public class PopulationTab
      */
     public Group getPopulation(int index)
     {
-        System.out.println("popTab -> Getting the population at index " + index + "...");
         return populations[index].getPopulation();
     }
     
@@ -431,7 +411,6 @@ public class PopulationTab
      */
     public int getPopulationAmount()
     {
-        System.out.println("popTab -> Getting the number of populations " + populations.length + "...");
         return populations.length;
     }
     
@@ -444,7 +423,6 @@ public class PopulationTab
      */
     private boolean isDuplicateName(String name)
     {
-        System.out.println("popTab -> Determining if " + name + " is already a population name...");
         boolean duplicate = false;
         
         // For each population...
@@ -472,7 +450,6 @@ public class PopulationTab
     public void loadActivePopulation(double xRotate, double yRotate,
             float[] terrainPoints)
     {
-        System.out.println("popTab -> Reloading the active population...");
         if (populationExists())
         {
             activePopulation.load(xRotate, yRotate, terrainPoints);
@@ -490,7 +467,6 @@ public class PopulationTab
     public void loadPopulations(double xRotate, double yRotate,
             float[] terrainPoints)
     {
-        System.out.println("popTab -> Reloading all populations...");
         for (Population population : populations)
         {
             population.load(xRotate, yRotate, terrainPoints);
@@ -504,7 +480,6 @@ public class PopulationTab
      */
     public boolean populationExists()
     {
-        System.out.println("popTab -> Determining if a population exists...");
         boolean exists = true;
         
         if (populations.length == 0)
@@ -523,7 +498,6 @@ public class PopulationTab
      */
     public void repositionPopulations(float[] terrainPoints)
     {
-        System.out.println("popTab -> Repositioning all populations...");
         for (Population population : populations)
         {
             population.reposition(terrainPoints);
@@ -537,7 +511,6 @@ public class PopulationTab
      */
     public void setActivePopulation(int index)
     {
-        System.out.println("popTab -> Setting the population at index " + index + " as active...");
         activePopulation = populations[index];
     }
     
@@ -548,7 +521,6 @@ public class PopulationTab
      */
     public void setActivePopulationBump(TextureObject bump)
     {
-        System.out.println("popTab -> Setting the active population's bump map...");
         activePopulation.setBumpMap(bump);
     }
     
@@ -559,7 +531,6 @@ public class PopulationTab
      */
     public void setActivePopulationDisplacementStrength(int strength)
     {
-        System.out.println("popTab -> Setting the active population's displacement strength to " + strength + "...");
         activePopulation.setDisplacementStrength(strength);
     }
     
@@ -571,7 +542,6 @@ public class PopulationTab
      */
     public void setActivePopulationFirstDisplacement(TextureObject displacement)
     {
-        System.out.println("popTab -> Setting the active population's first displacement map...");
         activePopulation.setFirstDisplacement(displacement);
     }
     
@@ -583,7 +553,6 @@ public class PopulationTab
      */
     public void setActivePopulationHeight(TextureObject height)
     {
-        System.out.println("popTab -> Setting the active population's height map...");
         activePopulation.setHeight(height);
     }
     
@@ -599,7 +568,6 @@ public class PopulationTab
     public void setActivePopulationPlacement(double xRotate, double yRotate,
             TextureObject placement, float terrainPoints[])
     {
-        System.out.println("popTab -> Setting the active population's placement map...");
         activePopulation.setPlacement(xRotate, yRotate, terrainPoints,
                 placement);
     }
@@ -613,7 +581,6 @@ public class PopulationTab
     public void setActivePopulationSecondDisplacement(
             TextureObject displacement)
     {
-        System.out.println("popTab -> Setting the active population's second displacement map...");
         activePopulation.setSecondDisplacement(displacement);
     }
     
@@ -624,7 +591,6 @@ public class PopulationTab
      */
     public void setActivePopulationShift(TextureObject shift)
     {
-        System.out.println("popTab -> Setting the active population's shift map...");
         activePopulation.setShift(shift);
     }
     
@@ -635,7 +601,6 @@ public class PopulationTab
      */
     public void setActivePopulationSpecular(TextureObject specular)
     {
-        System.out.println("popTab -> Setting the active population's specular map...");
         activePopulation.setSpecularMap(specular);
     }
     
@@ -646,7 +611,6 @@ public class PopulationTab
      */
     public void setActivePopulationTexture(TextureObject texture)
     {
-        System.out.println("popTab -> Setting the active population's texture...");
         activePopulation.setTexture(texture);
     }
     
@@ -658,7 +622,6 @@ public class PopulationTab
      */
     public void setActivePopulationVertexHeight(int height)
     {
-        System.out.println("popTab -> Setting the active population's height in vertices to " + height + "...");
         activePopulation.setVertexHeight(height);
     }
     
@@ -670,7 +633,6 @@ public class PopulationTab
      */
     public void setActivePopulationVertexHeight(String height)
     {
-        System.out.println("popTab -> Setting the active population's height in vertices as a string to " + height + "...");
         int heightster = Integer.parseInt(height);
         
         activePopulation.setVertexHeight(heightster);
@@ -684,7 +646,6 @@ public class PopulationTab
      */
     public void setActivePopulationVertexWidth(int width)
     {
-        System.out.println("popTab -> Setting the active population's width in vertices to " + width + "...");
         activePopulation.setVertexWidth(width);
     }
     
@@ -696,7 +657,6 @@ public class PopulationTab
      */
     public void setActivePopulationVertexWidth(String width)
     {
-        System.out.println("popTab -> Setting the active population's width in vertices as a string to " + width + "...");
         int widthster = Integer.parseInt(width);
         
         activePopulation.setVertexWidth(widthster);
@@ -710,7 +670,6 @@ public class PopulationTab
      */
     public void setActivePopulationWidth(TextureObject width)
     {
-        System.out.println("popTab -> Setting the active population's width map...");
         activePopulation.setWidth(width);
     }
     
@@ -721,7 +680,6 @@ public class PopulationTab
      */
     public void setRotationX(double angle)
     {
-        System.out.println("popTab -> Setting the x axis rotation to " + angle + "...");
         for (Population population : populations)
         {
             population.setRotationX(angle);
@@ -735,7 +693,6 @@ public class PopulationTab
      */
     public void setRotationY(double angle)
     {
-        System.out.println("popTab -> Setting the y axis rotation to " + angle + "...");
         for (Population population : populations)
         {
             population.setRotationY(angle);
@@ -749,7 +706,6 @@ public class PopulationTab
      */
     private Optional showNameDialog()
     {
-        System.out.println("popTab -> Showing the new population dialog...");
         TextInputDialog nameDialog = new TextInputDialog(getNameSuggestion());
         
         nameDialog.setTitle("Create New Population");

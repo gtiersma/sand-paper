@@ -52,7 +52,6 @@ public class RenderTab
      */
     public Color getBackColor()
     {
-        System.out.println("renTab -> Getting the background color...");
         return backColor;
     }
     
@@ -63,7 +62,6 @@ public class RenderTab
      */
     public int getDefaultHeight()
     {
-        System.out.println("renTab -> Getting the default render height...");
         return DEFAULT_HEIGHT;
     }
     
@@ -74,7 +72,6 @@ public class RenderTab
      */
     public int getDefaultWidth()
     {
-        System.out.println("renTab -> Getting the default render width...");
         return DEFAULT_WIDTH;
     }
     
@@ -85,7 +82,6 @@ public class RenderTab
      */
     public int getHeight()
     {
-        System.out.println("renTab -> Getting the render height " + height + "...");
         return height;
     }
     
@@ -96,7 +92,6 @@ public class RenderTab
      */
     public int getWidth()
     {
-        System.out.println("renTab -> Getting the render width " + width + "...");
         return width;
     }
     
@@ -108,7 +103,6 @@ public class RenderTab
      */
     public void save(WritableImage writster)
     {
-        System.out.println("renTab -> Saving render...");
         try
         {
             // Save, over-writing the last image
@@ -144,7 +138,6 @@ public class RenderTab
      */
     public void saveAs(WritableImage writster)
     {
-        System.out.println("renTab -> Saving the render as...");
         // Set up the file chooser
         FileChooser chooster = new FileChooser();
         FileChooser.ExtensionFilter pngExtension
@@ -178,7 +171,6 @@ public class RenderTab
      */
     public void setBackColor(Color colster)
     {
-        System.out.println("renTab -> Setting the background color...");
         backColor = colster;
     }
     
@@ -189,7 +181,6 @@ public class RenderTab
      */
     public void setHeight(int heightster)
     {
-        System.out.println("renTab -> Setting the render height " + heightster + "...");
         height = heightster;
     }
     
@@ -200,7 +191,6 @@ public class RenderTab
      */
     public void setHeight(String heightster)
     {
-        System.out.println("renTab -> Setting the render height as a string " + heightster + "...");
         height = Integer.parseInt(heightster);
     }
     
@@ -211,7 +201,6 @@ public class RenderTab
      */
     public void setWidth(int widthster)
     {
-        System.out.println("renTab -> Setting the render width " + widthster + "...");
         width = widthster;
     }
     
@@ -222,7 +211,6 @@ public class RenderTab
      */
     public void setWidth(String widthster)
     {
-        System.out.println("renTab -> Setting the render width as a string " + widthster + "...");
         width = Integer.parseInt(widthster);
     }
 }

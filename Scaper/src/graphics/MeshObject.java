@@ -138,7 +138,6 @@ public class MeshObject
      */
     public MeshView getMeshView()
     {
-        System.out.println("MeshObject -> Getting MeshView...");
         return viewster;
     }
     
@@ -148,7 +147,6 @@ public class MeshObject
      */
     public void load()
     {
-        System.out.println("MeshObject -> Loading mesh...");
         loadDisplacementPixels();
         loadPoints();
         loadTexturePositions();
@@ -163,7 +161,6 @@ public class MeshObject
      */
     public void loadDisplacementPixels()
     {
-        System.out.println("MeshObject -> Loading color values from displacement map...");
         PixelReader readster = displacement.getPixelReader();
         
         // For each column of pixels...
@@ -189,7 +186,6 @@ public class MeshObject
      */
     public void loadFaces()
     {
-        System.out.println("MeshObject -> Constructing array of face values...");
         // The number of which vertex the face being created is based upon. The
         // vertices are number from left to right, top to bottom.
         int point = 0;
@@ -246,7 +242,6 @@ public class MeshObject
      */
     public void loadPoints()
     {
-        System.out.println("MeshObject -> Loading point positions...");
         // Arraylist of objects that will retrieve the values of the threads
         List<Future<Float>> threadResults = new ArrayList<>();
         
@@ -326,7 +321,6 @@ public class MeshObject
      */
     private void loadTexturePositions()
     {
-        System.out.println("MeshObject -> Loading UV coordinates...");
         // The percentage of the width and height of the displacement image that
         // each face would occupy
         float faceSizeU = (float)(1.0 / (width - 1));
@@ -366,7 +360,6 @@ public class MeshObject
      */
     public void setBump(Image bumpster)
     {
-        System.out.println("MeshObject -> Setting bump map...");
         texture.setBumpMap(bumpster);
     }
     
@@ -377,7 +370,6 @@ public class MeshObject
      */
     public void setDepth(int depthster)
     {
-        System.out.println("MeshObject -> Setting depth to " + depthster + "...");
         depth = depthster;
         
         // Re-initialize and re-calculate the variables that rely on the mesh's
@@ -402,7 +394,6 @@ public class MeshObject
      */
     public void setDisplacement(Image dister)
     {
-        System.out.println("MeshObject -> Setting displacement map...");
         displacement = dister;
         
         // Re-initialize and re-calculate the variables that rely on the mesh's
@@ -424,7 +415,6 @@ public class MeshObject
      */
     public void setDisplacementStrength(float strengthster)
     {
-        System.out.println("MeshObject -> Setting displacement strength...");
         displacementStrength = strengthster * DISPLACEMENT_MULTIPLIER;
         
         // Re-initialize and re-calculate the variables that rely on the
@@ -441,7 +431,6 @@ public class MeshObject
      */
     public void setSpecular(Image specster)
     {
-        System.out.println("MeshObject -> Setting specular map...");
         texture.setSpecularMap(specster);
     }
     
@@ -452,7 +441,6 @@ public class MeshObject
      */
     public void setTexture(Image texster)
     {
-        System.out.println("MeshObject -> Setting texture...");
         texture.setDiffuseMap(texster);
     }
     
@@ -463,7 +451,6 @@ public class MeshObject
      */
     public void setWidth(int widthster)
     {
-        System.out.println("MeshObject -> Setting width to " + widthster + "...");
         width = widthster;
         
         // Re-initialize and re-calculate the variables that rely on the mesh's

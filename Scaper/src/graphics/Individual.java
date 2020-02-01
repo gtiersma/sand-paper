@@ -82,7 +82,6 @@ public class Individual extends MeshObject
     @Override
     public void load()
     {
-        System.out.println("Individual -> Loading Individual...");
         super.load();
         
         reposition();
@@ -95,7 +94,6 @@ public class Individual extends MeshObject
      */
     private void preparePivotPoints()
     {
-        System.out.println("Individual -> Preparing rotational pivot point...");
         // This should be the edge of the Individual. Having this be the pivot
         // point will keep the bottom of the Individual on the terrain (if the
         // Individual is to be placed there).
@@ -110,7 +108,6 @@ public class Individual extends MeshObject
      */
     private void prepareRotations()
     {
-        System.out.println("Individual -> Preparing rotations...");
         preparePivotPoints();
         
         // yRotate must be added first. Otherwise, this won't work for some
@@ -126,7 +123,6 @@ public class Individual extends MeshObject
      */
     private void reposition()
     {
-        System.out.println("Individual -> Repositioning Individual...");
         viewster.setTranslateX(x - faceWidth + shiftX);
         viewster.setTranslateY(y - faceDepth + shiftY);
         viewster.setTranslateZ(z - faceWidth + shiftZ);
@@ -144,7 +140,6 @@ public class Individual extends MeshObject
      */
     public void reposition(float exster, float whyster, float zeester)
     {
-        System.out.println("Individual -> Repositioning Individual to the terrain vertex at " + exster + "," + whyster + "," + zeester + "...");
         x = exster;
         y = whyster;
         z = zeester;
@@ -162,7 +157,6 @@ public class Individual extends MeshObject
      */
     public void setShift(int xShift, int yShift, int zShift)
     {
-        System.out.println("Individual -> Setting Individual shift amount to " + xShift + "," + yShift + "," + zShift + "...");
         shiftX = xShift;
         shiftY = yShift;
         shiftZ = zShift;
@@ -177,7 +171,6 @@ public class Individual extends MeshObject
      */
     public void setFaceHeight(int heightster)
     {
-        System.out.println("Individual -> Setting the face height to " + heightster + "...");
         faceDepth = heightster;
         
         loadPoints();
@@ -190,7 +183,6 @@ public class Individual extends MeshObject
      */
     public void setFaceWidth(int widthster)
     {
-        System.out.println("Individual -> Setting the face width to " + widthster + "...");
         faceWidth = widthster;
         
         loadPoints();
@@ -204,7 +196,6 @@ public class Individual extends MeshObject
      */
     public void setRotationX(double angle)
     {
-        System.out.println("Individual -> Rotating on x axis to " + angle + "...");
         xRotate.setAngle(BASE_X_ROTATION - angle);
     }
     
@@ -215,7 +206,6 @@ public class Individual extends MeshObject
      */
     public void setRotationY(double angle)
     {
-        System.out.println("Individual -> Rotating on y axis to " + angle + "...");
         yRotate.setAngle(-angle);
     }
     
