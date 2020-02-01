@@ -181,6 +181,10 @@ public class Population
         
         newIndividual.load();
         
+        newIndividual.setTexture(texture.getImage());
+        newIndividual.setBump(bump.getImage());
+        newIndividual.setSpecular(specular.getImage());
+        
         // Create a new array with room for the additional element
         Individual newIndividuals[] = new Individual[individuals.length + 1];
         
