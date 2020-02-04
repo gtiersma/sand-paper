@@ -168,16 +168,6 @@ public class TerrainTab
     }
     
     /**
-     * Sets the depth of the terrain in vertices
-     * 
-     * @param depth The depth of the terrain
-     */
-    public void setDepth(String depth)
-    {
-        terster.setDepth(Integer.parseInt(depth));
-    }
-    
-    /**
      * Sets the displacement map
      * 
      * @param displacement The displacement map
@@ -225,15 +215,5 @@ public class TerrainTab
     public void setWidth(int width)
     {
         terster.setWidth(width);
-    }
-    
-    /**
-     * Sets the width of the terrain in vertices
-     * 
-     * @param width The width of the terrain
-     */
-    public void setWidth(String width)
-    {
-        terster.setWidth(Integer.parseInt(width));
     }
 }

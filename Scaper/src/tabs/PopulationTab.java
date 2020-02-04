@@ -440,40 +440,6 @@ public class PopulationTab
     }
     
     /**
-     * (Re)constructs the currently-selected population
-     * 
-     * @param xRotate The camera's vertical rotation value
-     * @param yRotate The camera's horizontal rotation value
-     * @param terrainPoints The coordinates of the points used in the creation
-     *                      of the terrain's mesh
-     */
-    public void loadActivePopulation(double xRotate, double yRotate,
-            float[] terrainPoints)
-    {
-        if (populationExists())
-        {
-            activePopulation.load(xRotate, yRotate, terrainPoints);
-        }
-    }
-    
-    /**
-     * (Re)constructs all populations
-     * 
-     * @param xRotate The camera's vertical rotation value
-     * @param yRotate The camera's horizontal rotation value
-     * @param terrainPoints The coordinates of the points used in the creation
-     *                      of the terrain's mesh
-     */
-    public void loadPopulations(double xRotate, double yRotate,
-            float[] terrainPoints)
-    {
-        for (Population population : populations)
-        {
-            population.load(xRotate, yRotate, terrainPoints);
-        }
-    }
-    
-    /**
      * Gets whether or not at least 1 population currently exists
      * 
      * @return Whether or not a population exists
@@ -488,6 +454,15 @@ public class PopulationTab
         }
         
         return exists;
+    }
+    
+    public void regeneratePopulations(double xRotate, double yRotate,
+            float[] terrainPoints)
+    {
+        for (Population population : populations)
+        {
+            population.load(xRotate, yRotate, terrainPoints);
+        }
     }
     
     /**
@@ -716,5 +691,41 @@ public class PopulationTab
         Optional<String> result = nameDialog.showAndWait();
         
         return result;
+    }
+    
+    /**
+     * (Re)constructs all populations
+     * 
+     * @param xRotate The camera's vertical rotation value
+     * @param yRotate The camera's horizontal rotation value
+     * @param terrainPoints The coordinates of the points used in the creation
+     *                      of the terrain's mesh
+     */
+    public void updateForTerrainDepthChange(int terrainDepth, double xRotate,
+            double yRotate, float[] terrainPoints)
+    {
+        for (Population population : populations)
+        {
+            population.updateForTerrainDepthChange(terrainDepth, xRotate,
+                    yRotate, terrainPoints);
+        }
+    }
+    
+    /**
+     * (Re)constructs all populations
+     * 
+     * @param xRotate The camera's vertical rotation value
+     * @param yRotate The camera's horizontal rotation value
+     * @param terrainPoints The coordinates of the points used in the creation
+     *                      of the terrain's mesh
+     */
+    public void updateForTerrainWidthChange(int terrainWidth, double xRotate,
+            double yRotate, float[] terrainPoints)
+    {
+        for (Population population : populations)
+        {
+            population.updateForTerrainWidthChange(terrainWidth, xRotate,
+                    yRotate, terrainPoints);
+        }
     }
 }

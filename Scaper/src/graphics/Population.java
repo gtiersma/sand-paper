@@ -74,12 +74,12 @@ public class Population
      * 
      * @param strength The strength of the displacement map
      * @param terrainWidth The width of the terrain (Measured in vertices)
-     * @param terrainHeight The height of the terrain (Measured in vertices)
+     * @param terrainDepth The depth of the terrain (Measured in vertices)
      * @param vertWidth The width of each Individual (Measured in vertices)
      * @param vertHeight The height of each Individual (Measured in vertices)
      * @param namster The name of the population
      */
-    public Population(int strength, int terrainWidth, int terrainHeight,
+    public Population(int strength, int terrainWidth, int terrainDepth,
             int vertWidth, int vertHeight, String namster)
     {
         size = 0;
@@ -93,7 +93,7 @@ public class Population
         
         // The dimensions of this array must match the terrain dimensions to
         // ensure that there is 1 boolean for each vertex on the terrain
-        locations = new boolean[terrainWidth][terrainHeight];
+        locations = new boolean[terrainWidth][terrainDepth];
         
         bump = WHITE_TEXTURE;
         specular = WHITE_TEXTURE;
@@ -117,6 +117,11 @@ public class Population
      */
     private void calculateLocations()
     {
+        int horizontalSpacing = getUVSpacing(placement.getWidth(),
+                locations.length);
+        int verticalSpacing = getUVSpacing(placement.getHeight(),
+                locations[0].length);
+        
         size = 0;
         
         // For each row of the terrain's vertices...
@@ -132,9 +137,10 @@ public class Population
                 // position on the terrain.
                 int newJ = locations[i].length - j - 1;
                 
-                // ...get the shade of the corresponding pixel on the placement
+                // Get the shade of the corresponding pixel on the placement
                 // image.
-                Color pixelColor = getPixelColor(true, i, newJ, placement);
+                Color pixelColor = getPixelColor(horizontalSpacing,
+                        verticalSpacing, i, newJ, placement);
                 
                 // Calculate whether or not an Individual should be created
                 // there
@@ -206,6 +212,19 @@ public class Population
     private void createIndividuals(double xRotate,
             double yRotate, float[] terrainPoints)
     {
+        int shiftHorizontalSpacing = getUVSpacing(shift.getWidth(),
+                locations.length);
+        int shiftVerticalSpacing = getUVSpacing(shift.getHeight(),
+                locations[0].length);
+        int widthHorizontalSpacing = getUVSpacing(width.getWidth(),
+                locations.length);
+        int widthVerticalSpacing = getUVSpacing(width.getHeight(),
+                locations[0].length);
+        int heightHorizontalSpacing = getUVSpacing(height.getWidth(),
+                locations.length);
+        int heightVerticalSpacing = getUVSpacing(height.getHeight(),
+                locations[0].length);
+        
         // For each row of vertices on the terrain...
         for (int i = 0; i < locations.length; i++)
         {
@@ -236,9 +255,12 @@ public class Population
                     double z = terrainPoints[pointIndex + 2];
                     
                     // Get the correct pixel colors for this Individual
-                    Color shiftColor = getPixelColor(true, i, j, shift);
-                    Color widthColor = getPixelColor(true, i, j, width);
-                    Color heightColor = getPixelColor(true, i, j, height);
+                    Color shiftColor = getPixelColor(shiftHorizontalSpacing,
+                            shiftVerticalSpacing, i, j, shift);
+                    Color widthColor = getPixelColor(widthHorizontalSpacing,
+                            widthVerticalSpacing, i, j, width);
+                    Color heightColor = getPixelColor(heightHorizontalSpacing,
+                            heightVerticalSpacing, i, j, height);
                     
                     shiftX = getColorValue(true, 'r', shiftColor);
                     shiftY = getColorValue(true, 'g', shiftColor);
@@ -268,6 +290,18 @@ public class Population
      */
     private Image generateDisplacement()
     {
+        int[] widthDisplacementSpacings = new int[2];
+        int[] heightDisplacementSpacings = new int[2];
+        
+        widthDisplacementSpacings[0]
+                = getUVSpacing(displacementRange[0].getWidth(), vertexWidth);
+        heightDisplacementSpacings[0]
+                = getUVSpacing(displacementRange[0].getHeight(), vertexHeight);
+        widthDisplacementSpacings[1]
+                = getUVSpacing(displacementRange[1].getWidth(), vertexWidth);
+        heightDisplacementSpacings[1]
+                = getUVSpacing(displacementRange[1].getHeight(), vertexHeight);
+        
         // The generated map
         WritableImage newDisplacement = new WritableImage(vertexWidth,
                 vertexHeight);
@@ -287,9 +321,11 @@ public class Population
                 // pixel color
                 Color pixelColors[] = new Color[2];
                 
-                pixelColors[0] = getPixelColor(false, i, j,
+                pixelColors[0] = getPixelColor(widthDisplacementSpacings[0],
+                        heightDisplacementSpacings[0], i, j,
                         displacementRange[0]);
-                pixelColors[1] = getPixelColor(false, i, j,
+                pixelColors[1] = getPixelColor(widthDisplacementSpacings[1],
+                        heightDisplacementSpacings[1], i, j,
                         displacementRange[1]);
                 
                 randomColor = getRandomColor(pixelColors);
@@ -367,20 +403,6 @@ public class Population
     }
     
     /**
-     * Gets the number of pixels that should separate 2 vertices in a UV map
-     * 
-     * @param length The number of pixels long that the image is
-     * @param vertexAmount The number of vertices that exist between one end of
-     *                     the mesh and the other
-     * 
-     * @return The distance that should exist between 2 non-displaced vertices
-     */
-    private int getDistanceBetweenVertices(double length, double vertexAmount)
-    {
-        return (int)(length / vertexAmount);
-    }
-    
-    /**
      * Gets the first displacement map used in the displacement range
      * 
      * @return A TextureObject of the first displacement map used in the
@@ -426,53 +448,15 @@ public class Population
      * 
      * @return The color of the pixel to be retrieved
      */
-    private Color getPixelColor(boolean forTerrainVertices, int positionX,
+    private Color getPixelColor(int distanceX, int distanceY, int positionX,
             int positionY, TextureObject texster)
     {
-        // The number of UV points wide that the map will contain
-        int widthUV;
-        // The number of UV points high that the map will contain
-        int heightUV;
-        
-        // If the image is mapped based on the terrain mesh...
-        if (forTerrainVertices)
-        {
-            // ...get how many vertices wide and high the terrain is.
-            widthUV = locations.length;
-            heightUV = locations[0].length;
-        }
-        // ...otherwise...
-        else
-        {
-            // ...get how many vertices wide and high the Individuals of this
-            // population are.
-            widthUV = vertexWidth;
-            heightUV = vertexHeight;
-        }
-        
-        int distanceX = getDistanceBetweenVertices(texster.getWidth(), widthUV);
-        int distanceY = getDistanceBetweenVertices(texster.getHeight(),
-                heightUV);
-        
-        int pixelX = getPixelPosition(distanceX, positionX);
-        int pixelY = getPixelPosition(distanceY, positionY);
+        int pixelX = distanceX * positionX;
+        int pixelY = distanceY * positionY;
         
         Color colster = texster.getColor(pixelX, pixelY);
         
         return colster;
-    }
-    
-    /**
-     * Gets the position of a pixel in an image for the given vertex position
-     * 
-     * @param distance The distance between each vertex
-     * @param vertexPosition The numbered position of the vertex
-     * 
-     * @return The position of a pixel in an image
-     */
-    private int getPixelPosition(int distance, int vertexPosition)
-    {
-        return distance * vertexPosition;
     }
     
     /**
@@ -601,6 +585,20 @@ public class Population
     public TextureObject getTexture()
     {
         return texture;
+    }
+    
+    /**
+     * Gets the number of pixels that should separate 2 vertices in a UV map
+     * 
+     * @param length The number of pixels long that the image is
+     * @param vertexAmount The number of vertices that exist between one end of
+     *                     the mesh and the other
+     * 
+     * @return The distance that should exist between 2 non-displaced vertices
+     */
+    private int getUVSpacing(double length, double vertexAmount)
+    {
+        return (int)(length / vertexAmount);
     }
     
     /**
@@ -776,6 +774,10 @@ public class Population
     {
         height = heightster;
         
+        int widthUVSpacing = getUVSpacing(height.getWidth(), locations.length);
+        int heightUVSpacing = getUVSpacing(height.getHeight(),
+                locations[0].length);
+        
         int count = 0;
         
         // For each row of vertices on the terrain...
@@ -788,7 +790,8 @@ public class Population
                 if (locations[i][j])
                 {
                     // Get the correct pixel color for this Individual
-                    Color heightColor = getPixelColor(true, i, j, height);
+                    Color heightColor = getPixelColor(widthUVSpacing,
+                            heightUVSpacing, i, j, height);
                     
                     int heightBrightness = getColorValue(false, ' ',
                             heightColor);
@@ -833,6 +836,9 @@ public class Population
     {
         shift = shiftster;
         
+        int widthUVSpacing = getUVSpacing(shift.getWidth(), locations.length);
+        int heightUVSpacing = getUVSpacing(shift.getHeight(), locations.length);
+        
         int count = 0;
         
         // For each row of vertices on the terrain...
@@ -845,7 +851,8 @@ public class Population
                 if (locations[i][j])
                 {
                     // ...get the correct pixel color for this Individual
-                    Color shiftColor = getPixelColor(true, i, j, shift);
+                    Color shiftColor = getPixelColor(widthUVSpacing,
+                            heightUVSpacing, i, j, shift);
                     
                     // Get the correct shift amounts for this color
                     int shiftX = getColorValue(true, 'r', shiftColor);
@@ -974,6 +981,9 @@ public class Population
     {
         width = widthster;
         
+        int widthUVSpacing = getUVSpacing(width.getWidth(), locations.length);
+        int heightUVSpacing = getUVSpacing(width.getHeight(), locations.length);
+        
         int count = 0;
         
         // For each row of vertices on the terrain...
@@ -986,7 +996,8 @@ public class Population
                 if (locations[i][j])
                 {
                     // Get the correct pixel color for this Individual
-                    Color widthColor = getPixelColor(true, i, j, width);
+                    Color widthColor = getPixelColor(widthUVSpacing,
+                            heightUVSpacing, i, j, width);
                     
                     int widthBrightness = getColorValue(false, ' ', widthColor)
                             / SIZE_DIVIDER;
@@ -997,6 +1008,22 @@ public class Population
                 }
             }
         }
+    }
+    
+    public void updateForTerrainDepthChange(int terrainDepth, double xRotate,
+            double yRotate, float[] terrainPoints)
+    {
+        locations = new boolean[locations.length][terrainDepth];
+        
+        load(xRotate, yRotate, terrainPoints);
+    }
+    
+    public void updateForTerrainWidthChange(int terrainWidth, double xRotate,
+            double yRotate, float[] terrainPoints)
+    {
+        locations = new boolean[terrainWidth][locations[0].length];
+        
+        load(xRotate, yRotate, terrainPoints);
     }
     
     /**

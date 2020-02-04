@@ -189,7 +189,7 @@ public class Controller
         {
             terTab.setWidth(newster);
             
-            regeneratePopulation();
+            regeneratePopulation(true, newster);
         });
         // The second listeners for the spinners are executed when the value is
         // changed and then the focus is left from the control. This particular
@@ -199,9 +199,12 @@ public class Controller
         {
             if (newster == false)
             {
-                terTab.setWidth(terrainSpinnerVRW.getEditor().getText());
+                int width = Integer.parseInt(
+                        terrainSpinnerVRW.getEditor().getText());
+                
+                terTab.setWidth(width);
             
-                regeneratePopulation();
+                regeneratePopulation(true, width);
             }
         });
         
@@ -210,16 +213,19 @@ public class Controller
         {
             terTab.setDepth(newster);
             
-            regeneratePopulation();
+            regeneratePopulation(false, newster);
         });
         terrainSpinnerVRD.focusedProperty().addListener(
                 (obster, oldster, newster) ->
         {
             if (newster == false)
             {
-                terTab.setDepth(terrainSpinnerVRD.getEditor().getText());
+                int height = Integer.parseInt(
+                        terrainSpinnerVRD.getEditor().getText());
+                
+                terTab.setDepth(height);
             
-                regeneratePopulation();
+                regeneratePopulation(false, height);
             }
         });
         
@@ -1378,7 +1384,32 @@ public class Controller
         double xRotate = camTab.getXRotate().getAngle();
         double yRotate = camTab.getYRotate().getAngle();
         
-        popTab.loadActivePopulation(xRotate, yRotate, terTab.getPoints());
+        popTab.regeneratePopulations(xRotate, yRotate, terTab.getPoints());
+        
+        preview.setRoot(getPreview());
+    }
+    
+    /**
+     * Refreshes the currently-selected population, re-randomizing some of the
+     * population's properties
+     */
+    @FXML
+    protected void regeneratePopulation(boolean didWidthChange, int terrainSize)
+    {
+        // Get the camera's rotation value
+        double xRotate = camTab.getXRotate().getAngle();
+        double yRotate = camTab.getYRotate().getAngle();
+        
+        if (didWidthChange)
+        {
+            popTab.updateForTerrainWidthChange(terrainSize, xRotate, yRotate,
+                terTab.getPoints());
+        }
+        else
+        {
+            popTab.updateForTerrainDepthChange(terrainSize, xRotate, yRotate,
+                terTab.getPoints());
+        }
         
         preview.setRoot(getPreview());
     }
