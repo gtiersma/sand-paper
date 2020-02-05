@@ -189,7 +189,7 @@ public class Controller
         {
             terTab.setWidth(newster);
             
-            regeneratePopulation(true, newster);
+            updatePopulationsForTerrainSizeChange(true, newster);
         });
         // The second listeners for the spinners are executed when the value is
         // changed and then the focus is left from the control. This particular
@@ -204,7 +204,7 @@ public class Controller
                 
                 terTab.setWidth(width);
             
-                regeneratePopulation(true, width);
+                updatePopulationsForTerrainSizeChange(true, width);
             }
         });
         
@@ -213,7 +213,7 @@ public class Controller
         {
             terTab.setDepth(newster);
             
-            regeneratePopulation(false, newster);
+            updatePopulationsForTerrainSizeChange(false, newster);
         });
         terrainSpinnerVRD.focusedProperty().addListener(
                 (obster, oldster, newster) ->
@@ -225,7 +225,7 @@ public class Controller
                 
                 terTab.setDepth(height);
             
-                regeneratePopulation(false, height);
+                updatePopulationsForTerrainSizeChange(false, height);
             }
         });
         
@@ -1390,23 +1390,29 @@ public class Controller
     }
     
     /**
-     * Refreshes the currently-selected population, re-randomizing some of the
-     * population's properties
+     * Recreates the populations to accommodate the terrain's new size
+     * 
+     * @param didWidthChange Whether or not the terrain's width was adjusted
+     * @param terrainSize The new size of the terrain
      */
-    @FXML
-    protected void regeneratePopulation(boolean didWidthChange, int terrainSize)
+    protected void updatePopulationsForTerrainSizeChange(boolean didWidthChange,
+            int terrainSize)
     {
         // Get the camera's rotation value
         double xRotate = camTab.getXRotate().getAngle();
         double yRotate = camTab.getYRotate().getAngle();
         
+        // If the terrain's width changed...
         if (didWidthChange)
         {
+            // ...update the populations for a width change.
             popTab.updateForTerrainWidthChange(terrainSize, xRotate, yRotate,
                 terTab.getPoints());
         }
+        // ...otherwise, the terrain's depth must have changed...
         else
         {
+            // ...so update them for a depth change.
             popTab.updateForTerrainDepthChange(terrainSize, xRotate, yRotate,
                 terTab.getPoints());
         }

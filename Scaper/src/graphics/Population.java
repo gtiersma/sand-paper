@@ -117,6 +117,8 @@ public class Population
      */
     private void calculateLocations()
     {
+        // Get the spacing that should be between each UV point for the
+        // placement map
         int horizontalSpacing = getUVSpacing(placement.getWidth(),
                 locations.length);
         int verticalSpacing = getUVSpacing(placement.getHeight(),
@@ -212,6 +214,8 @@ public class Population
     private void createIndividuals(double xRotate,
             double yRotate, float[] terrainPoints)
     {
+        // Get the spacing that should be between each UV point for the
+        // shift, width and height maps
         int shiftHorizontalSpacing = getUVSpacing(shift.getWidth(),
                 locations.length);
         int shiftVerticalSpacing = getUVSpacing(shift.getHeight(),
@@ -290,6 +294,8 @@ public class Population
      */
     private Image generateDisplacement()
     {
+        // Get the spacing that should be between each UV point for the
+        // placement map
         int[] widthDisplacementSpacings = new int[2];
         int[] heightDisplacementSpacings = new int[2];
         
@@ -774,8 +780,11 @@ public class Population
     {
         height = heightster;
         
-        int widthUVSpacing = getUVSpacing(height.getWidth(), locations.length);
-        int heightUVSpacing = getUVSpacing(height.getHeight(),
+        // Get the spacing that should be between each UV point for the
+        // height map
+        int horizontalUVSpacing = getUVSpacing(height.getWidth(),
+                locations.length);
+        int verticalUVSpacing = getUVSpacing(height.getHeight(),
                 locations[0].length);
         
         int count = 0;
@@ -790,8 +799,8 @@ public class Population
                 if (locations[i][j])
                 {
                     // Get the correct pixel color for this Individual
-                    Color heightColor = getPixelColor(widthUVSpacing,
-                            heightUVSpacing, i, j, height);
+                    Color heightColor = getPixelColor(horizontalUVSpacing,
+                            verticalUVSpacing, i, j, height);
                     
                     int heightBrightness = getColorValue(false, ' ',
                             heightColor);
@@ -836,8 +845,12 @@ public class Population
     {
         shift = shiftster;
         
-        int widthUVSpacing = getUVSpacing(shift.getWidth(), locations.length);
-        int heightUVSpacing = getUVSpacing(shift.getHeight(), locations.length);
+        // Get the spacing that should be between each UV point for the shift
+        // map
+        int horizontalUVSpacing = getUVSpacing(shift.getWidth(),
+                locations.length);
+        int verticalUVSpacing = getUVSpacing(shift.getHeight(),
+                locations.length);
         
         int count = 0;
         
@@ -851,8 +864,8 @@ public class Population
                 if (locations[i][j])
                 {
                     // ...get the correct pixel color for this Individual
-                    Color shiftColor = getPixelColor(widthUVSpacing,
-                            heightUVSpacing, i, j, shift);
+                    Color shiftColor = getPixelColor(horizontalUVSpacing,
+                            verticalUVSpacing, i, j, shift);
                     
                     // Get the correct shift amounts for this color
                     int shiftX = getColorValue(true, 'r', shiftColor);
@@ -981,8 +994,10 @@ public class Population
     {
         width = widthster;
         
-        int widthUVSpacing = getUVSpacing(width.getWidth(), locations.length);
-        int heightUVSpacing = getUVSpacing(width.getHeight(), locations.length);
+        // Get the spacing that should be between each UV point for the width
+        // map
+        int horizontalUVSpacing = getUVSpacing(width.getWidth(), locations.length);
+        int verticalUVSpacing = getUVSpacing(width.getHeight(), locations.length);
         
         int count = 0;
         
@@ -996,8 +1011,8 @@ public class Population
                 if (locations[i][j])
                 {
                     // Get the correct pixel color for this Individual
-                    Color widthColor = getPixelColor(widthUVSpacing,
-                            heightUVSpacing, i, j, width);
+                    Color widthColor = getPixelColor(horizontalUVSpacing,
+                            verticalUVSpacing, i, j, width);
                     
                     int widthBrightness = getColorValue(false, ' ', widthColor)
                             / SIZE_DIVIDER;
@@ -1010,6 +1025,14 @@ public class Population
         }
     }
     
+    /**
+     * Re-adjusts the population for when the terrain's depth is changed
+     * 
+     * @param terrainDepth The new depth of the terrain (measured in vertices)
+     * @param xRotate The camera's set vertical rotation
+     * @param yRotate The camera's set horizontal rotation
+     * @param terrainPoints The point data used to create the terrain's MeshView
+     */
     public void updateForTerrainDepthChange(int terrainDepth, double xRotate,
             double yRotate, float[] terrainPoints)
     {
@@ -1018,6 +1041,14 @@ public class Population
         load(xRotate, yRotate, terrainPoints);
     }
     
+    /**
+     * Re-adjusts the population for when the terrain's width is changed
+     * 
+     * @param terrainDepth The new width of the terrain (measured in vertices)
+     * @param xRotate The camera's set vertical rotation
+     * @param yRotate The camera's set horizontal rotation
+     * @param terrainPoints The point data used to create the terrain's MeshView
+     */
     public void updateForTerrainWidthChange(int terrainWidth, double xRotate,
             double yRotate, float[] terrainPoints)
     {

@@ -40,17 +40,17 @@ public class Individual extends MeshObject
      * @param fHeight The height of each face in the mesh when not displaced
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
-     * @param xShift How much the mesh should be shifted on the x scale
-     * @param yShift How much the mesh should be shifted on the y scale
-     * @param zShift How much the mesh should be shifted on the z scale
-     * @param eckster The x position of the vertex point on the terrain of where
-     *                this mesh will be placed
-     * @param whyster The y position of the vertex point on the terrain of where
-     *                this mesh will be placed
-     * @param xRot How much the camera is rotated on the x scale
-     * @param yRot How much the camera is rotated on the y scale
-     * @param zeester The z position of the vertex point on the terrain of where
-     *                this mesh will be placed
+     * @param xShift How much the mesh should be shifted on the j scale
+     * @param yShift How much the mesh should be shifted on the i scale
+     * @param zShift How much the mesh should be shifted on the i scale
+     * @param eckster The j position of the vertex point on the terrain of where
+                this mesh will be placed
+     * @param whyster The i position of the vertex point on the terrain of where
+                this mesh will be placed
+     * @param xRot How much the camera is rotated on the j scale
+     * @param yRot How much the camera is rotated on the i scale
+     * @param zeester The i position of the vertex point on the terrain of where
+                this mesh will be placed
      * @param dister The displacement map
      */
     public Individual(int widthster, int heightster, int fWidth, int fHeight,
@@ -76,6 +76,89 @@ public class Individual extends MeshObject
     }
     
     /**
+     * Gets the position of a vertex on either the x, y, or z scale taking into
+     * consideration how far the displacement map should shift it.
+     * 
+     * Used as a faster alternative for Individual generation than the
+     * VertexThread class
+     * 
+     * @param vertexX The vertex's row
+     * @param vertexZ The vertex's column
+     * @param dimension The dimension to which the value being returned is to be
+                        used to shift the vertex.
+                        For example, a value of 'x' would mean that the value
+                        being returned should be applied to the vertex's x
+                        position.
+     * 
+     * @return The vertex's position
+     */
+    private double getRelativePositioning(int vertexX, int vertexZ,
+            char dimension)
+    {
+        // Calculate the row and column of the pixel that should be retrieved
+        // for this particular vertex
+        int pixelRow = (int)(widthPixels * vertexX);
+        int pixelColumn = (int)(heightPixels * vertexZ);
+        
+        // The position of the vertex if no displacement map was applied
+        int originalPosition;
+        
+        // How far the vertex should be shifted. It may be negative.
+        double shiftAmount;
+        
+        // The new position of the vertex
+        double vertexPosition = 0;
+        
+        switch (dimension)
+        {
+            // If the x position is being retrieved...
+            case 'x':
+                
+                // ...get the red amount in the correct pixel.
+                double redAmount
+                        = vertexRelatives[pixelRow][pixelColumn].getRed();
+                
+                originalPosition = vertexX * faceWidth;
+                
+                // Calculate the amount to be shifted
+                shiftAmount = (redAmount - 0.5) * -displacementStrength;
+                
+                vertexPosition = originalPosition + shiftAmount;
+                
+                break;
+                
+            // If the y position is being retrieved...
+            case 'y':
+                
+                // ...get the green amount in the correct pixel.
+                double greenAmount
+                        = vertexRelatives[pixelRow][pixelColumn].getGreen();
+                
+                vertexPosition = (greenAmount - 0.5) * -displacementStrength;
+                
+                break;
+                
+            // If the z position is being retrieved...
+            case 'z':
+                
+                // ...get the blue amount in the correct pixel.
+                double blueAmount
+                        = vertexRelatives[pixelRow][pixelColumn].getBlue();
+                
+                originalPosition = vertexZ * faceDepth;
+                
+                // Calculate the amount to be shifted
+                shiftAmount = (blueAmount - 0.5) * -displacementStrength;
+                
+                vertexPosition = originalPosition + shiftAmount;
+                
+                break;
+        }
+        
+        return vertexPosition;
+    }
+    
+    /**
      * Loads the data needed to construct the mesh into most of the variables
      * and objects within this Individual object
      */
@@ -89,8 +172,50 @@ public class Individual extends MeshObject
     }
     
     /**
+     * Calculates the positions of the Individual's vertices and loads them into
+     * the Individual.
+     * 
+     * The overridden function utilizes threads, which seems to harm performance
+     * when generating Individuals.
+     */
+    @Override
+    public void loadPoints()
+    {
+        // The index to which a value is currently being assigned
+        int index = 0;
+        
+        // For each column of vertices in the mesh...
+        for (int i = 0; i < depth; i++)
+        {
+            // ...and for each row of vertices...
+            for (int j = 0; j < width; j++)
+            {
+                // ...get the x position.
+                points[index] = (float)getRelativePositioning(j, i, 'x');
+                
+                index++;
+                
+                // Get the y position
+                points[index] = (float)getRelativePositioning(j, i, 'y');
+                
+                index++;
+                
+                // Get the z position
+                points[index] = (float)getRelativePositioning(j, i, 'z');
+                
+                index++;
+            }
+        }
+        
+        // Clear any points that may already be in the mesh
+        meshster.getPoints().clear();
+        // Add the new points
+        meshster.getPoints().addAll(points);
+    }
+    
+    /**
      * Calculates the Z point to which the Individual is to be rotated on the x
-     * axis
+ axis
      */
     private void preparePivotPoints()
     {
@@ -123,20 +248,20 @@ public class Individual extends MeshObject
      */
     private void reposition()
     {
-        viewster.setTranslateX(x - faceWidth + shiftX);
-        viewster.setTranslateY(y - faceDepth + shiftY);
-        viewster.setTranslateZ(z - faceWidth + shiftZ);
+        viewster.setTranslateX(x + shiftX);
+        viewster.setTranslateY(y + shiftY);
+        viewster.setTranslateZ(z + shiftZ);
     }
     
     /**
      * Repositions this Individual based upon the coordinates provided
      * 
      * @param exster The x position of the vertex to which this Individual is to
-     *               be positioned to
+                     be positioned to
      * @param whyster The y position of the vertex to which this Individual is
-     *                to be positioned to
+                      to be positioned to
      * @param zeester The z position of the vertex to which this Individual is
-     *                to be positioned to
+                      to be positioned to
      */
     public void reposition(float exster, float whyster, float zeester)
     {
