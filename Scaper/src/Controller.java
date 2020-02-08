@@ -20,6 +20,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
@@ -31,6 +32,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tabs.CameraTab;
 import tabs.LightTab;
@@ -113,6 +115,8 @@ public class Controller
     @FXML private ImageView populationImageT;
     @FXML private ImageView populationImageBM;
     @FXML private ImageView populationImageSM;
+    
+    @FXML private ProgressBar refreshProgress;
     
     @FXML private RadioButton cameraRadioFOVH;
     @FXML private RadioButton cameraRadioFOVV;
