@@ -1,14 +1,10 @@
 package graphics;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.MeshView;
 
@@ -89,7 +85,7 @@ public class Terrain extends MeshObject
         for (int i = 0; i < CENTER_POINTS_AMOUNT; i++)
         {
             // ...calculate the index for the correct dimension.
-            indexes[i] = indexes[i] * THREE_DIMENSIONS + dimensionValue;
+            indexes[i] = indexes[i] * DIMENSIONS + dimensionValue;
             
             // Add that point's position to the total
             total = total + points[indexes[i]];
@@ -197,7 +193,7 @@ public class Terrain extends MeshObject
         {
             // The index of the position of this corner point of the given
             // dimension
-            int farIndex = cornerPoints[i] * THREE_DIMENSIONS + dimensionValue;
+            int farIndex = cornerPoints[i] * DIMENSIONS + dimensionValue;
             
             // The distance this point is from the center
             double possibleFar = Math.abs(points[farIndex] - center);
@@ -236,41 +232,32 @@ public class Terrain extends MeshObject
     
     public void load(ProgressBar progster)
     {
-        Task<Color[][]> displacementTask = getDisplacementTask();
-        Task<float[]> pointsTask = getPointsTask();
-        Task<float[]> mapTask = getUVTask();
-        Task<int[]> faceTask = getFacesTask();
+        Task<Void> displacementTask = loadDisplacementPixels();
+        Task<Void> pointsTask = loadPoints();
+        Task<Void> mapTask = loadTexturePositions();
+        Task<Void> facesTask = loadFaces();
         
         runTask(displacementTask, progster);
+        runTask(pointsTask, progster);
         runTask(mapTask, progster);
         
-        try
+        displacementTask.setOnSucceeded(e ->
         {
-            vertexRelatives = displacementTask.get();
-            
-            runTask(pointsTask, progster);
+            pointsTask.setOnSucceeded(f ->
+            {
+                mapTask.setOnSucceeded(g ->
+                {
+                    runTask(facesTask, progster);
+                });
+            });
+        });
         
-            points = pointsTask.get();
-            texturePositions = mapTask.get();
-            
-            runTask(faceTask, progster);
-            
-            faces = faceTask.get();
-            
-            loadMesh();
-        
-            viewster.setDrawMode(DrawMode.FILL);
-            viewster.setMaterial(texture);
-        }
-        catch (InterruptedException | ExecutionException ex)
-        {
-            Logger.getLogger(Terrain.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        viewster.setDrawMode(DrawMode.FILL);
+        viewster.setMaterial(texture);
     }
     
-    private void runTask(Task taskster, ProgressBar progster)
+    private void runTask(Task<Void> taskster, ProgressBar progster)
     {
-        progster.progressProperty().unbind();
         progster.progressProperty().bind(taskster.progressProperty());
         
         runTask(taskster);
