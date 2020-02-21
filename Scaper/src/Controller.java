@@ -7,6 +7,7 @@ import tabs.RenderTab;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -150,6 +151,8 @@ public class Controller
      */
     public Controller()
     {
+        refreshProgress = new ProgressBar();
+        
         ligTab = new LightTab();
         camTab = new CameraTab();
         renTab = new RenderTab();
@@ -1354,8 +1357,8 @@ public class Controller
      */
     protected void preparePreview()
     {
-        terTab.prepareTerrain();
-        
+        terTab.prepareTerrain(refreshProgress);
+                
         // Estimation of the center point of the terrain
         double terrainCenterX = terTab.getCenterX();
         double terrainCenterY = terTab.getCenterY();

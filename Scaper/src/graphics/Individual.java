@@ -178,8 +178,7 @@ public class Individual extends MeshObject
      * The overridden function utilizes threads, which seems to harm performance
      * when generating Individuals.
      */
-    @Override
-    public void loadPoints()
+    public void loadIndividualPoints()
     {
         // The index to which a value is currently being assigned
         int index = 0;
@@ -298,7 +297,7 @@ public class Individual extends MeshObject
     {
         faceDepth = heightster;
         
-        loadPoints();
+        loadIndividualPoints();
     }
     
     /**
@@ -310,7 +309,7 @@ public class Individual extends MeshObject
     {
         faceWidth = widthster;
         
-        loadPoints();
+        loadIndividualPoints();
         preparePivotPoints();
     }
     

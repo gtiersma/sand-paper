@@ -1,6 +1,12 @@
 package graphics;
 
+import java.util.concurrent.CountDownLatch;
+import javafx.concurrent.Task;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.shape.DrawMode;
+import javafx.scene.shape.MeshView;
 
 
 /**
@@ -222,5 +228,38 @@ public class Terrain extends MeshObject
     public int getWidth()
     {
         return width;
+    }
+    
+    public void load(ProgressBar progster)
+    {
+        Task<Void> displacementTask = loadDisplacementPixels();
+        Task<Void> pointsTask = loadPoints();
+        Task<Void> mapTask = loadTexturePositions();
+        Task<Void> facesTask = loadFaces();
+        
+        runTask(displacementTask, progster);
+        runTask(pointsTask, progster);
+        runTask(mapTask, progster);
+        
+        displacementTask.setOnSucceeded(e ->
+        {
+            pointsTask.setOnSucceeded(f ->
+            {
+                mapTask.setOnSucceeded(g ->
+                {
+                    runTask(facesTask, progster);
+                });
+            });
+        });
+        
+        viewster.setDrawMode(DrawMode.FILL);
+        viewster.setMaterial(texture);
+    }
+    
+    private void runTask(Task<Void> taskster, ProgressBar progster)
+    {
+        progster.progressProperty().bind(taskster.progressProperty());
+        
+        runTask(taskster);
     }
 }

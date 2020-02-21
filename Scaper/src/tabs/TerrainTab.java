@@ -2,6 +2,11 @@ package tabs;
 
 
 import graphics.Terrain;
+import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.concurrent.Task;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.shape.MeshView;
 
@@ -139,10 +144,11 @@ public class TerrainTab
     /**
      * Prepares the initial terrain to be displayed
      */
-    public void prepareTerrain()
+    public void prepareTerrain(ProgressBar progster)
     {
         terster.setTexture(BLANK_IMAGE);
-        terster.load();
+        
+        terster.load(progster);
         
         viewster = terster.getMeshView();
     }
