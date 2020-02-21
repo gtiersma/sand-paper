@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -28,8 +30,9 @@ public class MeshObject
     // The number of integers in the face array that are needed to define each
     // face
     protected final int INTS_PER_FACE = 6;
-    // The number of dimensions
-    protected final int DIMENSIONS = 3;
+    
+    protected final int TWO_DIMENSIONS = 2;
+    protected final int THREE_DIMENSIONS = 3;
     
     // Multiplied to the user-defined displacement strength variable to increase
     // distance between vertices
@@ -112,10 +115,10 @@ public class MeshObject
         faces = new int[facesAmount * INTS_PER_FACE];
         
         // Calculate number of floats needed for the float data
-        points = new float[width * depth * DIMENSIONS];
+        points = new float[width * depth * THREE_DIMENSIONS];
         
         // Calculate number of floats needed for the UV data
-        texturePositions = new float[width * depth * 2];
+        texturePositions = new float[width * depth * TWO_DIMENSIONS];
         
         displacement = dister;
         
@@ -134,59 +137,23 @@ public class MeshObject
     }
     
     /**
-     * Prepares and then gets the mesh view
-     * 
-     * @return The mesh view
-     */
-    public MeshView getMeshView()
-    {
-        return viewster;
-    }
-    
-    /**
-     * Loads the data needed to construct the mesh into most all of the
-     * variables and objects within this MeshObject
-     */
-    public void load()
-    {
-        Task<Void> displacementTask = loadDisplacementPixels();
-        Task<Void> pointsTask = loadPoints();
-        Task<Void> mapTask = loadTexturePositions();
-        
-        runTask(displacementTask);
-        runTask(pointsTask);
-        runTask(mapTask);
-        
-        displacementTask.setOnSucceeded(e ->
-        {
-            pointsTask.setOnSucceeded(f ->
-            {
-                mapTask.setOnSucceeded(g ->
-                {
-                    runTask(loadFaces());
-                });
-            });
-        });
-        
-        viewster.setDrawMode(DrawMode.FILL);
-        viewster.setMaterial(texture);
-    }
-    
-    /**
      * Loads the pixel colors from the displacement map
      */
-    protected Task<Void> loadDisplacementPixels()
+    protected Task<Color[][]> getDisplacementTask()
     {
-        Task<Void> taskster = new Task<Void>()
+        Task<Color[][]> taskster = new Task<Color[][]>()
         {
             
-            @Override public Void call()
+            @Override public Color[][] call()
             {
                 int displacementWidth = (int)displacement.getWidth();
                 int displacementHeight = (int)displacement.getHeight();
                 
                 int progress = 0;
                 int progressDone = displacementWidth * displacementHeight;
+                
+                Color[][] pixels = new Color[displacementWidth]
+                [displacementHeight];
                 
                 PixelReader readster = displacement.getPixelReader();
         
@@ -203,14 +170,14 @@ public class MeshObject
                         int newJ = displacementHeight - j - 1;
                 
                         // Get the correct color
-                        vertexRelatives[i][newJ] = readster.getColor(i, j);
+                        pixels[i][newJ] = readster.getColor(i, j);
                         
                         progress++;
                         updateProgress(progress, progressDone);
                     }
                 }
                 
-                return null;
+                return pixels;
             }
         };
         
@@ -220,18 +187,20 @@ public class MeshObject
     /**
      * Loads the face data into the mesh object
      */
-    protected Task<Void> loadFaces()
+    protected Task<int[]> getFacesTask()
     {
-        Task<Void> taskster = new Task<Void>()
+        Task<int[]> taskster = new Task<int[]>()
         {
-            @Override public Void call()
+            @Override public int[] call()
             {
                 // The number of which vertex the face being created is based upon. The
                 // vertices are number from left to right, top to bottom.
                 int point = 0;
                 
-                int progressDone = facesAmount * 2;
+                int progressDone = facesAmount / 2;
         
+                int[] facster = new int[facesAmount * INTS_PER_FACE];
+                
                 // For every set of values for each 2 faces in the face array...
                 for (int i = 0; i + 1 < facesAmount * INTS_PER_FACE;
                         i = i + INTS_PER_FACE * 2)
@@ -241,20 +210,20 @@ public class MeshObject
                     if (!((point + 1) % width == 0))
                     {
                         // ...get the points for the first of the 2 faces.
-                        faces[i] = point + width + 1;
-                        faces[i + 1] = point + width + 1;
-                        faces[i + 2] = point + width;
-                        faces[i + 3] = point + width;
-                        faces[i + 4] = point;
-                        faces[i + 5] = point;
+                        facster[i] = point + width + 1;
+                        facster[i + 1] = point + width + 1;
+                        facster[i + 2] = point + width;
+                        facster[i + 3] = point + width;
+                        facster[i + 4] = point;
+                        facster[i + 5] = point;
                 
                         // Get the points for the second of the 2 faces
-                        faces[i + INTS_PER_FACE] = point + 1;
-                        faces[i + INTS_PER_FACE + 1] = point + 1;
-                        faces[i + INTS_PER_FACE + 2] = point + width + 1;
-                        faces[i + INTS_PER_FACE + 3] = point + width + 1;
-                        faces[i + INTS_PER_FACE + 4] = point;
-                        faces[i + INTS_PER_FACE + 5] = point;
+                        facster[i + INTS_PER_FACE] = point + 1;
+                        facster[i + INTS_PER_FACE + 1] = point + 1;
+                        facster[i + INTS_PER_FACE + 2] = point + width + 1;
+                        facster[i + INTS_PER_FACE + 3] = point + width + 1;
+                        facster[i + INTS_PER_FACE + 4] = point;
+                        facster[i + INTS_PER_FACE + 5] = point;
                     }
                     // ...otherwise...
                     else
@@ -275,12 +244,7 @@ public class MeshObject
                     updateProgress(point, progressDone);
                 }
         
-                // Remove the faces already present
-                meshster.getFaces().clear();
-                // Assign the new faces
-                meshster.getFaces().addAll(faces);
-        
-                return null;
+                return facster;
             }
         };
         
@@ -288,17 +252,28 @@ public class MeshObject
     }
     
     /**
+     * Prepares and then gets the mesh view
+     * 
+     * @return The mesh view
+     */
+    public MeshView getMeshView()
+    {
+        return viewster;
+    }
+    
+    /**
      * Calculates the vertex positions and loads them into the mesh
      */
-    protected Task<Void> loadPoints()
+    protected Task<float[]> getPointsTask()
     {
-        Task<Void> taskster = new Task<Void>()
+        Task<float[]> taskster = new Task<float[]>()
         {
-            
-            @Override public Void call()
+            @Override public float[] call()
             {
                 int progress = 0;
                 int progressDone = depth * width;
+                
+                float[] pointsster = new float[width * depth * THREE_DIMENSIONS];
                 
                 // Arraylist of objects that will retrieve the values of the threads
                 List<Future<Float>> threadResults = new ArrayList<>();
@@ -344,11 +319,16 @@ public class MeshObject
                         
                         progress++;
                         updateProgress(progress, progressDone);
+                        try
+                        {
+                            Thread.sleep(10);
+                        }
+                        catch (InterruptedException ex)
+                        {
+                            Logger.getLogger(MeshObject.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
-        
-                // Clear any points that may already be in the mesh
-                meshster.getPoints().clear();
         
                 // Incremation variable
                 int i = 0;
@@ -358,17 +338,11 @@ public class MeshObject
                     try
                     {
                         // ...get it.
-                        points[i] = vertexResult.get();
-                
-                        // Vertex positions must be added to the mesh view individually
-                        // for some reason. I tried adding the entire array to the mesh
-                        // view after this loop, and all of the vertices were left
-                        // positioned at 0,0,0.
-                        meshster.getPoints().addAll(points[i]);
+                        pointsster[i] = vertexResult.get();
                     }
                     catch (InterruptedException | ExecutionException ex)
                     {
-                        points[i] = 0;
+                        Logger.getLogger(MeshObject.class.getName()).log(Level.SEVERE, null, ex);
                     }
             
                     i++;
@@ -376,7 +350,7 @@ public class MeshObject
         
                 exster.shutdown();
         
-                return null;
+                return pointsster;
             }
         };
         
@@ -386,12 +360,11 @@ public class MeshObject
     /**
      * Loads the UV mapping positions into the mesh
      */
-    protected Task<Void> loadTexturePositions()
+    protected Task<float[]> getUVTask()
     {
-        Task<Void> taskster = new Task<Void>()
+        Task<float[]> taskster = new Task<float[]>()
         {
-            
-            @Override public Void call()
+            @Override public float[] call()
             {
                 int progress = 0;
                 int progressDone = width * depth;
@@ -401,6 +374,8 @@ public class MeshObject
                 float faceSizeU = (float)(1.0 / (width - 1));
                 float faceSizeV = (float)(1.0 / (depth - 1));
         
+                float uvPoints[] = new float[width * depth * TWO_DIMENSIONS];
+                
                 // An incrementor for the array element
                 int i = 0;
         
@@ -413,10 +388,10 @@ public class MeshObject
                     {
                         // ...get the percentage that the point is from the vertical
                         // edges.
-                        texturePositions[i] = u * faceSizeU;
+                        uvPoints[i] = u * faceSizeU;
                         // Get the percentage that the pooint is from the horizontal
                         // edges
-                        texturePositions[i + 1] = v * faceSizeV;
+                        uvPoints[i + 1] = v * faceSizeV;
                 
                         i = i + 2;
                     
@@ -425,19 +400,63 @@ public class MeshObject
                     }
                 }
         
-                // Remove any old UV coordinates
-                meshster.getTexCoords().clear();
-                // Add the new ones
-                meshster.getTexCoords().setAll(texturePositions);
-        
-                return null;
+                return uvPoints;
             }
         };
         
         return taskster;
     }
     
-    protected void runTask(Task<Void> taskster)
+    /**
+     * Loads the data needed to construct the mesh into most all of the
+     * variables and objects within this MeshObject
+     */
+    public void load()
+    {
+        Task<Color[][]> displacementTask = getDisplacementTask();
+        Task<float[]> pointsTask = getPointsTask();
+        Task<float[]> mapTask = getUVTask();
+        Task<int[]> faceTask = getFacesTask();
+        
+        runTask(displacementTask);
+        runTask(mapTask);
+        
+        try
+        {
+            vertexRelatives = displacementTask.get();
+            
+            runTask(pointsTask);
+        
+            points = pointsTask.get();
+            texturePositions = mapTask.get();
+            
+            runTask(faceTask);
+            
+            faces = faceTask.get();
+            
+            loadMesh();
+        
+            viewster.setDrawMode(DrawMode.FILL);
+            viewster.setMaterial(texture);
+        }
+        catch (InterruptedException | ExecutionException ex)
+        {
+            System.out.println("ERROR: MeshObject Thread Exception");
+        }
+    }
+    
+    protected void loadMesh()
+    {
+        meshster.getPoints().clear();
+        meshster.getFaces().clear();
+        meshster.getTexCoords().clear();
+        
+        meshster.getPoints().addAll(points);
+        meshster.getFaces().addAll(faces);
+        meshster.getTexCoords().addAll(texturePositions);
+    }
+    
+    protected void runTask(Task taskster)
     {
         Thread threadster = new Thread(taskster);
         threadster.setDaemon(true);
@@ -468,14 +487,11 @@ public class MeshObject
         facesAmount = ((width - 1) * 2) * (depth - 1);
         widthPixels = displacement.getWidth() / width;
         heightPixels = displacement.getHeight() / depth;
-        points = new float[width * depth * DIMENSIONS];
-        texturePositions = new float[width * depth * 2];
+        points = new float[width * depth * THREE_DIMENSIONS];
+        texturePositions = new float[width * depth * TWO_DIMENSIONS];
         faces = new int[facesAmount * INTS_PER_FACE];
         
-        loadDisplacementPixels();
-        loadTexturePositions();
-        loadPoints();
-        loadFaces();
+        load();
     }
     
     /**
@@ -494,9 +510,7 @@ public class MeshObject
         vertexRelatives = new Color[(int)displacement.getWidth()]
                 [(int)displacement.getHeight()];
         
-        loadDisplacementPixels();
-        loadPoints();
-        loadFaces();
+        load();
     }
     
     /**
@@ -508,11 +522,7 @@ public class MeshObject
     {
         displacementStrength = strengthster * DISPLACEMENT_MULTIPLIER;
         
-        // Re-initialize and re-calculate the variables that rely on the
-        // displacement map's strength in their calculations
-        loadDisplacementPixels();
-        loadPoints();
-        loadFaces();
+        load();
     }
     
     /**
@@ -549,14 +559,11 @@ public class MeshObject
         facesAmount = ((width - 1) * 2) * (depth - 1);
         widthPixels = displacement.getWidth() / width;
         heightPixels = displacement.getHeight() / depth;
-        points = new float[width * depth * DIMENSIONS];
-        texturePositions = new float[width * depth * 2];
+        points = new float[width * depth * THREE_DIMENSIONS];
+        texturePositions = new float[width * depth * TWO_DIMENSIONS];
         faces = new int[facesAmount * INTS_PER_FACE];
         
-        loadDisplacementPixels();
-        loadTexturePositions();
-        loadPoints();
-        loadFaces();
+        load();
     }
     
     /**
@@ -604,7 +611,7 @@ public class MeshObject
         j = 1;
         
         // Adds the point variables to the string
-        for (int i = 0; i < pointsFromMesh.length; i = i + DIMENSIONS)
+        for (int i = 0; i < pointsFromMesh.length; i = i + THREE_DIMENSIONS)
         {
             stringster = stringster + "\nPoint #" + j + ": " + pointsFromMesh[i]
                     + ", " + pointsFromMesh[i + 1] + ", "
