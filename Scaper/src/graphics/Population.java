@@ -382,7 +382,7 @@ public class Population
                                     // ...create a new Individual.
                                     Individual newIndividual =
                                             createIndividual(
-                                                    DISPLACEMENT_STRENGTH, i, j,
+                                                    DISPLACEMENT_STRENGTH, j, i,
                                                     terrainWidth, X_SHIFT_SPACE,
                                                     Y_SHIFT_SPACE,
                                                     X_WIDTH_SPACE,
