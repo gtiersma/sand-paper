@@ -7,6 +7,7 @@ import tabs.RenderTab;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -255,8 +256,8 @@ public class Controller
             {
                 camTab.setHorizontalAngle(newster.doubleValue());
                 popTab.setRotationY(newster.doubleValue());
-            
-                preview.setRoot(getPreview());
+        
+                refreshPreview();
             }
         });
         
@@ -266,8 +267,8 @@ public class Controller
             {
                 camTab.setVerticalAngle(newster.doubleValue());
                 popTab.setRotationX(newster.doubleValue());
-            
-                preview.setRoot(getPreview());
+        
+                refreshPreview();
             }
         });
         
@@ -631,8 +632,8 @@ public class Controller
             
             // Set the image as the first of the 2 displacement range maps
             popTab.setActivePopulationFirstDisplacement(texster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -658,8 +659,8 @@ public class Controller
             
             // Set the image as the population's height determinant
             popTab.setActivePopulationHeight(texster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -690,8 +691,8 @@ public class Controller
             // Set the image as the population's placement determinant
             popTab.setActivePopulationPlacement(xRotate, yRotate, texster,
                     terTab.getPoints());
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -717,8 +718,8 @@ public class Controller
             
             // Set the image as the population's bump map
             popTab.setActivePopulationBump(texster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -744,8 +745,8 @@ public class Controller
             
             // Set the image as the specular map
             popTab.setActivePopulationSpecular(texster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -771,8 +772,8 @@ public class Controller
             
             // Set the image as the population's texture
             popTab.setActivePopulationTexture(texster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -799,8 +800,8 @@ public class Controller
             
             // Set the image as the second of the 2 displacement range maps
             popTab.setActivePopulationSecondDisplacement(texster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -825,8 +826,8 @@ public class Controller
             
             // Set the image as the population's shift determinant
             popTab.setActivePopulationShift(texster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -852,8 +853,8 @@ public class Controller
             
             // Set the image as the bump map
             terTab.setBump(imster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -879,8 +880,8 @@ public class Controller
             
             // Set the image as the specular map
             terTab.setSpecular(terrainImageSM.getImage());
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -906,8 +907,8 @@ public class Controller
 
             // Set the image as the texture
             terTab.setTexture(imster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -933,8 +934,8 @@ public class Controller
             
             // Set the image as the population's width determinant
             popTab.setActivePopulationWidth(texster);
-
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -964,8 +965,8 @@ public class Controller
             listen = true;
                 
             resetLightControls();
-                
-            preview.setRoot(getPreview());
+        
+            refreshPreview();
         }
     }
     
@@ -997,7 +998,9 @@ public class Controller
             enablePopulationControls(true);
                 
             resetPopulationControls();
-                
+            
+            refreshPreview();
+            
             // Continue listening to events
             listen = true;
         }
@@ -1056,8 +1059,8 @@ public class Controller
         listen = true;
 
         loadLight();
-
-        preview.setRoot(getPreview());
+        
+        refreshPreview();
     }
     
     /**
@@ -1119,7 +1122,7 @@ public class Controller
         // Continue listening to events
         listen = true;
         
-        preview.setRoot(getPreview());
+        refreshPreview();
     }
     
     /**
@@ -1189,40 +1192,6 @@ public class Controller
         {
             Platform.exit();
         }
-    }
-    
-    /**
-     * Creates a group of objects to be used as the preview in the viewport
-     * 
-     * @return A group of everything to be used in the preview
-     */
-    protected Group getPreview()
-    {
-        int lightAmount = ligTab.getLightAmount();
-        int populationAmount = popTab.getPopulationAmount();
-        
-        Group previewItems = new Group();
-        
-        // Rotate to the correct position
-        previewItems.getTransforms().add(camTab.getXRotate());
-        previewItems.getTransforms().add(camTab.getYRotate());
-        
-        // Add the terrain
-        previewItems.getChildren().add(terTab.getTerrain());
-        
-        // Add each light
-        for (int i = 0; i < lightAmount; i++)
-        {
-            previewItems.getChildren().add(ligTab.getLight(i));
-        }
-        
-        // Add each population
-        for (int i = 0; i < populationAmount; i++)
-        {
-            previewItems.getChildren().add(popTab.getPopulation(i));
-        }
-        
-        return previewItems;
     }
     
     /**
@@ -1368,9 +1337,71 @@ public class Controller
         camTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
         camTab.setFurthestPoint(terrainFarPoint);
         
-        preview.setRoot(getPreview());
+        refreshPreview();
         preview.setCamera(camTab.getCamera());
         preview.setFill(renTab.getBackColor());
+    }
+    
+    /**
+     * Refreshes the content in the preview pane
+     */
+    protected void refreshPreview()
+    {
+        int lightAmount = ligTab.getLightAmount();
+        int populationAmount = popTab.getPopulationAmount();
+        
+        Group previewItems = new Group();
+        
+        // Rotate to the correct position
+        previewItems.getTransforms().add(camTab.getXRotate());
+        previewItems.getTransforms().add(camTab.getYRotate());
+        
+        // Add the terrain
+        previewItems.getChildren().add(terTab.getTerrain());
+        
+        // Add each light
+        for (int i = 0; i < lightAmount; i++)
+        {
+            previewItems.getChildren().add(ligTab.getLight(i));
+        }
+        
+        // If at least 1 population exists, and the currently-selected
+        // population's service is about to be started...
+        if (popTab.populationExists()
+                && popTab.isActivePopulationServicePrepared())
+        {
+            // ...get the service.
+            Service populationService = popTab.getActivePopulationService();
+        
+            // Once the service is finished...
+            populationService.setOnSucceeded(e ->
+            {
+                // ...perform the post-service activities on the active
+                // population.
+                popTab.concludeActivePopulationService();
+                
+                // Add each population
+                for (int i = 0; i < populationAmount; i++)
+                {
+                    previewItems.getChildren().add(popTab.getPopulation(i));
+                }
+            
+                // Apply the content to the preview pane
+                preview.setRoot(previewItems);
+            });
+        }
+        // ...otherwise...
+        else
+        {
+            // ...add each population.
+            for (int i = 0; i < populationAmount; i++)
+            {
+                previewItems.getChildren().add(popTab.getPopulation(i));
+            }
+            
+            // Apply the content to the preview pane
+            preview.setRoot(previewItems);
+        }
     }
     
     /**
@@ -1386,38 +1417,7 @@ public class Controller
         
         popTab.regeneratePopulations(xRotate, yRotate, terTab.getPoints());
         
-        preview.setRoot(getPreview());
-    }
-    
-    /**
-     * Recreates the populations to accommodate the terrain's new size
-     * 
-     * @param didWidthChange Whether or not the terrain's width was adjusted
-     * @param terrainSize The new size of the terrain
-     */
-    protected void updatePopulationsForTerrainSizeChange(boolean didWidthChange,
-            int terrainSize)
-    {
-        // Get the camera's rotation value
-        double xRotate = camTab.getXRotate().getAngle();
-        double yRotate = camTab.getYRotate().getAngle();
-        
-        // If the terrain's width changed...
-        if (didWidthChange)
-        {
-            // ...update the populations for a width change.
-            popTab.updateForTerrainWidthChange(terrainSize, xRotate, yRotate,
-                terTab.getPoints());
-        }
-        // ...otherwise, the terrain's depth must have changed...
-        else
-        {
-            // ...so update them for a depth change.
-            popTab.updateForTerrainDepthChange(terrainSize, xRotate, yRotate,
-                terTab.getPoints());
-        }
-        
-        preview.setRoot(getPreview());
+        refreshPreview();
     }
     
     /**
@@ -1623,5 +1623,36 @@ public class Controller
         renTab.saveAs(writster);
         
         resetPreviewSize();
+    }
+    
+    /**
+     * Recreates the populations to accommodate the terrain's new size
+     * 
+     * @param didWidthChange Whether or not the terrain's width was adjusted
+     * @param terrainSize The new size of the terrain
+     */
+    protected void updatePopulationsForTerrainSizeChange(boolean didWidthChange,
+            int terrainSize)
+    {
+        // Get the camera's rotation value
+        double xRotate = camTab.getXRotate().getAngle();
+        double yRotate = camTab.getYRotate().getAngle();
+        
+        // If the terrain's width changed...
+        if (didWidthChange)
+        {
+            // ...update the populations for a width change.
+            popTab.updateForTerrainWidthChange(terrainSize, xRotate, yRotate,
+                terTab.getPoints());
+        }
+        // ...otherwise, the terrain's depth must have changed...
+        else
+        {
+            // ...so update them for a depth change.
+            popTab.updateForTerrainDepthChange(terrainSize, xRotate, yRotate,
+                terTab.getPoints());
+        }
+        
+        refreshPreview();
     }
 }

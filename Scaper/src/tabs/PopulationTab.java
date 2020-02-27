@@ -3,6 +3,7 @@ package tabs;
 import graphics.Population;
 import graphics.TextureObject;
 import java.util.Optional;
+import javafx.concurrent.Service;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
@@ -37,6 +38,15 @@ public class PopulationTab
         activePopulation = null;
         
         populations = new Population[0];
+    }
+    
+    /**
+     * Performs the tasks on the currently-selected population that are to be
+     * performed immediately after the population's service is completed
+     */
+    public void concludeActivePopulationService()
+    {
+        activePopulation.concludeService();
     }
     
     /**
@@ -281,6 +291,16 @@ public class PopulationTab
     }
     
     /**
+     * Gets the service that belongs to the currently-selected population
+     * 
+     * @return The active population's service
+     */
+    public Service getActivePopulationService()
+    {
+        return activePopulation.getService();
+    }
+    
+    /**
      * Gets the name of the texture used by the currently-selected population
      * 
      * @return The name of the texture
@@ -415,6 +435,17 @@ public class PopulationTab
     }
     
     /**
+     * Gets whether or not the currently-selected population's service is
+     * prepared for usage
+     * 
+     * @return Whether or not the service is prepared
+     */
+    public boolean isActivePopulationServicePrepared()
+    {
+        return activePopulation.isServicePrepared();
+    }
+    
+    /**
      * Gets whether or not the given name is already a name of a population
      * 
      * @param name The name to be checked to see if it is a duplicate
@@ -456,6 +487,14 @@ public class PopulationTab
         return exists;
     }
     
+    /**
+     * Recreates all populations with different randomly-generated numbers
+     * 
+     * @param xRotate The camera's vertical rotation value
+     * @param yRotate The camera's horizontal rotation value
+     * @param terrainPoints The array of the positions of each point on the
+     *                      terrain
+     */
     public void regeneratePopulations(double xRotate, double yRotate,
             float[] terrainPoints)
     {
@@ -694,8 +733,9 @@ public class PopulationTab
     }
     
     /**
-     * (Re)constructs all populations
+     * Recreates all of the populations based upon the new depth of the terrain
      * 
+     * @param terrainDepth The depth of the terrain (measured in vertices)
      * @param xRotate The camera's vertical rotation value
      * @param yRotate The camera's horizontal rotation value
      * @param terrainPoints The coordinates of the points used in the creation
@@ -712,8 +752,9 @@ public class PopulationTab
     }
     
     /**
-     * (Re)constructs all populations
+     * Recreates all of the populations based upon the new width of the terrain
      * 
+     * @param terrainWidth The width of the terrain (measured in vertices)
      * @param xRotate The camera's vertical rotation value
      * @param yRotate The camera's horizontal rotation value
      * @param terrainPoints The coordinates of the points used in the creation

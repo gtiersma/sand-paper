@@ -1,7 +1,12 @@
 package graphics;
 
+import controls.ProgressBarDialog;
 import java.io.File;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
@@ -17,57 +22,66 @@ public class Population
 {
     // Divides the width and height values to keep Individuals from being too
     // large
-    final int SIZE_DIVIDER = 3;
+    private final int SIZE_DIVIDER = 3;
     
     // A value used in calculations to get the correct value for the brightness
     // of a pixel
-    final double COLOR_ADJUSTMENT = 100;
+    private final double COLOR_ADJUSTMENT = 100;
     
     // Default textures to use for when no maps have been selected by the user
-    final TextureObject GRAY_TEXTURE
+    private final TextureObject GRAY_TEXTURE
             = new TextureObject(new File("src/graphics/gray.png"));
-    final TextureObject WHITE_TEXTURE = new TextureObject();
+    private final TextureObject WHITE_TEXTURE = new TextureObject();
+    
+    // Whether or not the service is ready to be used
+    private boolean servicePrepared;
     
     // The number of Individuals that this Population consists of
-    int size;
+    private int size;
     
     // A multiplier of how much the vertices on an Individual are to be
     // displaced
-    int displacementStrength;
+    private int displacementStrength;
     
     // The width and height of each Individual (measured in the number of
     // vertices)
-    int vertexWidth;
-    int vertexHeight;
+    private int vertexWidth;
+    private int vertexHeight;
     
-    String name;
+    private String name;
     
     // A matrix for each vertex on the Terrain. The array stores whether or not
     // an Individual is to appear over a vertex.
-    boolean locations[][];
+    private boolean locations[][];
+    
+    // The dialog to show the progress of the population's generation
+    private ProgressBarDialog individualProgress;
+    
+    // The service used when creating Individuals
+    private Service<Individual[]> individualService;
     
     // The maps for each Individual
-    TextureObject bump;
-    TextureObject specular;
-    TextureObject texture;
+    private TextureObject bump;
+    private TextureObject specular;
+    private TextureObject texture;
     
     // A grayscale image for the probability of an Individual being created on a
     // specific vertex on the Terrain
-    TextureObject placement;
+    private TextureObject placement;
     // An image for determining how much each Individual should be shifted on
     // the x (red), y (green) or z (blue) scale.
-    TextureObject shift;
+    private TextureObject shift;
     
     // Grayscale images for determining the width and height of each Individual
-    TextureObject width;
-    TextureObject height;
+    private TextureObject width;
+    private TextureObject height;
     
     // 2 displacement maps for determining the range to which each Individual
     // will be displaced
-    TextureObject displacementRange[];
+    private TextureObject displacementRange[];
     
     // Each individual this population consists of
-    Individual individuals[];
+    private Individual individuals[];
     
     /**
      * CONSTRUCTOR
@@ -82,6 +96,8 @@ public class Population
     public Population(int strength, int terrainWidth, int terrainDepth,
             int vertWidth, int vertHeight, String namster)
     {
+        servicePrepared = false;
+        
         size = 0;
         
         displacementStrength = strength;
@@ -159,49 +175,127 @@ public class Population
     }
     
     /**
+     * Performs the procedures to be used immediately after the service finishes
+     */
+    public void concludeService()
+    {
+        // Get the Individuals created from the service
+        individuals = individualService.getValue();
+        // Reset the service
+        individualService.reset();
+        // Close the progress dialog
+        individualProgress.close();
+        // The service is no longer ready to be used
+        servicePrepared = false;
+    }
+    
+    /**
      * Creates an Individual for this population
      * 
+     * @param dStrength The displacement strength
+     * @param locationX The x position (measured in vertices on the terrain) of
+     *                  the terrain's vertex to which this Individual will be
+     *                  placed adjacent to
+     * @param terrainWidth The width of the terrain (measured in vertices)
+     * @param locationY The y position (measured in vertices on the terrain) of
+     *                  the terrain's vertex to which this Individual will be
+     *                  placed adjacent to
+     * @param xShiftSpace The distance between each pixel on the shift map to be
+     *                    returned for an Individual on the image's x axis
+     * @param yShiftSpace The distance between each pixel on the shift map to be
+     *                    returned for an Individual on the image's y axis
+     * @param xWidthSpace The distance between each pixel on the width map to be
+     *                    returned for an Individual on the image's x axis
+     * @param yWidthSpace The distance between each pixel on the width map to be
+     *                    returned for an Individual on the image's y axis
+     * @param xHeightSpace The distance between each pixel on the height map to
+     *                     be returned for an Individual on the image's x axis
+     * @param yHeightSpace The distance between each pixel on the height map to
+     *                     be returned for an Individual on the image's y axis
+     * @param vWidth The width of each Individual (measured in vertices)
+     * @param vHeight The height of each Individual (measured in vertices)
      * @param faceWidth The width of each face on the Individual
      * @param faceHeight The height of each face on the Individual
-     * @param shiftX How much the Individual is to be shifted on the x scale
-     * @param shiftY How much the Individual is to be shifted on the y scale
-     * @param shiftZ How much the Individual is to be shifted on the z scale
-     * @param x The x position of the vertex on the terrain to which the
-     *          Individual will be placed
-     * @param y The y position of the vertex on the terrain to which the
-     *          Individual will be placed
-     * @param z The z position of the vertex on the terrain to which the
-     *          Individual will be placed
      * @param xRotate The currently set vertical rotation value
      * @param yRotate The currently set horizontal rotation value
+     * @param terrainPoints The array of point positions used in the creation of
+     *                      the terrain
+     * @param bumpster The bump map for this population
+     * @param shiftster The shift map for this population
+     * @param specster The specular map for this population
+     * @param texster The texture for this population
+     * @param widther The width map for this population
+     * @param heightster The height map for this population
+     * @param dRange The 2 displacement maps used to define the range to which
+     *               a displacement map will be generated for this Individual
      */
-    private void createIndividual(int faceWidth, int faceHeight, int shiftX,
-            int shiftY, int shiftZ, double x, double y, double z,
-            double xRotate, double yRotate)
+    private Individual createIndividual(int dStrength, int locationX,
+            int locationY, int terrainWidth, int xShiftSpace, int yShiftSpace,
+            int xWidthSpace, int yWidthSpace, int xHeightSpace,
+            int yHeightSpace, int vWidth, int vHeight, double xRotate,
+            double yRotate, float[] terrainPoints, TextureObject bumpster,
+            TextureObject shiftster, TextureObject specster,
+            TextureObject texster, TextureObject widthster,
+            TextureObject heightster, TextureObject[] dRange)
     {
-        Image displacement = generateDisplacement();
+        final int THREE_DIMENSIONS = 3;
         
-        Individual newIndividual = new Individual(vertexWidth, vertexHeight,
-                faceWidth, faceHeight, displacementStrength, shiftX, shiftY,
-                shiftZ, x, y, z, xRotate, yRotate, displacement);
+        // The shift adjustments for the Individual
+        int shiftX;
+        int shiftY;
+        int shiftZ;
+                    
+        // Calculates the index of the point on the terrain to which
+        // this Individual is to be created upon
+        int pointIndex = ((locationX * terrainWidth) + locationY)
+                * THREE_DIMENSIONS;
+                    
+        // The width and height multipliers to determine the size of
+        // the Individual's faces
+        int faceWidth;
+        int faceHeight;
+                    
+        // The position of the point on the terrain to which this
+        // new Individual will belong
+        double x = terrainPoints[pointIndex];
+        double y = terrainPoints[pointIndex + 1];
+        double z = terrainPoints[pointIndex + 2];
+                    
+        // Get the correct pixel colors for this Individual
+        Color shiftColor = getPixelColor(xShiftSpace, yShiftSpace, locationX,
+                locationY, shiftster);
+        Color widthColor = getPixelColor(xWidthSpace, yWidthSpace, locationX,
+                locationY, widthster);
+        Color heightColor = getPixelColor(xHeightSpace, yHeightSpace, locationX,
+                locationY, heightster);
+                    
+        Individual newIndividual;
+        
+        // The values used to determine how far the Individual is to be shifted
+        // from its default position
+        shiftX = getColorValue(true, 'r', shiftColor);
+        shiftY = getColorValue(true, 'g', shiftColor);
+        shiftZ = getColorValue(true, 'b', shiftColor);
+                    
+        // The values returned from these functions are too large
+        // for the width and height, so it is divided to a smaller
+        // value
+        faceWidth = getColorValue(false, ' ', widthColor) / SIZE_DIVIDER;
+        faceHeight = getColorValue(false, ' ', heightColor) / SIZE_DIVIDER;
+                            
+        Image displacement = generateDisplacement(vWidth, vHeight, dRange);
+        
+        newIndividual = new Individual(vWidth, vHeight, faceWidth, faceHeight,
+                dStrength, shiftX, shiftY, shiftZ, x, y, z, xRotate, yRotate,
+                displacement);
         
         newIndividual.load();
         
-        newIndividual.setTexture(texture.getImage());
-        newIndividual.setBump(bump.getImage());
-        newIndividual.setSpecular(specular.getImage());
+        newIndividual.setTexture(texster.getImage());
+        newIndividual.setBump(bumpster.getImage());
+        newIndividual.setSpecular(specster.getImage());
         
-        // Create a new array with room for the additional element
-        Individual newIndividuals[] = new Individual[individuals.length + 1];
-        
-        // Copy the Individuals to the new array
-        System.arraycopy(individuals, 0, newIndividuals, 0, individuals.length);
-        
-        // Add the new Individual to the new array
-        newIndividuals[individuals.length] = newIndividual;
-        
-        // Make the old array into the new array
-        individuals = newIndividuals;
+        return newIndividual;
     }
     
     /**
@@ -211,88 +305,152 @@ public class Population
      * @param yRotate The currently set horizontal rotation value
      * @param terrainPoints The positions of each vertex in the terrain
      */
-    private void createIndividuals(double xRotate,
-            double yRotate, float[] terrainPoints)
+    private void createIndividuals(double xRotate, double yRotate,
+            float[] terrainPoints)
     {
-        // Get the spacing that should be between each UV point for the
-        // shift, width and height maps
-        int shiftHorizontalSpacing = getUVSpacing(shift.getWidth(),
+        // Constants of global variables. These are used in the service instead
+        // of the original variables to avoid the possibility their values from
+        // being changed by the outside thread while still in use by the
+        // service.
+        final int DISPLACEMENT_STRENGTH = displacementStrength;
+        
+        final int SIZE = size;
+        
+        // The distance between each pixel on a map being retrieved for an
+        // Individual (measured in pixels)
+        final int X_SHIFT_SPACE = getUVSpacing(shift.getWidth(),
                 locations.length);
-        int shiftVerticalSpacing = getUVSpacing(shift.getHeight(),
+        final int Y_SHIFT_SPACE = getUVSpacing(shift.getHeight(),
                 locations[0].length);
-        int widthHorizontalSpacing = getUVSpacing(width.getWidth(),
+        final int X_WIDTH_SPACE = getUVSpacing(width.getWidth(),
                 locations.length);
-        int widthVerticalSpacing = getUVSpacing(width.getHeight(),
+        final int Y_WIDTH_SPACE = getUVSpacing(width.getHeight(),
                 locations[0].length);
-        int heightHorizontalSpacing = getUVSpacing(height.getWidth(),
+        final int X_HEIGHT_SPACE = getUVSpacing(height.getWidth(),
                 locations.length);
-        int heightVerticalSpacing = getUVSpacing(height.getHeight(),
+        final int Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
                 locations[0].length);
         
-        // For each row of vertices on the terrain...
-        for (int i = 0; i < locations.length; i++)
+        final int VERTEX_WIDTH = vertexWidth;
+        final int VERTEX_HEIGHT = vertexHeight;
+        
+        final TextureObject BUMP = bump;
+        final TextureObject SHIFT = shift;
+        final TextureObject SPECULAR = specular;
+        final TextureObject TEXTURE = texture;
+        final TextureObject WIDTH = width;
+        final TextureObject HEIGHT = height;
+        
+        final TextureObject[] DISPLACEMENT_RANGE = displacementRange;
+        
+        final boolean[][] LOCATIONS = locations;
+        
+        individualService = new Service<Individual[]>()
         {
-            // ...and for each column of vertices on the terrain...
-            for (int j = 0; j < locations[i].length; j++)
+            @Override
+            protected Task<Individual[]> createTask()
             {
-                // ...if an Individual is to be created there...
-                if (locations[i][j])
+                return new Task<Individual[]>()
                 {
-                    // The shift adjustments for the Individual
-                    int shiftX;
-                    int shiftY;
-                    int shiftZ;
-                    
-                    // Calculates the index of the point on the terrain to which
-                    // this Individual is to be created upon
-                    int pointIndex = ((j * locations.length) + i) * 3;
-                    
-                    // The width and height multipliers to determine the size of
-                    // the Individual's faces
-                    int widthster;
-                    int heightster;
-                    
-                    // The position of the point on the terrain to which this
-                    // new Individual will belong
-                    double x = terrainPoints[pointIndex];
-                    double y = terrainPoints[pointIndex + 1];
-                    double z = terrainPoints[pointIndex + 2];
-                    
-                    // Get the correct pixel colors for this Individual
-                    Color shiftColor = getPixelColor(shiftHorizontalSpacing,
-                            shiftVerticalSpacing, i, j, shift);
-                    Color widthColor = getPixelColor(widthHorizontalSpacing,
-                            widthVerticalSpacing, i, j, width);
-                    Color heightColor = getPixelColor(heightHorizontalSpacing,
-                            heightVerticalSpacing, i, j, height);
-                    
-                    shiftX = getColorValue(true, 'r', shiftColor);
-                    shiftY = getColorValue(true, 'g', shiftColor);
-                    shiftZ = getColorValue(true, 'b', shiftColor);
-                    
-                    // The values returned from these functions are too large
-                    // for the width and height, so it is divided to a smaller
-                    // value
-                    widthster = getColorValue(false, ' ', widthColor)
-                            / SIZE_DIVIDER;
-                    heightster = getColorValue(false, ' ', heightColor)
-                            / SIZE_DIVIDER;
-                    
-                    createIndividual(widthster, heightster, shiftX, shiftY,
-                            shiftZ, x, y, z, xRotate, yRotate);
-                }
+                    @Override
+                    protected Individual[] call()
+                    {
+                        // Counter variable assigning newly created Individuals
+                        // to the array
+                        int currentIndex = 0;
+                
+                        // The size of the terrain (measured in vertices)
+                        int terrainWidth = LOCATIONS.length;
+                        int terrainHeight = LOCATIONS[0].length;
+                
+                        // Used for keeping track of progress for the progress
+                        // bar
+                        int done = terrainWidth * terrainHeight;
+                        int progress = 0;
+                
+                        Individual[] newIndividuals = new Individual[SIZE];
+                
+                        // For each row of vertices on the terrain...
+                        for (int i = 0; i < terrainWidth; i++)
+                        {
+                            // ...and for each column of vertices on the terrain...
+                            for (int j = 0; j < terrainHeight; j++)
+                            {
+                                // ...if an Individual is to be created there...
+                                if (LOCATIONS[i][j])
+                                {
+                                    // ...create a new Individual.
+                                    Individual newIndividual =
+                                            createIndividual(
+                                                    DISPLACEMENT_STRENGTH, i, j,
+                                                    terrainWidth, X_SHIFT_SPACE,
+                                                    Y_SHIFT_SPACE,
+                                                    X_WIDTH_SPACE,
+                                                    Y_WIDTH_SPACE,
+                                                    X_HEIGHT_SPACE,
+                                                    Y_HEIGHT_SPACE,
+                                                    VERTEX_WIDTH, VERTEX_HEIGHT,
+                                                    xRotate, yRotate,
+                                                    terrainPoints, BUMP, SHIFT,
+                                                    SPECULAR, TEXTURE, WIDTH,
+                                                    HEIGHT, DISPLACEMENT_RANGE);
+        
+                                    // Add the new Individual to the new array
+                                    newIndividuals[currentIndex] =
+                                            newIndividual;
+                            
+                                    currentIndex++;
+                                }
+                        
+                                updateProgress(progress, done);
+                                progress++;
+                            }
+                        }
+                
+                        return newIndividuals;
+                    }
+                };
             }
+        };
+        
+        // The service is now ready for use
+        servicePrepared = true;
+        
+        // Create a progress dialog and show it
+        individualProgress = new ProgressBarDialog("Generating Population",
+                individualService);
+        individualProgress.show();
+        
+        // As long as the service is not already running...
+        if (!individualService.isRunning())
+        {
+            // ...start it.
+            individualService.start();
         }
     }
     
     /**
      * Generates a displacement map with pixels within the range of the 2
-     * displacement maps
+     * displacement maps using this Population's global variables
      * 
      * @return A displacement map with pixels within the range of the 2
      * displacement maps
      */
     private Image generateDisplacement()
+    {
+        return generateDisplacement(vertexWidth, vertexHeight,
+                displacementRange);
+    }
+    
+    /**
+     * Generates a displacement map with pixels within the range of the 2
+     * displacement maps using the provided parameters
+     * 
+     * @return A displacement map with pixels within the range of the 2
+     * displacement maps
+     */
+    private Image generateDisplacement(int vWidth, int vHeight,
+            TextureObject[] range)
     {
         // Get the spacing that should be between each UV point for the
         // placement map
@@ -300,24 +458,24 @@ public class Population
         int[] heightDisplacementSpacings = new int[2];
         
         widthDisplacementSpacings[0]
-                = getUVSpacing(displacementRange[0].getWidth(), vertexWidth);
+                = getUVSpacing(range[0].getWidth(), vWidth);
         heightDisplacementSpacings[0]
-                = getUVSpacing(displacementRange[0].getHeight(), vertexHeight);
+                = getUVSpacing(range[0].getHeight(), vHeight);
         widthDisplacementSpacings[1]
-                = getUVSpacing(displacementRange[1].getWidth(), vertexWidth);
+                = getUVSpacing(range[1].getWidth(), vWidth);
         heightDisplacementSpacings[1]
-                = getUVSpacing(displacementRange[1].getHeight(), vertexHeight);
+                = getUVSpacing(range[1].getHeight(), vHeight);
         
         // The generated map
-        WritableImage newDisplacement = new WritableImage(vertexWidth,
-                vertexHeight);
+        WritableImage newDisplacement = new WritableImage(vWidth,
+                vHeight);
         PixelWriter writster = newDisplacement.getPixelWriter();
         
         // For each row of vertices on the Individual...
-        for (int i = 0; i < vertexWidth; i++)
+        for (int i = 0; i < vWidth; i++)
         {
             // ...and for each column of vertices...
-            for (int j = 0; j < vertexHeight; j++)
+            for (int j = 0; j < vHeight; j++)
             {
                 // Color for how the vertex is to be displaced
                 Color randomColor;
@@ -329,10 +487,10 @@ public class Population
                 
                 pixelColors[0] = getPixelColor(widthDisplacementSpacings[0],
                         heightDisplacementSpacings[0], i, j,
-                        displacementRange[0]);
+                        range[0]);
                 pixelColors[1] = getPixelColor(widthDisplacementSpacings[1],
                         heightDisplacementSpacings[1], i, j,
-                        displacementRange[1]);
+                        range[1]);
                 
                 randomColor = getRandomColor(pixelColors);
                 
@@ -564,6 +722,16 @@ public class Population
     }
     
     /**
+     * Gets this population's service
+     * 
+     * @return The service
+     */
+    public Service getService()
+    {
+        return individualService;
+    }
+    
+    /**
      * Gets the shift map assigned to this population
      * 
      * @return A TextureObject of the shift map assigned to this population
@@ -669,6 +837,16 @@ public class Population
         }
         
         return brightEnough;
+    }
+    
+    /**
+     * Gets whether or not the service is ready for use
+     * 
+     * @return Whether or not the service is ready for use
+     */
+    public boolean isServicePrepared()
+    {
+        return servicePrepared;
     }
     
     /**
