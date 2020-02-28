@@ -106,11 +106,11 @@ public class LightTab
     
     /**
      * Deletes the light currently selected by the user
-     * 
-     * @param index The location in the array of the currently selected light
      */
-    public void deleteActiveLight(int index)
+    public void deleteActiveLight()
     {
+        int index = getActiveLightIndex();
+        
         // Create a new array with room for 1 less light
         LightObject[] newLights = new LightObject[lights.length - 1];
         
@@ -158,6 +158,32 @@ public class LightTab
     public PointLight getActiveLight()
     {
         return activeLight.getLight();
+    }
+    
+    /**
+     * Gets the index of the currently-selected light in the lights array
+     * 
+     * @return The index of the currently-selected light
+     */
+    private int getActiveLightIndex()
+    {
+        int index = 0;
+        
+        // For each light...
+        for (int i = 0; i < lights.length; i++)
+        {
+            // ...if this light is the same as the active light...
+            if (activeLight == lights[i])
+            {
+                // ...get its index.
+                index = i;
+                
+                // Exit the loop
+                i = lights.length;
+            }
+        }
+        
+        return index;
     }
     
     /**

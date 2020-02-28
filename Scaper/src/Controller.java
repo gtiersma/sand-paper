@@ -1020,7 +1020,7 @@ public class Controller
         int lightAmount = ligTab.getLightAmount();
 
         // Delete the light
-        ligTab.deleteActiveLight(selectedIndex);
+        ligTab.deleteActiveLight();
 
         // Pause on listening to events
         listen = false;
