@@ -1,5 +1,6 @@
 
 
+import graphics.Population;
 import graphics.TextureObject;
 import tabs.TextureTab;
 import tabs.TerrainTab;
@@ -450,7 +451,7 @@ public class Controller
         {
             if (listen)
             {
-                popTab.setActivePopulationVertexWidth(newster);
+                popTab.getActivePopulation().setVertexWidth(newster);
             }
         });
         populationSpinnerVRW.focusedProperty().addListener(
@@ -458,7 +459,7 @@ public class Controller
         {
             if (newster == false && popTab.populationExists())
             {
-                popTab.setActivePopulationVertexWidth(
+                popTab.getActivePopulation().setVertexWidth(
                         populationSpinnerVRW.getEditor().getText());
             }
         });
@@ -468,7 +469,7 @@ public class Controller
         {
             if (listen)
             {
-                popTab.setActivePopulationVertexHeight(newster);
+                popTab.getActivePopulation().setVertexHeight(newster);
             }
         });
         populationSpinnerVRH.focusedProperty().addListener(
@@ -476,7 +477,7 @@ public class Controller
         {
             if (newster == false && popTab.populationExists())
             {
-                popTab.setActivePopulationVertexHeight(
+                popTab.getActivePopulation().setVertexHeight(
                         populationSpinnerVRH.getEditor().getText());
             }
         });
@@ -486,7 +487,7 @@ public class Controller
         {
             if (listen)
             {
-                popTab.setActivePopulationDisplacementStrength(
+                popTab.getActivePopulation().setDisplacementStrength(
                         newster.intValue());
             }
         });
@@ -631,7 +632,7 @@ public class Controller
             populationImageDR1.setImage(texster.getImage());
             
             // Set the image as the first of the 2 displacement range maps
-            popTab.setActivePopulationFirstDisplacement(texster);
+            popTab.getActivePopulation().setFirstDisplacement(texster);
         
             refreshPreview();
         }
@@ -658,7 +659,7 @@ public class Controller
             populationImageSH.setImage(texster.getImage());
             
             // Set the image as the population's height determinant
-            popTab.setActivePopulationHeight(texster);
+            popTab.getActivePopulation().setHeight(texster);
         
             refreshPreview();
         }
@@ -689,8 +690,8 @@ public class Controller
             populationImageP.setImage(texster.getImage());
             
             // Set the image as the population's placement determinant
-            popTab.setActivePopulationPlacement(xRotate, yRotate, texster,
-                    terTab.getPoints());
+            popTab.getActivePopulation().setPlacement(xRotate, yRotate,
+                    terTab.getPoints(), texster);
         
             refreshPreview();
         }
@@ -717,7 +718,7 @@ public class Controller
             populationImageBM.setImage(texster.getImage());
             
             // Set the image as the population's bump map
-            popTab.setActivePopulationBump(texster);
+            popTab.getActivePopulation().setBumpMap(texster);
         
             refreshPreview();
         }
@@ -744,7 +745,7 @@ public class Controller
             populationImageSM.setImage(texster.getImage());
             
             // Set the image as the specular map
-            popTab.setActivePopulationSpecular(texster);
+            popTab.getActivePopulation().setSpecularMap(texster);
         
             refreshPreview();
         }
@@ -771,7 +772,7 @@ public class Controller
             populationImageT.setImage(texster.getImage());
             
             // Set the image as the population's texture
-            popTab.setActivePopulationTexture(texster);
+            popTab.getActivePopulation().setTexture(texster);
         
             refreshPreview();
         }
@@ -799,7 +800,7 @@ public class Controller
             populationImageDR2.setImage(texster.getImage());
             
             // Set the image as the second of the 2 displacement range maps
-            popTab.setActivePopulationSecondDisplacement(texster);
+            popTab.getActivePopulation().setSecondDisplacement(texster);
         
             refreshPreview();
         }
@@ -825,7 +826,7 @@ public class Controller
             populationImageS.setImage(texster.getImage());
             
             // Set the image as the population's shift determinant
-            popTab.setActivePopulationShift(texster);
+            popTab.getActivePopulation().setShift(texster);
         
             refreshPreview();
         }
@@ -933,7 +934,7 @@ public class Controller
             populationImageSW.setImage(texster.getImage());
             
             // Set the image as the population's width determinant
-            popTab.setActivePopulationWidth(texster);
+            popTab.getActivePopulation().setWidth(texster);
         
             refreshPreview();
         }
@@ -1100,7 +1101,8 @@ public class Controller
                 // ...set the active population to the last population in the
                 // list.
                 popTab.setActivePopulation(populationAmount - 2);
-                populationChoiceP.setValue(popTab.getActivePopulationName());
+                populationChoiceP.setValue(
+                        popTab.getActivePopulation().getName());
 
                 loadPopulation();
             }
@@ -1111,7 +1113,7 @@ public class Controller
             // ...set the active population to the population on the list before
             // the deleted one.
             popTab.setActivePopulation(selectedIndex - 1);
-            populationChoiceP.setValue(popTab.getActivePopulationName());
+            populationChoiceP.setValue(popTab.getActivePopulation().getName());
 
             loadPopulation();
         }
@@ -1212,18 +1214,29 @@ public class Controller
     {
         listen = false;
         
+        // The names of the maps to load
+        String placementName;
+        String shiftName;
+        String widthName;
+        String heightName;
+        String displacementName1;
+        String displacementName2;
+        String textureName;
+        String bumpName;
+        String specularName;
+        
+        Population activePopulation = popTab.getActivePopulation();
+        
         // Gets the names of the maps to load
-        String placementName = popTab.getActivePopulationPlacementName();
-        String shiftName = popTab.getActivePopulationShiftName();
-        String widthName = popTab.getActivePopulationWidthName();
-        String heightName = popTab.getActivePopulationHeightName();
-        String displacementName1
-                = popTab.getActivePopulationDisplacementName(true);
-        String displacementName2
-                = popTab.getActivePopulationDisplacementName(false);
-        String textureName = popTab.getActivePopulationTextureName();
-        String bumpName = popTab.getActivePopulationBumpName();
-        String specularName = popTab.getActivePopulationSpecularName();
+        placementName = activePopulation.getPlacement().getName();
+        shiftName = activePopulation.getShift().getName();
+        widthName = activePopulation.getWidth().getName();
+        heightName = activePopulation.getHeight().getName();
+        displacementName1 = activePopulation.getFirstDisplacement().getName();
+        displacementName2 = activePopulation.getSecondDisplacement().getName();
+        textureName = activePopulation.getTexture().getName();
+        bumpName = activePopulation.getBumpMap().getName();
+        specularName = activePopulation.getSpecularMap().getName();
         
         // Get the texure objects for those maps
         TextureObject placementTexture
@@ -1264,11 +1277,11 @@ public class Controller
         populationComboSM.setValue(specularName);
         
         populationSpinnerVRW.getValueFactory().setValue(
-                popTab.getActivePopulationVertexWidth());
+                activePopulation.getVertexWidth());
         populationSpinnerVRH.getValueFactory().setValue(
-                popTab.getActivePopulationVertexHeight());
+                activePopulation.getVertexHeight());
         populationSliderDRS.setValue(
-                popTab.getActivePopulationDisplacementStrength());
+                activePopulation.getDisplacementStrength());
         
         listen = true;
     }
@@ -1368,17 +1381,18 @@ public class Controller
         // If at least 1 population exists, and the currently-selected
         // population's service is about to be started...
         if (popTab.populationExists()
-                && popTab.isActivePopulationServicePrepared())
+                && popTab.getActivePopulation().isServicePrepared())
         {
             // ...get the service.
-            Service populationService = popTab.getActivePopulationService();
+            Service populationService
+                    = popTab.getActivePopulation().getService();
         
             // Once the service is finished...
             populationService.setOnSucceeded(e ->
             {
                 // ...perform the post-service activities on the active
                 // population.
-                popTab.concludeActivePopulationService();
+                popTab.getActivePopulation().concludeService();
                 
                 // Add each population
                 for (int i = 0; i < populationAmount; i++)

@@ -1,9 +1,7 @@
 package tabs;
 
 import graphics.Population;
-import graphics.TextureObject;
 import java.util.Optional;
-import javafx.concurrent.Service;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
@@ -38,15 +36,6 @@ public class PopulationTab
         activePopulation = null;
         
         populations = new Population[0];
-    }
-    
-    /**
-     * Performs the tasks on the currently-selected population that are to be
-     * performed immediately after the population's service is completed
-     */
-    public void concludeActivePopulationService()
-    {
-        activePopulation.concludeService();
     }
     
     /**
@@ -166,59 +155,13 @@ public class PopulationTab
     }
     
     /**
-     * Gets the name of the bump map used by the currently-selected population
+     * Gets the population currently-selected by the user
      * 
-     * @return The name of the bump map
+     * @return The active population
      */
-    public String getActivePopulationBumpName()
+    public Population getActivePopulation()
     {
-        return activePopulation.getBumpMap().getName();
-    }
-    
-    /**
-     * Gets the name of 1 of the displacement maps used in the displacement
-     * range for the currently-selected population
-     * 
-     * @param first Whether or not the name being returned should be from the
-     *              first displacement map. If false, the name of the second
-     *              displacement map will be returned.
-     * 
-     * @return The name of 1 of the displacement maps
-     */
-    public String getActivePopulationDisplacementName(boolean first)
-    {
-        String name;
-        
-        if (first)
-        {
-            name = activePopulation.getFirstDisplacement().getName();
-        }
-        else
-        {
-            name = activePopulation.getSecondDisplacement().getName();
-        }
-        
-        return name;
-    }
-    
-    /**
-     * Gets the displacement strength of the currently-selected population
-     * 
-     * @return The displacement strength
-     */
-    public int getActivePopulationDisplacementStrength()
-    {
-        return activePopulation.getDisplacementStrength();
-    }
-    
-    /**
-     * Gets the name of the map used to determine the height of each Individual
-     * 
-     * @return The name of the map used to determine the height
-     */
-    public String getActivePopulationHeightName()
-    {
-        return activePopulation.getHeight().getName();
+        return activePopulation;
     }
     
     /**
@@ -246,102 +189,6 @@ public class PopulationTab
         }
         
         return index;
-    }
-    
-    /**
-     * Gets the name of the currently-selected population
-     * 
-     * @return The name of the currently-selected population
-     */
-    public String getActivePopulationName()
-    {
-        return activePopulation.getName();
-    }
-    
-    /**
-     * Gets the name of the placement map used by the currently-selected
-     * population
-     * 
-     * @return The name of the placement map
-     */
-    public String getActivePopulationPlacementName()
-    {
-        return activePopulation.getPlacement().getName();
-    }
-    
-    /**
-     * Gets the name of the shift map used by the currently-selected population
-     * 
-     * @return The name of the shift map
-     */
-    public String getActivePopulationShiftName()
-    {
-        return activePopulation.getShift().getName();
-    }
-    
-    /**
-     * Gets the name of the specular map used by the currently-selected
-     * population
-     * 
-     * @return The name of the specular map
-     */
-    public String getActivePopulationSpecularName()
-    {
-        return activePopulation.getSpecularMap().getName();
-    }
-    
-    /**
-     * Gets the service that belongs to the currently-selected population
-     * 
-     * @return The active population's service
-     */
-    public Service getActivePopulationService()
-    {
-        return activePopulation.getService();
-    }
-    
-    /**
-     * Gets the name of the texture used by the currently-selected population
-     * 
-     * @return The name of the texture
-     */
-    public String getActivePopulationTextureName()
-    {
-        return activePopulation.getTexture().getName();
-    }
-    
-    /**
-     * Gets the height of the Individuals in the currently-selected population
-     * (Measured in vertices)
-     * 
-     * @return The height of the currently-selected population (Measured in
-     *         vertices)
-     */
-    public int getActivePopulationVertexHeight()
-    {
-        return activePopulation.getVertexHeight();
-    }
-    
-    /**
-     * Gets the width of the Individuals in the currently-selected population
-     * (Measured in vertices)
-     * 
-     * @return The width of the currently-selected population (Measured in
-     *         vertices)
-     */
-    public int getActivePopulationVertexWidth()
-    {
-        return activePopulation.getVertexWidth();
-    }
-    
-    /**
-     * Gets the name of the map used to determine the width of each Individual
-     * 
-     * @return The name of the map used to determine the width
-     */
-    public String getActivePopulationWidthName()
-    {
-        return activePopulation.getWidth().getName();
     }
     
     /**
@@ -435,17 +282,6 @@ public class PopulationTab
     }
     
     /**
-     * Gets whether or not the currently-selected population's service is
-     * prepared for usage
-     * 
-     * @return Whether or not the service is prepared
-     */
-    public boolean isActivePopulationServicePrepared()
-    {
-        return activePopulation.isServicePrepared();
-    }
-    
-    /**
      * Gets whether or not the given name is already a name of a population
      * 
      * @param name The name to be checked to see if it is a duplicate
@@ -526,165 +362,6 @@ public class PopulationTab
     public void setActivePopulation(int index)
     {
         activePopulation = populations[index];
-    }
-    
-    /**
-     * Sets the currently-selected population's bump map
-     * 
-     * @param bump The bump map
-     */
-    public void setActivePopulationBump(TextureObject bump)
-    {
-        activePopulation.setBumpMap(bump);
-    }
-    
-    /**
-     * Sets the displacement strength of the currently-selected population
-     * 
-     * @param strength The displacement strength
-     */
-    public void setActivePopulationDisplacementStrength(int strength)
-    {
-        activePopulation.setDisplacementStrength(strength);
-    }
-    
-    /**
-     * Sets the first displacement map used in the currently-selected
-     * population's displacement range
-     * 
-     * @param displacement A displacement map
-     */
-    public void setActivePopulationFirstDisplacement(TextureObject displacement)
-    {
-        activePopulation.setFirstDisplacement(displacement);
-    }
-    
-    /**
-     * Sets the map used to determine the height of the Individuals in the
-     * currently-selected population
-     * 
-     * @param height A map used to determine the height
-     */
-    public void setActivePopulationHeight(TextureObject height)
-    {
-        activePopulation.setHeight(height);
-    }
-    
-    /**
-     * Sets the currently-selected population's placement map
-     * 
-     * @param xRotate The camera's vertical rotation value
-     * @param yRotate The camera's horizontal rotation value
-     * @param placement The placement map
-     * @param terrainPoints The coordinates of the points used in the creation
-     *                      of the terrain's mesh
-     */
-    public void setActivePopulationPlacement(double xRotate, double yRotate,
-            TextureObject placement, float terrainPoints[])
-    {
-        activePopulation.setPlacement(xRotate, yRotate, terrainPoints,
-                placement);
-    }
-    
-    /**
-     * Sets the second displacement map used in the currently-selected
-     * population's displacement range
-     * 
-     * @param displacement A displacement map
-     */
-    public void setActivePopulationSecondDisplacement(
-            TextureObject displacement)
-    {
-        activePopulation.setSecondDisplacement(displacement);
-    }
-    
-    /**
-     * Sets the currently-selected population's shift map
-     * 
-     * @param shift The shift map
-     */
-    public void setActivePopulationShift(TextureObject shift)
-    {
-        activePopulation.setShift(shift);
-    }
-    
-    /**
-     * Sets the currently-selected population's specular map
-     * 
-     * @param specular The specular map
-     */
-    public void setActivePopulationSpecular(TextureObject specular)
-    {
-        activePopulation.setSpecularMap(specular);
-    }
-    
-    /**
-     * Sets the currently-selected population's texture
-     * 
-     * @param texture The texture
-     */
-    public void setActivePopulationTexture(TextureObject texture)
-    {
-        activePopulation.setTexture(texture);
-    }
-    
-    /**
-     * Sets the height (measured in vertices) of the Individuals in the
-     * currently-selected population
-     * 
-     * @param height The height of the Individuals (measured in vertices)
-     */
-    public void setActivePopulationVertexHeight(int height)
-    {
-        activePopulation.setVertexHeight(height);
-    }
-    
-    /**
-     * Sets the height (measured in vertices) of the Individuals in the
-     * currently-selected population
-     * 
-     * @param height The height of the Individuals (measured in vertices)
-     */
-    public void setActivePopulationVertexHeight(String height)
-    {
-        int heightster = Integer.parseInt(height);
-        
-        activePopulation.setVertexHeight(heightster);
-    }
-    
-    /**
-     * Sets the width (measured in vertices) of the Individuals in the
-     * currently-selected population
-     * 
-     * @param width The width of the Individuals (measured in vertices)
-     */
-    public void setActivePopulationVertexWidth(int width)
-    {
-        activePopulation.setVertexWidth(width);
-    }
-    
-    /**
-     * Sets the width (measured in vertices) of the Individuals in the
-     * currently-selected population
-     * 
-     * @param width The width of the Individuals (measured in vertices)
-     */
-    public void setActivePopulationVertexWidth(String width)
-    {
-        int widthster = Integer.parseInt(width);
-        
-        activePopulation.setVertexWidth(widthster);
-    }
-    
-    /**
-     * Sets the map used to determine the width of the Individuals in the
-     * currently-selected population
-     * 
-     * @param width A map used to determine the width
-     */
-    public void setActivePopulationWidth(TextureObject width)
-    {
-        activePopulation.setWidth(width);
     }
     
     /**

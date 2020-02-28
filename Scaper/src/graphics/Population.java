@@ -3,8 +3,6 @@ package graphics;
 import controls.ProgressBarDialog;
 import java.io.File;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.Group;
@@ -1132,6 +1130,18 @@ public class Population
     }
     
     /**
+     * Sets the height of the Individuals. Accepts a string parameter.
+     * 
+     * @param heightster The height of the Individuals (Measured in vertices)
+     */
+    public void setVertexHeight(String heightster)
+    {
+        int heightHeight = Integer.parseInt(heightster);
+        
+        setVertexWidth(heightHeight);
+    }
+    
+    /**
      * Sets the height of the Individuals
      * 
      * @param heightster the height of the Individuals (Measured in vertices)
@@ -1149,7 +1159,7 @@ public class Population
     /**
      * Sets the width of the Individuals
      * 
-     * @param widthster the width of the Individuals (Measured in vertices)
+     * @param widthster The width of the Individuals (Measured in vertices)
      */
     public void setVertexWidth(int widthster)
     {
@@ -1159,6 +1169,18 @@ public class Population
         {
             inster.setWidth(vertexWidth);
         }
+    }
+    
+    /**
+     * Sets the width of the Individuals. Accepts a string parameter.
+     * 
+     * @param widthster The width of the Individuals (Measured in vertices)
+     */
+    public void setVertexWidth(String widthster)
+    {
+        int widthWidth = Integer.parseInt(widthster);
+        
+        setVertexWidth(widthWidth);
     }
     
     /**
@@ -1222,7 +1244,7 @@ public class Population
     /**
      * Re-adjusts the population for when the terrain's width is changed
      * 
-     * @param terrainDepth The new width of the terrain (measured in vertices)
+     * @param terrainWidth The new width of the terrain (measured in vertices)
      * @param xRotate The camera's set vertical rotation
      * @param yRotate The camera's set horizontal rotation
      * @param terrainPoints The point data used to create the terrain's MeshView
