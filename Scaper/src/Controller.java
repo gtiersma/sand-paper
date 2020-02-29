@@ -1,5 +1,6 @@
 
 
+import graphics.LightObject;
 import graphics.Population;
 import graphics.TextureObject;
 import tabs.TextureTab;
@@ -426,7 +427,7 @@ public class Controller
         {
             if (listen)
             {
-                ligTab.setActiveLightColor(newster);
+                ligTab.getActiveLight().setColor(newster);
             }
         });
         
@@ -1045,7 +1046,7 @@ public class Controller
             {
                 // ...set the active light to the last light in the list.
                 ligTab.setActiveLight(lightAmount - 2);
-                lightChoiceL.setValue(ligTab.getActiveLightName());
+                lightChoiceL.setValue(ligTab.getActiveLight().getName());
             }
         }
         // ...otherwise, if the first light was not chosen...
@@ -1054,7 +1055,7 @@ public class Controller
             // ...set the active light to the light on the list before the
             // deleted one.
             ligTab.setActiveLight(selectedIndex - 1);
-            lightChoiceL.setValue(ligTab.getActiveLightName());
+            lightChoiceL.setValue(ligTab.getActiveLight().getName());
         }
 
         // Remove the light from the choice box's list
@@ -1205,9 +1206,11 @@ public class Controller
      */
     protected void loadLight()
     {
-        lightSpinnerPX.getValueFactory().setValue(ligTab.getActiveLightX());
-        lightSpinnerPY.getValueFactory().setValue(ligTab.getActiveLightY());
-        lightSpinnerPZ.getValueFactory().setValue(ligTab.getActiveLightZ());
+        LightObject activeLight = ligTab.getActiveLight();
+        
+        lightSpinnerPX.getValueFactory().setValue(activeLight.getPercentageX());
+        lightSpinnerPY.getValueFactory().setValue(activeLight.getPercentageY());
+        lightSpinnerPZ.getValueFactory().setValue(activeLight.getPercentageZ());
     }
     
     /**
@@ -1383,7 +1386,7 @@ public class Controller
         // Add each light
         for (int i = 0; i < lightAmount; i++)
         {
-            previewItems.getChildren().add(ligTab.getLight(i));
+            previewItems.getChildren().add(ligTab.getLight(i).getPointLight());
         }
         
         // If at least 1 population exists, and the currently-selected

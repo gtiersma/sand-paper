@@ -92,16 +92,6 @@ public class LightObject
     }
     
     /**
-     * Gets the light
-     * 
-     * @return The light
-     */
-    public PointLight getLight()
-    {
-        return lightster;
-    }
-    
-    /**
      * Gets the name of the light
      * 
      * @return The name of the light
@@ -139,6 +129,16 @@ public class LightObject
     public double getPercentageZ()
     {
         return zPercentage;
+    }
+    
+    /**
+     * Gets the point light
+     * 
+     * @return The light
+     */
+    public PointLight getPointLight()
+    {
+        return lightster;
     }
     
     /**

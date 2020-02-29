@@ -2,7 +2,6 @@ package tabs;
 
 import graphics.LightObject;
 import java.util.Optional;
-import javafx.scene.PointLight;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
@@ -155,9 +154,9 @@ public class LightTab
      * 
      * @return The light currently chosen
      */
-    public PointLight getActiveLight()
+    public LightObject getActiveLight()
     {
-        return activeLight.getLight();
+        return activeLight;
     }
     
     /**
@@ -184,46 +183,6 @@ public class LightTab
         }
         
         return index;
-    }
-    
-    /**
-     * Gets the name of the currently chosen light
-     * 
-     * @return The chosen light's name
-     */
-    public String getActiveLightName()
-    {
-        return activeLight.getName();
-    }
-    
-    /**
-     * Gets the X position percentage of the light currently chosen
-     * 
-     * @return The chosen light's X position
-     */
-    public double getActiveLightX()
-    {
-        return activeLight.getPercentageX();
-    }
-    
-    /**
-     * Gets the Y position percentage of the light currently chosen
-     * 
-     * @return The chosen light's Y position
-     */
-    public double getActiveLightY()
-    {
-        return activeLight.getPercentageY();
-    }
-    
-    /**
-     * Gets the Z position percentage of the light currently chosen
-     * 
-     * @return The chosen light's Z position
-     */
-    public double getActiveLightZ()
-    {
-        return activeLight.getPercentageZ();
     }
     
     /**
@@ -273,9 +232,9 @@ public class LightTab
      * 
      * @return The light of the given index
      */
-    public PointLight getLight(int index)
+    public LightObject getLight(int index)
     {
-        return lights[index].getLight();
+        return lights[index];
     }
     
     /**
@@ -286,35 +245,6 @@ public class LightTab
     public int getLightAmount()
     {
         return lights.length;
-    }
-    
-    /**
-     * Gets the name of the light at the given index
-     * 
-     * @param index The number of lights
-     * 
-     * @return The name of the light at the given index
-     */
-    public String getLightName(int index)
-    {
-        return lights[index].getName();
-    }
-    
-    /**
-     * Gets an array of all the point lights
-     * 
-     * @return An array of all the point lights
-     */
-    public PointLight[] getLights()
-    {
-        PointLight[] pointster = new PointLight[lights.length];
-        
-        for (int i = 0; i < lights.length; i++)
-        {
-            pointster[i] = lights[i].getLight();
-        }
-        
-        return pointster;
     }
     
     /**
@@ -415,16 +345,6 @@ public class LightTab
     public void setActiveLight(int index)
     {
         activeLight = lights[index];
-    }
-    
-    /**
-     * Sets the color of the currently active light
-     * 
-     * @param colster The color of the light to be set
-     */
-    public void setActiveLightColor(Color colster)
-    {
-        activeLight.setColor(colster);
     }
     
     /**
