@@ -2,6 +2,7 @@
 
 import graphics.LightObject;
 import graphics.Population;
+import graphics.Terrain;
 import graphics.TextureObject;
 import tabs.TextureTab;
 import tabs.TerrainTab;
@@ -190,7 +191,7 @@ public class Controller
         terrainSpinnerVRW.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
-            terTab.setWidth(newster);
+            terTab.getTerrain().setWidth(newster);
             
             updatePopulationsForTerrainSizeChange(true, newster);
         });
@@ -205,7 +206,7 @@ public class Controller
                 int width = Integer.parseInt(
                         terrainSpinnerVRW.getEditor().getText());
                 
-                terTab.setWidth(width);
+                terTab.getTerrain().setWidth(width);
             
                 updatePopulationsForTerrainSizeChange(true, width);
             }
@@ -214,7 +215,7 @@ public class Controller
         terrainSpinnerVRD.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
-            terTab.setDepth(newster);
+            terTab.getTerrain().setDepth(newster);
             
             updatePopulationsForTerrainSizeChange(false, newster);
         });
@@ -226,7 +227,7 @@ public class Controller
                 int height = Integer.parseInt(
                         terrainSpinnerVRD.getEditor().getText());
                 
-                terTab.setDepth(height);
+                terTab.getTerrain().setDepth(height);
             
                 updatePopulationsForTerrainSizeChange(false, height);
             }
@@ -235,9 +236,9 @@ public class Controller
         terrainSliderDMS.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
-            terTab.setDisplacementStrength(newster.floatValue());
+            terTab.getTerrain().setDisplacementStrength(newster.floatValue());
             
-            popTab.repositionPopulations(terTab.getPoints());
+            popTab.repositionPopulations(terTab.getTerrain().getPoints());
             
             refreshPreview();
         });
@@ -605,11 +606,11 @@ public class Controller
             terrainImageDM.setImage(imster);
 
             // Set the image as the displacement map
-            terTab.setDisplacement(imster);
+            terTab.getTerrain().setDisplacement(imster);
             
             // Populations must be re-positioned since the shape of the terrain
             // has changed
-            popTab.repositionPopulations(terTab.getPoints());
+            popTab.repositionPopulations(terTab.getTerrain().getPoints());
             
             refreshPreview();
         }
@@ -696,7 +697,7 @@ public class Controller
             
             // Set the image as the population's placement determinant
             popTab.getActivePopulation().setPlacement(xRotate, yRotate,
-                    terTab.getPoints(), texster);
+                    terTab.getTerrain().getPoints(), texster);
         
             refreshPreview();
         }
@@ -858,7 +859,7 @@ public class Controller
             terrainImageBM.setImage(imster);
             
             // Set the image as the bump map
-            terTab.setBump(imster);
+            terTab.getTerrain().setBump(imster);
         
             refreshPreview();
         }
@@ -885,7 +886,7 @@ public class Controller
             terrainImageSM.setImage(imster);
             
             // Set the image as the specular map
-            terTab.setSpecular(terrainImageSM.getImage());
+            terTab.getTerrain().setSpecular(terrainImageSM.getImage());
         
             refreshPreview();
         }
@@ -912,7 +913,7 @@ public class Controller
             terrainImageT.setImage(imster);
 
             // Set the image as the texture
-            terTab.setTexture(imster);
+            terTab.getTerrain().setTexture(imster);
         
             refreshPreview();
         }
@@ -987,8 +988,12 @@ public class Controller
         double xRotate = camTab.getXRotate().getAngle();
         double yRotate = camTab.getYRotate().getAngle();
         
-        String name = popTab.createPopulation(terTab.getTerrainWidth(),
-                terTab.getTerrainDepth(), xRotate, yRotate, terTab.getPoints());
+        String name;
+        
+        Terrain terster = terTab.getTerrain();
+        
+        name = popTab.createPopulation(terster.getWidth(), terster.getDepth(),
+                xRotate, yRotate, terster.getPoints());
             
         // As long as a name was given by the user...
         if (!name.equals(""))
@@ -1359,21 +1364,28 @@ public class Controller
         int populationAmount = popTab.getPopulationAmount();
         
         // Estimation of the center point of the terrain
-        double terrainCenterX = terTab.getCenterX();
-        double terrainCenterY = terTab.getCenterY();
-        double terrainCenterZ = terTab.getCenterZ();
+        double terrainCenterX;
+        double terrainCenterY;
+        double terrainCenterZ;
         
         // The greatest distance of a point from the terrain's center
-        double terrainFarPoint = terTab.getFurthestPoint();
+        double terrainFarPoint;
         
         Group previewItems = new Group();
+        
+        Terrain terster = terTab.getTerrain();
+        
+        terrainCenterX = terster.getCenter('x');
+        terrainCenterY = terster.getCenter('y');
+        terrainCenterZ = terster.getCenter('z');
+        terrainFarPoint = terster.getFurthestPoint();
         
         // Rotate to the correct position
         previewItems.getTransforms().add(camTab.getXRotate());
         previewItems.getTransforms().add(camTab.getYRotate());
         
         // Add the terrain
-        previewItems.getChildren().add(terTab.getTerrain());
+        previewItems.getChildren().add(terster.getMeshView());
         
         // Re-center the camera
         camTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
@@ -1440,7 +1452,8 @@ public class Controller
         double xRotate = camTab.getXRotate().getAngle();
         double yRotate = camTab.getYRotate().getAngle();
         
-        popTab.regeneratePopulations(xRotate, yRotate, terTab.getPoints());
+        popTab.regeneratePopulations(xRotate, yRotate,
+                terTab.getTerrain().getPoints());
         
         refreshPreview();
     }
@@ -1668,14 +1681,14 @@ public class Controller
         {
             // ...update the populations for a width change.
             popTab.updateForTerrainWidthChange(terrainSize, xRotate, yRotate,
-                terTab.getPoints());
+                terTab.getTerrain().getPoints());
         }
         // ...otherwise, the terrain's depth must have changed...
         else
         {
             // ...so update them for a depth change.
             popTab.updateForTerrainDepthChange(terrainSize, xRotate, yRotate,
-                terTab.getPoints());
+                terTab.getTerrain().getPoints());
         }
         
         refreshPreview();

@@ -35,36 +35,6 @@ public class TerrainTab
     }
     
     /**
-     * Gets the approximate position of the center of the terrain on the x scale
-     * 
-     * @return The center position of the terrain on the x scale
-     */
-    public double getCenterX()
-    {
-        return terster.getCenter('x');
-    }
-    
-    /**
-     * Gets the approximate position of the center of the terrain on the y scale
-     * 
-     * @return The center position of the terrain on the y scale
-     */
-    public double getCenterY()
-    {
-        return terster.getCenter('y');
-    }
-    
-    /**
-     * Gets the approximate position of the center of the terrain on the z scale
-     * 
-     * @return The center position of the terrain on the z scale
-     */
-    public double getCenterZ()
-    {
-        return terster.getCenter('z');
-    }
-    
-    /**
      * Gets the default size of the terrain in vertices
      * 
      * @return The default size
@@ -85,55 +55,13 @@ public class TerrainTab
     }
     
     /**
-     * Gets the greatest distance that any point is from the center of the
-     * terrain on any of the 3 scales (x, y or z)
-     * 
-     * @return The greatest distance from the terrain's center
-     */
-    public double getFurthestPoint()
-    {
-        return terster.getFurthestPoint();
-    }
-    
-    /**
-     * Gets the coordinates of the points used in the creation of the terrain's
-     * mesh
-     * 
-     * @return The point coordinates
-     */
-    public float[] getPoints()
-    {
-        return terster.getPoints();
-    }
-    
-    /**
-     * Gets the terrain in the form of a group
+     * Gets the terrain object
      * 
      * @return The terrain
      */
-    public MeshView getTerrain()
+    public Terrain getTerrain()
     {
-        return viewster;
-    }
-    
-    /**
-     * Gets the depth of the terrain (measured in vertices)
-     * 
-     * @return The height of the terrain
-     */
-    public int getTerrainDepth()
-    {
-        return terster.getDepth();
-    }
-    
-    /**
-     * Gets the width of the terrain (measured in vertices)
-     * 
-     * @return The width of the terrain
-     */
-    public int getTerrainWidth()
-    {
-        return terster.getWidth();
+        return terster;
     }
     
     /**
@@ -143,77 +71,5 @@ public class TerrainTab
     {
         terster.setTexture(BLANK_IMAGE);
         terster.load();
-        
-        viewster = terster.getMeshView();
-    }
-    
-    /**
-     * Sets the bump map
-     * 
-     * @param bumpster The bump map
-     */
-    public void setBump(Image bumpster)
-    {
-        terster.setBump(bumpster);
-    }
-    
-    /**
-     * Sets the depth of the terrain in vertices
-     * 
-     * @param depth The depth of the terrain
-     */
-    public void setDepth(int depth)
-    {
-        terster.setDepth(depth);
-    }
-    
-    /**
-     * Sets the displacement map
-     * 
-     * @param displacement The displacement map
-     */
-    public void setDisplacement(Image displacement)
-    {
-        terster.setDisplacement(displacement);
-    }
-    
-    /**
-     * Sets the strength of the displacement map
-     * 
-     * @param displacementStrength The displacement map's strength
-     */
-    public void setDisplacementStrength(float displacementStrength)
-    {
-        terster.setDisplacementStrength(displacementStrength);
-    }
-    
-    /**
-     * Sets the specular map
-     * 
-     * @param specster The specular map
-     */
-    public void setSpecular(Image specster)
-    {
-        terster.setSpecular(specster);
-    }
-    
-    /**
-     * Sets the texture map
-     * 
-     * @param texture The texture map
-     */
-    public void setTexture(Image texture)
-    {
-        terster.setTexture(texture);
-    }
-    
-    /**
-     * Sets the width of the terrain in vertices
-     * 
-     * @param width The width of the terrain
-     */
-    public void setWidth(int width)
-    {
-        terster.setWidth(width);
     }
 }
