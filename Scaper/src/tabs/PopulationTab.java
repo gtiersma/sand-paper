@@ -324,23 +324,6 @@ public class PopulationTab
     }
     
     /**
-     * Recreates all populations with different randomly-generated numbers
-     * 
-     * @param xRotate The camera's vertical rotation value
-     * @param yRotate The camera's horizontal rotation value
-     * @param terrainPoints The array of the positions of each point on the
-     *                      terrain
-     */
-    public void regeneratePopulations(double xRotate, double yRotate,
-            float[] terrainPoints)
-    {
-        for (Population population : populations)
-        {
-            population.load(xRotate, yRotate, terrainPoints);
-        }
-    }
-    
-    /**
      * Repositions the populations
      * 
      * @param terrainPoints The coordinates of the points used in the creation

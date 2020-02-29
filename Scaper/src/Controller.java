@@ -1452,7 +1452,7 @@ public class Controller
         double xRotate = camTab.getXRotate().getAngle();
         double yRotate = camTab.getYRotate().getAngle();
         
-        popTab.regeneratePopulations(xRotate, yRotate,
+        popTab.getActivePopulation().load(xRotate, yRotate,
                 terTab.getTerrain().getPoints());
         
         refreshPreview();
