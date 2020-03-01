@@ -239,6 +239,8 @@ public class Controller
             terTab.getTerrain().setDisplacementStrength(newster.floatValue());
             
             popTab.repositionPopulations(terTab.getTerrain().getPoints());
+        
+            recenterOnTerrain();
             
             refreshPreview();
         });
@@ -611,6 +613,8 @@ public class Controller
             // Populations must be re-positioned since the shape of the terrain
             // has changed
             popTab.repositionPopulations(terTab.getTerrain().getPoints());
+            
+            recenterOnTerrain();
             
             refreshPreview();
         }
@@ -1350,9 +1354,42 @@ public class Controller
         // size
         camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
         
+        recenterOnTerrain();
+        
         refreshPreview();
         preview.setCamera(camTab.getCamera());
         preview.setFill(renTab.getBackColor());
+    }
+    
+    /**
+     * Re-centers objects that are positioned relative to the terrain (such as
+     * the camera and lights). For use whenever the terrain's size or shape has
+     * changed.
+     */
+    protected void recenterOnTerrain()
+    {
+        // Estimation of the center point of the terrain
+        double terrainCenterX;
+        double terrainCenterY;
+        double terrainCenterZ;
+        
+        // The greatest distance of a point from the terrain's center
+        double terrainFarPoint;
+            
+        Terrain terster = terTab.getTerrain();
+        
+        terrainCenterX = terster.getCenter('x');
+        terrainCenterY = terster.getCenter('y');
+        terrainCenterZ = terster.getCenter('z');
+        terrainFarPoint = terster.getFurthestPoint();
+        
+        // Re-center the camera
+        camTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
+        camTab.setFurthestPoint(terrainFarPoint);
+        
+        // Re-position lights
+        ligTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
+        ligTab.setFurthestPoint(terrainFarPoint);
     }
     
     /**
@@ -1363,37 +1400,14 @@ public class Controller
         int lightAmount = ligTab.getLightAmount();
         int populationAmount = popTab.getPopulationAmount();
         
-        // Estimation of the center point of the terrain
-        double terrainCenterX;
-        double terrainCenterY;
-        double terrainCenterZ;
-        
-        // The greatest distance of a point from the terrain's center
-        double terrainFarPoint;
-        
         Group previewItems = new Group();
-        
-        Terrain terster = terTab.getTerrain();
-        
-        terrainCenterX = terster.getCenter('x');
-        terrainCenterY = terster.getCenter('y');
-        terrainCenterZ = terster.getCenter('z');
-        terrainFarPoint = terster.getFurthestPoint();
         
         // Rotate to the correct position
         previewItems.getTransforms().add(camTab.getXRotate());
         previewItems.getTransforms().add(camTab.getYRotate());
         
         // Add the terrain
-        previewItems.getChildren().add(terster.getMeshView());
-        
-        // Re-center the camera
-        camTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
-        camTab.setFurthestPoint(terrainFarPoint);
-        
-        // Re-position lights
-        ligTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
-        ligTab.setFurthestPoint(terrainFarPoint);
+        previewItems.getChildren().add(terTab.getTerrain().getMeshView());
         
         // Add each light
         for (int i = 0; i < lightAmount; i++)
@@ -1690,6 +1704,8 @@ public class Controller
             popTab.updateForTerrainDepthChange(terrainSize, xRotate, yRotate,
                 terTab.getTerrain().getPoints());
         }
+        
+        recenterOnTerrain();
         
         refreshPreview();
     }
