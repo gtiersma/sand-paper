@@ -409,20 +409,7 @@ public class Population
             }
         };
         
-        // The service is now ready for use
-        servicePrepared = true;
-        
-        // Create a progress dialog and show it
-        individualProgress = new ProgressBarDialog("Generating Population",
-                individualService);
-        individualProgress.show();
-        
-        // As long as the service is not already running...
-        if (!individualService.isRunning())
-        {
-            // ...start it.
-            individualService.start();
-        }
+        startService("Positioning Population");
     }
     
     /**
@@ -1255,12 +1242,23 @@ public class Population
             }
         };
         
+        startService("Setting Population Width");
+    }
+    
+    /**
+     * Runs this population's service (if not already running)
+     * 
+     * @param action A short description of the work that the service is
+     *               currently doing. It is used as the progress dialog's
+     *               title.
+     */
+    private void startService(String action)
+    {
         // The service is now ready for use
         servicePrepared = true;
         
         // Create a progress dialog and show it
-        individualProgress = new ProgressBarDialog("Setting Population Width",
-                individualService);
+        individualProgress = new ProgressBarDialog(action, individualService);
         individualProgress.show();
         
         // As long as the service is not already running...
