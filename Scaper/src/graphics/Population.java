@@ -314,23 +314,24 @@ public class Population
         
         final int SIZE = size;
         
-        // The distance between each pixel on a map being retrieved for an
-        // Individual (measured in pixels)
-        final int X_SHIFT_SPACE = getUVSpacing(shift.getWidth(),
-                locations.length);
-        final int Y_SHIFT_SPACE = getUVSpacing(shift.getHeight(),
-                locations[0].length);
-        final int X_WIDTH_SPACE = getUVSpacing(width.getWidth(),
-                locations.length);
-        final int Y_WIDTH_SPACE = getUVSpacing(width.getHeight(),
-                locations[0].length);
-        final int X_HEIGHT_SPACE = getUVSpacing(height.getWidth(),
-                locations.length);
-        final int Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
-                locations[0].length);
+        final int TERRAIN_WIDTH = locations.length;
+        final int TERRAIN_HEIGHT = locations[0].length;
         
         final int VERTEX_WIDTH = vertexWidth;
         final int VERTEX_HEIGHT = vertexHeight;
+        
+        // The distance between each pixel on a map being retrieved for an
+        // Individual (measured in pixels)
+        final int X_SHIFT_SPACE = getUVSpacing(shift.getWidth(), TERRAIN_WIDTH);
+        final int Y_SHIFT_SPACE = getUVSpacing(shift.getHeight(),
+                TERRAIN_HEIGHT);
+        final int X_WIDTH_SPACE = getUVSpacing(width.getWidth(), TERRAIN_WIDTH);
+        final int Y_WIDTH_SPACE = getUVSpacing(width.getHeight(),
+                TERRAIN_HEIGHT);
+        final int X_HEIGHT_SPACE = getUVSpacing(height.getWidth(),
+                TERRAIN_WIDTH);
+        final int Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
+                TERRAIN_HEIGHT);
         
         final TextureObject BUMP = bump;
         final TextureObject SHIFT = shift;
@@ -357,22 +358,18 @@ public class Population
                         // to the array
                         int currentIndex = 0;
                 
-                        // The size of the terrain (measured in vertices)
-                        int terrainWidth = LOCATIONS.length;
-                        int terrainHeight = LOCATIONS[0].length;
-                
                         // Used for keeping track of progress for the progress
                         // bar
-                        int done = terrainWidth * terrainHeight;
+                        int done = TERRAIN_WIDTH * TERRAIN_HEIGHT;
                         int progress = 0;
                 
                         Individual[] newIndividuals = new Individual[SIZE];
                 
                         // For each row of vertices on the terrain...
-                        for (int i = 0; i < terrainWidth; i++)
+                        for (int i = 0; i < TERRAIN_WIDTH; i++)
                         {
                             // ...and for each column of vertices on the terrain...
-                            for (int j = 0; j < terrainHeight; j++)
+                            for (int j = 0; j < TERRAIN_HEIGHT; j++)
                             {
                                 // ...if an Individual is to be created there...
                                 if (LOCATIONS[i][j])
@@ -381,7 +378,8 @@ public class Population
                                     Individual newIndividual =
                                             createIndividual(
                                                     DISPLACEMENT_STRENGTH, j, i,
-                                                    terrainWidth, X_SHIFT_SPACE,
+                                                    TERRAIN_WIDTH,
+                                                    X_SHIFT_SPACE,
                                                     Y_SHIFT_SPACE,
                                                     X_WIDTH_SPACE,
                                                     Y_WIDTH_SPACE,
@@ -1194,34 +1192,82 @@ public class Population
     {
         width = widthster;
         
+        // Constants for use in the service
+        final TextureObject WIDTH = width;
+        
         // Get the spacing that should be between each UV point for the width
         // map
-        int horizontalUVSpacing = getUVSpacing(width.getWidth(), locations.length);
-        int verticalUVSpacing = getUVSpacing(width.getHeight(), locations.length);
+        final int X_SPACING = getUVSpacing(width.getWidth(), locations.length);
+        final int Y_SPACING = getUVSpacing(width.getHeight(), locations.length);
         
-        int count = 0;
+        final boolean[][] LOCATIONS = locations;
         
-        // For each row of vertices on the terrain...
-        for (int i = 0; i < locations.length; i++)
+        Individual[] newIndividuals = individuals;
+        
+        individualService = new Service<Individual[]>()
         {
-            // ...and for each column of vertices on the terrain...
-            for (int j = 0; j < locations[i].length; j++)
+            @Override
+            protected Task<Individual[]> createTask()
             {
-                // ...if an Individual is to be created there...
-                if (locations[i][j])
+                return new Task<Individual[]>()
                 {
-                    // Get the correct pixel color for this Individual
-                    Color widthColor = getPixelColor(horizontalUVSpacing,
-                            verticalUVSpacing, i, j, width);
+                    @Override
+                    protected Individual[] call()
+                    {
+                        // Used for keeping track of progress for the progress
+                        // bar
+                        int done = size;
+                        int progress = 0;
+        
+                        // For each row of vertices on the terrain...
+                        for (int i = 0; i < LOCATIONS.length; i++)
+                        {
+                            // ...and for each column of vertices on the
+                            // terrain...
+                            for (int j = 0; j < LOCATIONS[i].length; j++)
+                            {
+                                // ...if an Individual is to be created there...
+                                if (LOCATIONS[i][j])
+                                {
+                                    // Get the correct pixel color for this
+                                    // Individual
+                                    Color widthColor = getPixelColor(X_SPACING,
+                                            Y_SPACING, i, j, WIDTH);
                     
-                    int widthBrightness = getColorValue(false, ' ', widthColor)
-                            / SIZE_DIVIDER;
+                                    int widthBrightness = getColorValue(false,
+                                            ' ', widthColor);
+                                    
+                                    widthBrightness = widthBrightness /
+                                            SIZE_DIVIDER;
                     
-                    individuals[count].setFaceWidth(widthBrightness);
-                    
-                    count++;
-                }
+                                    newIndividuals[progress].setFaceWidth(
+                                            widthBrightness);
+                                    
+                                    updateProgress(progress, done);
+                                    progress++;
+                                }
+                            }
+                        }
+                        
+                        return newIndividuals;
+                    }
+                };
             }
+        };
+        
+        // The service is now ready for use
+        servicePrepared = true;
+        
+        // Create a progress dialog and show it
+        individualProgress = new ProgressBarDialog("Setting Population Width",
+                individualService);
+        individualProgress.show();
+        
+        // As long as the service is not already running...
+        if (!individualService.isRunning())
+        {
+            // ...start it.
+            individualService.start();
         }
     }
     
