@@ -941,39 +941,71 @@ public class Population
     {
         height = heightster;
         
-        // Get the spacing that should be between each UV point for the
-        // height map
-        int horizontalUVSpacing = getUVSpacing(height.getWidth(),
-                locations.length);
-        int verticalUVSpacing = getUVSpacing(height.getHeight(),
-                locations[0].length);
+        // Constants for use in the service
+        final TextureObject HEIGHT = height;
         
-        int count = 0;
+        // Get the spacing that should be between each UV point for the height
+        // map
+        final int X_SPACING = getUVSpacing(height.getWidth(), locations.length);
+        final int Y_SPACING
+                = getUVSpacing(height.getHeight(), locations.length);
         
-        // For each row of vertices on the terrain...
-        for (int i = 0; i < locations.length; i++)
+        final boolean[][] LOCATIONS = locations;
+        
+        Individual[] newIndividuals = individuals;
+        
+        individualService = new Service<Individual[]>()
         {
-            // ...and for each column of vertices on the terrain...
-            for (int j = 0; j < locations[i].length; j++)
+            @Override
+            protected Task<Individual[]> createTask()
             {
-                // ...if an Individual is to be created there...
-                if (locations[i][j])
+                return new Task<Individual[]>()
                 {
-                    // Get the correct pixel color for this Individual
-                    Color heightColor = getPixelColor(horizontalUVSpacing,
-                            verticalUVSpacing, i, j, height);
+                    @Override
+                    protected Individual[] call()
+                    {
+                        // Used for keeping track of progress for the progress
+                        // bar
+                        int done = size;
+                        int progress = 0;
+        
+                        // For each row of vertices on the terrain...
+                        for (int i = 0; i < LOCATIONS.length; i++)
+                        {
+                            // ...and for each column of vertices on the
+                            // terrain...
+                            for (int j = 0; j < LOCATIONS[i].length; j++)
+                            {
+                                // ...if an Individual is to be created there...
+                                if (LOCATIONS[i][j])
+                                {
+                                    // Get the correct pixel color for this
+                                    // Individual
+                                    Color heightColor = getPixelColor(X_SPACING,
+                                            Y_SPACING, i, j, HEIGHT);
                     
-                    int heightBrightness = getColorValue(false, ' ',
-                            heightColor);
-                            
-                    heightBrightness = heightBrightness / SIZE_DIVIDER;
+                                    int heightBrightness = getColorValue(false,
+                                            ' ', heightColor);
+                                    
+                                    heightBrightness = heightBrightness /
+                                            SIZE_DIVIDER;
                     
-                    individuals[count].setFaceHeight(heightBrightness);
-                    
-                    count++;
-                }
+                                    newIndividuals[progress].setFaceWidth(
+                                            heightBrightness);
+                                    
+                                    updateProgress(progress, done);
+                                    progress++;
+                                }
+                            }
+                        }
+                        
+                        return newIndividuals;
+                    }
+                };
             }
-        }
+        };
+        
+        startService("Setting Population Height");
     }
     
     /**
