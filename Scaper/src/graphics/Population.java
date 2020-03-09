@@ -304,7 +304,7 @@ public class Population
      * @param terrainPoints The positions of each vertex in the terrain
      */
     private void createIndividuals(double xRotate, double yRotate,
-            float[] terrainPoints)
+            String actionDescription, float[] terrainPoints)
     {
         // Constants of global variables. These are used in the service instead
         // of the original variables to avoid the possibility their values from
@@ -368,7 +368,8 @@ public class Population
                         // For each row of vertices on the terrain...
                         for (int i = 0; i < TERRAIN_WIDTH; i++)
                         {
-                            // ...and for each column of vertices on the terrain...
+                            // ...and for each column of vertices on the
+                            // terrain...
                             for (int j = 0; j < TERRAIN_HEIGHT; j++)
                             {
                                 // ...if an Individual is to be created there...
@@ -409,20 +410,7 @@ public class Population
             }
         };
         
-        startService("Positioning Population");
-    }
-    
-    /**
-     * Generates a displacement map with pixels within the range of the 2
-     * displacement maps using this Population's global variables
-     * 
-     * @return A displacement map with pixels within the range of the 2
-     * displacement maps
-     */
-    private Image generateDisplacement()
-    {
-        return generateDisplacement(vertexWidth, vertexHeight,
-                displacementRange);
+        startService(actionDescription);
     }
     
     /**
@@ -833,20 +821,47 @@ public class Population
     }
     
     /**
+     * Re-loads this population. Uses the rotation value from an Individual
+     * instead of receiving it as a parameter.
+     * 
+     * @param actionDescription A description of the change being made to the
+     *                          population. It is used as the progress dialog's
+     *                          title.
+     * @param terrainPoints The array of point positions used in the creation of
+     *                      the terrain
+     */
+    private void load(String actionDescription, float[] terrainPoints)
+    {
+        // As long as an Individual exists...
+        if (individuals.length > 0)
+        {
+            // ...get the first Individual's rotation value.
+            double xRotate = individuals[0].getRotateX();
+            double yRotate = individuals[0].getRotateY();
+        
+            load(xRotate, yRotate, actionDescription, terrainPoints);
+        }
+    }
+    
+    /**
      * Prepares the population to be used
      * 
      * @param xRotate The camera's set vertical rotation
      * @param yRotate The camera's set horizontal rotation
+     * @param actionDescription A description of the change being made to the
+     *                          population. It is used as the progress dialog's
+     *                          title.
      * @param terrainPoints The point data used to create the terrain's MeshView
      */
-    public void load(double xRotate, double yRotate, float[] terrainPoints)
+    public void load(double xRotate, double yRotate, String actionDescription,
+            float[] terrainPoints)
     {
         // Remove all Individuals
         individuals = new Individual[0];
         
         calculateLocations();
                 
-        createIndividuals(xRotate, yRotate, terrainPoints);
+        createIndividuals(xRotate, yRotate, actionDescription, terrainPoints);
     }
     
     /**
@@ -904,108 +919,51 @@ public class Population
      * Sets the displacement strength
      * 
      * @param strength The displacement strength
+     * @param terrainPoints The point positions used in the creation of the
+     *                      terrain's MeshView
      */
-    public void setDisplacementStrength(int strength)
+    public void setDisplacementStrength(int strength, float[] terrainPoints)
     {
+        String actionDescription = "Setting Population Displacement";
+        
         displacementStrength = strength;
         
-        for (Individual inster : individuals)
-        {
-            inster.setDisplacementStrength(displacementStrength);
-        }
+        load(actionDescription, terrainPoints);
     }
     
     /**
      * Sets the first displacement map to be used in the displacement range
      * 
+     * @param terrainPoints The point positions used in the creation of the
+     *                      terrain's MeshView
      * @param dister A displacement map
      */
-    public void setFirstDisplacement(TextureObject dister)
+    public void setFirstDisplacement(float[] terrainPoints,
+            TextureObject dister)
     {
+        String actionDescription = "Setting Population Displacement";
+        
         displacementRange[0] = dister;
         
-        for (Individual inster : individuals)
-        {
-            inster.setDisplacement(generateDisplacement());
-        }
+        load(actionDescription, terrainPoints);
     }
     
     /**
      * Sets the map used to determine the height of the Individuals in this
      * population
      * 
+     * @param terrainPoints The point positions used in the creation of the
+     *                      terrain's MeshView
      * @param heightster A map used to determine the height of the Individuals
      *                   in this population
      */
-    public void setHeight(TextureObject heightster)
+    public void setHeight(float[] terrainPoints, TextureObject heightster)
     {
+        String actionDescription = "Setting Population Height";
+        
         height = heightster;
         
-        // Constants for use in the service
-        final TextureObject HEIGHT = height;
-        
-        // Get the spacing that should be between each UV point for the height
-        // map
-        final int X_SPACING = getUVSpacing(height.getWidth(), locations.length);
-        final int Y_SPACING
-                = getUVSpacing(height.getHeight(), locations.length);
-        
-        final boolean[][] LOCATIONS = locations;
-        
-        Individual[] newIndividuals = individuals;
-        
-        individualService = new Service<Individual[]>()
-        {
-            @Override
-            protected Task<Individual[]> createTask()
-            {
-                return new Task<Individual[]>()
-                {
-                    @Override
-                    protected Individual[] call()
-                    {
-                        // Used for keeping track of progress for the progress
-                        // bar
-                        int done = size;
-                        int progress = 0;
-        
-                        // For each row of vertices on the terrain...
-                        for (int i = 0; i < LOCATIONS.length; i++)
-                        {
-                            // ...and for each column of vertices on the
-                            // terrain...
-                            for (int j = 0; j < LOCATIONS[i].length; j++)
-                            {
-                                // ...if an Individual is to be created there...
-                                if (LOCATIONS[i][j])
-                                {
-                                    // Get the correct pixel color for this
-                                    // Individual
-                                    Color heightColor = getPixelColor(X_SPACING,
-                                            Y_SPACING, i, j, HEIGHT);
-                    
-                                    int heightBrightness = getColorValue(false,
-                                            ' ', heightColor);
-                                    
-                                    heightBrightness = heightBrightness /
-                                            SIZE_DIVIDER;
-                    
-                                    newIndividuals[progress].setFaceWidth(
-                                            heightBrightness);
-                                    
-                                    updateProgress(progress, done);
-                                    progress++;
-                                }
-                            }
-                        }
-                        
-                        return newIndividuals;
-                    }
-                };
-            }
-        };
-        
-        startService("Setting Population Height");
+        load(actionDescription, terrainPoints);
     }
     
     /**
@@ -1020,9 +978,11 @@ public class Population
     public void setPlacement(double xRotate, double yRotate,
             float terrainPoints[], TextureObject placster)
     {
+        String actionDescription = "Positioning Population";
+        
         placement = placster;
         
-        load(xRotate, yRotate, terrainPoints);
+        load(xRotate, yRotate, actionDescription, terrainPoints);
         
         setTexture(texture);
         setBumpMap(bump);
@@ -1105,15 +1065,17 @@ public class Population
      * Sets the second displacement map to be used in the displacement range
      * 
      * @param dister A displacement map
+     * @param terrainPoints The point positions used in the creation of the
+     *                      terrain's MeshView
      */
-    public void setSecondDisplacement(TextureObject dister)
+    public void setSecondDisplacement(TextureObject dister,
+            float[] terrainPoints)
     {
+        String actionDescription = "Setting Population Displacement";
+        
         displacementRange[1] = dister;
         
-        for (Individual inster : individuals)
-        {
-            inster.setDisplacement(generateDisplacement());
-        }
+        load(actionDescription, terrainPoints);
     }
     
     /**
@@ -1147,18 +1109,6 @@ public class Population
     }
     
     /**
-     * Sets the height of the Individuals. Accepts a string parameter.
-     * 
-     * @param heightster The height of the Individuals (Measured in vertices)
-     */
-    public void setVertexHeight(String heightster)
-    {
-        int heightHeight = Integer.parseInt(heightster);
-        
-        setVertexWidth(heightHeight);
-    }
-    
-    /**
      * Sets the height of the Individuals
      * 
      * @param heightster the height of the Individuals (Measured in vertices)
@@ -1171,6 +1121,18 @@ public class Population
         {
             inster.setDepth(vertexHeight);
         }
+    }
+    
+    /**
+     * Sets the height of the Individuals. Accepts a string parameter.
+     * 
+     * @param heightster The height of the Individuals (Measured in vertices)
+     */
+    public void setVertexHeight(String heightster)
+    {
+        int heightHeight = Integer.parseInt(heightster);
+        
+        setVertexHeight(heightHeight);
     }
     
     /**
@@ -1206,75 +1168,16 @@ public class Population
      * 
      * @param widthster A map used to determine the width of the Individuals in
      *                  this population
+     * @param terrainPoints The point positions used in the creation of the
+     *                      terrain's MeshView
      */
-    public void setWidth(TextureObject widthster)
+    public void setWidth(TextureObject widthster, float[] terrainPoints)
     {
+        String actionDescription = "Setting Population Width";
+        
         width = widthster;
         
-        // Constants for use in the service
-        final TextureObject WIDTH = width;
-        
-        // Get the spacing that should be between each UV point for the width
-        // map
-        final int X_SPACING = getUVSpacing(width.getWidth(), locations.length);
-        final int Y_SPACING = getUVSpacing(width.getHeight(), locations.length);
-        
-        final boolean[][] LOCATIONS = locations;
-        
-        Individual[] newIndividuals = individuals;
-        
-        individualService = new Service<Individual[]>()
-        {
-            @Override
-            protected Task<Individual[]> createTask()
-            {
-                return new Task<Individual[]>()
-                {
-                    @Override
-                    protected Individual[] call()
-                    {
-                        // Used for keeping track of progress for the progress
-                        // bar
-                        int done = size;
-                        int progress = 0;
-        
-                        // For each row of vertices on the terrain...
-                        for (int i = 0; i < LOCATIONS.length; i++)
-                        {
-                            // ...and for each column of vertices on the
-                            // terrain...
-                            for (int j = 0; j < LOCATIONS[i].length; j++)
-                            {
-                                // ...if an Individual is to be created there...
-                                if (LOCATIONS[i][j])
-                                {
-                                    // Get the correct pixel color for this
-                                    // Individual
-                                    Color widthColor = getPixelColor(X_SPACING,
-                                            Y_SPACING, i, j, WIDTH);
-                    
-                                    int widthBrightness = getColorValue(false,
-                                            ' ', widthColor);
-                                    
-                                    widthBrightness = widthBrightness /
-                                            SIZE_DIVIDER;
-                    
-                                    newIndividuals[progress].setFaceWidth(
-                                            widthBrightness);
-                                    
-                                    updateProgress(progress, done);
-                                    progress++;
-                                }
-                            }
-                        }
-                        
-                        return newIndividuals;
-                    }
-                };
-            }
-        };
-        
-        startService("Setting Population Width");
+        load(actionDescription, terrainPoints);
     }
     
     /**
@@ -1312,9 +1215,11 @@ public class Population
     public void updateForTerrainDepthChange(int terrainDepth, double xRotate,
             double yRotate, float[] terrainPoints)
     {
+        String actionDescription = "Changing Terrain Depth";
+        
         locations = new boolean[locations.length][terrainDepth];
         
-        load(xRotate, yRotate, terrainPoints);
+        load(xRotate, yRotate, actionDescription, terrainPoints);
     }
     
     /**
@@ -1328,9 +1233,11 @@ public class Population
     public void updateForTerrainWidthChange(int terrainWidth, double xRotate,
             double yRotate, float[] terrainPoints)
     {
+        String actionDescription = "Changing Terrain Width";
+        
         locations = new boolean[terrainWidth][locations[0].length];
         
-        load(xRotate, yRotate, terrainPoints);
+        load(xRotate, yRotate, actionDescription, terrainPoints);
     }
     
     /**

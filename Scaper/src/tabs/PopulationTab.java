@@ -68,7 +68,10 @@ public class PopulationTab
             // As long as the name does not already exist...
             if (!isDuplicateName(name))
             {
-                // ...create a new population.
+                // The title of the progress dialog
+                String actionDescription = "Creating Population";
+                
+                // Create a new population.
                 Population newPopulation = new Population(
                         DEFAULT_DISPLACEMENT_STRENGTH, terrainWidth,
                         terrainDepth, DEFAULT_VERTEX_WIDTH,
@@ -92,7 +95,8 @@ public class PopulationTab
                 populations[populations.length - 1] = newPopulation;
             
                 // Prepare the new population
-                activePopulation.load(xRotate, yRotate, terrainPoints);
+                activePopulation.load(xRotate, yRotate, actionDescription,
+                        terrainPoints);
             }
             // ...otherwise, if the name given already exists...
             else

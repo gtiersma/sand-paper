@@ -494,7 +494,9 @@ public class Controller
             if (listen)
             {
                 popTab.getActivePopulation().setDisplacementStrength(
-                        newster.intValue());
+                        newster.intValue(), terTab.getTerrain().getPoints());
+                
+                refreshPreview();
             }
         });
         
@@ -642,7 +644,8 @@ public class Controller
             populationImageDR1.setImage(texster.getImage());
             
             // Set the image as the first of the 2 displacement range maps
-            popTab.getActivePopulation().setFirstDisplacement(texster);
+            popTab.getActivePopulation().setFirstDisplacement(
+                    terTab.getTerrain().getPoints(), texster);
         
             refreshPreview();
         }
@@ -669,7 +672,8 @@ public class Controller
             populationImageSH.setImage(texster.getImage());
             
             // Set the image as the population's height determinant
-            popTab.getActivePopulation().setHeight(texster);
+            popTab.getActivePopulation().setHeight(
+                    terTab.getTerrain().getPoints(), texster);
         
             refreshPreview();
         }
@@ -810,7 +814,8 @@ public class Controller
             populationImageDR2.setImage(texster.getImage());
             
             // Set the image as the second of the 2 displacement range maps
-            popTab.getActivePopulation().setSecondDisplacement(texster);
+            popTab.getActivePopulation().setSecondDisplacement(texster,
+                    terTab.getTerrain().getPoints());
         
             refreshPreview();
         }
@@ -944,7 +949,8 @@ public class Controller
             populationImageSW.setImage(texster.getImage());
             
             // Set the image as the population's width determinant
-            popTab.getActivePopulation().setWidth(texster);
+            popTab.getActivePopulation().setWidth(texster,
+                    terTab.getTerrain().getPoints());
         
             refreshPreview();
         }
@@ -1466,7 +1472,10 @@ public class Controller
         double xRotate = camTab.getXRotate().getAngle();
         double yRotate = camTab.getYRotate().getAngle();
         
-        popTab.getActivePopulation().load(xRotate, yRotate,
+        // The title for the progress dialog
+        String actionDescription = "Re-generating Population";
+        
+        popTab.getActivePopulation().load(xRotate, yRotate, actionDescription,
                 terTab.getTerrain().getPoints());
         
         refreshPreview();

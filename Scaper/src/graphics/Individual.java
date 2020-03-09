@@ -159,6 +159,26 @@ public class Individual extends MeshObject
     }
     
     /**
+     * Gets the amount this individual is currently set to rotate on the x axis.
+     * 
+     * @return The angle it is set to rotate to on the x axis
+     */
+    public double getRotateX()
+    {
+        return xRotate.getAngle();
+    }
+    
+    /**
+     * Gets the amount this individual is currently set to rotate on the y axis.
+     * 
+     * @return The angle it is set to rotate to on the y axis
+     */
+    public double getRotateY()
+    {
+        return yRotate.getAngle();
+    }
+    
+    /**
      * Loads the data needed to construct the mesh into most of the variables
      * and objects within this Individual object
      */
