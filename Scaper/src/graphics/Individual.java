@@ -18,8 +18,8 @@ public class Individual extends MeshObject
     private int shiftY;
     private int shiftZ;
     
-    // The Z position to assign the X rotational pivot point to
-    private double pivotCenterZ;
+    // Necessary in some calculations on the x scale
+    private int xAdjustment;
     
     // The position of the vertex point on the terrain of where this mesh will
     // be placed
@@ -68,7 +68,8 @@ public class Individual extends MeshObject
         y = whyster;
         z = zeester;
         
-        pivotCenterZ = 0;
+        // It is equal to half of the total initial width of the Individual
+        xAdjustment = (widthster * fWidth) / 2;
         
         // Rotational values are made negative to rotate correctly
         xRotate = new Rotate(BASE_X_ROTATION - xRot, Rotate.X_AXIS);
@@ -234,17 +235,17 @@ public class Individual extends MeshObject
     }
     
     /**
-     * Calculates the Z point to which the Individual is to be rotated on the x
- axis
+     * Calculates the positions for the Individual to pivot around
      */
     private void preparePivotPoints()
     {
-        // This should be the edge of the Individual. Having this be the pivot
-        // point will keep the bottom of the Individual on the terrain (if the
-        // Individual is to be placed there).
-        pivotCenterZ = (width * faceWidth) / 2;
+        int pivotX = (width * faceWidth) / 2 - xAdjustment;
+        int pivotY = (depth * faceDepth) / 2;
         
-        xRotate.setPivotX(pivotCenterZ);
+        xRotate.setPivotY(-pivotY);
+        xRotate.setPivotZ(faceDepth);
+        
+        yRotate.setPivotX(pivotX);
     }
     
     /**
@@ -262,13 +263,11 @@ public class Individual extends MeshObject
     }
     
     /**
-     * Places the mesh at the correct position based upon its current variable
-     * values. For some reason, the size of the face must be subtracted from
-     * each value to position the Individual correctly.
+     * Places the mesh at the correct position
      */
     private void reposition()
     {
-        viewster.setTranslateX(x + shiftX);
+        repositionX();
         viewster.setTranslateY(y + shiftY);
         viewster.setTranslateZ(z + shiftZ);
     }
@@ -293,6 +292,20 @@ public class Individual extends MeshObject
     }
     
     /**
+     * Places the mesh at the correct position on the x axis
+     */
+    private void repositionX()
+    {
+        double basePosition = x + shiftX;
+        
+        // Half of the Individuals width. This is subtracted from the
+        // Individual's base position to center the Individual.
+        double centerValue = faceWidth * width / 2;
+        
+        viewster.setTranslateX(basePosition - centerValue + xAdjustment);
+    }
+    
+    /**
      * Sets how much this Individual should be shifted from the terrain's vertex
      * that it was positioned at
      * 
@@ -307,31 +320,6 @@ public class Individual extends MeshObject
         shiftZ = zShift;
         
         reposition();
-    }
-    
-    /**
-     * Sets how high each face on the Individual should be
-     * 
-     * @param heightster How high each face on the Individual should be
-     */
-    public void setFaceHeight(int heightster)
-    {
-        faceDepth = heightster;
-        
-        loadPoints();
-    }
-    
-    /**
-     * Sets how wide each face on the Individual should be
-     * 
-     * @param widthster How wide each face on the Individual should be
-     */
-    public void setFaceWidth(int widthster)
-    {
-        faceWidth = widthster;
-        
-        loadPoints();
-        preparePivotPoints();
     }
     
     /**
@@ -355,6 +343,20 @@ public class Individual extends MeshObject
     }
     
     /**
+     * Sets how wide each face on the Individual should be
+     * 
+     * @param widthster How wide each face on the Individual should be
+     */
+    @Override
+    public void setWidth(int widthster)
+    {
+        super.setWidth(widthster);
+        
+        preparePivotPoints();
+        repositionX();
+    }
+    
+    /**
      * Gets a string representation of all of the variables in this Individual
      * 
      * @return A string representation of all of the variables in this
@@ -374,9 +376,6 @@ public class Individual extends MeshObject
         
         stringster = stringster + "X axis rotation: " + xRotate.getAngle();
         stringster = stringster + "Y axis rotation: " + yRotate.getAngle();
-        
-        stringster = stringster + "Rotational pivot Z point of the mesh: "
-                + pivotCenterZ + "\n\n";
         
         return stringster;
     }

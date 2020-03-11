@@ -194,10 +194,10 @@ public class Population
      * @param locationX The x position (measured in vertices on the terrain) of
      *                  the terrain's vertex to which this Individual will be
      *                  placed adjacent to
-     * @param terrainWidth The width of the terrain (measured in vertices)
      * @param locationY The y position (measured in vertices on the terrain) of
      *                  the terrain's vertex to which this Individual will be
      *                  placed adjacent to
+     * @param terrainWidth The width of the terrain (measured in vertices)
      * @param xShiftSpace The distance between each pixel on the shift map to be
      *                    returned for an Individual on the image's x axis
      * @param yShiftSpace The distance between each pixel on the shift map to be
