@@ -35,6 +35,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tabs.CameraTab;
 import tabs.LightTab;
@@ -144,6 +145,8 @@ public class Controller
     
     @FXML private Tab terrainTab;
     @FXML private Tab renderTab;
+    
+    @FXML private VBox everything;
 
     /**
      * CONSTRUCTOR
@@ -1429,6 +1432,8 @@ public class Controller
             // ...get the service.
             Service populationService
                     = popTab.getActivePopulation().getService();
+            
+            everything.setDisable(true);
         
             // Once the service is finished...
             populationService.setOnSucceeded(e ->
@@ -1445,6 +1450,8 @@ public class Controller
             
                 // Apply the content to the preview pane
                 preview.setRoot(previewItems);
+                
+                everything.setDisable(false);
             });
         }
         // ...otherwise...
