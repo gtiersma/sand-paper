@@ -17,6 +17,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
@@ -25,7 +26,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<VBox id="mainPane" fx:id="everything" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <MenuBar id="menuBarster">
         <menus>
@@ -141,7 +142,9 @@
                                              </image>
                                           </ImageView>
                                           <Label id="terrainLabelVRW" text="Width:" />
-                                          <Spinner id="terrainSpinnerVRW" fx:id="terrainSpinnerVRW" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
+                                          <Button fx:id="terrainButtonVRWD" mnemonicParsing="false" onAction="#decrementTerrainVertexWidth" text="&lt;" />
+                                          <TextField fx:id="terrainTextVRW" maxWidth="30.0" text="50" />
+                                          <Button fx:id="terrainButtonVRWI" mnemonicParsing="false" onAction="#incrementTerrainVertexWidth" text="&gt;" />
                                        </children>
                                     </HBox>
                                     <HBox id="terrainBoxVRH" alignment="CENTER" layoutX="10.0" layoutY="43.0" spacing="10.0">
@@ -152,7 +155,9 @@
                                              </image>
                                           </ImageView>
                                           <Label id="terrainLabelVRD" text="Depth:" />
-                                          <Spinner id="terrainSpinnerVRD" fx:id="terrainSpinnerVRD" editable="true" initialValue="50" max="99999" min="2" prefWidth="100.0" />
+                                          <Button fx:id="terrainButtonVRDD" mnemonicParsing="false" onAction="#decrementTerrainVertexDepth" text="&lt;" />
+                                          <TextField fx:id="terrainTextVRD" maxWidth="30.0" text="50" />
+                                          <Button fx:id="terrainButtonVRDI" mnemonicParsing="false" onAction="#incrementTerrainVertexDepth" text="&gt;" />
                                        </children>
                                     </HBox>
                                     <Separator id="terrainSeperator1" prefWidth="200.0" />
@@ -285,7 +290,9 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelVRW" text="Width:" />
-                                          <Spinner id="populationSpinnerVRW" fx:id="populationSpinnerVRW" disable="true" editable="true" initialValue="5" max="99999" min="2" prefWidth="100.0" />
+                                          <Button fx:id="populationButtonVRWD" disable="true" mnemonicParsing="false" onAction="#decrementPopulationVertexWidth" text="&lt;" />
+                                          <TextField fx:id="populationTextVRW" disable="true" maxWidth="30.0" text="5" />
+                                          <Button fx:id="populationButtonVRWI" disable="true" mnemonicParsing="false" onAction="#incrementPopulationVertexWidth" text="&gt;" />
                                        </children>
                                     </HBox>
                                     <HBox id="populationBoxVRH" alignment="CENTER" spacing="10.0">
@@ -296,7 +303,9 @@
                                              </image>
                                           </ImageView>
                                           <Label id="populationLabelVRH" text="Height:" />
-                                          <Spinner id="populationSpinnerVRH" fx:id="populationSpinnerVRH" disable="true" editable="true" initialValue="5" max="99999" min="2" prefWidth="100.0" />
+                                          <Button fx:id="populationButtonVRHD" disable="true" mnemonicParsing="false" onAction="#decrementPopulationVertexHeight" text="&lt;" />
+                                          <TextField fx:id="populationTextVRH" disable="true" maxWidth="30.0" text="5" />
+                                          <Button fx:id="populationButtonVRHI" disable="true" mnemonicParsing="false" onAction="#incrementPopulationVertexHeight" text="&gt;" />
                                        </children>
                                     </HBox>
                                     <Separator prefWidth="200.0" />

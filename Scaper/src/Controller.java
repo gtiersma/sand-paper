@@ -8,6 +8,7 @@ import tabs.TextureTab;
 import tabs.TerrainTab;
 import tabs.RenderTab;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -29,6 +30,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -81,6 +85,10 @@ public class Controller
     @FXML private Button lightButtonLD;
     @FXML private Button populationButtonPRG;
     @FXML private Button populationButtonPD;
+    @FXML private Button populationButtonVRWD;
+    @FXML private Button populationButtonVRWI;
+    @FXML private Button populationButtonVRHD;
+    @FXML private Button populationButtonVRHI;
     
     @FXML private ChoiceBox lightChoiceL;
     @FXML private ChoiceBox populationChoiceP;
@@ -128,8 +136,6 @@ public class Controller
     @FXML private Slider cameraSliderFOVD;
     @FXML private Slider populationSliderDRS;
     
-    @FXML private Spinner<Integer> terrainSpinnerVRW;
-    @FXML private Spinner<Integer> terrainSpinnerVRD;
     @FXML private Spinner<Integer> renderSpinnerRW;
     @FXML private Spinner<Integer> renderSpinnerRH;
     @FXML private Spinner<Integer> cameraSpinnerPAH;
@@ -138,13 +144,16 @@ public class Controller
     @FXML private Spinner<Double> lightSpinnerPX;
     @FXML private Spinner<Double> lightSpinnerPY;
     @FXML private Spinner<Double> lightSpinnerPZ;
-    @FXML private Spinner<Integer> populationSpinnerVRW;
-    @FXML private Spinner<Integer> populationSpinnerVRH;
     
     @FXML private SplitPane splitster;
     
     @FXML private Tab terrainTab;
     @FXML private Tab renderTab;
+    
+    @FXML private TextField terrainTextVRW;
+    @FXML private TextField terrainTextVRD;
+    @FXML private TextField populationTextVRW;
+    @FXML private TextField populationTextVRH;
     
     @FXML private VBox everything;
 
@@ -179,6 +188,8 @@ public class Controller
         
         removeViewColor();
         
+        formatTextFields();
+        
         preparePreview();
         
         // Create group for field of view radio buttons
@@ -191,48 +202,19 @@ public class Controller
         //----------------------------------------------------------------------
         // Terrain Tab Listeners
         //----------------------------------------------------------------------
-        terrainSpinnerVRW.valueProperty().addListener((obster, oldster, newster)
-                ->
+        terrainTextVRW.textProperty().addListener((obster, oldster, newster) ->
         {
-            terTab.getTerrain().setWidth(newster);
-            
-            updatePopulationsForTerrainSizeChange(true, newster);
-        });
-        // The second listeners for the spinners are executed when the value is
-        // changed and then the focus is left from the control. This particular
-        // action is not triggered by the first listener.
-        terrainSpinnerVRW.focusedProperty().addListener(
-                (obster, oldster, newster) ->
-        {
-            if (newster == false)
+            if (listen)
             {
-                int width = Integer.parseInt(
-                        terrainSpinnerVRW.getEditor().getText());
-                
-                terTab.getTerrain().setWidth(width);
-            
-                updatePopulationsForTerrainSizeChange(true, width);
+                setTerrainVertexWidth(Integer.parseInt(newster));
             }
         });
         
-        terrainSpinnerVRD.valueProperty().addListener((obster, oldster, newster)
-                ->
+        terrainTextVRD.textProperty().addListener((obster, oldster, newster) ->
         {
-            terTab.getTerrain().setDepth(newster);
-            
-            updatePopulationsForTerrainSizeChange(false, newster);
-        });
-        terrainSpinnerVRD.focusedProperty().addListener(
-                (obster, oldster, newster) ->
-        {
-            if (newster == false)
+            if (listen)
             {
-                int height = Integer.parseInt(
-                        terrainSpinnerVRD.getEditor().getText());
-                
-                terTab.getTerrain().setDepth(height);
-            
-                updatePopulationsForTerrainSizeChange(false, height);
+                setTerrainVertexDepth(Integer.parseInt(newster));
             }
         });
         
@@ -288,6 +270,9 @@ public class Controller
             camTab.setXAdjustment(newster);
             preview.setCamera(camTab.getCamera());
         });
+        // The second listener is for when the value is changed and the focus
+        // leaves the controller. The above listener will not be triggered in
+        // this instance.
         cameraSpinnerPAH.focusedProperty().addListener(
                 (obster, oldster, newster) ->
         {
@@ -455,40 +440,20 @@ public class Controller
             }
         });
         
-        populationSpinnerVRW.valueProperty().addListener(
+        populationTextVRW.textProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            if (listen)
-            {
-                popTab.getActivePopulation().setVertexWidth(newster);
-            }
-        });
-        populationSpinnerVRW.focusedProperty().addListener(
-                (obster, oldster, newster) ->
-        {
-            if (newster == false && popTab.populationExists())
-            {
-                popTab.getActivePopulation().setVertexWidth(
-                        populationSpinnerVRW.getEditor().getText());
-            }
+            popTab.getActivePopulation().setVertexWidth(newster, terTab.getTerrain().getPoints());
+        
+            refreshPreview();
         });
         
-        populationSpinnerVRH.valueProperty().addListener(
+        populationTextVRH.textProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            if (listen)
-            {
-                popTab.getActivePopulation().setVertexHeight(newster);
-            }
-        });
-        populationSpinnerVRH.focusedProperty().addListener(
-                (obster, oldster, newster) ->
-        {
-            if (newster == false && popTab.populationExists())
-            {
-                popTab.getActivePopulation().setVertexHeight(
-                        populationSpinnerVRH.getEditor().getText());
-            }
+            popTab.getActivePopulation().setVertexHeight(newster, terTab.getTerrain().getPoints());
+        
+            refreshPreview();
         });
         
         populationSliderDRS.valueProperty().addListener(
@@ -931,6 +896,26 @@ public class Controller
         }
     }
     
+    @FXML
+    protected void changeTerrainVertexDepth()
+    {
+        int depth = Integer.parseInt(terrainTextVRD.getText());
+                
+        terTab.getTerrain().setDepth(depth);
+            
+        updatePopulationsForTerrainSizeChange(false, depth);
+    }
+    
+    @FXML
+    protected void changeTerrainVertexWidth()
+    {
+        int width = Integer.parseInt(terrainTextVRW.getText());
+                
+        terTab.getTerrain().setWidth(width);
+            
+        updatePopulationsForTerrainSizeChange(true, width);
+    }
+    
     /**
      * Changes the currently-selected population's width image to what is
      * currently set in the population tab's width combo box
@@ -1028,6 +1013,88 @@ public class Controller
             // Continue listening to events
             listen = true;
         }
+    }
+    
+    /**
+     * Decreases the height (in vertices) of the active population by 1. The
+     * TextField is also updated to reflect the changes.
+     */
+    @FXML
+    protected void decrementPopulationVertexHeight()
+    {
+        listen = false;
+        
+        int height = Integer.parseInt(populationTextVRH.getText());
+        
+        height--;
+        
+        popTab.getActivePopulation().setVertexHeight(height,
+                terTab.getTerrain().getPoints());
+        
+        populationTextVRH.setText(Integer.toString(height));
+        
+        refreshPreview();
+        
+        listen = true;
+    }
+    
+    /**
+     * Decreases the width (in vertices) of the active population by 1. The
+     * TextField is also updated to reflect the changes.
+     */
+    @FXML
+    protected void decrementPopulationVertexWidth()
+    {
+        listen = false;
+        
+        int width = Integer.parseInt(populationTextVRW.getText());
+        
+        width--;
+        
+        popTab.getActivePopulation().setVertexWidth(width,
+                terTab.getTerrain().getPoints());
+        
+        populationTextVRW.setText(Integer.toString(width));
+        
+        refreshPreview();
+        
+        listen = true;
+    }
+    
+    /**
+     * Decreases the depth (in vertices) of the terrain by 1. The TextField is
+     * also updated to reflect the changes.
+     */
+    @FXML
+    protected void decrementTerrainVertexDepth()
+    {
+        listen = false;
+        
+        int depth = Integer.parseInt(terrainTextVRD.getText());
+        
+        depth--;
+                
+        setTerrainVertexDepth(depth);
+        
+        listen = true;
+    }
+    
+    /**
+     * Decreases the width (in vertices) of the terrain by 1. The TextField is
+     * also updated to reflect the changes.
+     */
+    @FXML
+    protected void decrementTerrainVertexWidth()
+    {
+        listen = false;
+        
+        int width = Integer.parseInt(terrainTextVRW.getText());
+        
+        width--;
+                
+        setTerrainVertexWidth(width);
+        
+        listen = true;
     }
     
     /**
@@ -1183,8 +1250,12 @@ public class Controller
         populationComboS.setDisable(!toEnable);
         populationComboSW.setDisable(!toEnable);
         populationComboSH.setDisable(!toEnable);
-        populationSpinnerVRW.setDisable(!toEnable);
-        populationSpinnerVRH.setDisable(!toEnable);
+        populationButtonVRWD.setDisable(!toEnable);
+        populationTextVRW.setDisable(!toEnable);
+        populationButtonVRWI.setDisable(!toEnable);
+        populationButtonVRHD.setDisable(!toEnable);
+        populationTextVRH.setDisable(!toEnable);
+        populationButtonVRHI.setDisable(!toEnable);
         populationComboDR1.setDisable(!toEnable);
         populationComboDR2.setDisable(!toEnable);
         populationSliderDRS.setDisable(!toEnable);
@@ -1217,6 +1288,124 @@ public class Controller
         {
             Platform.exit();
         }
+    }
+    
+    /**
+     * Forces all of the TextFields that are used for storing numeric data to
+     * only contain numbers
+     */
+    protected void formatTextFields()
+    {
+        // Format for numeric values
+        UnaryOperator<Change> numericStyle = content ->
+        {
+            Change chanster = null;
+
+            if (content.getText().matches("[0-9]*"))
+            {
+                chanster = content;
+            }
+
+            return chanster;
+        };
+        
+        // Each control must have its own TextFormatter
+        TextFormatter<String> terrainWidthFormat
+                = new TextFormatter<>(numericStyle);
+        TextFormatter<String> terrainDepthFormat
+                = new TextFormatter<>(numericStyle);
+        TextFormatter<String> populationWidthFormat
+                = new TextFormatter<>(numericStyle);
+        TextFormatter<String> populationHeightFormat
+                = new TextFormatter<>(numericStyle);
+        
+        terrainTextVRW.setTextFormatter(terrainWidthFormat);
+        terrainTextVRD.setTextFormatter(terrainDepthFormat);
+        populationTextVRW.setTextFormatter(populationWidthFormat);
+        populationTextVRH.setTextFormatter(populationHeightFormat);
+    }
+    
+    
+    /**
+     * Increases the height (in vertices) of the active population by 1. The
+     * TextField is also updated to reflect the changes.
+     */
+    @FXML
+    protected void incrementPopulationVertexHeight()
+    {
+        listen = false;
+        
+        int height = Integer.parseInt(populationTextVRH.getText());
+        
+        height++;
+        
+        popTab.getActivePopulation().setVertexHeight(height,
+                terTab.getTerrain().getPoints());
+        
+        populationTextVRH.setText(Integer.toString(height));
+        
+        refreshPreview();
+        
+        listen = true;
+    }
+    
+    /**
+     * Increases the width (in vertices) of the active population by 1. The
+     * TextField is also updated to reflect the changes.
+     */
+    @FXML
+    protected void incrementPopulationVertexWidth()
+    {
+        listen = false;
+        
+        int width = Integer.parseInt(populationTextVRW.getText());
+        
+        width++;
+        
+        popTab.getActivePopulation().setVertexWidth(width,
+                terTab.getTerrain().getPoints());
+        
+        populationTextVRW.setText(Integer.toString(width));
+        
+        refreshPreview();
+        
+        listen = true;
+    }
+    
+    /**
+     * Increases the depth (in vertices) of the terrain by 1. The TextField is
+     * also updated to reflect the changes.
+     */
+    @FXML
+    protected void incrementTerrainVertexDepth()
+    {
+        listen = false;
+        
+        int depth = Integer.parseInt(terrainTextVRD.getText());
+        
+        depth++;
+                
+        setTerrainVertexDepth(depth);
+        
+        listen = true;
+    }
+    
+    /**
+     * Increases the width (in vertices) of the terrain by 1. The TextField is
+     * also updated to reflect the changes.
+     */
+    @FXML
+    protected void incrementTerrainVertexWidth()
+    {
+        listen = false;
+        
+        int width = Integer.parseInt(terrainTextVRW.getText());
+        
+        width++;
+                
+        setTerrainVertexWidth(width);
+        
+        listen = true;
     }
     
     /**
@@ -1301,12 +1490,15 @@ public class Controller
         populationComboBM.setValue(bumpName);
         populationComboSM.setValue(specularName);
         
-        populationSpinnerVRW.getValueFactory().setValue(
-                activePopulation.getVertexWidth());
-        populationSpinnerVRH.getValueFactory().setValue(
-                activePopulation.getVertexHeight());
+        // Set displacement strength Slider
         populationSliderDRS.setValue(
                 activePopulation.getDisplacementStrength());
+        
+        // Set vertex resolution TextFields
+        populationTextVRH.setText(
+                Integer.toString(activePopulation.getVertexHeight()));
+        populationTextVRW.setText(
+                Integer.toString(activePopulation.getVertexWidth()));
         
         listen = true;
     }
@@ -1433,6 +1625,7 @@ public class Controller
             Service populationService
                     = popTab.getActivePopulation().getService();
             
+            // Disable all of the controls
             everything.setDisable(true);
         
             // Once the service is finished...
@@ -1451,6 +1644,7 @@ public class Controller
                 // Apply the content to the preview pane
                 preview.setRoot(previewItems);
                 
+                // Re-enable all of the controls
                 everything.setDisable(false);
             });
         }
@@ -1565,10 +1759,6 @@ public class Controller
             cameraSliderAV.setValue(camTab.getDefaultVerticalAngle());
             cameraSliderFOVD.setValue(camTab.getDefaultField());
             
-            terrainSpinnerVRW.getValueFactory().setValue(
-                    terTab.getDefaultSize());
-            terrainSpinnerVRD.getValueFactory().setValue(
-                    terTab.getDefaultSize());
             renderSpinnerRW.getValueFactory().setValue(
                     renTab.getDefaultWidth());
             renderSpinnerRH.getValueFactory().setValue(
@@ -1578,6 +1768,9 @@ public class Controller
             cameraSpinnerPAZ.getValueFactory().setValue(0);
             
             cameraRadioFOVH.setSelected(true);
+            
+            terrainTextVRD.setText(Integer.toString(terTab.getDefaultSize()));
+            terrainTextVRW.setText(Integer.toString(terTab.getDefaultSize()));
             
             // Clear light tab
             lightChoiceL.getItems().clear();
@@ -1630,10 +1823,10 @@ public class Controller
         populationComboS.setValue("");
         populationComboSW.setValue("");
         populationComboSH.setValue("");
-        populationSpinnerVRW.getValueFactory().setValue(
-                popTab.getDefaultVertexWidth());
-        populationSpinnerVRH.getValueFactory().setValue(
-                popTab.getDefaultVertexHeight());
+        populationTextVRW.setText(
+                Integer.toString(popTab.getDefaultVertexWidth()));
+        populationTextVRH.setText(
+                Integer.toString(popTab.getDefaultVertexHeight()));
         populationComboDR1.setValue("");
         populationComboDR2.setValue("");
         populationSliderDRS.setValue(popTab.getDefaultDisplacementStrength());
@@ -1691,6 +1884,36 @@ public class Controller
         renTab.saveAs(writster);
         
         resetPreviewSize();
+    }
+    
+    /**
+     * Sets the depth (in vertices) of the terrain. The TextField is
+     * also updated to reflect the changes.
+     * 
+     * @param depth The depth to be set
+     */
+    protected void setTerrainVertexDepth(int depth)
+    {
+        terTab.getTerrain().setDepth(depth);
+            
+        updatePopulationsForTerrainSizeChange(false, depth);
+                
+        terrainTextVRD.setText(Integer.toString(depth));
+    }
+    
+    /**
+     * Sets the width (in vertices) of the terrain. The TextField is
+     * also updated to reflect the changes.
+     * 
+     * @param width The width to be set
+     */
+    protected void setTerrainVertexWidth(int width)
+    {
+        terTab.getTerrain().setWidth(width);
+            
+        updatePopulationsForTerrainSizeChange(true, width);
+                
+        terrainTextVRW.setText(Integer.toString(width));
     }
     
     /**

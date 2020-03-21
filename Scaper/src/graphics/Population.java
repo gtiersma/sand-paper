@@ -133,9 +133,9 @@ public class Population
     {
         // Get the spacing that should be between each UV point for the
         // placement map
-        int horizontalSpacing = getUVSpacing(placement.getWidth(),
+        double horizontalSpacing = getUVSpacing(placement.getWidth(),
                 locations.length);
-        int verticalSpacing = getUVSpacing(placement.getHeight(),
+        double verticalSpacing = getUVSpacing(placement.getHeight(),
                 locations[0].length);
         
         size = 0;
@@ -155,8 +155,8 @@ public class Population
                 
                 // Get the shade of the corresponding pixel on the placement
                 // image.
-                Color pixelColor = getPixelColor(horizontalSpacing,
-                        verticalSpacing, i, newJ, placement);
+                Color pixelColor = getPixelColor(i, newJ, horizontalSpacing,
+                        verticalSpacing, placement);
                 
                 // Calculate whether or not an Individual should be created
                 // there
@@ -179,12 +179,13 @@ public class Population
     {
         // Get the Individuals created from the service
         individuals = individualService.getValue();
-        // Reset the service
-        individualService.reset();
-        // Close the progress dialog
-        individualProgress.close();
         // The service is no longer ready to be used
         servicePrepared = false;
+        // Reset the service
+        individualService.reset();
+        
+        // Close the progress dialog
+        individualProgress.close();
     }
     
     /**
@@ -228,13 +229,14 @@ public class Population
      *               a displacement map will be generated for this Individual
      */
     private Individual createIndividual(int dStrength, int locationX,
-            int locationY, int terrainWidth, int xShiftSpace, int yShiftSpace,
-            int xWidthSpace, int yWidthSpace, int xHeightSpace,
-            int yHeightSpace, int vWidth, int vHeight, double xRotate,
-            double yRotate, float[] terrainPoints, TextureObject bumpster,
-            TextureObject shiftster, TextureObject specster,
-            TextureObject texster, TextureObject widthster,
-            TextureObject heightster, TextureObject[] dRange)
+            int locationY, int terrainWidth, int vWidth, int vHeight,
+            double xShiftSpace, double yShiftSpace, double xWidthSpace,
+            double yWidthSpace, double xHeightSpace, double yHeightSpace,
+            double xRotate, double yRotate, float[] terrainPoints,
+            TextureObject bumpster, TextureObject shiftster,
+            TextureObject specster, TextureObject texster,
+            TextureObject widthster, TextureObject heightster,
+            TextureObject[] dRange)
     {
         final int THREE_DIMENSIONS = 3;
         
@@ -245,7 +247,7 @@ public class Population
                     
         // Calculates the index of the point on the terrain to which
         // this Individual is to be created upon
-        int pointIndex = ((locationX * terrainWidth) + locationY)
+        int pointIndex = ((locationY * terrainWidth) + locationX)
                 * THREE_DIMENSIONS;
                     
         // The width and height multipliers to determine the size of
@@ -260,12 +262,12 @@ public class Population
         double z = terrainPoints[pointIndex + 2];
                     
         // Get the correct pixel colors for this Individual
-        Color shiftColor = getPixelColor(xShiftSpace, yShiftSpace, locationX,
-                locationY, shiftster);
-        Color widthColor = getPixelColor(xWidthSpace, yWidthSpace, locationX,
-                locationY, widthster);
-        Color heightColor = getPixelColor(xHeightSpace, yHeightSpace, locationX,
-                locationY, heightster);
+        Color shiftColor = getPixelColor(locationX, locationY, xShiftSpace,
+                yShiftSpace, shiftster);
+        Color widthColor = getPixelColor(locationX, locationY, xWidthSpace,
+                yWidthSpace, widthster);
+        Color heightColor = getPixelColor(locationX, locationY, xHeightSpace,
+                yHeightSpace, heightster);
                     
         Individual newIndividual;
         
@@ -292,6 +294,7 @@ public class Population
         newIndividual.setTexture(texster.getImage());
         newIndividual.setBump(bumpster.getImage());
         newIndividual.setSpecular(specster.getImage());
+        
         
         return newIndividual;
     }
@@ -322,15 +325,17 @@ public class Population
         
         // The distance between each pixel on a map being retrieved for an
         // Individual (measured in pixels)
-        final int X_SHIFT_SPACE = getUVSpacing(shift.getWidth(), TERRAIN_WIDTH);
-        final int Y_SHIFT_SPACE = getUVSpacing(shift.getHeight(),
-                TERRAIN_HEIGHT);
-        final int X_WIDTH_SPACE = getUVSpacing(width.getWidth(), TERRAIN_WIDTH);
-        final int Y_WIDTH_SPACE = getUVSpacing(width.getHeight(),
-                TERRAIN_HEIGHT);
-        final int X_HEIGHT_SPACE = getUVSpacing(height.getWidth(),
+        final double X_SHIFT_SPACE = getUVSpacing(shift.getWidth(),
                 TERRAIN_WIDTH);
-        final int Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
+        final double Y_SHIFT_SPACE = getUVSpacing(shift.getHeight(),
+                TERRAIN_HEIGHT);
+        final double X_WIDTH_SPACE = getUVSpacing(width.getWidth(),
+                TERRAIN_WIDTH);
+        final double Y_WIDTH_SPACE = getUVSpacing(width.getHeight(),
+                TERRAIN_HEIGHT);
+        final double X_HEIGHT_SPACE = getUVSpacing(height.getWidth(),
+                TERRAIN_WIDTH);
+        final double Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
                 TERRAIN_HEIGHT);
         
         final TextureObject BUMP = bump;
@@ -378,15 +383,15 @@ public class Population
                                     // ...create a new Individual.
                                     Individual newIndividual =
                                             createIndividual(
-                                                    DISPLACEMENT_STRENGTH, j, i,
-                                                    TERRAIN_WIDTH,
+                                                    DISPLACEMENT_STRENGTH, i, j,
+                                                    TERRAIN_WIDTH, VERTEX_WIDTH,
+                                                    VERTEX_HEIGHT,
                                                     X_SHIFT_SPACE,
                                                     Y_SHIFT_SPACE,
                                                     X_WIDTH_SPACE,
                                                     Y_WIDTH_SPACE,
                                                     X_HEIGHT_SPACE,
                                                     Y_HEIGHT_SPACE,
-                                                    VERTEX_WIDTH, VERTEX_HEIGHT,
                                                     xRotate, yRotate,
                                                     terrainPoints, BUMP, SHIFT,
                                                     SPECULAR, TEXTURE, WIDTH,
@@ -425,8 +430,8 @@ public class Population
     {
         // Get the spacing that should be between each UV point for the
         // placement map
-        int[] widthDisplacementSpacings = new int[2];
-        int[] heightDisplacementSpacings = new int[2];
+        double[] widthDisplacementSpacings = new double[2];
+        double[] heightDisplacementSpacings = new double[2];
         
         widthDisplacementSpacings[0]
                 = getUVSpacing(range[0].getWidth(), vWidth);
@@ -456,12 +461,12 @@ public class Population
                 // pixel color
                 Color pixelColors[] = new Color[2];
                 
-                pixelColors[0] = getPixelColor(widthDisplacementSpacings[0],
-                        heightDisplacementSpacings[0], i, j,
-                        range[0]);
-                pixelColors[1] = getPixelColor(widthDisplacementSpacings[1],
-                        heightDisplacementSpacings[1], i, j,
-                        range[1]);
+                pixelColors[0] = getPixelColor(i, j,
+                        widthDisplacementSpacings[0],
+                        heightDisplacementSpacings[0], range[0]);
+                pixelColors[1] = getPixelColor(i, j,
+                        widthDisplacementSpacings[1],
+                        heightDisplacementSpacings[1], range[1]);
                 
                 randomColor = getRandomColor(pixelColors);
                 
@@ -573,8 +578,10 @@ public class Population
     /**
      * Gets a pixel's color in an image based upon the provided vertex position
      * 
-     * @param forTerrainVertices Whether or not the UVs are based upon the
-     *                           terrain's mesh or the Individuals' meshes
+     * @param distanceX The distance between each UV point on the image on the x
+     *                  scale (Measured in pixels)
+     * @param distanceY The distance between each UV point on the image on the y
+     *                  scale (Measured in pixels)
      * @param positionX The X position of the pixel that the color is to be
      *                  retrieved from
      * @param positionY The Y position of the pixel that the color is to be
@@ -583,11 +590,24 @@ public class Population
      * 
      * @return The color of the pixel to be retrieved
      */
-    private Color getPixelColor(int distanceX, int distanceY, int positionX,
-            int positionY, TextureObject texster)
+    private Color getPixelColor(int positionX, int positionY, double distanceX,
+            double distanceY, TextureObject texster)
     {
-        int pixelX = distanceX * positionX;
-        int pixelY = distanceY * positionY;
+        int pixelX = (int)(distanceX * positionX);
+        int pixelY = (int)(distanceY * positionY);
+        
+        // When casting the pixel x and y positions into an integer type,
+        // there's a possibility that it may be rounded up to match the length
+        // of the map, putting the index out-of-bounds. These if statements
+        // ensure that does not happpen.
+        if (pixelX == texster.getWidth())
+        {
+            pixelX--;
+        }
+        if (pixelY == texster.getHeight())
+        {
+            pixelY--;
+        }
         
         Color colster = texster.getColor(pixelX, pixelY);
         
@@ -741,9 +761,9 @@ public class Population
      * 
      * @return The distance that should exist between 2 non-displaced vertices
      */
-    private int getUVSpacing(double length, double vertexAmount)
+    private double getUVSpacing(double length, double vertexAmount)
     {
-        return (int)(length / vertexAmount);
+        return length / vertexAmount;
     }
     
     /**
@@ -1000,10 +1020,10 @@ public class Population
         
         // Get the spacing that should be between each UV point for the shift
         // map
-        int horizontalUVSpacing = getUVSpacing(shift.getWidth(),
+        double horizontalUVSpacing = getUVSpacing(shift.getWidth(),
                 locations.length);
-        int verticalUVSpacing = getUVSpacing(shift.getHeight(),
-                locations.length);
+        double verticalUVSpacing = getUVSpacing(shift.getHeight(),
+                locations[0].length);
         
         int count = 0;
         
@@ -1017,8 +1037,8 @@ public class Population
                 if (locations[i][j])
                 {
                     // ...get the correct pixel color for this Individual
-                    Color shiftColor = getPixelColor(horizontalUVSpacing,
-                            verticalUVSpacing, i, j, shift);
+                    Color shiftColor = getPixelColor(i, j, horizontalUVSpacing,
+                            verticalUVSpacing, shift);
                     
                     // Get the correct shift amounts for this color
                     int shiftX = getColorValue(true, 'r', shiftColor);
@@ -1112,54 +1132,60 @@ public class Population
      * Sets the height of the Individuals
      * 
      * @param heightster the height of the Individuals (Measured in vertices)
+     * @param terrainPoints The point positions used in the creation of the
+     *                      terrain's MeshView
      */
-    public void setVertexHeight(int heightster)
+    public void setVertexHeight(int heightster, float[] terrainPoints)
     {
+        String actionDescription = "Changing Population Vertex Height";
+        
         vertexHeight = heightster;
         
-        for (Individual inster : individuals)
-        {
-            inster.setDepth(vertexHeight);
-        }
+        load(actionDescription, terrainPoints);
     }
     
     /**
      * Sets the height of the Individuals. Accepts a string parameter.
      * 
      * @param heightster The height of the Individuals (Measured in vertices)
+     * @param terrainPoints The point positions used in the creation of the
+     *                      terrain's MeshView
      */
-    public void setVertexHeight(String heightster)
+    public void setVertexHeight(String heightster, float[] terrainPoints)
     {
         int heightHeight = Integer.parseInt(heightster);
         
-        setVertexHeight(heightHeight);
+        setVertexHeight(heightHeight, terrainPoints);
     }
     
     /**
      * Sets the width of the Individuals
      * 
      * @param widthster The width of the Individuals (Measured in vertices)
+     * @param terrainPoints The point positions used in the creation of the
+     *                      terrain's MeshView
      */
-    public void setVertexWidth(int widthster)
+    public void setVertexWidth(int widthster, float[] terrainPoints)
     {
+        String actionDescription = "Changing Population Vertex Width";
+        
         vertexWidth = widthster;
         
-        for (Individual inster : individuals)
-        {
-            inster.setWidth(vertexWidth);
-        }
+        load(actionDescription, terrainPoints);
     }
     
     /**
      * Sets the width of the Individuals. Accepts a string parameter.
      * 
      * @param widthster The width of the Individuals (Measured in vertices)
+     * @param terrainPoints The point positions used in the creation of the
+     *                      terrain's MeshView
      */
-    public void setVertexWidth(String widthster)
+    public void setVertexWidth(String widthster, float[] terrainPoints)
     {
         int widthWidth = Integer.parseInt(widthster);
         
-        setVertexWidth(widthWidth);
+        setVertexWidth(widthWidth, terrainPoints);
     }
     
     /**
