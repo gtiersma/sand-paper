@@ -34,6 +34,7 @@ public class Scaper extends Application
         stagester.getIcons().add(new Image(Scaper.class.getResourceAsStream(
                 "icons/icon.png")));
         stagester.setScene(scenster);
+        stagester.setResizable(false);
         stagester.show();
     
         showWelcome();
