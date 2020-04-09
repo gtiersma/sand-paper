@@ -1,0 +1,502 @@
+/* 
+    Author: George Tiersma
+
+    The styles are separated into groups and then ordered alphabetically. For
+    use with Project Scaper.
+*/
+
+/* CONTROLS */
+
+.button
+{
+    -fx-font-weight: 100;
+    -fx-font-size: 15;
+    -fx-text-fill: #000000;
+    -fx-background-color: #c2b8b8;
+    -fx-border-width: 3px;
+    -fx-border-color: #c2b8b8;
+}
+
+.combo-box-base, .choice-box
+{
+    -fx-font-weight: 300;
+    -fx-font-size: 14;
+    -fx-text-fill: #9a9aa4;
+    -fx-background-color: #ffffff;
+    -fx-border-width: 2px;
+    -fx-border-color: #686872;
+}
+
+.increment-arrow, .decrement-arrow
+{
+    -fx-background-color: #000000;
+}
+
+.increment-arrow-button, .decrement-arrow-button
+{
+    -fx-background-color: #c1b7b7;
+    -fx-border-width: 2px;
+    -fx-border-color: #000000;
+}
+
+.increment-button, .decrement-button
+{
+    -fx-background-color: #FFFFFF;
+}
+
+.list-view
+{
+    -fx-border-width: 1px;
+    -fx-border-color: #000000;
+}
+
+.list-view .list-cell
+{
+    -fx-font-weight: 800;
+    -fx-font-size: 12;
+    -fx-text-fill: #000000;
+    -fx-background-color: #ffffff;
+    -fx-border-width: 3px;
+    -fx-border-color: #ffffff;
+}
+
+.menu .label, .menu-item .label
+{
+    -fx-text-fill: #000000;
+}
+
+.menu-bar, .menu, .menu-item
+{
+    -fx-font-size: 15;
+    -fx-background-color: #FFFFFF;
+}
+
+.progress-bar .bar
+{
+    -fx-background-radius: 0;
+    -fx-background-color: #dd2222;
+    -fx-pref-height: 10px;
+}
+
+.progress-bar .track
+{
+    -fx-background-color: #6c6c76;
+    -fx-background-radius: 0;
+    -fx-border-width: 1px;
+    -fx-border-color: eee4e4;
+    -fx-pref-height: 16px;
+}
+
+.radio-button .dot
+{
+    -fx-background-color: #b3a9a9;
+}
+
+.radio-button .radio
+{
+    -fx-background-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-color: #464650;
+    -fx-border-radius: 10px;
+    -fx-pref-width: 20px;
+    -fx-pref-height: 20px;
+}
+
+.scroll-bar
+{
+    -fx-padding: 1px;
+    -fx-pref-height: 18px;
+    -fx-background-color: #FFFFFF;
+    -fx-font-size: 18;
+}
+
+.scroll-bar .thumb
+{
+    -fx-background-color: #c2b8b8;
+}
+
+.scroll-pane
+{
+    -fx-background-color: #ede3e3;
+    -fx-border-width: 1px;
+    -fx-border-color: #bcb2b2;
+}
+
+.slider .thumb
+{
+    -fx-background-color: #797983;
+    -fx-pref-width: 9px;
+    -fx-pref-height: 18px;
+}
+
+.slider .track
+{
+    -fx-background-color: #ffffff;
+    -fx-border-width: 3px;
+    -fx-border-color: #4c4c56;
+    -fx-border-radius: 5px;
+    -fx-pref-height: 10px;
+}
+
+.split-pane-divider
+{
+    -fx-background-color: #c7bdbd;
+    -fx-pref-width: 2px;
+}
+
+.tab
+{
+    -fx-font-weight: 800;
+    -fx-font-size: 12;
+    -fx-text-fill: #000000;
+    -fx-background-color: #FFFFFF;
+}
+
+.tab-pane .tab-header-area .tab-header-background
+{
+    -fx-background-color: #FFFFFF;
+}
+
+.text-area
+{
+    -fx-font-weight: 700;
+    -fx-font-size: 10;
+    -fx-text-fill: #686872;
+}
+
+.text-area .content
+{
+    -fx-background-color: #ffe3e3;
+}
+
+.text-field
+{
+    -fx-font-weight: 600;
+    -fx-font-size: 14;
+    -fx-text-fill: #4c4c56;
+    -fx-border-width: 2px;
+    -fx-border-color: #464650;
+}
+
+/* DISABLED STYLES */
+
+.button:disabled
+{
+    -fx-text-fill: #f4eaea;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #9898a2;
+}
+
+.combo-box-base:disabled, .choice-box:disabled
+{
+    -fx-text-fill: #c7bdbd;
+    -fx-background-color: #f2e8e8;
+    -fx-border-color: #ffffff;
+}
+
+.increment-arrow:disabled, .decrement-arrow:disabled
+{
+    -fx-background-color: #80808a;
+}
+
+.increment-arrow-button:disabled, .decrement-arrow-button:disabled
+{
+    -fx-background-color: #ffffff;
+    -fx-border-color: #686872;
+}
+
+.increment-button:disabled, .decrement-button:disabled
+{
+    -fx-background-color: #9a9aa4;
+}
+
+.menu-bar:disabled, .menu:disabled, .menu-item:disabled
+{
+    -fx-background-color: #FFFFFF;
+}
+
+.menu:disabled .label, .menu-item:disabled .label
+{
+    -fx-text-fill: #7e7e85;
+}
+
+.radio-button:disabled .radio
+{
+    -fx-background-color: #ffffff;
+    -fx-border-color: #9e9ea8;
+}
+
+.scroll-bar:disabled
+{
+    -fx-background-color: #b4aaaa;
+}
+
+.scroll-bar .thumb:disabled
+{
+    -fx-background-color: #90909a;
+}
+
+.tab:disabled
+{
+    -fx-text-fill: #c0b6b6;
+    -fx-background-color: #4c4c56;
+}
+
+.text-field:disabled
+{
+    -fx-text-fill: #9e9ea8;
+    -fx-background-color: #c7bdbd;
+    -fx-border-color: #e9dfdf;
+}
+
+/* HOVER STYLES */
+
+.button:hover
+{
+    -fx-border-color: #dd2222;
+}
+
+.combo-box-base:hover, .choice-box:hover
+{
+    -fx-border-color: #dd2222;
+}
+
+.increment-arrow-button:hover, .decrement-arrow-button:hover
+{
+    -fx-border-color: #dd2222;
+}
+
+.increment-button:hover, .decrement-button:hover
+{
+    -fx-background-color: #f2e8e8;
+}
+
+.list-view .list-cell:filled:hover, .list-view .list-cell:filled:selected:hover
+{
+    -fx-border-color: #dd2222;
+}
+
+.menu:hover, .menu-item:hover
+{
+    -fx-background-color: #dd2222;
+}
+
+.menu .label:hover, .menu-item:hover .label
+{
+    -fx-text-fill: #ffffff;
+}
+
+.radio-button:hover .radio
+{
+    -fx-background-color: #f2e9e9;
+}
+
+.scroll-bar .thumb:hover
+{
+    -fx-background-color: #857b7b;
+}
+
+.slider .thumb:hover
+{
+    -fx-background-color: #bbb1b1;
+}
+
+.tab:hover
+{
+    -fx-background-color: #dd2222;
+}
+
+.tab:hover .tab-label
+{
+    -fx-text-fill: #ffffff;
+}
+
+/* OTHER CONTROL STYLES */
+
+.button:pressed
+{
+    -fx-text-fill: #948a8a;
+}
+
+.increment-arrow-button:pressed, .decrement-arrow-button:pressed
+{
+    -fx-background-color: #8e8484;
+}
+
+.menu:pressed, .menu-item:pressed
+{
+    -fx-background-color: #90909a;
+}
+
+.radio-button:selected .dot
+{
+    -fx-background-color: #837979;
+}
+
+.scroll-bar .thumb:pressed
+{
+    -fx-background-color: #dd2222;
+}
+
+.slider .thumb:pressed
+{
+    -fx-background-color: #dd2222;
+}
+
+.tab:pressed, .tab-label:pressed
+{
+    -fx-text-fill: #686872;
+}
+
+.tab:selected
+{
+    -fx-background-color: #eee4e4;
+}
+
+/* Used to prevent the text of the active tab from turning white when hovered */
+.tab:selected .tab-label:hover
+{
+    -fx-text-fill: #000000;
+}
+
+/* NON-CONTROL STYLES */
+
+.head-label
+{
+    -fx-font-weight: 100;
+    -fx-font-size: 20;
+    -fx-text-fill: #484852;
+}
+
+.medium-label
+{
+    -fx-font-weight: 400;
+    -fx-font-size: 14;
+}
+
+/* ICONS */
+
+#angle
+{
+    -fx-graphic: url("/icons/angle.png");
+}
+
+#bump
+{
+    -fx-graphic: url("/icons/bump.png");
+}
+
+#camera .tab-label
+{
+    -fx-graphic: url("/icons/camera.png");
+}
+
+#color
+{
+    -fx-graphic: url("/icons/color.png");
+}
+
+#depth
+{
+    -fx-graphic: url("/icons/depth.png");
+}
+
+#displacement
+{
+    -fx-graphic: url("/icons/displacement.png");
+}
+
+#gray
+{
+    -fx-graphic: url("/icons/gray.png");
+}
+
+#height
+{
+    -fx-graphic: url("/icons/height.png");
+}
+
+#left
+{
+    -fx-graphic: url("/icons/leftArrow.png");
+}
+
+#lights .tab-label, #lights
+{
+    -fx-graphic: url("/icons/lights.png");
+}
+
+#placement
+{
+    -fx-graphic: url("/icons/placement.png");
+}
+
+#population .tab-label, #population
+{
+    -fx-graphic: url("/icons/population.png");
+}
+
+#render .tab-label
+{
+    -fx-graphic: url("/icons/render.png");
+}
+
+#resolution
+{
+    -fx-graphic: url("/icons/resolution.png");
+}
+
+#right
+{
+    -fx-graphic: url("/icons/rightArrow.png");
+}
+
+#shift
+{
+    -fx-graphic: url("/icons/shift.png");
+}
+
+#specular
+{
+    -fx-graphic: url("/icons/specular.png");
+}
+
+#size
+{
+    -fx-graphic: url("/icons/size.png");
+}
+
+#strength
+{
+    -fx-graphic: url("/icons/strength.png");
+}
+
+#terrain .tab-label
+{
+    -fx-graphic: url("/icons/terrain.png");
+}
+
+#textures .tab-label, #textures
+{
+    -fx-graphic: url("/icons/textures.png");
+}
+
+#vertex
+{
+    -fx-graphic: url("/icons/vertex.png");
+}
+
+#view
+{
+    -fx-graphic: url("/icons/view.png");
+}
+
+#width
+{
+    -fx-graphic: url("/icons/width.png");
+}
+
+#zoom
+{
+    -fx-graphic: url("/icons/zoom.png");
+}

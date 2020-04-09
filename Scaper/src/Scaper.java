@@ -23,11 +23,16 @@ public class Scaper extends Application
      * @throws Exception 
      */
     @Override
-    public void start(Stage stagester) throws Exception {
+    public void start(Stage stagester) throws Exception
+    {
+        final int WINDOW_WIDTH = 1200;
+        final int WINDOW_HEIGHT = 600;
         
         Parent parster = FXMLLoader.load(getClass().getResource("GUI.fxml"));
     
-        Scene scenster = new Scene(parster, 1200, 600);
+        Scene scenster = new Scene(parster, WINDOW_WIDTH, WINDOW_HEIGHT);
+        
+        scenster.getStylesheets().add("design.css");
         
         // Prepare the stage
         stagester.setTitle("Project Scaper v0.6");

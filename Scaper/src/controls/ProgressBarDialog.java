@@ -5,7 +5,10 @@ import javafx.concurrent.Service;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 /**
  * A dialog box with a progress bar to show the progress of an action that the
@@ -62,6 +65,8 @@ public class ProgressBarDialog
         alster.setTitle(title);
         alster.setGraphic(progster);
         
+        style();
+        
         // Bind the progress bar to the service
         progster.progressProperty().bind(servster.progressProperty());
         
@@ -79,5 +84,19 @@ public class ProgressBarDialog
     {
         load();
         alster.show();
+    }
+    
+    /**
+     * Sets the dialog's design to the stylesheet
+     */
+    private void style()
+    {
+        DialogPane dister = alster.getDialogPane();
+        
+        // Sets the icon of the dialog box
+        ((Stage)dister.getScene().getWindow()).getIcons().add(
+                new Image("icons/icon.png"));
+        
+        dister.getStylesheets().add("design.css");
     }
 }

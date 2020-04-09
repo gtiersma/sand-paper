@@ -4,8 +4,10 @@ import graphics.Population;
 import java.util.Optional;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 /**
  * Controls the operations for the population tab
@@ -150,6 +152,14 @@ public class PopulationTab
     private void displayDuplicateNameError()
     {
         Alert alster = new Alert(Alert.AlertType.ERROR);
+        
+        // Style the dialog
+        DialogPane dister = alster.getDialogPane();
+        dister.getStylesheets().add("design.css");
+        
+        // Sets the icon of the dialog box
+        ((Stage)dister.getScene().getWindow()).getIcons().add(
+                new Image("icons/icon.png"));
         
         alster.setTitle("Population Already Exists");
         alster.setHeaderText("");
@@ -385,6 +395,14 @@ public class PopulationTab
     private Optional showNameDialog()
     {
         TextInputDialog nameDialog = new TextInputDialog(getNameSuggestion());
+        
+        // Style the dialog
+        DialogPane dister = nameDialog.getDialogPane();
+        dister.getStylesheets().add("design.css");
+        
+        // Sets the icon of the dialog box
+        ((Stage)dister.getScene().getWindow()).getIcons().add(
+                new Image("icons/icon.png"));
         
         nameDialog.setTitle("Create New Population");
         nameDialog.setHeaderText(null);

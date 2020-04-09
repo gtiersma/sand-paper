@@ -5,9 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DialogPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 
 /**
@@ -120,6 +123,14 @@ public class RenderTab
         {
             // ...alert the user to the problem.
             Alert error = new Alert(Alert.AlertType.ERROR);
+        
+            // Style the dialog
+            DialogPane dister = error.getDialogPane();
+            dister.getStylesheets().add("design.css");
+        
+            // Sets the icon of the dialog box
+            ((Stage)dister.getScene().getWindow()).getIcons().add(
+                    new Image("icons/icon.png"));
 
             error.setTitle("Unable to Save File");
             error.setHeaderText("");

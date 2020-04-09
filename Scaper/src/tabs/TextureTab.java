@@ -6,9 +6,11 @@ import java.io.File;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * Controls the operations for the textures tab
@@ -107,6 +109,14 @@ public class TextureTab
         {
             // ...alert the user.
             Alert alster = new Alert(Alert.AlertType.ERROR);
+        
+            // Style the dialog
+            DialogPane dister = alster.getDialogPane();
+            dister.getStylesheets().add("design.css");
+        
+            // Sets the icon of the dialog box
+            ((Stage)dister.getScene().getWindow()).getIcons().add(
+                    new Image("icons/icon.png"));
         
             alster.setTitle("Error");
             alster.setHeaderText("");

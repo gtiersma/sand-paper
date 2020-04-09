@@ -25,6 +25,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
@@ -177,10 +178,6 @@ public class Controller
      */
     public void initialize()
     {
-        // Create the icons for the tabs
-        renderTab.setGraphic(buildIcon("icons/render.png"));
-        terrainTab.setGraphic(buildIcon("icons/terrain.png"));
-        
         preview = new SubScene(new Group(), PREVIEW_WIDTH, PREVIEW_HEIGHT, true,
                 SceneAntialiasing.BALANCED);
         // Place the preview in the split pane in the scene
@@ -1273,14 +1270,12 @@ public class Controller
     protected void exit(ActionEvent eventster)
     {
         Alert confirmation = new Alert(AlertType.CONFIRMATION);
+        
+        styleDialog(confirmation);
 
         confirmation.setTitle("Exit?");
         confirmation.setHeaderText("");
         confirmation.setContentText("Are you sure you want to exit?");
-        
-        // Sets the dialog box's icon
-        ((Stage)confirmation.getDialogPane().getScene().getWindow()).getIcons()
-                .add(new Image("icons/icon.png"));
 
         Optional<ButtonType> answer = confirmation.showAndWait();
 
@@ -1513,15 +1508,13 @@ public class Controller
     {
         Alert alster = new Alert(AlertType.INFORMATION);
         
+        styleDialog(alster);
+        
         alster.setTitle("About Project Scaper");
         alster.setHeaderText("Generates 3D objects from 2D images");
         alster.setContentText("2019 - Created by George Tiersma\n\n"
         + "This program is not copyrighted. It can be used for any purpose"
         + " other than profited redistribution.\n\nversion 0.6 beta");
-        
-        // Sets the dialog box's icon
-        ((Stage)alster.getDialogPane().getScene().getWindow()).getIcons().add(
-                new Image("icons/icon.png"));
         
         alster.showAndWait();
     }
@@ -1706,6 +1699,8 @@ public class Controller
     protected void reset(ActionEvent eventster)
     {
         Alert confirmation = new Alert(AlertType.CONFIRMATION);
+        
+        styleDialog(confirmation);
 
         confirmation.setTitle("Continue?");
         confirmation.setHeaderText("");
@@ -1914,6 +1909,22 @@ public class Controller
         updatePopulationsForTerrainSizeChange(true, width);
                 
         terrainTextVRW.setText(Integer.toString(width));
+    }
+    
+    /**
+     * Applies the stylesheet and icon to a dialog
+     * 
+     * @param alster The alert to be stylized
+     */
+    protected void styleDialog(Alert alster)
+    {
+        DialogPane dister = alster.getDialogPane();
+        
+        dister.getStylesheets().add("design.css");
+        
+        // Sets the icon of the dialog box
+        ((Stage)dister.getScene().getWindow()).getIcons().add(
+                new Image("icons/icon.png"));
     }
     
     /**

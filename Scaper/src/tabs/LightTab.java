@@ -3,8 +3,11 @@ package tabs;
 import graphics.LightObject;
 import java.util.Optional;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 /**
  * Controls the operations for the light tab
@@ -141,6 +144,14 @@ public class LightTab
     private void displayDuplicateNameError()
     {
         Alert alster = new Alert(Alert.AlertType.ERROR);
+        
+        // Style the dialog
+        DialogPane dister = alster.getDialogPane();
+        dister.getStylesheets().add("design.css");
+        
+        // Sets the icon of the dialog box
+        ((Stage)dister.getScene().getWindow()).getIcons().add(
+                new Image("icons/icon.png"));
         
         alster.setTitle("Light Already Exists");
         alster.setHeaderText("");
@@ -454,6 +465,14 @@ public class LightTab
     private Optional showNameDialog()
     {
         TextInputDialog nameDialog = new TextInputDialog(getNameSuggestion());
+        
+        // Style the dialog
+        DialogPane dister = nameDialog.getDialogPane();
+        dister.getStylesheets().add("design.css");
+        
+        // Sets the icon of the dialog box
+        ((Stage)dister.getScene().getWindow()).getIcons().add(
+                new Image("icons/icon.png"));
         
         nameDialog.setTitle("Create New Light");
         nameDialog.setHeaderText(null);
