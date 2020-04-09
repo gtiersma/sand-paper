@@ -161,6 +161,16 @@ public class TextureObject
     }
     
     /**
+     * Gets whether or not there is an error with loading the image
+     * 
+     * @return Whether or not there is an error with loading the image
+     */
+    public boolean isValid()
+    {
+        return !imster.errorProperty().get();
+    }
+    
+    /**
      * Removes the color from the texture's ImageView. It only changes the
      * ImageView.
      */

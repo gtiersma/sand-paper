@@ -81,49 +81,41 @@ public class TextureTab
                 // ...create a new texture object out of it.
                 TextureObject texster = new TextureObject(filster);
 
-                // If it is to be a colored texture...
-                if (color)
+                // As long as the file being read is a valid image file...
+                if (texster.isValid())
                 {
-                    // ...add it to the array of colored textures.
-                    colorTextures = addToArray(colorTextures, texster);
+                    // ...if it is to be a colored texture...
+                    if (color)
+                    {
+                        // ...add it to the array of colored textures.
+                        colorTextures = addToArray(colorTextures, texster);
+                    }
+                    // ...otherwise...
+                    else
+                    {
+                        // ...add it to the array of grayscale textures.
+                        grayTextures = addToArray(grayTextures, texster);
+                        // Remove its color
+                        grayTextures[grayTextures.length - 1].removeColor();
+                    }
+
+                    // The texture has been successfully added
+                    textureAdded = true;
+
+                    // Get the directory that the texture came from
+                    previousDirectory = filster.getAbsolutePath().substring(0,
+                            filster.getAbsolutePath().lastIndexOf("\\") + 1);
                 }
-                // ...otherwise...
                 else
                 {
-                    // ...add it to the array of grayscale textures.
-                    grayTextures = addToArray(grayTextures, texster);
-                    // Remove its color
-                    grayTextures[grayTextures.length - 1].removeColor();
+                    displayError("The image file is unreadable.");
                 }
-
-                // The texture has been successfully added
-                textureAdded = true;
-
-                // Get the directory that the texture came from
-                previousDirectory = filster.getAbsolutePath().substring(0,
-                        filster.getAbsolutePath().lastIndexOf("\\") + 1);
             }
         }
         // If something goes wrong...
         catch (Exception e)
         {
-            // ...alert the user.
-            Alert alster = new Alert(Alert.AlertType.ERROR);
-        
-            // Style the dialog
-            DialogPane dister = alster.getDialogPane();
-            dister.getStylesheets().add("design.css");
-        
-            // Sets the icon of the dialog box
-            ((Stage)dister.getScene().getWindow()).getIcons().add(
-                    new Image("icons/icon.png"));
-        
-            alster.setTitle("Error");
-            alster.setHeaderText("");
-            alster.setContentText(
-                "The file chosen appears to not be an image.");
-        
-            alster.showAndWait();
+            displayError("The file chosen appears to not be an image.");
         }
         
         return textureAdded;
@@ -153,6 +145,30 @@ public class TextureTab
         newTexsters[size] = texster;
         
         return newTexsters;
+    }
+    
+    /**
+     * Displays a dialog box describing an error
+     * 
+     * @param description A user-friendly description of the error
+     */
+    private void displayError(String description)
+    {
+        Alert alster = new Alert(Alert.AlertType.ERROR);
+        
+        // Style the dialog
+        DialogPane dister = alster.getDialogPane();
+        dister.getStylesheets().add("design.css");
+        
+        // Sets the icon of the dialog box
+        ((Stage)dister.getScene().getWindow()).getIcons().add(
+                new Image("icons/icon.png"));
+        
+        alster.setTitle("Error");
+        alster.setHeaderText("");
+        alster.setContentText(description);
+        
+        alster.showAndWait();
     }
     
     /**
