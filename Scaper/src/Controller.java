@@ -531,25 +531,6 @@ public class Controller
         }
     }
     
-   /**
-    * Gets an icon of the path of the image provided
-    * 
-    * @param pathster The path of the icon image
-    * 
-    * @return The icon
-    */
-    private static ImageView buildIcon(String pathster)
-    {
-        Image icon = new Image(pathster);
-        ImageView viewster = new ImageView();
-        
-        viewster.setFitHeight(32);
-        viewster.setFitWidth(32);
-        viewster.setImage(icon);
-        
-        return viewster;
-    }
-    
     /**
      * Changes the terrain's displacement map to what is currently set in the
      * terrain tab's displacement combo box
