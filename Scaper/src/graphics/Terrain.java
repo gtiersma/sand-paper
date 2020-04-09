@@ -55,17 +55,8 @@ public class Terrain extends MeshObject
         // The indexes of the points
         int[] indexes = new int[CENTER_POINTS_AMOUNT];
         
-        // The index of the point at the center of the terrain
-        indexes[0] = (width * depth) / 2;
-        
-        // If the width is even...
-        if (width % 2 == 0)
-        {
-            // ...half of the width must be subtracted to get the center-most
-            // point.
-            indexes[0] = indexes[0] - (width / 2);
-        }
-        
+        // An estimation of the center-most point's index
+        indexes[0] = width * (depth / 2) + (width / 2);
         // The point between the center and the back edge of the terrain
         indexes[1] = indexes[0] - width * (depth / 4);
         // The point between the center and the left edge of the terrain
