@@ -30,7 +30,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
@@ -147,9 +146,6 @@ public class Controller
     @FXML private Spinner<Double> lightSpinnerPZ;
     
     @FXML private SplitPane splitster;
-    
-    @FXML private Tab terrainTab;
-    @FXML private Tab renderTab;
     
     @FXML private TextField terrainTextVRW;
     @FXML private TextField terrainTextVRD;
