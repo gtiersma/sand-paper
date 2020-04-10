@@ -1352,8 +1352,6 @@ public class Controller
         
         setPopulationVertexHeight(height);
         
-        populationTextVRH.setText(Integer.toString(height));
-        
         listen = true;
     }
     
@@ -1371,8 +1369,6 @@ public class Controller
         width++;
         
         setPopulationVertexWidth(width);
-        
-        populationTextVRW.setText(Integer.toString(width));
         
         listen = true;
     }
@@ -1899,7 +1895,7 @@ public class Controller
      */
     protected void setPopulationVertexHeight(int height)
     {
-        if (validator.isMeshSizeValid(height))
+        if (validator.isPopulationSizeValid(height))
         {
             popTab.getActivePopulation().setVertexHeight(height,
                     terTab.getTerrain().getPoints());
@@ -1918,7 +1914,7 @@ public class Controller
      */
     protected void setPopulationVertexWidth(int width)
     {
-        if (validator.isMeshSizeValid(width))
+        if (validator.isPopulationSizeValid(width))
         {
             popTab.getActivePopulation().setVertexWidth(width,
                     terTab.getTerrain().getPoints());
@@ -1937,7 +1933,7 @@ public class Controller
      */
     protected void setTerrainVertexDepth(int depth)
     {
-        if (validator.isMeshSizeValid(depth))
+        if (validator.isTerrainSizeValid(depth))
         {
             terTab.getTerrain().setDepth(depth);
             
@@ -1955,7 +1951,7 @@ public class Controller
      */
     protected void setTerrainVertexWidth(int width)
     {
-        if (validator.isMeshSizeValid(width))
+        if (validator.isTerrainSizeValid(width))
         {
             terTab.getTerrain().setWidth(width);
             
