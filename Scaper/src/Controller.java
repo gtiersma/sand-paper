@@ -55,23 +55,25 @@ import tabs.PopulationTab;
 public class Controller
 {
     // The width of the preview of the model
-    final int PREVIEW_WIDTH = 800;
+    final private int PREVIEW_WIDTH = 800;
     // The height of the preview of the model
-    final int PREVIEW_HEIGHT = 400;
+    final private int PREVIEW_HEIGHT = 400;
     
     // Instantiate an object for each tab. Each of these objects control the
     // functionality relating to that tab.
-    TextureTab texTab;
-    TerrainTab terTab;
-    RenderTab renTab;
-    CameraTab camTab;
-    LightTab ligTab;
-    PopulationTab popTab;
+    private TextureTab texTab;
+    private TerrainTab terTab;
+    private RenderTab renTab;
+    private CameraTab camTab;
+    private LightTab ligTab;
+    private PopulationTab popTab;
     
     // Whether or not the controls on the form are currently "listening" for
     // actions. Setting this to false will disable most of the action listeners
     // until it is set to true again.
-    boolean listen;
+    private boolean listen;
+    
+    private InputVerifier validator = new InputVerifier();
     
     // FXML apparently does not like SubScenes very much, so this control is
     // created entirely in this controller class.
@@ -197,17 +199,42 @@ public class Controller
         //----------------------------------------------------------------------
         terrainTextVRW.textProperty().addListener((obster, oldster, newster) ->
         {
-            if (listen)
+            // As long as the program is currently listening to events and the
+            // text input is not blank...
+            if (listen && !newster.equals(""))
             {
+                // ...resize it.
                 setTerrainVertexWidth(Integer.parseInt(newster));
+            }
+        });
+        // This focus listener prevents invalid text from remaining in the
+        // textfield
+        terrainTextVRW.focusedProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            if (!newster)
+            {
+                int width = terTab.getTerrain().getWidth();
+                
+                terrainTextVRW.setText(String.valueOf(width));
             }
         });
         
         terrainTextVRD.textProperty().addListener((obster, oldster, newster) ->
         {
-            if (listen)
+            if (listen && !newster.equals(""))
             {
                 setTerrainVertexDepth(Integer.parseInt(newster));
+            }
+        });
+        terrainTextVRD.focusedProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            if (!newster)
+            {
+                int depth = terTab.getTerrain().getDepth();
+                
+                terrainTextVRD.setText(String.valueOf(depth));
             }
         });
         
@@ -436,17 +463,39 @@ public class Controller
         populationTextVRW.textProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            popTab.getActivePopulation().setVertexWidth(newster, terTab.getTerrain().getPoints());
-        
-            refreshPreview();
+            if (listen && !newster.equals(""))
+            {
+                setPopulationVertexWidth(Integer.parseInt(newster));
+            }
+        });
+        populationTextVRW.focusedProperty().addListener((obster, oldster,
+                newster) ->
+        {
+            if (!newster)
+            {
+                int width = popTab.getActivePopulation().getVertexWidth();
+                
+                populationTextVRW.setText(String.valueOf(width));
+            }
         });
         
         populationTextVRH.textProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            popTab.getActivePopulation().setVertexHeight(newster, terTab.getTerrain().getPoints());
-        
-            refreshPreview();
+            if (listen && !newster.equals(""))
+            {
+                setPopulationVertexHeight(Integer.parseInt(newster));
+            }
+        });
+        populationTextVRH.focusedProperty().addListener((obster, oldster,
+                newster) ->
+        {
+            if (!newster)
+            {
+                int height = popTab.getActivePopulation().getVertexHeight();
+                
+                populationTextVRH.setText(String.valueOf(height));
+            }
         });
         
         populationSliderDRS.valueProperty().addListener(
@@ -1002,12 +1051,7 @@ public class Controller
         
         height--;
         
-        popTab.getActivePopulation().setVertexHeight(height,
-                terTab.getTerrain().getPoints());
-        
-        populationTextVRH.setText(Integer.toString(height));
-        
-        refreshPreview();
+        setPopulationVertexHeight(height);
         
         listen = true;
     }
@@ -1025,12 +1069,7 @@ public class Controller
         
         width--;
         
-        popTab.getActivePopulation().setVertexWidth(width,
-                terTab.getTerrain().getPoints());
-        
-        populationTextVRW.setText(Integer.toString(width));
-        
-        refreshPreview();
+        setPopulationVertexWidth(width);
         
         listen = true;
     }
@@ -1047,7 +1086,7 @@ public class Controller
         int depth = Integer.parseInt(terrainTextVRD.getText());
         
         depth--;
-                
+              
         setTerrainVertexDepth(depth);
         
         listen = true;
@@ -1065,7 +1104,7 @@ public class Controller
         int width = Integer.parseInt(terrainTextVRW.getText());
         
         width--;
-                
+        
         setTerrainVertexWidth(width);
         
         listen = true;
@@ -1311,12 +1350,9 @@ public class Controller
         
         height++;
         
-        popTab.getActivePopulation().setVertexHeight(height,
-                terTab.getTerrain().getPoints());
+        setPopulationVertexHeight(height);
         
         populationTextVRH.setText(Integer.toString(height));
-        
-        refreshPreview();
         
         listen = true;
     }
@@ -1334,12 +1370,9 @@ public class Controller
         
         width++;
         
-        popTab.getActivePopulation().setVertexWidth(width,
-                terTab.getTerrain().getPoints());
+        setPopulationVertexWidth(width);
         
         populationTextVRW.setText(Integer.toString(width));
-        
-        refreshPreview();
         
         listen = true;
     }
@@ -1859,6 +1892,44 @@ public class Controller
     }
     
     /**
+     * Sets the height (in vertices) of the currently-selected population. The
+     * TextField is also updated to reflect the changes.
+     * 
+     * @param height The height to be set
+     */
+    protected void setPopulationVertexHeight(int height)
+    {
+        if (validator.isMeshSizeValid(height))
+        {
+            popTab.getActivePopulation().setVertexHeight(height,
+                    terTab.getTerrain().getPoints());
+        
+            refreshPreview();
+        
+            populationTextVRH.setText(Integer.toString(height));
+        }
+    }
+    
+    /**
+     * Sets the width (in vertices) of the currently-selected population. The
+     * TextField is also updated to reflect the changes.
+     * 
+     * @param width The width to be set
+     */
+    protected void setPopulationVertexWidth(int width)
+    {
+        if (validator.isMeshSizeValid(width))
+        {
+            popTab.getActivePopulation().setVertexWidth(width,
+                    terTab.getTerrain().getPoints());
+        
+            refreshPreview();
+        
+            populationTextVRW.setText(Integer.toString(width));
+        }
+    }
+    
+    /**
      * Sets the depth (in vertices) of the terrain. The TextField is
      * also updated to reflect the changes.
      * 
@@ -1866,11 +1937,14 @@ public class Controller
      */
     protected void setTerrainVertexDepth(int depth)
     {
-        terTab.getTerrain().setDepth(depth);
+        if (validator.isMeshSizeValid(depth))
+        {
+            terTab.getTerrain().setDepth(depth);
             
-        updatePopulationsForTerrainSizeChange(false, depth);
+            updatePopulationsForTerrainSizeChange(false, depth);
                 
-        terrainTextVRD.setText(Integer.toString(depth));
+            terrainTextVRD.setText(Integer.toString(depth));
+        }
     }
     
     /**
@@ -1881,11 +1955,14 @@ public class Controller
      */
     protected void setTerrainVertexWidth(int width)
     {
-        terTab.getTerrain().setWidth(width);
+        if (validator.isMeshSizeValid(width))
+        {
+            terTab.getTerrain().setWidth(width);
             
-        updatePopulationsForTerrainSizeChange(true, width);
+            updatePopulationsForTerrainSizeChange(true, width);
                 
-        terrainTextVRW.setText(Integer.toString(width));
+            terrainTextVRW.setText(Integer.toString(width));
+        }
     }
     
     /**
@@ -1922,14 +1999,14 @@ public class Controller
         {
             // ...update the populations for a width change.
             popTab.updateForTerrainWidthChange(terrainSize, xRotate, yRotate,
-                terTab.getTerrain().getPoints());
+                    terTab.getTerrain().getPoints());
         }
         // ...otherwise, the terrain's depth must have changed...
         else
         {
             // ...so update them for a depth change.
-            popTab.updateForTerrainDepthChange(terrainSize, xRotate, yRotate,
-                terTab.getTerrain().getPoints());
+            popTab.updateForTerrainDepthChange(terrainSize, xRotate,
+                    yRotate, terTab.getTerrain().getPoints());
         }
         
         recenterOnTerrain();
