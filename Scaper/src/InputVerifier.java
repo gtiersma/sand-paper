@@ -17,6 +17,8 @@ public class InputVerifier
     final int MAX_TERRAIN_SIZE = 1000;
     final int MAX_POPULATION_SIZE = 100;
     
+    final int MAX_RESOLUTION_DIGIT_AMOUNT = 5;
+    
     /**
      * CONSTRUCTOR
      */
@@ -76,6 +78,48 @@ public class InputVerifier
         {
             // ...tell the user what the problem is.
             displayTooBigError(maxSize);
+        }
+        
+        return valid;
+    }
+    
+    /**
+     * Checks if a given resolution size is valid
+     * 
+     * @param resolution The given resolution. This parameter is a String
+     *                   instead of an Integer because the input is meant to be
+     *                   the text of a spinner.
+     * 
+     * @return Whether or not the resolution size is valid
+     */
+    public boolean isResolutionValid(String resolution)
+    {
+        boolean valid = true;
+        
+        // If the resolution is blank or has more digits than it should...
+        if (resolution.equals("")
+                || resolution.length() > MAX_RESOLUTION_DIGIT_AMOUNT)
+        {
+            // ...it is not valid.
+            valid = false;
+        }
+        // ...otherwise...
+        else
+        {
+            // ...for each character in the resolution...
+            for (int i = 0; i < resolution.length(); i++)
+            {
+                // ...if it is not a digit...
+                if (!Character.isDigit(resolution.charAt(i)))
+                {
+                    // ...the resolution is not valid.
+                    valid = false;
+                    
+                    // There is no use in checking the other characters, so exit
+                    // the loop
+                    i = resolution.length();
+                }
+            }
         }
         
         return valid;

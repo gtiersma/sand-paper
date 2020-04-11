@@ -253,6 +253,69 @@ public class Controller
         //----------------------------------------------------------------------
         // Render Tab Listeners
         //----------------------------------------------------------------------
+        renderSpinnerRW.valueProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            if (listen)
+            {
+                renTab.setWidth(newster);
+            }
+        });
+        // This listener is used for when the user changes the value in the
+        // spinner without touching the increment/decrement buttons.
+        renderSpinnerRW.focusedProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            if (listen)
+            {
+                // Get the raw text from the spinner
+                String newValue = renderSpinnerRW.getEditor().textProperty()
+                        .get();
+                
+                // If the text is a valid resolution value...
+                if (validator.isResolutionValid(newValue))
+                {
+                    // ...get it.
+                    renTab.setWidth(Integer.parseInt(newValue));
+                }
+                // ...otherwise...
+                else
+                {
+                    // ...restore the last valid value.
+                    renderSpinnerRW.getEditor().textProperty().set(
+                            String.valueOf(renTab.getWidth()));
+                }
+            }
+        });
+        
+        renderSpinnerRH.valueProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            if (listen)
+            {
+                renTab.setHeight(newster);
+            }
+        });
+        renderSpinnerRH.focusedProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            if (listen)
+            {
+                String newValue = renderSpinnerRH.getEditor().textProperty()
+                        .get();
+                
+                if (validator.isResolutionValid(newValue))
+                {
+                    renTab.setHeight(Integer.parseInt(newValue));
+                }
+                else
+                {
+                    renderSpinnerRH.getEditor().textProperty().set(
+                            String.valueOf(renTab.getHeight()));
+                }
+            }
+        });
+        
         renderColorBC.valueProperty().addListener((obster, oldster, newster) ->
         {
             renTab.setBackColor(newster);
@@ -1531,9 +1594,6 @@ public class Controller
      */
     protected void prepareForRender()
     {
-        renTab.setWidth(renderSpinnerRW.getEditor().getText());
-        renTab.setHeight(renderSpinnerRH.getEditor().getText());
-        
         int width = renTab.getWidth();
         int height = renTab.getHeight();
         
