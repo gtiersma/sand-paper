@@ -1,6 +1,9 @@
 
+import java.util.function.UnaryOperator;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -19,11 +22,26 @@ public class InputVerifier
     
     final int MAX_RESOLUTION_DIGIT_AMOUNT = 5;
     
+    // Format for numeric values
+    UnaryOperator<TextFormatter.Change> numericStyle;
+    
     /**
      * CONSTRUCTOR
      */
-    public InputVerifier() {}
-    
+    public InputVerifier()
+    {
+        numericStyle = content ->
+        {
+            TextFormatter.Change chanster = null;
+
+            if (content.getText().matches("[0-9]*"))
+            {
+                chanster = content;
+            }
+
+            return chanster;
+        };
+    }
     
     /**
      * Displays an error for when the user enters a value that is so large that
@@ -49,6 +67,18 @@ public class InputVerifier
                 + " largest number that is allowed is " + maxSize + ".");
         
         errorDialog.show();
+    }
+    
+    /**
+     * Formats a text field for displaying only numbers
+     * 
+     * @param fieldster The text field
+     */
+    public void formatNumericTextField(TextField fieldster)
+    {
+        TextFormatter<String> formster = new TextFormatter<>(numericStyle);
+        
+        fieldster.setTextFormatter(formster);
     }
     
     /**

@@ -8,7 +8,6 @@ import tabs.TextureTab;
 import tabs.TerrainTab;
 import tabs.RenderTab;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -31,8 +30,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -73,7 +70,7 @@ public class Controller
     // until it is set to true again.
     private boolean listen;
     
-    private InputVerifier validator = new InputVerifier();
+    private InputVerifier validator;
     
     // FXML apparently does not like SubScenes very much, so this control is
     // created entirely in this controller class.
@@ -161,6 +158,8 @@ public class Controller
      */
     public Controller()
     {
+        validator = new InputVerifier();
+        
         ligTab = new LightTab();
         camTab = new CameraTab();
         renTab = new RenderTab();
@@ -183,7 +182,11 @@ public class Controller
         
         removeViewColor();
         
-        formatTextFields();
+        // Format controls
+        validator.formatNumericTextField(terrainTextVRW);
+        validator.formatNumericTextField(terrainTextVRD);
+        validator.formatNumericTextField(populationTextVRW);
+        validator.formatNumericTextField(populationTextVRH);
         
         preparePreview();
         
@@ -261,8 +264,9 @@ public class Controller
                 renTab.setWidth(newster);
             }
         });
-        // This listener is used for when the user changes the value in the
-        // spinner without touching the increment/decrement buttons.
+        // The second listener is for when the value is changed and the focus
+        // leaves the controller. The above listener will not be triggered in
+        // this instance.
         renderSpinnerRW.focusedProperty().addListener((obster, oldster, newster)
                 ->
         {
@@ -353,9 +357,6 @@ public class Controller
             camTab.setXAdjustment(newster);
             preview.setCamera(camTab.getCamera());
         });
-        // The second listener is for when the value is changed and the focus
-        // leaves the controller. The above listener will not be triggered in
-        // this instance.
         cameraSpinnerPAH.focusedProperty().addListener(
                 (obster, oldster, newster) ->
         {
@@ -1363,42 +1364,6 @@ public class Controller
             Platform.exit();
         }
     }
-    
-    /**
-     * Forces all of the TextFields that are used for storing numeric data to
-     * only contain numbers
-     */
-    protected void formatTextFields()
-    {
-        // Format for numeric values
-        UnaryOperator<Change> numericStyle = content ->
-        {
-            Change chanster = null;
-
-            if (content.getText().matches("[0-9]*"))
-            {
-                chanster = content;
-            }
-
-            return chanster;
-        };
-        
-        // Each control must have its own TextFormatter
-        TextFormatter<String> terrainWidthFormat
-                = new TextFormatter<>(numericStyle);
-        TextFormatter<String> terrainDepthFormat
-                = new TextFormatter<>(numericStyle);
-        TextFormatter<String> populationWidthFormat
-                = new TextFormatter<>(numericStyle);
-        TextFormatter<String> populationHeightFormat
-                = new TextFormatter<>(numericStyle);
-        
-        terrainTextVRW.setTextFormatter(terrainWidthFormat);
-        terrainTextVRD.setTextFormatter(terrainDepthFormat);
-        populationTextVRW.setTextFormatter(populationWidthFormat);
-        populationTextVRH.setTextFormatter(populationHeightFormat);
-    }
-    
     
     /**
      * Increases the height (in vertices) of the active population by 1. The
