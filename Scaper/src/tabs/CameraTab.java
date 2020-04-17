@@ -124,6 +124,17 @@ public class CameraTab
     }
     
     /**
+     * Gets how far the camera is to be adjusted on the x axis from its central
+     * position
+     * 
+     * @return How far the camera is adjusted on the x axis
+     */
+    public double getXAdjustment()
+    {
+        return xAdjustment;
+    }
+    
+    /**
      * Gets the Rotate object for rotating the mesh on the X axis, simulating
      * the camera's rotation and orbit
      * 
@@ -135,6 +146,17 @@ public class CameraTab
     }
     
     /**
+     * Gets how far the camera is to be adjusted on the y axis from its central
+     * position
+     * 
+     * @return How far the camera is adjusted on the y axis
+     */
+    public double getYAdjustment()
+    {
+        return yAdjustment;
+    }
+    
+    /**
      * Gets the Rotate object for rotating the mesh on the Y axis, simulating
      * the camera's rotation and orbit
      * 
@@ -143,6 +165,16 @@ public class CameraTab
     public Rotate getYRotate()
     {
         return yRotate;
+    }
+    
+    /**
+     * Gets how far the camera is zoomed in from its central position
+     * 
+     * @return The camera's zoom adjustment
+     */
+    public double getZoom()
+    {
+        return zoom;
     }
     
     /**
@@ -297,20 +329,6 @@ public class CameraTab
     }
     
     /**
-     * Sets how far the camera should be adjusted on the x axis relative to its
-     * regular position (This should be how far the user chooses to shift the
-     * camera)
-     * 
-     * @param adjustment How far to shift the camera on the x axis
-     */
-    public void setXAdjustment(String adjustment)
-    {
-        xAdjustment = Double.parseDouble(adjustment);
-        
-        refreshPosition();
-    }
-    
-    /**
      * Sets how far the camera should be adjusted on the y axis relative to its
      * regular position (This should be how far the user chooses to shift the
      * camera)
@@ -320,20 +338,6 @@ public class CameraTab
     public void setYAdjustment(double adjustment)
     {
         yAdjustment = adjustment;
-        
-        refreshPosition();
-    }
-    
-    /**
-     * Sets how far the camera should be adjusted on the y axis relative to its
-     * regular position (This should be how far the user chooses to shift the
-     * camera)
-     * 
-     * @param adjustment How far to shift the camera on the y axis
-     */
-    public void setYAdjustment(String adjustment)
-    {
-        yAdjustment = Double.parseDouble(adjustment);
         
         refreshPosition();
     }

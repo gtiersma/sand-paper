@@ -326,7 +326,7 @@
                                     <HBox id="renderBoxRW" alignment="CENTER" spacing="5.0">
                                        <children>
                                           <Label id="width" styleClass="medium-label" text=" Width:" />
-                                          <Spinner id="style-4" fx:id="renderSpinnerRW" editable="true" initialValue="1920" max="999999" min="10" prefWidth="100.0" />
+                                          <Spinner id="style-4" fx:id="renderSpinnerRW" editable="true" initialValue="1920" max="99999" min="10" prefWidth="100.0" />
                                           <Label id="medium-label" styleClass="medium-label" text="px" />
                                        </children>
                                        <VBox.margin>
@@ -336,7 +336,7 @@
                                     <HBox id="renderBoxRH" alignment="CENTER" layoutX="10.0" layoutY="57.0" spacing="5.0">
                                        <children>
                                           <Label id="height" styleClass="medium-label" text=" Height:" />
-                                          <Spinner id="style-4" fx:id="renderSpinnerRH" editable="true" initialValue="1080" max="999999" min="10" prefWidth="100.0" />
+                                          <Spinner id="style-4" fx:id="renderSpinnerRH" editable="true" initialValue="1080" max="99999" min="10" prefWidth="100.0" />
                                           <Label id="medium-label" styleClass="medium-label" text="px" />
                                        </children>
                                     </HBox>
@@ -403,9 +403,9 @@
                                     </VBox>
                                     <VBox id="cameraBoxPAS" alignment="CENTER" spacing="10.0">
                                        <children>
-                                          <Spinner id="style-4" fx:id="cameraSpinnerPAH" editable="true" initialValue="0" max="99999" min="-9999" prefWidth="100.0" />
-                                          <Spinner id="style-4" fx:id="cameraSpinnerPAV" editable="true" initialValue="0" max="99999" min="-9999" prefWidth="100.0" />
-                                          <Spinner id="style-4" fx:id="cameraSpinnerPAZ" editable="true" initialValue="0" max="99999" min="-9999" prefWidth="100.0" />
+                                          <Spinner id="style-4" fx:id="cameraSpinnerPAH" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                          <Spinner id="style-4" fx:id="cameraSpinnerPAV" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                          <Spinner id="style-4" fx:id="cameraSpinnerPAZ" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -476,9 +476,9 @@
                                     </VBox>
                                     <VBox id="lightBoxPS" alignment="CENTER" spacing="10.0">
                                        <children>
-                                          <Spinner id="style-4" fx:id="lightSpinnerPX" disable="true" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
-                                          <Spinner id="style-4" fx:id="lightSpinnerPY" disable="true" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
-                                          <Spinner id="style-4" fx:id="lightSpinnerPZ" disable="true" editable="true" initialValue="0.0" max="99999.0" min="-9999.0" prefWidth="100.0" />
+                                          <Spinner id="style-4" fx:id="lightSpinnerPX" disable="true" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                          <Spinner id="style-4" fx:id="lightSpinnerPY" disable="true" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                          <Spinner id="style-4" fx:id="lightSpinnerPZ" disable="true" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
                                        </children>
                                     </VBox>
                                     <VBox id="lightBoxPP" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="25.0">

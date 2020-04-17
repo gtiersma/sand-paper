@@ -10,16 +10,16 @@ import javafx.scene.paint.Color;
  */
 public class LightObject
 {
-    private double x;
-    private double y;
-    private double z;
-    
     // Percentage of where on the scale within the mesh's range that the light
     // is. 0% is one end of the mesh. 100% is the other end. 50% is the center.
     // Anything below 0% or above 100% is outside the mesh.
-    private double xPercentage;
-    private double yPercentage;
-    private double zPercentage;
+    private int xPercentage;
+    private int yPercentage;
+    private int zPercentage;
+    
+    private double x;
+    private double y;
+    private double z;
     
     private String name;
     
@@ -30,14 +30,14 @@ public class LightObject
     /**
      * CONSTRUCTOR
      * 
-     * @param colster The color the light should begin as
-     * @param namster The name of the light
      * @param exster The starting position of the light on the X scale
      * @param zeester The starting position of the light on the Z scale
      * @param waister The starting position of the light on the Y scale
+     * @param namster The name of the light
+     * @param colster The color the light should begin as
      */
-    public LightObject(Color colster, String namster, double exster,
-            double waister, double zeester)
+    public LightObject(int exster, int waister, int zeester, String namster,
+            Color colster)
     {
         x = 0;
         y = 0;
@@ -106,7 +106,7 @@ public class LightObject
      * 
      * @return The position percentage on the X scale
      */
-    public double getPercentageX()
+    public int getPercentageX()
     {
         return xPercentage;
     }
@@ -116,7 +116,7 @@ public class LightObject
      * 
      * @return The position percentage on the Y scale
      */
-    public double getPercentageY()
+    public int getPercentageY()
     {
         return yPercentage;
     }
@@ -126,7 +126,7 @@ public class LightObject
      * 
      * @return The position percentage on the Z scale
      */
-    public double getPercentageZ()
+    public int getPercentageZ()
     {
         return zPercentage;
     }
@@ -169,10 +169,6 @@ public class LightObject
     /**
      * Sets the light's position on the X scale
      * 
-     * @param far The approximate distance from the center of the mesh to the
-     *            outer most point on the mesh on the X scale
-     * @param origin The approximate position on the X scale of the center of
-     *               the mesh
      * @param percentage The position that the light is to be placed at on the X
      *                   scale in the form of a percentage of the light's
      *                   position relative to the position of the mesh. For
@@ -180,8 +176,12 @@ public class LightObject
      *                   edge of the mesh. 100 would be the opposite edge. 50
      *                   would be the mesh's center. Anything below 0 or above
      *                   100 would be outside the boundaries of the mesh.
+     * @param far The approximate distance from the center of the mesh to the
+     *            outer most point on the mesh on the X scale
+     * @param origin The approximate position on the X scale of the center of
+     *               the mesh
      */
-    public void setXPosition(double far, double origin, double percentage)
+    public void setXPosition(int percentage, double far, double origin)
     {
         xPercentage = percentage;
         
@@ -208,10 +208,6 @@ public class LightObject
     /**
      * Sets the light's position on the Y scale
      * 
-     * @param far The approximate distance from the center of the mesh to the
-     *            outer most point on the mesh on the Y scale
-     * @param origin The approximate position on the Y scale of the center of
-     *               the mesh
      * @param percentage The position that the light is to be placed at on the Y
      *                   scale in the form of a percentage of the light's
      *                   position relative to the position of the mesh. For
@@ -219,8 +215,12 @@ public class LightObject
      *                   edge of the mesh. 100 would be the opposite edge. 50
      *                   would be the mesh's center. Anything below 0 or above
      *                   100 would be outside the boundaries of the mesh.
+     * @param far The approximate distance from the center of the mesh to the
+     *            outer most point on the mesh on the Y scale
+     * @param origin The approximate position on the Y scale of the center of
+     *               the mesh
      */
-    public void setYPosition(double far, double origin, double percentage)
+    public void setYPosition(int percentage, double far, double origin)
     {
         yPercentage = percentage;
         
@@ -247,10 +247,6 @@ public class LightObject
     /**
      * Sets the light's position on the Z scale
      * 
-     * @param far The approximate distance from the center of the mesh to the
-     *            outer most point on the mesh on the Z scale
-     * @param origin The approximate position on the Z scale of the center of
-     *               the mesh
      * @param percentage The position that the light is to be placed at on the Z
      *                   scale in the form of a percentage of the light's
      *                   position relative to the position of the mesh. For
@@ -258,8 +254,12 @@ public class LightObject
      *                   edge of the mesh. 100 would be the opposite edge. 50
      *                   would be the mesh's center. Anything below 0 or above
      *                   100 would be outside the boundaries of the mesh.
+     * @param far The approximate distance from the center of the mesh to the
+     *            outer most point on the mesh on the Z scale
+     * @param origin The approximate position on the Z scale of the center of
+     *               the mesh
      */
-    public void setZPosition(double far, double origin, double percentage)
+    public void setZPosition(int percentage, double far, double origin)
     {
         zPercentage = percentage;
         

@@ -295,7 +295,6 @@ public class Population
         newIndividual.setBump(bumpster.getImage());
         newIndividual.setSpecular(specster.getImage());
         
-        
         return newIndividual;
     }
     
@@ -1145,20 +1144,6 @@ public class Population
     }
     
     /**
-     * Sets the height of the Individuals. Accepts a string parameter.
-     * 
-     * @param heightster The height of the Individuals (Measured in vertices)
-     * @param terrainPoints The point positions used in the creation of the
-     *                      terrain's MeshView
-     */
-    public void setVertexHeight(String heightster, float[] terrainPoints)
-    {
-        int heightHeight = Integer.parseInt(heightster);
-        
-        setVertexHeight(heightHeight, terrainPoints);
-    }
-    
-    /**
      * Sets the width of the Individuals
      * 
      * @param widthster The width of the Individuals (Measured in vertices)
@@ -1172,20 +1157,6 @@ public class Population
         vertexWidth = widthster;
         
         load(actionDescription, terrainPoints);
-    }
-    
-    /**
-     * Sets the width of the Individuals. Accepts a string parameter.
-     * 
-     * @param widthster The width of the Individuals (Measured in vertices)
-     * @param terrainPoints The point positions used in the creation of the
-     *                      terrain's MeshView
-     */
-    public void setVertexWidth(String widthster, float[] terrainPoints)
-    {
-        int widthWidth = Integer.parseInt(widthster);
-        
-        setVertexWidth(widthWidth, terrainPoints);
     }
     
     /**

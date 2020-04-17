@@ -16,9 +16,9 @@ import javafx.stage.Stage;
  */
 public class LightTab
 {
-    private final double DEFAULT_X_PERCENTAGE = 120.0;
-    private final double DEFAULT_Y_PERCENTAGE = 10.0;
-    private final double DEFAULT_Z_PERCENTAGE = -20.0;
+    private final int DEFAULT_X_PERCENTAGE = 120;
+    private final int DEFAULT_Y_PERCENTAGE = 10;
+    private final int DEFAULT_Z_PERCENTAGE = -20;
     
     private final Color DEFAULT_COLOR = Color.WHITE;
     
@@ -73,9 +73,9 @@ public class LightTab
             if (!isDuplicateName(name))
             {
                 // ...create a new light.
-                LightObject newLight = new LightObject(DEFAULT_COLOR, name, 
-                        DEFAULT_X_PERCENTAGE, DEFAULT_Y_PERCENTAGE,
-                        DEFAULT_Z_PERCENTAGE);
+                LightObject newLight = new LightObject(DEFAULT_X_PERCENTAGE,
+                        DEFAULT_Y_PERCENTAGE, DEFAULT_Z_PERCENTAGE, name,
+                        DEFAULT_COLOR);
             
                 // Create a new array with room for another light
                 LightObject[] newLights = new LightObject[lights.length + 1];
@@ -211,7 +211,7 @@ public class LightTab
      * 
      * @return The lights' initial X position
      */
-    public double getDefaultX()
+    public int getDefaultX()
     {
         return DEFAULT_X_PERCENTAGE;
     }
@@ -221,7 +221,7 @@ public class LightTab
      * 
      * @return The lights' initial Y position
      */
-    public double getDefaultY()
+    public int getDefaultY()
     {
         return DEFAULT_Y_PERCENTAGE;
     }
@@ -231,7 +231,7 @@ public class LightTab
      * 
      * @return The lights' initial Z position
      */
-    public double getDefaultZ()
+    public int getDefaultZ()
     {
         return DEFAULT_Z_PERCENTAGE;
     }
@@ -364,23 +364,9 @@ public class LightTab
      * @param x The percentage of where the light should be placed on the X
      * scale
      */
-    public void setActiveLightX(double x)
+    public void setActiveLightX(int x)
     {
-        activeLight.setXPosition(furthest, centerX, x);
-    }
-    
-    /**
-     * Sets the currently selected light's X position. For use when a string is
-     * given.
-     * 
-     * @param x The percentage of where the light should be placed on the X
-     * scale
-     */
-    public void setActiveLightX(String x)
-    {
-        double newX = Double.valueOf(x);
-        
-        activeLight.setXPosition(furthest, centerX, newX);
+        activeLight.setXPosition(x, furthest, centerX);
     }
     
     /**
@@ -389,23 +375,9 @@ public class LightTab
      * @param y The percentage of where the light should be placed on the Y
      * scale
      */
-    public void setActiveLightY(double y)
+    public void setActiveLightY(int y)
     {
-        activeLight.setYPosition(furthest, centerY, y);
-    }
-    
-    /**
-     * Sets the currently selected light's Y position. For use when a string is
-     * given.
-     * 
-     * @param y The percentage of where the light should be placed on the Y
-     * scale
-     */
-    public void setActiveLightY(String y)
-    {
-        double newY = Double.valueOf(y);
-        
-        activeLight.setYPosition(furthest, centerY, newY);
+        activeLight.setYPosition(y, furthest, centerY);
     }
     
     /**
@@ -414,23 +386,9 @@ public class LightTab
      * @param z The percentage of where the light should be placed on the Z
      * scale
      */
-    public void setActiveLightZ(double z)
+    public void setActiveLightZ(int z)
     {
-        activeLight.setZPosition(furthest, centerZ, z);
-    }
-    
-    /**
-     * Sets the currently selected light's Z position. For use when a string is
-     * given.
-     * 
-     * @param z The percentage of where the light should be placed on the Z
-     * scale
-     */
-    public void setActiveLightZ(String z)
-    {
-        double newZ = Double.valueOf(z);
-        
-        activeLight.setZPosition(furthest, centerZ, newZ);
+        activeLight.setZPosition(z, furthest, centerZ);
     }
     
     /**

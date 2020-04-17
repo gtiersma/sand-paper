@@ -1,11 +1,8 @@
 
 import java.util.function.UnaryOperator;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
 
 /**
  * Validates user input
@@ -20,9 +17,11 @@ public class InputVerifier
     final int MAX_TERRAIN_SIZE = 1000;
     final int MAX_POPULATION_SIZE = 100;
     
-    final int MAX_RESOLUTION_DIGIT_AMOUNT = 5;
+    // The greatest number of digits that a spinner is allowed to have
+    final int MAX_SPINNER_DIGIT_AMOUNT = 5;
     
-    // Format for numeric values
+    // Format that limits the allowed characters to digits and the negative (-)
+    // symbol
     UnaryOperator<TextFormatter.Change> numericStyle;
     
     /**
@@ -34,7 +33,7 @@ public class InputVerifier
         {
             TextFormatter.Change chanster = null;
 
-            if (content.getText().matches("[0-9]*"))
+            if (content.getText().matches("-?[0-9]*"))
             {
                 chanster = content;
             }
@@ -44,33 +43,7 @@ public class InputVerifier
     }
     
     /**
-     * Displays an error for when the user enters a value that is so large that
-     * it runs a risk of overloading the program
-     * 
-     * @param maxSize The largest allowed value
-     */
-    private void displayTooBigError(int maxSize)
-    {
-        Alert errorDialog = new Alert(Alert.AlertType.ERROR);
-        
-        DialogPane dister = errorDialog.getDialogPane();
-        
-        dister.getStylesheets().add("design.css");
-        // Sets the icon of the dialog box
-        ((Stage)dister.getScene().getWindow()).getIcons().add(
-                new Image("icons/icon.png"));
-
-        errorDialog.setTitle("Number Too Large");
-        errorDialog.setHeaderText("");
-        errorDialog.setContentText("The number entered is too large. To help"
-                + " prevent the possibility of the program overloading, the"
-                + " largest number that is allowed is " + maxSize + ".");
-        
-        errorDialog.show();
-    }
-    
-    /**
-     * Formats a text field for displaying only numbers
+     * Formats a text field for numeric values
      * 
      * @param fieldster The text field
      */
@@ -79,6 +52,18 @@ public class InputVerifier
         TextFormatter<String> formster = new TextFormatter<>(numericStyle);
         
         fieldster.setTextFormatter(formster);
+    }
+    
+    /**
+     * Formats a spinner for numeric values
+     * 
+     * @param spinster The spinner
+     */
+    public void formatNumericSpinner(Spinner spinster)
+    {
+        TextFormatter<String> formster = new TextFormatter<>(numericStyle);
+        
+        spinster.getEditor().setTextFormatter(formster);
     }
     
     /**
@@ -103,54 +88,6 @@ public class InputVerifier
                 valid = true;
             }
         }
-        // ...but if the size is too large...
-        else
-        {
-            // ...tell the user what the problem is.
-            displayTooBigError(maxSize);
-        }
-        
-        return valid;
-    }
-    
-    /**
-     * Checks if a given resolution size is valid
-     * 
-     * @param resolution The given resolution. This parameter is a String
-     *                   instead of an Integer because the input is meant to be
-     *                   the text of a spinner.
-     * 
-     * @return Whether or not the resolution size is valid
-     */
-    public boolean isResolutionValid(String resolution)
-    {
-        boolean valid = true;
-        
-        // If the resolution is blank or has more digits than it should...
-        if (resolution.equals("")
-                || resolution.length() > MAX_RESOLUTION_DIGIT_AMOUNT)
-        {
-            // ...it is not valid.
-            valid = false;
-        }
-        // ...otherwise...
-        else
-        {
-            // ...for each character in the resolution...
-            for (int i = 0; i < resolution.length(); i++)
-            {
-                // ...if it is not a digit...
-                if (!Character.isDigit(resolution.charAt(i)))
-                {
-                    // ...the resolution is not valid.
-                    valid = false;
-                    
-                    // There is no use in checking the other characters, so exit
-                    // the loop
-                    i = resolution.length();
-                }
-            }
-        }
         
         return valid;
     }
@@ -165,6 +102,53 @@ public class InputVerifier
     public boolean isPopulationSizeValid(int size)
     {
         return isMeshSizeValid(MAX_POPULATION_SIZE, size);
+    }
+    
+    /**
+     * Checks if a value of a spinner is valid. Even though spinners may already
+     * be formated with a regex, expressions applied to spinners are only able
+     * to limit the type of characters, not the position of the characters or
+     * the length of the string, so further validation is necessary.
+     * 
+     * @param mustBePositive Whether or not the spinner's value must be positive
+     * @param value The value in the spinner in the form of a string
+     * 
+     * @return Whether or not the spinner's value is valid
+     */
+    public boolean isSpinnerValueValid(boolean mustBePositive, String value)
+    {
+        boolean valid = false;
+        
+        // As long as the spinner's value is not blank...
+        if (!value.equals(""))
+        {
+            // Regex that forces the number to be within a certain digit count
+            String regex = "\\d{0," + MAX_SPINNER_DIGIT_AMOUNT + "}";
+        
+            // If the value must be positive...
+            if (mustBePositive)
+            {
+                // ...the regex must not allow 0.
+                regex = "[1-9]" + regex;
+            }
+            // ...otherwise...
+            else
+            {
+                // ...have the regex accept a single negative symbol at the
+                // start of the string.
+                regex = "-?" + regex;
+            }
+        
+            // As long as the value is approved by the regex...
+            if (value.matches(regex))
+            {
+                // ...it is valid.
+                valid = true;
+            }
+        }
+        // ...otherwise, if the value is blank, valid remains false.
+        
+        return valid;
     }
     
     /**

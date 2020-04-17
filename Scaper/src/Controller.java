@@ -9,6 +9,7 @@ import tabs.TerrainTab;
 import tabs.RenderTab;
 import java.util.Optional;
 import javafx.application.Platform;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.event.ActionEvent;
@@ -140,9 +141,9 @@ public class Controller
     @FXML private Spinner<Integer> cameraSpinnerPAH;
     @FXML private Spinner<Integer> cameraSpinnerPAV;
     @FXML private Spinner<Integer> cameraSpinnerPAZ;
-    @FXML private Spinner<Double> lightSpinnerPX;
-    @FXML private Spinner<Double> lightSpinnerPY;
-    @FXML private Spinner<Double> lightSpinnerPZ;
+    @FXML private Spinner<Integer> lightSpinnerPX;
+    @FXML private Spinner<Integer> lightSpinnerPY;
+    @FXML private Spinner<Integer> lightSpinnerPZ;
     
     @FXML private SplitPane splitster;
     
@@ -182,11 +183,7 @@ public class Controller
         
         removeViewColor();
         
-        // Format controls
-        validator.formatNumericTextField(terrainTextVRW);
-        validator.formatNumericTextField(terrainTextVRD);
-        validator.formatNumericTextField(populationTextVRW);
-        validator.formatNumericTextField(populationTextVRH);
+        formatControls();
         
         preparePreview();
         
@@ -261,7 +258,10 @@ public class Controller
         {
             if (listen)
             {
-                renTab.setWidth(newster);
+                int validValue = validateSpinner(true, renTab.getWidth(),
+                        renderSpinnerRW);
+                
+                renTab.setWidth(validValue);
             }
         });
         // The second listener is for when the value is changed and the focus
@@ -272,51 +272,30 @@ public class Controller
         {
             if (listen)
             {
-                // Get the raw text from the spinner
-                String newValue = renderSpinnerRW.getEditor().textProperty()
-                        .get();
+                int validValue = validateSpinner(true, renTab.getWidth(),
+                        renderSpinnerRW);
                 
-                // If the text is a valid resolution value...
-                if (validator.isResolutionValid(newValue))
-                {
-                    // ...get it.
-                    renTab.setWidth(Integer.parseInt(newValue));
-                }
-                // ...otherwise...
-                else
-                {
-                    // ...restore the last valid value.
-                    renderSpinnerRW.getEditor().textProperty().set(
-                            String.valueOf(renTab.getWidth()));
-                }
+                renTab.setWidth(validValue);
             }
         });
         
         renderSpinnerRH.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
-            if (listen)
-            {
-                renTab.setHeight(newster);
-            }
+            int validValue = validateSpinner(true, renTab.getHeight(),
+                    renderSpinnerRH);
+                
+            renTab.setHeight(validValue);
         });
         renderSpinnerRH.focusedProperty().addListener((obster, oldster, newster)
                 ->
         {
             if (listen)
             {
-                String newValue = renderSpinnerRH.getEditor().textProperty()
-                        .get();
+                int validValue = validateSpinner(true, renTab.getHeight(),
+                        renderSpinnerRH);
                 
-                if (validator.isResolutionValid(newValue))
-                {
-                    renTab.setHeight(Integer.parseInt(newValue));
-                }
-                else
-                {
-                    renderSpinnerRH.getEditor().textProperty().set(
-                            String.valueOf(renTab.getHeight()));
-                }
+                renTab.setHeight(validValue);
             }
         });
         
@@ -354,7 +333,10 @@ public class Controller
         cameraSpinnerPAH.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            camTab.setXAdjustment(newster);
+            int validValue = validateSpinner(false,
+                    (int)camTab.getXAdjustment(), cameraSpinnerPAH);
+            
+            camTab.setXAdjustment(validValue);
             preview.setCamera(camTab.getCamera());
         });
         cameraSpinnerPAH.focusedProperty().addListener(
@@ -362,7 +344,10 @@ public class Controller
         {
             if (newster == false)
             {
-                camTab.setXAdjustment(cameraSpinnerPAH.getEditor().getText());
+                int validValue = validateSpinner(false,
+                        (int)camTab.getXAdjustment(), cameraSpinnerPAH);
+            
+                camTab.setXAdjustment(validValue);
                 preview.setCamera(camTab.getCamera());
             }
         });
@@ -370,7 +355,10 @@ public class Controller
         cameraSpinnerPAV.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            camTab.setYAdjustment(newster);
+            int validValue = validateSpinner(false,
+                    (int)camTab.getYAdjustment(), cameraSpinnerPAV);
+            
+            camTab.setYAdjustment(validValue);
             preview.setCamera(camTab.getCamera());
         });
         cameraSpinnerPAV.focusedProperty().addListener(
@@ -378,7 +366,10 @@ public class Controller
         {
             if (newster == false)
             {
-                camTab.setYAdjustment(cameraSpinnerPAV.getEditor().getText());
+                int validValue = validateSpinner(false,
+                        (int)camTab.getYAdjustment(), cameraSpinnerPAV);
+            
+                camTab.setYAdjustment(validValue);
                 preview.setCamera(camTab.getCamera());
             }
         });
@@ -386,7 +377,10 @@ public class Controller
         cameraSpinnerPAZ.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            camTab.setZoom(newster);
+            int validValue = validateSpinner(false, (int)camTab.getZoom(),
+                    cameraSpinnerPAZ);
+            
+            camTab.setZoom(validValue);
             preview.setCamera(camTab.getCamera());
         });
         cameraSpinnerPAZ.focusedProperty().addListener(
@@ -394,7 +388,10 @@ public class Controller
         {
             if (newster == false)
             {
-                camTab.setZoom(cameraSpinnerPAZ.getEditor().getText());
+                int validValue = validateSpinner(false, (int)camTab.getZoom(),
+                        cameraSpinnerPAZ);
+            
+                camTab.setZoom(validValue);
                 preview.setCamera(camTab.getCamera());
             }
         });
@@ -441,59 +438,60 @@ public class Controller
         lightSpinnerPX.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            if (listen)
-            {
-                ligTab.setActiveLightX(newster);
-            }
+            int validValue = validateSpinner(false,
+                    ligTab.getActiveLight().getPercentageX(), lightSpinnerPX);
+            
+            ligTab.setActiveLightX(validValue);
         });
         lightSpinnerPX.focusedProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            if (!newster)
+            if (listen)
             {
-                ligTab.setActiveLightX(lightSpinnerPX.getEditor().getText());
-                
-                // Fixes an issue in JavaFX of the Spinner's value not being
-                // returned after it was changed.
-                lightSpinnerPX.increment(0);
+                int validValue = validateSpinner(false,
+                    ligTab.getActiveLight().getPercentageX(), lightSpinnerPX);
+            
+                ligTab.setActiveLightX(validValue);
             }
         });
         
         lightSpinnerPY.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            if (listen)
-            {
-                ligTab.setActiveLightY(newster);
-            }
+            int validValue = validateSpinner(false,
+                    ligTab.getActiveLight().getPercentageY(), lightSpinnerPY);
+            
+            ligTab.setActiveLightY(validValue);
         });
         lightSpinnerPY.focusedProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            if (newster == false)
+            if (listen)
             {
-                ligTab.setActiveLightY(lightSpinnerPY.getEditor().getText());
-                
-                lightSpinnerPY.increment(0);
+                int validValue = validateSpinner(false,
+                    ligTab.getActiveLight().getPercentageY(), lightSpinnerPY);
+            
+                ligTab.setActiveLightY(validValue);
             }
         });
         
         lightSpinnerPZ.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            if (listen)
-            {
-                ligTab.setActiveLightZ(newster);
-            }
+            int validValue = validateSpinner(false,
+                    ligTab.getActiveLight().getPercentageZ(), lightSpinnerPZ);
+            
+            ligTab.setActiveLightZ(validValue);
         });
         lightSpinnerPZ.focusedProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            if (newster == false)
+            if (listen)
             {
-                ligTab.setActiveLightZ(lightSpinnerPZ.getEditor().getText());
-                
-                lightSpinnerPZ.increment(0);
+                int validValue = validateSpinner(false,
+                    ligTab.getActiveLight().getPercentageZ(), lightSpinnerPZ);
+            
+                ligTab.setActiveLightZ(validValue);
             }
         });
         
@@ -983,6 +981,10 @@ public class Controller
         }
     }
     
+    /**
+     * Gets the terrain depth from the text field and applies it. For use when
+     * the user changes the value in the text field.
+     */
     @FXML
     protected void changeTerrainVertexDepth()
     {
@@ -993,6 +995,10 @@ public class Controller
         updatePopulationsForTerrainSizeChange(false, depth);
     }
     
+    /**
+     * Gets the terrain width from the text field and applies it. For use when
+     * the user changes the value in the text field.
+     */
     @FXML
     protected void changeTerrainVertexWidth()
     {
@@ -1363,6 +1369,26 @@ public class Controller
         {
             Platform.exit();
         }
+    }
+    
+    /**
+     * Formats the controls that need to be formatted
+     */
+    protected void formatControls()
+    {
+        validator.formatNumericTextField(terrainTextVRW);
+        validator.formatNumericTextField(terrainTextVRD);
+        validator.formatNumericTextField(populationTextVRW);
+        validator.formatNumericTextField(populationTextVRH);
+        
+        validator.formatNumericSpinner(renderSpinnerRW);
+        validator.formatNumericSpinner(renderSpinnerRH);
+        validator.formatNumericSpinner(cameraSpinnerPAH);
+        validator.formatNumericSpinner(cameraSpinnerPAV);
+        validator.formatNumericSpinner(cameraSpinnerPAZ);
+        validator.formatNumericSpinner(lightSpinnerPX);
+        validator.formatNumericSpinner(lightSpinnerPY);
+        validator.formatNumericSpinner(lightSpinnerPZ);
     }
     
     /**
@@ -2000,6 +2026,47 @@ public class Controller
         // Sets the icon of the dialog box
         ((Stage)dister.getScene().getWindow()).getIcons().add(
                 new Image("icons/icon.png"));
+    }
+    
+    /**
+     * Gets the value of the provided integer spinner if it validates.
+     * Otherwise, it returns the provided old value.
+     * 
+     * @param mustBePositive Whether or not the spinner's value must be a
+     *                       positive value
+     * @param oldValue The spinner's last value that validated successfully
+     * @param spinster The spinner
+     * 
+     * @return The value set by the user in the spinner if validated. If not
+     *         validated, the spinner's previous value that is provided as a
+     *         parameter.
+     */
+    protected int validateSpinner(boolean mustBePositive, int oldValue,
+            Spinner spinster)
+    {
+        int validValue;
+        
+        // Get the spinner's text property
+        StringProperty content = spinster.getEditor().textProperty();
+                
+        // If the user's input validates...
+        if (validator.isSpinnerValueValid(mustBePositive, content.get()))
+        {
+            // ...set the user's value as the valid value.
+            validValue = Integer.parseInt(content.get());
+        }
+        // ...otherwise...
+        else
+        {
+            // ...set valid value to be the spinner's previous validated value.
+            validValue = oldValue;
+            // Return the spinner's value factory to the previous value
+            spinster.getValueFactory().setValue(oldValue);
+            // Return the spinner's text to the previous value
+            content.setValue(String.valueOf(oldValue));
+        }
+        
+        return validValue;
     }
     
     /**
