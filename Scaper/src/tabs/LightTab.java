@@ -267,7 +267,7 @@ public class LightTab
     private String getNameSuggestion()
     {
         // The very first name suggestion to present the user with
-        String firstSuggestion = "Population Name";
+        String firstSuggestion = "Light Name";
         
         // The name suggestion that should be used
         String suggestion = firstSuggestion;
