@@ -92,6 +92,16 @@ public class LightObject
     }
     
     /**
+     * Gets the color of the light
+     * 
+     * @return The color of the light
+     */
+    public Color getColor()
+    {
+        return lightColor;
+    }
+    
+    /**
      * Gets the name of the light
      * 
      * @return The name of the light

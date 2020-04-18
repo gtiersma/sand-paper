@@ -1473,6 +1473,8 @@ public class Controller
         lightSpinnerPX.getValueFactory().setValue(activeLight.getPercentageX());
         lightSpinnerPY.getValueFactory().setValue(activeLight.getPercentageY());
         lightSpinnerPZ.getValueFactory().setValue(activeLight.getPercentageZ());
+        
+        lightColorC.setValue(activeLight.getColor());
     }
     
     /**
