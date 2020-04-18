@@ -1570,8 +1570,8 @@ public class Controller
         
         styleDialog(alster);
         
-        alster.setTitle("About Project Scaper");
-        alster.setHeaderText("Generates 3D objects from 2D images");
+        alster.setTitle("About Sand Paper");
+        alster.setHeaderText("Use images to create 3D scenery");
         alster.setContentText("2019 - Created by George Tiersma\n\n"
         + "This program is not copyrighted. It can be used for any purpose"
         + " other than profited redistribution.\n\nversion 0.6 beta");

@@ -509,7 +509,7 @@
                   </Tab>
               </tabs>
             </TabPane>
-            <TextArea id="style-1" maxWidth="200.0" prefHeight="200.0" prefWidth="200.0" text="Welcome to Project Scaper.&#10;&#10;This is the help box. Its purpose is to display detailed information regarding the control that the cursor is hovering over.&#10;Unfortunately, this help box is not yet functional." wrapText="true" />
+            <TextArea id="style-1" maxWidth="200.0" prefHeight="200.0" prefWidth="200.0" text="Welcome to Sand Paper.&#10;&#10;This is the help box. Its purpose is to display detailed information regarding the control that the cursor is hovering over.&#10;Unfortunately, this help box is not yet functional." wrapText="true" />
         </items>
       </SplitPane>
    </children>
