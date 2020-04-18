@@ -1572,9 +1572,18 @@ public class Controller
         
         alster.setTitle("About Sand Paper");
         alster.setHeaderText("Use images to create 3D scenery");
-        alster.setContentText("2019 - Created by George Tiersma\n\n"
-        + "This program is not copyrighted. It can be used for any purpose"
-        + " other than profited redistribution.\n\nversion 0.6 beta");
+        alster.setContentText("Sand Paper (formerly tentatively titled, "
+                + "\"Project Scaper\") is a 3D modeling software solution for "
+                + "graphic designers that have limited knowledge with 3D "
+                + "modeling.\n\n"
+                + "Copyright (C) 2019-2020 George Tiersma\n\n"
+                + "This program is free software: you can redistribute it "
+                + "and/or modify it under the terms of the GNU General Public "
+                + "License as published by the Free Software Foundation, "
+                + "either version 3 of the License, or (at your option) any "
+                + "later version.");
+        
+        alster.setGraphic(new ImageView("/icons/icon.png"));
         
         alster.showAndWait();
     }
