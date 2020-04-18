@@ -1859,9 +1859,20 @@ public class Controller
      */
     protected void resetLightControls()
     {
-        lightSpinnerPX.getValueFactory().setValue(ligTab.getDefaultX());
-        lightSpinnerPY.getValueFactory().setValue(ligTab.getDefaultY());
-        lightSpinnerPZ.getValueFactory().setValue(ligTab.getDefaultZ());
+        int x = ligTab.getDefaultX();
+        int y = ligTab.getDefaultY();
+        int z = ligTab.getDefaultZ();
+        
+        // Set the spinner's setting to its original value
+        lightSpinnerPX.getValueFactory().setValue(x);
+        lightSpinnerPY.getValueFactory().setValue(y);
+        lightSpinnerPZ.getValueFactory().setValue(z);
+        
+        // Set the spinner's text to its original value
+        lightSpinnerPX.getEditor().textProperty().setValue(String.valueOf(x));
+        lightSpinnerPY.getEditor().textProperty().setValue(String.valueOf(y));
+        lightSpinnerPZ.getEditor().textProperty().setValue(String.valueOf(z));
+        
         lightColorC.setValue(ligTab.getDefaultColor());
     }
     
