@@ -438,10 +438,14 @@ public class Controller
         lightSpinnerPX.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            int validValue = validateSpinner(false,
-                    ligTab.getActiveLight().getPercentageX(), lightSpinnerPX);
+            if (listen)
+            {
+                int validValue = validateSpinner(false,
+                        ligTab.getActiveLight().getPercentageX(),
+                        lightSpinnerPX);
             
-            ligTab.setActiveLightX(validValue);
+                ligTab.setActiveLightX(validValue);
+            }
         });
         lightSpinnerPX.focusedProperty().addListener(
                 (obster, oldster, newster) ->
@@ -458,10 +462,14 @@ public class Controller
         lightSpinnerPY.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            int validValue = validateSpinner(false,
-                    ligTab.getActiveLight().getPercentageY(), lightSpinnerPY);
+            if (listen)
+            {
+                int validValue = validateSpinner(false,
+                        ligTab.getActiveLight().getPercentageY(),
+                        lightSpinnerPY);
             
-            ligTab.setActiveLightY(validValue);
+                ligTab.setActiveLightY(validValue);
+            }
         });
         lightSpinnerPY.focusedProperty().addListener(
                 (obster, oldster, newster) ->
@@ -478,10 +486,13 @@ public class Controller
         lightSpinnerPZ.valueProperty().addListener(
                 (obster, oldster, newster) ->
         {
-            int validValue = validateSpinner(false,
-                    ligTab.getActiveLight().getPercentageZ(), lightSpinnerPZ);
+            if (listen)
+            {
+                int validValue = validateSpinner(false,
+                        ligTab.getActiveLight().getPercentageZ(), lightSpinnerPZ);
             
-            ligTab.setActiveLightZ(validValue);
+                ligTab.setActiveLightZ(validValue);
+            }
         });
         lightSpinnerPZ.focusedProperty().addListener(
                 (obster, oldster, newster) ->
