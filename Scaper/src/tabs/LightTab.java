@@ -91,6 +91,8 @@ public class LightTab
             
                 // Add the new light to the array
                 lights[lights.length - 1] = newLight;
+                
+                repositionActiveLight();
             }
             // ...otherwise, if the name given is the same name belonging to
             // another light...
@@ -335,8 +337,18 @@ public class LightTab
     }
     
     /**
-     * Repositions the lights in relation to the mesh. For use for when the
-     * shape of the mesh has changed.
+     * Repositions the active light in relation to the terrain
+     */
+    private void repositionActiveLight()
+    {
+        activeLight.setXPosition(furthest, centerX);
+        activeLight.setYPosition(furthest, centerY);
+        activeLight.setZPosition(furthest, centerZ);
+    }
+    
+    /**
+     * Repositions the lights in relation to the terrain. For use for when the
+     * shape of the terrain has changed.
      */
     public void repositionLights()
     {
