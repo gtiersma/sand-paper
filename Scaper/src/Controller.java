@@ -2011,6 +2011,8 @@ public class Controller
             terTab.getTerrain().setDepth(depth);
             
             updatePopulationsForTerrainSizeChange(false, depth);
+            
+            ligTab.repositionLights();
                 
             terrainTextVRD.setText(Integer.toString(depth));
         }
@@ -2029,6 +2031,8 @@ public class Controller
             terTab.getTerrain().setWidth(width);
             
             updatePopulationsForTerrainSizeChange(true, width);
+            
+            ligTab.repositionLights();
                 
             terrainTextVRW.setText(Integer.toString(width));
         }
