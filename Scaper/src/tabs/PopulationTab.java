@@ -77,7 +77,7 @@ public class PopulationTab
                 Population newPopulation = new Population(
                         DEFAULT_DISPLACEMENT_STRENGTH, terrainWidth,
                         terrainDepth, DEFAULT_VERTEX_WIDTH,
-                        DEFAULT_VERTEX_HEIGHT, name);
+                        DEFAULT_VERTEX_HEIGHT, xRotate, yRotate, name);
             
                 // Create a new array with room for another population
                 Population[] newPopulations
@@ -97,8 +97,7 @@ public class PopulationTab
                 populations[populations.length - 1] = newPopulation;
             
                 // Prepare the new population
-                activePopulation.load(xRotate, yRotate, actionDescription,
-                        terrainPoints);
+                activePopulation.load(actionDescription, terrainPoints);
             }
             // ...otherwise, if the name given already exists...
             else
@@ -418,18 +417,15 @@ public class PopulationTab
      * Recreates all of the populations based upon the new depth of the terrain
      * 
      * @param terrainDepth The depth of the terrain (measured in vertices)
-     * @param xRotate The camera's vertical rotation value
-     * @param yRotate The camera's horizontal rotation value
      * @param terrainPoints The coordinates of the points used in the creation
      *                      of the terrain's mesh
      */
-    public void updateForTerrainDepthChange(int terrainDepth, double xRotate,
-            double yRotate, float[] terrainPoints)
+    public void updateForTerrainDepthChange(int terrainDepth,
+            float[] terrainPoints)
     {
         for (Population population : populations)
         {
-            population.updateForTerrainDepthChange(terrainDepth, xRotate,
-                    yRotate, terrainPoints);
+            population.updateForTerrainDepthChange(terrainDepth, terrainPoints);
         }
     }
     
@@ -437,18 +433,15 @@ public class PopulationTab
      * Recreates all of the populations based upon the new width of the terrain
      * 
      * @param terrainWidth The width of the terrain (measured in vertices)
-     * @param xRotate The camera's vertical rotation value
-     * @param yRotate The camera's horizontal rotation value
      * @param terrainPoints The coordinates of the points used in the creation
      *                      of the terrain's mesh
      */
-    public void updateForTerrainWidthChange(int terrainWidth, double xRotate,
-            double yRotate, float[] terrainPoints)
+    public void updateForTerrainWidthChange(int terrainWidth,
+            float[] terrainPoints)
     {
         for (Population population : populations)
         {
-            population.updateForTerrainWidthChange(terrainWidth, xRotate,
-                    yRotate, terrainPoints);
+            population.updateForTerrainWidthChange(terrainWidth, terrainPoints);
         }
     }
 }

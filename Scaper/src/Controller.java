@@ -755,11 +755,7 @@ public class Controller
         // If action listeners are not to be ignored at the moment...
         if (listen)
         {   
-            // ...get the camera's rotation values.
-            double xRotate = camTab.getXRotate().getAngle();
-            double yRotate = camTab.getYRotate().getAngle();
-            
-            // Get the selected image name from the combo box
+            // ...get the selected image name from the combo box
             String name = populationComboP.getValue().toString();
             
             // Get the image belonging to that name
@@ -768,7 +764,7 @@ public class Controller
             populationImageP.setImage(texster.getImage());
             
             // Set the image as the population's placement determinant
-            popTab.getActivePopulation().setPlacement(xRotate, yRotate,
+            popTab.getActivePopulation().setPlacement(
                     terTab.getTerrain().getPoints(), texster);
         
             refreshPreview();
@@ -1741,14 +1737,10 @@ public class Controller
     @FXML
     protected void regeneratePopulation()
     {
-        // Get the camera's rotation value
-        double xRotate = camTab.getXRotate().getAngle();
-        double yRotate = camTab.getYRotate().getAngle();
-        
         // The title for the progress dialog
         String actionDescription = "Re-generating Population";
         
-        popTab.getActivePopulation().load(xRotate, yRotate, actionDescription,
+        popTab.getActivePopulation().load(actionDescription,
                 terTab.getTerrain().getPoints());
         
         refreshPreview();
@@ -2115,23 +2107,19 @@ public class Controller
     protected void updatePopulationsForTerrainSizeChange(boolean didWidthChange,
             int terrainSize)
     {
-        // Get the camera's rotation value
-        double xRotate = camTab.getXRotate().getAngle();
-        double yRotate = camTab.getYRotate().getAngle();
-        
         // If the terrain's width changed...
         if (didWidthChange)
         {
             // ...update the populations for a width change.
-            popTab.updateForTerrainWidthChange(terrainSize, xRotate, yRotate,
+            popTab.updateForTerrainWidthChange(terrainSize,
                     terTab.getTerrain().getPoints());
         }
         // ...otherwise, the terrain's depth must have changed...
         else
         {
             // ...so update them for a depth change.
-            popTab.updateForTerrainDepthChange(terrainSize, xRotate,
-                    yRotate, terTab.getTerrain().getPoints());
+            popTab.updateForTerrainDepthChange(terrainSize,
+                    terTab.getTerrain().getPoints());
         }
         
         recenterOnTerrain();

@@ -18,9 +18,6 @@ public class Individual extends MeshObject
     private int shiftY;
     private int shiftZ;
     
-    // Necessary in some calculations on the x scale
-    private int xAdjustment;
-    
     // The position of the vertex point on the terrain of where this mesh will
     // be placed
     private double x;
@@ -40,17 +37,17 @@ public class Individual extends MeshObject
      * @param fHeight The height of each face in the mesh when not displaced
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
-     * @param xShift How much the mesh should be shifted on the j scale
-     * @param yShift How much the mesh should be shifted on the i scale
-     * @param zShift How much the mesh should be shifted on the i scale
-     * @param eckster The j position of the vertex point on the terrain of where
+     * @param xShift How much the mesh should be shifted on the x scale
+     * @param yShift How much the mesh should be shifted on the y scale
+     * @param zShift How much the mesh should be shifted on the z scale
+     * @param eckster The x position of the vertex point on the terrain of where
                 this mesh will be placed
-     * @param whyster The i position of the vertex point on the terrain of where
+     * @param whyster The y position of the vertex point on the terrain of where
                 this mesh will be placed
-     * @param xRot How much the camera is rotated on the j scale
-     * @param yRot How much the camera is rotated on the i scale
-     * @param zeester The i position of the vertex point on the terrain of where
+     * @param zeester The z position of the vertex point on the terrain of where
                 this mesh will be placed
+     * @param xRot How much the camera is rotated on the x scale
+     * @param yRot How much the camera is rotated on the y scale
      * @param dister The displacement map
      */
     public Individual(int widthster, int heightster, int fWidth, int fHeight,
@@ -67,9 +64,6 @@ public class Individual extends MeshObject
         x = eckster;
         y = whyster;
         z = zeester;
-        
-        // It is equal to half of the total initial width of the Individual
-        xAdjustment = (widthster * fWidth) / 2;
         
         // Rotational values are made negative to rotate correctly
         xRotate = new Rotate(BASE_X_ROTATION - xRot, Rotate.X_AXIS);
@@ -160,26 +154,6 @@ public class Individual extends MeshObject
     }
     
     /**
-     * Gets the amount this individual is currently set to rotate on the x axis.
-     * 
-     * @return The angle it is set to rotate to on the x axis
-     */
-    public double getRotateX()
-    {
-        return xRotate.getAngle();
-    }
-    
-    /**
-     * Gets the amount this individual is currently set to rotate on the y axis.
-     * 
-     * @return The angle it is set to rotate to on the y axis
-     */
-    public double getRotateY()
-    {
-        return yRotate.getAngle();
-    }
-    
-    /**
      * Loads the data needed to construct the mesh into most of the variables
      * and objects within this Individual object
      */
@@ -239,7 +213,8 @@ public class Individual extends MeshObject
      */
     private void preparePivotPoints()
     {
-        int pivotX = (width * faceWidth) / 2 - xAdjustment;
+        // Formulas to calculate the correct pivot point
+        int pivotX = (width - 4) * (faceWidth / 2);
         int pivotY = (depth * faceDepth) / 2;
         
         xRotate.setPivotY(-pivotY);
@@ -267,7 +242,7 @@ public class Individual extends MeshObject
      */
     private void reposition()
     {
-        repositionX();
+        viewster.setTranslateX(x + shiftX);
         viewster.setTranslateY(y + shiftY);
         viewster.setTranslateZ(z + shiftZ);
     }
@@ -289,20 +264,6 @@ public class Individual extends MeshObject
         z = zeester;
         
         reposition();
-    }
-    
-    /**
-     * Places the mesh at the correct position on the x axis
-     */
-    private void repositionX()
-    {
-        double basePosition = x + shiftX;
-        
-        // Half of the Individuals width. This is subtracted from the
-        // Individual's base position to center the Individual.
-        double centerValue = faceWidth * width / 2;
-        
-        viewster.setTranslateX(basePosition - centerValue + xAdjustment);
     }
     
     /**
@@ -353,7 +314,7 @@ public class Individual extends MeshObject
         super.setWidth(widthster);
         
         preparePivotPoints();
-        repositionX();
+        reposition();
     }
     
     /**

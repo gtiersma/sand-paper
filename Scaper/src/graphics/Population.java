@@ -46,6 +46,11 @@ public class Population
     private int vertexWidth;
     private int vertexHeight;
     
+    // The rotation values that Individuals will use to calculate their Rotate-
+    // related values
+    private double baseRotateX;
+    private double baseRotateY;
+    
     private String name;
     
     // A matrix for each vertex on the Terrain. The array stores whether or not
@@ -89,10 +94,15 @@ public class Population
      * @param terrainDepth The depth of the terrain (Measured in vertices)
      * @param vertWidth The width of each Individual (Measured in vertices)
      * @param vertHeight The height of each Individual (Measured in vertices)
+     * @param rotateX The rotation value that Individuals will use to calculate
+     *                their Rotate-related values on the x axis
+     * @param rotateY The rotation value that Individuals will use to calculate
+     *                their Rotate-related values on the y axis
      * @param namster The name of the population
      */
     public Population(int strength, int terrainWidth, int terrainDepth,
-            int vertWidth, int vertHeight, String namster)
+            int vertWidth, int vertHeight, double rotateX, double rotateY,
+            String namster)
     {
         servicePrepared = false;
         
@@ -102,6 +112,9 @@ public class Population
         
         vertexWidth = vertWidth;
         vertexHeight = vertHeight;
+        
+        baseRotateX = rotateX;
+        baseRotateY = rotateY;
         
         name = namster;
         
@@ -215,8 +228,8 @@ public class Population
      * @param vHeight The height of each Individual (measured in vertices)
      * @param faceWidth The width of each face on the Individual
      * @param faceHeight The height of each face on the Individual
-     * @param xRotate The currently set vertical rotation value
-     * @param yRotate The currently set horizontal rotation value
+     * @param xRotate The currently set base vertical rotation value
+     * @param yRotate The currently set base horizontal rotation value
      * @param terrainPoints The array of point positions used in the creation of
      *                      the terrain
      * @param bumpster The bump map for this population
@@ -268,7 +281,7 @@ public class Population
                 yWidthSpace, widthster);
         Color heightColor = getPixelColor(locationX, locationY, xHeightSpace,
                 yHeightSpace, heightster);
-                    
+        
         Individual newIndividual;
         
         // The values used to determine how far the Individual is to be shifted
@@ -301,12 +314,10 @@ public class Population
     /**
      * (Re)creates all of the Individuals for this population
      * 
-     * @param xRotate The currently set vertical rotation value
-     * @param yRotate The currently set horizontal rotation value
      * @param terrainPoints The positions of each vertex in the terrain
      */
-    private void createIndividuals(double xRotate, double yRotate,
-            String actionDescription, float[] terrainPoints)
+    private void createIndividuals(String actionDescription,
+            float[] terrainPoints)
     {
         // Constants of global variables. These are used in the service instead
         // of the original variables to avoid the possibility their values from
@@ -336,6 +347,9 @@ public class Population
                 TERRAIN_WIDTH);
         final double Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
                 TERRAIN_HEIGHT);
+        
+        final double BASE_ROTATE_X = baseRotateX;
+        final double BASE_ROTATE_Y = baseRotateY;
         
         final TextureObject BUMP = bump;
         final TextureObject SHIFT = shift;
@@ -391,7 +405,8 @@ public class Population
                                                     Y_WIDTH_SPACE,
                                                     X_HEIGHT_SPACE,
                                                     Y_HEIGHT_SPACE,
-                                                    xRotate, yRotate,
+                                                    BASE_ROTATE_X,
+                                                    BASE_ROTATE_Y,
                                                     terrainPoints, BUMP, SHIFT,
                                                     SPECULAR, TEXTURE, WIDTH,
                                                     HEIGHT, DISPLACEMENT_RANGE);
@@ -840,8 +855,27 @@ public class Population
     }
     
     /**
-     * Re-loads this population. Uses the rotation value from an Individual
-     * instead of receiving it as a parameter.
+     * Prepares the population to be used
+     * 
+     * @param actionDescription A description of the change being made to the
+     *                          population. It is used as the progress dialog's
+     *                          title.
+     * @param terrainPoints The point data used to create the terrain's MeshView
+     */
+    public void load(String actionDescription, float[] terrainPoints)
+    {
+        // Remove all Individuals
+        individuals = new Individual[0];
+        
+        calculateLocations();
+                
+        createIndividuals(actionDescription, terrainPoints);
+    }
+    
+    /**
+     * Re-loads this population. This method is used in place of the regular
+     * load method to prevent an exception. As long as the count of Individuals
+     * is not changing, this method should be called in place of "load".
      * 
      * @param actionDescription A description of the change being made to the
      *                          population. It is used as the progress dialog's
@@ -849,38 +883,14 @@ public class Population
      * @param terrainPoints The array of point positions used in the creation of
      *                      the terrain
      */
-    private void load(String actionDescription, float[] terrainPoints)
+    private void reload(String actionDescription, float[] terrainPoints)
     {
         // As long as an Individual exists...
         if (individuals.length > 0)
         {
-            // ...get the first Individual's rotation value.
-            double xRotate = individuals[0].getRotateX();
-            double yRotate = individuals[0].getRotateY();
-        
-            load(xRotate, yRotate, actionDescription, terrainPoints);
+            // ...load the Population.
+            load(actionDescription, terrainPoints);
         }
-    }
-    
-    /**
-     * Prepares the population to be used
-     * 
-     * @param xRotate The camera's set vertical rotation
-     * @param yRotate The camera's set horizontal rotation
-     * @param actionDescription A description of the change being made to the
-     *                          population. It is used as the progress dialog's
-     *                          title.
-     * @param terrainPoints The point data used to create the terrain's MeshView
-     */
-    public void load(double xRotate, double yRotate, String actionDescription,
-            float[] terrainPoints)
-    {
-        // Remove all Individuals
-        individuals = new Individual[0];
-        
-        calculateLocations();
-                
-        createIndividuals(xRotate, yRotate, actionDescription, terrainPoints);
     }
     
     /**
@@ -947,7 +957,7 @@ public class Population
         
         displacementStrength = strength;
         
-        load(actionDescription, terrainPoints);
+        reload(actionDescription, terrainPoints);
     }
     
     /**
@@ -964,7 +974,7 @@ public class Population
         
         displacementRange[0] = dister;
         
-        load(actionDescription, terrainPoints);
+        reload(actionDescription, terrainPoints);
     }
     
     /**
@@ -982,26 +992,23 @@ public class Population
         
         height = heightster;
         
-        load(actionDescription, terrainPoints);
+        reload(actionDescription, terrainPoints);
     }
     
     /**
      * Sets the placement map
      * 
-     * @param xRotate The camera's vertical rotation value
-     * @param yRotate The camera's horizontal rotation value
      * @param terrainPoints The array of coordinates used to position the points
      *                      in the terrain's MeshView
      * @param placster The placement map
      */
-    public void setPlacement(double xRotate, double yRotate,
-            float terrainPoints[], TextureObject placster)
+    public void setPlacement(float terrainPoints[], TextureObject placster)
     {
         String actionDescription = "Positioning Population";
         
         placement = placster;
         
-        load(xRotate, yRotate, actionDescription, terrainPoints);
+        load(actionDescription, terrainPoints);
         
         setTexture(texture);
         setBumpMap(bump);
@@ -1060,6 +1067,8 @@ public class Population
      */
     public void setRotationX(double angle)
     {
+        baseRotateX = angle;
+        
         for (Individual individual : individuals)
         {
             individual.setRotationX(angle);
@@ -1074,6 +1083,8 @@ public class Population
      */
     public void setRotationY(double angle)
     {
+        baseRotateY = angle;
+        
         for (Individual individual : individuals)
         {
             individual.setRotationY(angle);
@@ -1094,7 +1105,7 @@ public class Population
         
         displacementRange[1] = dister;
         
-        load(actionDescription, terrainPoints);
+        reload(actionDescription, terrainPoints);
     }
     
     /**
@@ -1140,7 +1151,7 @@ public class Population
         
         vertexHeight = heightster;
         
-        load(actionDescription, terrainPoints);
+        reload(actionDescription, terrainPoints);
     }
     
     /**
@@ -1156,7 +1167,7 @@ public class Population
         
         vertexWidth = widthster;
         
-        load(actionDescription, terrainPoints);
+        reload(actionDescription, terrainPoints);
     }
     
     /**
@@ -1174,7 +1185,7 @@ public class Population
         
         width = widthster;
         
-        load(actionDescription, terrainPoints);
+        reload(actionDescription, terrainPoints);
     }
     
     /**
@@ -1205,36 +1216,32 @@ public class Population
      * Re-adjusts the population for when the terrain's depth is changed
      * 
      * @param terrainDepth The new depth of the terrain (measured in vertices)
-     * @param xRotate The camera's set vertical rotation
-     * @param yRotate The camera's set horizontal rotation
      * @param terrainPoints The point data used to create the terrain's MeshView
      */
-    public void updateForTerrainDepthChange(int terrainDepth, double xRotate,
-            double yRotate, float[] terrainPoints)
+    public void updateForTerrainDepthChange(int terrainDepth,
+            float[] terrainPoints)
     {
         String actionDescription = "Changing Terrain Depth";
         
         locations = new boolean[locations.length][terrainDepth];
         
-        load(xRotate, yRotate, actionDescription, terrainPoints);
+        reload(actionDescription, terrainPoints);
     }
     
     /**
      * Re-adjusts the population for when the terrain's width is changed
      * 
      * @param terrainWidth The new width of the terrain (measured in vertices)
-     * @param xRotate The camera's set vertical rotation
-     * @param yRotate The camera's set horizontal rotation
      * @param terrainPoints The point data used to create the terrain's MeshView
      */
-    public void updateForTerrainWidthChange(int terrainWidth, double xRotate,
-            double yRotate, float[] terrainPoints)
+    public void updateForTerrainWidthChange(int terrainWidth,
+            float[] terrainPoints)
     {
         String actionDescription = "Changing Terrain Width";
         
         locations = new boolean[terrainWidth][locations[0].length];
         
-        load(xRotate, yRotate, actionDescription, terrainPoints);
+        reload(actionDescription, terrainPoints);
     }
     
     /**
