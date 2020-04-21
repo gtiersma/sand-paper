@@ -304,20 +304,6 @@ public class Individual extends MeshObject
     }
     
     /**
-     * Sets how wide each face on the Individual should be
-     * 
-     * @param widthster How wide each face on the Individual should be
-     */
-    @Override
-    public void setWidth(int widthster)
-    {
-        super.setWidth(widthster);
-        
-        preparePivotPoints();
-        reposition();
-    }
-    
-    /**
      * Gets a string representation of all of the variables in this Individual
      * 
      * @return A string representation of all of the variables in this
