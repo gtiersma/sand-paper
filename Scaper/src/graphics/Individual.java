@@ -18,6 +18,11 @@ public class Individual extends MeshObject
     private int shiftY;
     private int shiftZ;
     
+    // Half of the displacement strength. The Individual's default position is
+    // in the middle of the displacement strength spectrum, so this value is
+    // commonly needed in calculations.
+    private float halfStrength;
+    
     // The position of the vertex point on the terrain of where this mesh will
     // be placed
     private double x;
@@ -60,6 +65,8 @@ public class Individual extends MeshObject
         shiftX = xShift;
         shiftY = yShift;
         shiftZ = zShift;
+        
+        halfStrength = displacementStrength / 2;
         
         x = eckster;
         y = whyster;
@@ -154,6 +161,25 @@ public class Individual extends MeshObject
     }
     
     /**
+     * Gets half of the Individual's width (measured in faces)
+     * 
+     * @return Half of the Individual's width (measured in faces)
+     */
+    private double getHalfFaceWidth()
+    {
+        double halfFaceWidth = width / 2;
+        
+        // If the vertex width is even...
+        if (width % 2 == 0)
+        {
+            // ...0.5 will need to be subtracted from it for it to be accurate.
+            halfFaceWidth = halfFaceWidth - 0.5;
+        }
+        
+        return halfFaceWidth;
+    }
+    
+    /**
      * Loads the data needed to construct the mesh into most of the variables
      * and objects within this Individual object
      */
@@ -209,18 +235,22 @@ public class Individual extends MeshObject
     }
     
     /**
-     * Calculates the positions for the Individual to pivot around
+     * Calculates the positions for the Individual to pivot on
      */
     private void preparePivotPoints()
     {
-        // Formulas to calculate the correct pivot point
-        int pivotX = (width - 4) * (faceWidth / 2);
-        int pivotY = (depth * faceDepth) / 2;
+        double halfFaceWidth = getHalfFaceWidth();
         
-        xRotate.setPivotY(-pivotY);
-        xRotate.setPivotZ(faceDepth);
+        // Formula to calculate the correct pivot point on the x axis
+        double pivotX = faceWidth * halfFaceWidth - halfStrength;
+        
+        xRotate.setPivotX(pivotX);
+        xRotate.setPivotY(-halfStrength);
+        xRotate.setPivotZ(-halfStrength);
         
         yRotate.setPivotX(pivotX);
+        yRotate.setPivotY(-halfStrength);
+        yRotate.setPivotZ(-halfStrength);
     }
     
     /**
@@ -242,9 +272,14 @@ public class Individual extends MeshObject
      */
     private void reposition()
     {
-        viewster.setTranslateX(x + shiftX);
-        viewster.setTranslateY(y + shiftY);
-        viewster.setTranslateZ(z + shiftZ);
+        // Half the width of the Individual. This must be subtracted from the x
+        // position to ensure that the center of the Individual stays at the
+        // same position regardless of how wide it is.
+        double halfWidth = getHalfFaceWidth() * faceWidth;
+        
+        viewster.setTranslateX(x + shiftX + halfStrength - halfWidth);
+        viewster.setTranslateY(y + shiftY + halfStrength);
+        viewster.setTranslateZ(z + shiftZ + halfStrength);
     }
     
     /**
