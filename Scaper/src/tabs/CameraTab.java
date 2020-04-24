@@ -10,37 +10,37 @@ import javafx.scene.transform.Rotate;
  */
 public class CameraTab
 {
-    final private double DEFAULT_HORIZONTAL_ANGLE = 0;
-    final private double DEFAULT_VERTICAL_ANGLE = 45;
-    final private double DEFAULT_ZOOM = 0;
+    final private int DEFAULT_HORIZONTAL_ANGLE = 0;
+    final private int DEFAULT_VERTICAL_ANGLE = 45;
+    final private int DEFAULT_ZOOM = 0;
     final private double DEFAULT_FIELD_OF_VIEW = 30;
     
     final private double NEAR_CLIP = 0.1;
     final private double FAR_CLIP = Double.MAX_VALUE;
     
     // The position central to the mesh
-    private double originX;
-    private double originY;
-    private double originZ;
+    private int originX;
+    private int originY;
+    private int originZ;
     
     // How far the camera's position should be adjusted to center the mesh
-    private double xOffset;
-    private double yOffset;
+    private int xOffset;
+    private int yOffset;
     
     // User-defined amounts to adjust the camera's position
-    private double xAdjustment;
-    private double yAdjustment;
+    private int xAdjustment;
+    private int yAdjustment;
     
     // The angle to which the mesh should be rotating (simulating the effect of
     // the camera orbiting and being rotated around the mesh)
-    private double horizontalAngle;
-    private double verticalAngle;
+    private short horizontalAngle;
+    private short verticalAngle;
     
     // The farthest distance a point is from the mesh center
-    private double furthest;
+    private int furthest;
     
     // How far the camera should be zoomed in or out
-    private double zoom;
+    private int zoom;
     
     // The camera
     private PerspectiveCamera camster;
@@ -224,7 +224,7 @@ public class CameraTab
      * @param y How far the camera should be adjusted on the y scale to center
      *          the mesh
      */
-    public void setCameraOffset(double x, double y)
+    public void setCameraOffset(int x, int y)
     {
         // Making these values negative allows for a positive parameter given in
         // this function to move the camera in the correct direction
@@ -250,7 +250,7 @@ public class CameraTab
      * @param distance The greatest distance a point on the mesh is from the
      *                 center of the mesh
      */
-    public void setFurthestPoint(double distance)
+    public void setFurthestPoint(int distance)
     {
         furthest = distance;
         
@@ -263,7 +263,7 @@ public class CameraTab
      * 
      * @param angle How far the mesh should be rotated
      */
-    public void setHorizontalAngle(double angle)
+    public void setHorizontalAngle(short angle)
     {
         horizontalAngle = angle;
         
@@ -290,7 +290,7 @@ public class CameraTab
      * @param y Where the camera should focus on the y axis
      * @param z Where the camera should focus on the z axis
      */
-    public void setOrigin(double x, double y, double z)
+    public void setOrigin(int x, int y, int z)
     {        
         originX = x;
         originY = y;
@@ -307,7 +307,7 @@ public class CameraTab
      * 
      * @param angle How far the mesh should be rotated
      */
-    public void setVerticalAngle(double angle)
+    public void setVerticalAngle(short angle)
     {
         verticalAngle = angle;
         
@@ -321,7 +321,7 @@ public class CameraTab
      * 
      * @param adjustment How far to shift the camera on the x axis
      */
-    public void setXAdjustment(double adjustment)
+    public void setXAdjustment(int adjustment)
     {
         xAdjustment = adjustment;
         
@@ -335,7 +335,7 @@ public class CameraTab
      * 
      * @param adjustment How far to shift the camera on the y axis
      */
-    public void setYAdjustment(double adjustment)
+    public void setYAdjustment(int adjustment)
     {
         yAdjustment = adjustment;
         
@@ -348,22 +348,9 @@ public class CameraTab
      * @param zoomster How far to zoom the camera in. A negative value will zoom
      * the camera out
      */
-    public void setZoom(double zoomster)
+    public void setZoom(int zoomster)
     {
         zoom = zoomster;
-        
-        refreshZoom();
-    }
-    
-    /**
-     * Zooms the camera either in or out
-     * 
-     * @param zoomster How far to zoom the camera in. A negative value will zoom
-     * the camera out
-     */
-    public void setZoom(String zoomster)
-    {
-        this.zoom = Double.parseDouble(zoomster);
         
         refreshZoom();
     }

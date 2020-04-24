@@ -312,8 +312,8 @@ public class Controller
         {
             if (listen)
             {
-                camTab.setHorizontalAngle(newster.doubleValue());
-                popTab.setRotationY(newster.doubleValue());
+                camTab.setHorizontalAngle(newster.shortValue());
+                popTab.setRotationY(newster.shortValue());
         
                 refreshPreview();
             }
@@ -323,8 +323,8 @@ public class Controller
         {
             if (listen)
             {
-                camTab.setVerticalAngle(newster.doubleValue());
-                popTab.setRotationX(newster.doubleValue());
+                camTab.setVerticalAngle(newster.shortValue());
+                popTab.setRotationX(newster.shortValue());
         
                 refreshPreview();
             }
@@ -1638,19 +1638,19 @@ public class Controller
     protected void recenterOnTerrain()
     {
         // Estimation of the center point of the terrain
-        double terrainCenterX;
-        double terrainCenterY;
-        double terrainCenterZ;
+        int terrainCenterX;
+        int terrainCenterY;
+        int terrainCenterZ;
         
         // The greatest distance of a point from the terrain's center
-        double terrainFarPoint;
+        int terrainFarPoint;
             
         Terrain terster = terTab.getTerrain();
         
-        terrainCenterX = terster.getCenter('x');
-        terrainCenterY = terster.getCenter('y');
-        terrainCenterZ = terster.getCenter('z');
-        terrainFarPoint = terster.getFurthestPoint();
+        terrainCenterX = (int)terster.getCenter('x');
+        terrainCenterY = (int)terster.getCenter('y');
+        terrainCenterZ = (int)terster.getCenter('z');
+        terrainFarPoint = (int)terster.getFurthestPoint();
         
         // Re-center the camera
         camTab.setOrigin(terrainCenterX, terrainCenterY, terrainCenterZ);
