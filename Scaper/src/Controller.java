@@ -1786,6 +1786,9 @@ public class Controller
             // ...stop listening to action events.
             listen = false;
             
+            // The index of the first image in each texture flow pane
+            final int FIRST_IMAGE_INDEX = 1;
+            
             // Reset all of the variables in the tab objects
             texTab = new TextureTab();
             terTab = new TerrainTab();
@@ -1805,14 +1808,13 @@ public class Controller
             terrainComboSM.setValue("");
             
             // Remove all imported textures
-            for (int i = 1; i < texturesFlowC.getChildren().size(); i++)
+            while (texturesFlowC.getChildren().size() > FIRST_IMAGE_INDEX)
             {
-                texturesFlowC.getChildren().remove(i);
+                texturesFlowC.getChildren().remove(FIRST_IMAGE_INDEX);
             }
-            
-            for (int i = 1; i < texturesFlowG.getChildren().size(); i++)
+            while (texturesFlowG.getChildren().size() > FIRST_IMAGE_INDEX)
             {
-                texturesFlowG.getChildren().remove(i);
+                texturesFlowG.getChildren().remove(FIRST_IMAGE_INDEX);
             }
             
             terrainImageDM.setImage(null);
