@@ -76,8 +76,8 @@ public class MeshObject
     // The view containing the mesh
     protected MeshView viewster;
     
-    // The x & y matrix of the color data for each pixel in the displacement
-    // map. It is used to shift the relative position of each vertex.
+    // The x & y matrix of the color data for each vertex taken from the
+    // displacement map
     protected Color[][] vertexRelatives;
     
     /**
@@ -126,9 +126,8 @@ public class MeshObject
         
         viewster = new MeshView(meshster);
         
-        // Make the array big enough to hold the color data for each pixel
-        vertexRelatives = new Color[(int)displacement.getWidth()]
-                [(int)displacement.getHeight()];
+        // Make the array big enough to hold the color data for each vertex
+        vertexRelatives = new Color[width][depth];
     }
     
     /**
@@ -163,20 +162,30 @@ public class MeshObject
     {
         PixelReader readster = displacement.getPixelReader();
         
+        // The distance of pixels between each pixel to be gathered.
+        int xSpacing = (int)(displacement.getWidth() / width);
+        int ySpacing = (int)(displacement.getHeight() / depth);
+        
         // For each column of pixels...
-        for (int i = 0; i < displacement.getWidth(); i++)
+        for (short i = 0; i < width; i++)
         {
             // ...and for each row of pixels...
-            for (int j = 0; j < displacement.getHeight(); j++)
+            for (short j = 0; j < depth; j++)
             {
                 // Values in each row need to be put into the array backwards to
                 // prevent the displacement map from being flipped horizontally
                 // when applied to the mesh, so this "new j" is used instead of
                 // the regular "j" variable.
-                int newJ = (int)displacement.getHeight() - j - 1;
+                int newJ = depth - j - 1;
                 
-                // ...get the correct color.
-                vertexRelatives[i][newJ] = readster.getColor(i, j);
+                // Calculate the x and y position of the pixel in the map to be
+                // gathered for this vertex
+                int xPosition = xSpacing * i;
+                int yPosition = ySpacing * j;
+                
+                // Get the correct color
+                vertexRelatives[i][newJ] = readster.getColor(xPosition,
+                        yPosition);
             }
         }
     }
@@ -254,25 +263,17 @@ public class MeshObject
             // ...and for each row of vertices...
             for (short x = 0; x < width; x++)
             {
-                // Calculate the row and column of the pixel that should be
-                // retrieved for this particular vertex
-                int pixelRow = widthPixels * x;
-                int pixelColumn = heightPixels * z;
-                
                 // Thread for finding the x position of the vertex
                 Callable<Integer> xThread = new VertexThread(faceWidth, x,
-                        displacementStrength, 'x',
-                        vertexRelatives[pixelRow][pixelColumn]);
+                        displacementStrength, 'x', vertexRelatives[x][z]);
                 
                 // Thread for finding the y position of the vertex
                 Callable<Integer> yThread = new VertexThread(0, 0,
-                        displacementStrength, 'y',
-                        vertexRelatives[pixelRow][pixelColumn]);
+                        displacementStrength, 'y', vertexRelatives[x][z]);
                 
                 // Thread for finding the z position of the vertex
                 Callable<Integer> zThread = new VertexThread(faceDepth, z,
-                        displacementStrength, 'z',
-                        vertexRelatives[pixelRow][pixelColumn]);
+                        displacementStrength, 'z', vertexRelatives[x][z]);
                 
                 // Get the calculations as they become available
                 Future<Integer> xFuture = exster.submit(xThread);
@@ -380,6 +381,7 @@ public class MeshObject
         faces = new int[facesAmount * INTS_PER_FACE];
         points = new float[width * depth * DIMENSIONS];
         texturePositions = new float[width * depth * 2];
+        vertexRelatives = new Color[width][depth];
         
         loadDisplacementPixels();
         loadTexturePositions();
@@ -400,8 +402,7 @@ public class MeshObject
         // displacement map in their calculations
         widthPixels = (int)(displacement.getWidth() / width);
         heightPixels = (int)(displacement.getHeight() / depth);
-        vertexRelatives = new Color[(int)displacement.getWidth()]
-                [(int)displacement.getHeight()];
+        vertexRelatives = new Color[width][depth];
         
         loadDisplacementPixels();
         loadPoints();
@@ -461,6 +462,7 @@ public class MeshObject
         points = new float[width * depth * DIMENSIONS];
         texturePositions = new float[width * depth * 2];
         faces = new int[facesAmount * INTS_PER_FACE];
+        vertexRelatives = new Color[width][depth];
         
         loadDisplacementPixels();
         loadTexturePositions();

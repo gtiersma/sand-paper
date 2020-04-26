@@ -106,11 +106,6 @@ public class Individual extends MeshObject
         // The position of the vertex if no displacement map was applied
         int originalPosition;
         
-        // Calculate the row and column of the pixel that should be retrieved
-        // for this particular vertex
-        int pixelRow = widthPixels * vertexX;
-        int pixelColumn = heightPixels * vertexZ;
-        
         // The new position of the vertex
         int vertexPosition = 0;
         
@@ -121,7 +116,7 @@ public class Individual extends MeshObject
                 
                 // ...get the red amount in the correct pixel.
                 double redAmount
-                        = vertexRelatives[pixelRow][pixelColumn].getRed();
+                        = vertexRelatives[vertexX][vertexZ].getRed();
                 
                 originalPosition = vertexX * faceWidth;
                 
@@ -138,7 +133,7 @@ public class Individual extends MeshObject
                 
                 // ...get the green amount in the correct pixel.
                 double greenAmount
-                        = vertexRelatives[pixelRow][pixelColumn].getGreen();
+                        = vertexRelatives[vertexX][vertexZ].getGreen();
                 
                 vertexPosition = (int)((greenAmount - MIDDLE_COLOR)
                         * -displacementStrength);
@@ -150,7 +145,7 @@ public class Individual extends MeshObject
                 
                 // ...get the blue amount in the correct pixel.
                 double blueAmount
-                        = vertexRelatives[pixelRow][pixelColumn].getBlue();
+                        = vertexRelatives[vertexX][vertexZ].getBlue();
                 
                 originalPosition = vertexZ * faceDepth;
                 
