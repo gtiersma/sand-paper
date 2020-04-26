@@ -1797,6 +1797,7 @@ public class Controller
             ligTab = new LightTab();
             popTab = new PopulationTab();
             
+            // Remove combo box choices
             terrainComboDM.setItems(null);
             terrainComboT.setItems(null);
             terrainComboBM.setItems(null);
@@ -1811,6 +1812,7 @@ public class Controller
             populationComboBM.setItems(null);
             populationComboSM.setItems(null);
             
+            // Empty combo boxes
             terrainComboDM.setValue("");
             terrainComboT.setValue("");
             terrainComboBM.setValue("");
@@ -1826,16 +1828,19 @@ public class Controller
                 texturesFlowG.getChildren().remove(FIRST_IMAGE_INDEX);
             }
             
+            // Remove image previews
             terrainImageDM.setImage(null);
             terrainImageT.setImage(null);
             terrainImageBM.setImage(null);
             terrainImageSM.setImage(null);
             
+            // Reset sliders
             terrainSliderDMS.setValue(terTab.getDefaultStrength());
             cameraSliderAH.setValue(camTab.getDefaultHorizontalAngle());
             cameraSliderAV.setValue(camTab.getDefaultVerticalAngle());
             cameraSliderFOVD.setValue(camTab.getDefaultField());
             
+            // Reset spinner settings
             renderSpinnerRW.getValueFactory().setValue(
                     renTab.getDefaultWidth());
             renderSpinnerRH.getValueFactory().setValue(
@@ -1844,8 +1849,18 @@ public class Controller
             cameraSpinnerPAV.getValueFactory().setValue(0);
             cameraSpinnerPAZ.getValueFactory().setValue(0);
             
+            // Reset spinner text
+            renderSpinnerRW.getEditor().textProperty().setValue(
+                    String.valueOf(renTab.getDefaultWidth()));
+            renderSpinnerRH.getEditor().textProperty().setValue(
+                    String.valueOf(renTab.getDefaultHeight()));
+            cameraSpinnerPAH.getEditor().textProperty().setValue("0");
+            cameraSpinnerPAV.getEditor().textProperty().setValue("0");
+            cameraSpinnerPAZ.getEditor().textProperty().setValue("0");
+            
             cameraRadioFOVH.setSelected(true);
             
+            // Reset text field text
             terrainTextVRD.setText(Integer.toString(terTab.getDefaultSize()));
             terrainTextVRW.setText(Integer.toString(terTab.getDefaultSize()));
             
