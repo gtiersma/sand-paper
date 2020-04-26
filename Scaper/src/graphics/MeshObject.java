@@ -23,38 +23,38 @@ import javafx.scene.shape.TriangleMesh;
  */
 public class MeshObject
 {
+    // The number of dimensions
+    protected final byte DIMENSIONS = 3;
     // The number of integers in the face array that are needed to define each
     // face
-    protected final int INTS_PER_FACE = 6;
-    // The number of dimensions
-    protected final int DIMENSIONS = 3;
+    protected final byte INTS_PER_FACE = 6;
     
     // Multiplied to the user-defined displacement strength variable to increase
     // distance between vertices
-    protected final float DISPLACEMENT_MULTIPLIER = 10;
+    protected final int DISPLACEMENT_MULTIPLIER = 10;
+    
+    // The size of each side of each face on the mesh when the mesh is not
+    // displaced
+    protected short faceWidth;
+    protected short faceDepth;
     
     // The width of the mesh in vertices
-    protected int width;
+    protected short width;
     // The depth of the mesh in vertices
-    protected int depth;
+    protected short depth;
+    
+    // The multiplier for the displacement map strength that is set by the user
+    protected int displacementStrength;
     
     // The number of faces in the mesh
     protected int facesAmount;
     
-    // The size of each side of each face on the mesh when the mesh is not
-    // displaced
-    protected int faceWidth;
-    protected int faceDepth;
-    
-    // The multiplier for the displacement map strength that is set by the user
-    protected float displacementStrength;
-    
     // The distance on the x scale in number of pixels in the displacement map
     // that one vertex would retrieve from that of an adjacent vertex.
-    protected double widthPixels;
+    protected int widthPixels;
     // The distance on the y scale in number of pixels in the displacement map
     // that one vertex would retrieve from that of an adjacent vertex.
-    protected double heightPixels;
+    protected int heightPixels;
     
     // Face data
     protected int[] faces;
@@ -83,25 +83,25 @@ public class MeshObject
     /**
      * CONSTRUCTOR
      * 
-     * @param widthster The width of the mesh in vertices
-     * @param depthster The depth of the mesh in vertices
      * @param fWidth The width of each face on the mesh when the mesh is not
      *               displaced
      * @param fDepth The depth of each face on the mesh when the mesh is not
      *                displaced
+     * @param widthster The width of the mesh in vertices
+     * @param depthster The depth of the mesh in vertices
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
      * @param dister The displacement map
      */
-    public MeshObject(int widthster, int depthster, int fWidth, int fDepth,
-            int strengthster, Image dister)
+    public MeshObject(short fWidth, short fDepth, short widthster,
+            short depthster, int strengthster, Image dister)
     {
         width = widthster;
         depth = depthster;
         displacementStrength = strengthster * DISPLACEMENT_MULTIPLIER;
         
         // Calculate number of faces
-        facesAmount = ((width - 1) * (depth - 1) * 2);
+        facesAmount = (width - 1) * (depth - 1) * 2;
         
         faceWidth = fWidth;
         faceDepth = fDepth;
@@ -117,8 +117,8 @@ public class MeshObject
         
         displacement = dister;
         
-        widthPixels = displacement.getWidth() / width;
-        heightPixels = displacement.getHeight() / depth;
+        widthPixels = (int)(displacement.getWidth() / width);
+        heightPixels = (int)(displacement.getHeight() / depth);
         
         texture = new PhongMaterial();
         
@@ -243,41 +243,41 @@ public class MeshObject
     public void loadPoints()
     {
         // Arraylist of objects that will retrieve the values of the threads
-        List<Future<Float>> threadResults = new ArrayList<>();
+        List<Future<Integer>> threadResults = new ArrayList<>();
         
         // Pool of threads for calculating the positions of the vertices
         ExecutorService exster = Executors.newCachedThreadPool();
         
         // For each column of vertices in the mesh...
-        for (int z = 0; z < depth; z++)
+        for (short z = 0; z < depth; z++)
         {
             // ...and for each row of vertices...
-            for (int x = 0; x < width; x++)
+            for (short x = 0; x < width; x++)
             {
                 // Calculate the row and column of the pixel that should be
                 // retrieved for this particular vertex
-                int pixelRow = (int)(widthPixels * x);
-                int pixelColumn = (int)(heightPixels * z);
+                int pixelRow = widthPixels * x;
+                int pixelColumn = heightPixels * z;
                 
                 // Thread for finding the x position of the vertex
-                Callable<Float> xThread = new VertexThread(faceWidth, x,
+                Callable<Integer> xThread = new VertexThread(faceWidth, x,
                         displacementStrength, 'x',
                         vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Thread for finding the y position of the vertex
-                Callable<Float> yThread = new VertexThread(0, 0,
+                Callable<Integer> yThread = new VertexThread(0, 0,
                         displacementStrength, 'y',
                         vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Thread for finding the z position of the vertex
-                Callable<Float> zThread = new VertexThread(faceDepth, z,
+                Callable<Integer> zThread = new VertexThread(faceDepth, z,
                         displacementStrength, 'z',
                         vertexRelatives[pixelRow][pixelColumn]);
                 
                 // Get the calculations as they become available
-                Future<Float> xFuture = exster.submit(xThread);
-                Future<Float> yFuture = exster.submit(yThread);
-                Future<Float> zFuture = exster.submit(zThread);
+                Future<Integer> xFuture = exster.submit(xThread);
+                Future<Integer> yFuture = exster.submit(yThread);
+                Future<Integer> zFuture = exster.submit(zThread);
                 
                 // Add them to the arraylists
                 threadResults.add(xFuture);
@@ -292,7 +292,7 @@ public class MeshObject
         // Incremation variable
         int i = 0;
         // For each calculation...
-        for (Future<Float> vertexResult : threadResults)
+        for (Future<Integer> vertexResult : threadResults)
         {
             try
             {
@@ -326,7 +326,7 @@ public class MeshObject
         float faceSizeU = (float)(1.0 / (width - 1));
         float faceSizeV = (float)(1.0 / (depth - 1));
         
-        // An incrementor for the array element
+        // An incrementor for the array
         int i = 0;
         
         // For each row in reverse order... (reverse order prevents the maps
@@ -368,18 +368,18 @@ public class MeshObject
      * 
      * @param depthster The depth of the mesh in vertices
      */
-    public void setDepth(int depthster)
+    public void setDepth(short depthster)
     {
         depth = depthster;
         
         // Re-initialize and re-calculate the variables that rely on the mesh's
         // depth in their calculations
         facesAmount = ((width - 1) * 2) * (depth - 1);
-        widthPixels = displacement.getWidth() / width;
-        heightPixels = displacement.getHeight() / depth;
+        widthPixels = (int)(displacement.getWidth() / width);
+        heightPixels = (int)(displacement.getHeight() / depth);
+        faces = new int[facesAmount * INTS_PER_FACE];
         points = new float[width * depth * DIMENSIONS];
         texturePositions = new float[width * depth * 2];
-        faces = new int[facesAmount * INTS_PER_FACE];
         
         loadDisplacementPixels();
         loadTexturePositions();
@@ -398,8 +398,8 @@ public class MeshObject
         
         // Re-initialize and re-calculate the variables that rely on the mesh's
         // displacement map in their calculations
-        widthPixels = displacement.getWidth() / width;
-        heightPixels = displacement.getHeight() / depth;
+        widthPixels = (int)(displacement.getWidth() / width);
+        heightPixels = (int)(displacement.getHeight() / depth);
         vertexRelatives = new Color[(int)displacement.getWidth()]
                 [(int)displacement.getHeight()];
         
@@ -413,7 +413,7 @@ public class MeshObject
      * 
      * @param strengthster The strength of the displacement map
      */
-    public void setDisplacementStrength(float strengthster)
+    public void setDisplacementStrength(int strengthster)
     {
         displacementStrength = strengthster * DISPLACEMENT_MULTIPLIER;
         
@@ -449,15 +449,15 @@ public class MeshObject
      * 
      * @param widthster The width of the mesh in vertices
      */
-    public void setWidth(int widthster)
+    public void setWidth(short widthster)
     {
         width = widthster;
         
         // Re-initialize and re-calculate the variables that rely on the mesh's
         // width in their calculations
         facesAmount = ((width - 1) * 2) * (depth - 1);
-        widthPixels = displacement.getWidth() / width;
-        heightPixels = displacement.getHeight() / depth;
+        widthPixels = (int)(displacement.getWidth() / width);
+        heightPixels = (int)(displacement.getHeight() / depth);
         points = new float[width * depth * DIMENSIONS];
         texturePositions = new float[width * depth * 2];
         faces = new int[facesAmount * INTS_PER_FACE];

@@ -10,13 +10,19 @@ import javafx.scene.transform.Rotate;
  */
 public class CameraTab
 {
+    final private byte DEFAULT_FIELD_OF_VIEW = 30;
+    
     final private int DEFAULT_HORIZONTAL_ANGLE = 0;
     final private int DEFAULT_VERTICAL_ANGLE = 45;
     final private int DEFAULT_ZOOM = 0;
-    final private double DEFAULT_FIELD_OF_VIEW = 30;
     
     final private double NEAR_CLIP = 0.1;
     final private double FAR_CLIP = Double.MAX_VALUE;
+    
+    // The angle to which the mesh should be rotating (simulating the effect of
+    // the camera orbiting and being rotated around the mesh)
+    private short horizontalAngle;
+    private short verticalAngle;
     
     // The position central to the mesh
     private int originX;
@@ -30,11 +36,6 @@ public class CameraTab
     // User-defined amounts to adjust the camera's position
     private int xAdjustment;
     private int yAdjustment;
-    
-    // The angle to which the mesh should be rotating (simulating the effect of
-    // the camera orbiting and being rotated around the mesh)
-    private short horizontalAngle;
-    private short verticalAngle;
     
     // The farthest distance a point is from the mesh center
     private int furthest;
@@ -58,12 +59,12 @@ public class CameraTab
      */
     public CameraTab()
     {
+        horizontalAngle = DEFAULT_HORIZONTAL_ANGLE;
+        verticalAngle = DEFAULT_VERTICAL_ANGLE;
+        
         originX = 0;
         originY = 0;
         originZ = 0;
-        
-        horizontalAngle = DEFAULT_HORIZONTAL_ANGLE;
-        verticalAngle = DEFAULT_VERTICAL_ANGLE;
         
         zoom = DEFAULT_ZOOM;
         
@@ -239,7 +240,7 @@ public class CameraTab
      * 
      * @param degrees The angle of the field of view
      */
-    public void setFieldOfView(double degrees)
+    public void setFieldOfView(byte degrees)
     {
         camster.setFieldOfView(degrees);
     }

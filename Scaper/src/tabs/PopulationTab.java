@@ -16,10 +16,10 @@ import javafx.stage.Stage;
  */
 public class PopulationTab
 {
-    final private int DEFAULT_DISPLACEMENT_STRENGTH = 5;
+    final private short DEFAULT_VERTEX_WIDTH = 5;
+    final private short DEFAULT_VERTEX_HEIGHT = 5;
     
-    final private int DEFAULT_VERTEX_WIDTH = 5;
-    final private int DEFAULT_VERTEX_HEIGHT = 5;
+    final private int DEFAULT_DISPLACEMENT_STRENGTH = 5;
     
     final Image BLANK_IMAGE = new Image("graphics/blank.png");
     
@@ -53,8 +53,8 @@ public class PopulationTab
      * @return The name of the newly created population. If the user canceled
      *         the population creation, then a blank string is returned.
      */
-    public String createPopulation(int terrainWidth, int terrainDepth,
-            double xRotate, double yRotate, float[] terrainPoints)
+    public String createPopulation(short terrainWidth, short terrainDepth,
+            short xRotate, short yRotate, float[] terrainPoints)
     {
         String name = "";
         
@@ -74,10 +74,10 @@ public class PopulationTab
                 String actionDescription = "Creating Population";
                 
                 // Create a new population.
-                Population newPopulation = new Population(
-                        DEFAULT_DISPLACEMENT_STRENGTH, terrainWidth,
-                        terrainDepth, DEFAULT_VERTEX_WIDTH,
-                        DEFAULT_VERTEX_HEIGHT, xRotate, yRotate, name);
+                Population newPopulation = new Population(xRotate, yRotate,
+                        terrainWidth, terrainDepth, DEFAULT_VERTEX_WIDTH,
+                        DEFAULT_VERTEX_HEIGHT, DEFAULT_DISPLACEMENT_STRENGTH, 
+                        name);
             
                 // Create a new array with room for another population
                 Population[] newPopulations
@@ -365,7 +365,7 @@ public class PopulationTab
      * 
      * @param angle The camera's vertical rotation value
      */
-    public void setRotationX(double angle)
+    public void setRotationX(short angle)
     {
         for (Population population : populations)
         {
@@ -378,7 +378,7 @@ public class PopulationTab
      * 
      * @param angle The camera's horizontal rotation value
      */
-    public void setRotationY(double angle)
+    public void setRotationY(short angle)
     {
         for (Population population : populations)
         {
@@ -420,7 +420,7 @@ public class PopulationTab
      * @param terrainPoints The coordinates of the points used in the creation
      *                      of the terrain's mesh
      */
-    public void updateForTerrainDepthChange(int terrainDepth,
+    public void updateForTerrainDepthChange(short terrainDepth,
             float[] terrainPoints)
     {
         for (Population population : populations)
@@ -436,7 +436,7 @@ public class PopulationTab
      * @param terrainPoints The coordinates of the points used in the creation
      *                      of the terrain's mesh
      */
-    public void updateForTerrainWidthChange(int terrainWidth,
+    public void updateForTerrainWidthChange(short terrainWidth,
             float[] terrainPoints)
     {
         for (Population population : populations)

@@ -18,13 +18,14 @@ import javafx.scene.paint.Color;
  */
 public class Population
 {
-    // Divides the width and height values to keep Individuals from being too
-    // large
-    private final int SIZE_DIVIDER = 3;
-    
     // A value used in calculations to get the correct value for the brightness
     // of a pixel
-    private final double COLOR_ADJUSTMENT = 100;
+    private final byte COLOR_ADJUSTMENT = 100;
+    private final byte THREE_DIMENSIONS = 3;
+    
+    // Divides the width and height values to keep Individuals from being too
+    // large
+    private final short SIZE_DIVIDER = 3;
     
     // Default textures to use for when no maps have been selected by the user
     private final TextureObject GRAY_TEXTURE
@@ -34,22 +35,22 @@ public class Population
     // Whether or not the service is ready to be used
     private boolean servicePrepared;
     
+    // The rotation values that Individuals will use to calculate their Rotate-
+    // related values
+    private short baseRotateX;
+    private short baseRotateY;
+    
+    // The width and height of each Individual (measured in the number of
+    // vertices)
+    private short vertexWidth;
+    private short vertexHeight;
+    
     // The number of Individuals that this Population consists of
     private int size;
     
     // A multiplier of how much the vertices on an Individual are to be
     // displaced
     private int displacementStrength;
-    
-    // The width and height of each Individual (measured in the number of
-    // vertices)
-    private int vertexWidth;
-    private int vertexHeight;
-    
-    // The rotation values that Individuals will use to calculate their Rotate-
-    // related values
-    private double baseRotateX;
-    private double baseRotateY;
     
     private String name;
     
@@ -89,19 +90,19 @@ public class Population
     /**
      * CONSTRUCTOR
      * 
-     * @param strength The strength of the displacement map
-     * @param terrainWidth The width of the terrain (Measured in vertices)
-     * @param terrainDepth The depth of the terrain (Measured in vertices)
-     * @param vertWidth The width of each Individual (Measured in vertices)
-     * @param vertHeight The height of each Individual (Measured in vertices)
      * @param rotateX The rotation value that Individuals will use to calculate
      *                their Rotate-related values on the x axis
      * @param rotateY The rotation value that Individuals will use to calculate
      *                their Rotate-related values on the y axis
+     * @param terrainWidth The width of the terrain (Measured in vertices)
+     * @param terrainDepth The depth of the terrain (Measured in vertices)
+     * @param vertWidth The width of each Individual (Measured in vertices)
+     * @param vertHeight The height of each Individual (Measured in vertices)
+     * @param strength The strength of the displacement map
      * @param namster The name of the population
      */
-    public Population(int strength, int terrainWidth, int terrainDepth,
-            int vertWidth, int vertHeight, double rotateX, double rotateY,
+    public Population(short rotateX, short rotateY, short terrainWidth,
+            short terrainDepth, short vertWidth, short vertHeight, int strength, 
             String namster)
     {
         servicePrepared = false;
@@ -154,10 +155,10 @@ public class Population
         size = 0;
         
         // For each row of the terrain's vertices...
-        for (int i = 0; i < locations.length; i++)
+        for (short i = 0; i < locations.length; i++)
         {
             // ...and for each column of the terrain's vertices...
-            for (int j = 0; j < locations[i].length; j++)
+            for (short j = 0; j < locations[i].length; j++)
             {
                 // This is the inverse of the j variable (so it will refer to
                 // the pixel or Individual at the opposite end). It must be used
@@ -204,7 +205,6 @@ public class Population
     /**
      * Creates an Individual for this population
      * 
-     * @param dStrength The displacement strength
      * @param locationX The x position (measured in vertices on the terrain) of
      *                  the terrain's vertex to which this Individual will be
      *                  placed adjacent to
@@ -212,6 +212,11 @@ public class Population
      *                  the terrain's vertex to which this Individual will be
      *                  placed adjacent to
      * @param terrainWidth The width of the terrain (measured in vertices)
+     * @param vWidth The width of each Individual (measured in vertices)
+     * @param vHeight The height of each Individual (measured in vertices)
+     * @param xRotate The currently set base vertical rotation value
+     * @param yRotate The currently set base horizontal rotation value
+     * @param dStrength The displacement strength
      * @param xShiftSpace The distance between each pixel on the shift map to be
      *                    returned for an Individual on the image's x axis
      * @param yShiftSpace The distance between each pixel on the shift map to be
@@ -224,12 +229,6 @@ public class Population
      *                     be returned for an Individual on the image's x axis
      * @param yHeightSpace The distance between each pixel on the height map to
      *                     be returned for an Individual on the image's y axis
-     * @param vWidth The width of each Individual (measured in vertices)
-     * @param vHeight The height of each Individual (measured in vertices)
-     * @param faceWidth The width of each face on the Individual
-     * @param faceHeight The height of each face on the Individual
-     * @param xRotate The currently set base vertical rotation value
-     * @param yRotate The currently set base horizontal rotation value
      * @param terrainPoints The array of point positions used in the creation of
      *                      the terrain
      * @param bumpster The bump map for this population
@@ -241,38 +240,36 @@ public class Population
      * @param dRange The 2 displacement maps used to define the range to which
      *               a displacement map will be generated for this Individual
      */
-    private Individual createIndividual(int dStrength, int locationX,
-            int locationY, int terrainWidth, int vWidth, int vHeight,
-            double xShiftSpace, double yShiftSpace, double xWidthSpace,
-            double yWidthSpace, double xHeightSpace, double yHeightSpace,
-            double xRotate, double yRotate, float[] terrainPoints,
+    private Individual createIndividual(short locationX, short locationY,
+            short terrainWidth, short vWidth, short vHeight, short xRotate,
+            short yRotate, int dStrength, double xShiftSpace,
+            double yShiftSpace, double xWidthSpace, double yWidthSpace,
+            double xHeightSpace, double yHeightSpace, float[] terrainPoints,
             TextureObject bumpster, TextureObject shiftster,
             TextureObject specster, TextureObject texster,
             TextureObject widthster, TextureObject heightster,
             TextureObject[] dRange)
     {
-        final int THREE_DIMENSIONS = 3;
-        
         // The shift adjustments for the Individual
-        int shiftX;
-        int shiftY;
-        int shiftZ;
-                    
+        byte shiftX;
+        byte shiftY;
+        byte shiftZ;
+        
+        // The width and height multipliers to determine the size of
+        // the Individual's faces
+        short faceWidth;
+        short faceHeight;
+                
         // Calculates the index of the point on the terrain to which
         // this Individual is to be created upon
         int pointIndex = ((locationY * terrainWidth) + locationX)
                 * THREE_DIMENSIONS;
                     
-        // The width and height multipliers to determine the size of
-        // the Individual's faces
-        int faceWidth;
-        int faceHeight;
-                    
         // The position of the point on the terrain to which this
         // new Individual will belong
-        double x = terrainPoints[pointIndex];
-        double y = terrainPoints[pointIndex + 1];
-        double z = terrainPoints[pointIndex + 2];
+        int x = (int)terrainPoints[pointIndex];
+        int y = (int)terrainPoints[pointIndex + 1];
+        int z = (int)terrainPoints[pointIndex + 2];
                     
         // Get the correct pixel colors for this Individual
         Color shiftColor = getPixelColor(locationX, locationY, xShiftSpace,
@@ -293,14 +290,16 @@ public class Population
         // The values returned from these functions are too large
         // for the width and height, so it is divided to a smaller
         // value
-        faceWidth = getColorValue(false, ' ', widthColor) / SIZE_DIVIDER;
-        faceHeight = getColorValue(false, ' ', heightColor) / SIZE_DIVIDER;
+        faceWidth = (short)(getColorValue(false, ' ', widthColor)
+                / SIZE_DIVIDER);
+        faceHeight = (short)(getColorValue(false, ' ', heightColor)
+                / SIZE_DIVIDER);
                             
         Image displacement = generateDisplacement(vWidth, vHeight, dRange);
         
-        newIndividual = new Individual(vWidth, vHeight, faceWidth, faceHeight,
-                dStrength, shiftX, shiftY, shiftZ, x, y, z, xRotate, yRotate,
-                displacement);
+        newIndividual = new Individual(shiftX, shiftY, shiftZ, faceWidth,
+                faceHeight, vWidth, vHeight, xRotate, yRotate, dStrength, x, y,
+                z, displacement);
         
         newIndividual.load();
         
@@ -323,15 +322,18 @@ public class Population
         // of the original variables to avoid the possibility their values from
         // being changed by the outside thread while still in use by the
         // service.
+        final short BASE_ROTATE_X = baseRotateX;
+        final short BASE_ROTATE_Y = baseRotateY;
+        
+        final short TERRAIN_WIDTH = (short)locations.length;
+        final short TERRAIN_HEIGHT = (short)locations[0].length;
+        
+        final short VERTEX_WIDTH = vertexWidth;
+        final short VERTEX_HEIGHT = vertexHeight;
+        
         final int DISPLACEMENT_STRENGTH = displacementStrength;
         
         final int SIZE = size;
-        
-        final int TERRAIN_WIDTH = locations.length;
-        final int TERRAIN_HEIGHT = locations[0].length;
-        
-        final int VERTEX_WIDTH = vertexWidth;
-        final int VERTEX_HEIGHT = vertexHeight;
         
         // The distance between each pixel on a map being retrieved for an
         // Individual (measured in pixels)
@@ -348,15 +350,14 @@ public class Population
         final double Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
                 TERRAIN_HEIGHT);
         
-        final double BASE_ROTATE_X = baseRotateX;
-        final double BASE_ROTATE_Y = baseRotateY;
-        
         final TextureObject BUMP = bump;
         final TextureObject SHIFT = shift;
         final TextureObject SPECULAR = specular;
         final TextureObject TEXTURE = texture;
         final TextureObject WIDTH = width;
         final TextureObject HEIGHT = height;
+        
+        final float[] TERRAIN_POINTS = terrainPoints;
         
         final TextureObject[] DISPLACEMENT_RANGE = displacementRange;
         
@@ -384,30 +385,30 @@ public class Population
                         Individual[] newIndividuals = new Individual[SIZE];
                 
                         // For each row of vertices on the terrain...
-                        for (int i = 0; i < TERRAIN_WIDTH; i++)
+                        for (short i = 0; i < TERRAIN_WIDTH; i++)
                         {
                             // ...and for each column of vertices on the
                             // terrain...
-                            for (int j = 0; j < TERRAIN_HEIGHT; j++)
+                            for (short j = 0; j < TERRAIN_HEIGHT; j++)
                             {
                                 // ...if an Individual is to be created there...
                                 if (LOCATIONS[i][j])
                                 {
                                     // ...create a new Individual.
                                     Individual newIndividual =
-                                            createIndividual(
-                                                    DISPLACEMENT_STRENGTH, i, j,
+                                            createIndividual(i, j,
                                                     TERRAIN_WIDTH, VERTEX_WIDTH,
                                                     VERTEX_HEIGHT,
+                                                    BASE_ROTATE_X,
+                                                    BASE_ROTATE_Y,
+                                                    DISPLACEMENT_STRENGTH, 
                                                     X_SHIFT_SPACE,
                                                     Y_SHIFT_SPACE,
                                                     X_WIDTH_SPACE,
                                                     Y_WIDTH_SPACE,
                                                     X_HEIGHT_SPACE,
                                                     Y_HEIGHT_SPACE,
-                                                    BASE_ROTATE_X,
-                                                    BASE_ROTATE_Y,
-                                                    terrainPoints, BUMP, SHIFT,
+                                                    TERRAIN_POINTS, BUMP, SHIFT,
                                                     SPECULAR, TEXTURE, WIDTH,
                                                     HEIGHT, DISPLACEMENT_RANGE);
         
@@ -436,10 +437,15 @@ public class Population
      * Generates a displacement map with pixels within the range of the 2
      * displacement maps using the provided parameters
      * 
+     * @param vWidth The width of each Individual (measured in vertices)
+     * @param vHeight The height of each Individual (measured in vertices)
+     * @param range The 2 displacement maps that act as the range of values a
+     *              new displacement map is generated from
+     * 
      * @return A displacement map with pixels within the range of the 2
-     * displacement maps
+     *         displacement maps
      */
-    private Image generateDisplacement(int vWidth, int vHeight,
+    private Image generateDisplacement(short vWidth, short vHeight,
             TextureObject[] range)
     {
         // Get the spacing that should be between each UV point for the
@@ -462,10 +468,10 @@ public class Population
         PixelWriter writster = newDisplacement.getPixelWriter();
         
         // For each row of vertices on the Individual...
-        for (int i = 0; i < vWidth; i++)
+        for (byte i = 0; i < vWidth; i++)
         {
             // ...and for each column of vertices...
-            for (int j = 0; j < vHeight; j++)
+            for (byte j = 0; j < vHeight; j++)
             {
                 // Color for how the vertex is to be displaced
                 Color randomColor;
@@ -516,31 +522,31 @@ public class Population
      * 
      * @return A random number
      */
-    private int getColorValue(boolean negativeRange, char channel,
+    private byte getColorValue(boolean negativeRange, char channel,
             Color colster)
     {
-        int colorValue;
+        byte colorValue;
         
         switch (channel)
         {
             case 'r':
-                colorValue = (int)(colster.getRed() * COLOR_ADJUSTMENT);
+                colorValue = (byte)(colster.getRed() * COLOR_ADJUSTMENT);
                 break;
             case 'g':
-                colorValue = (int)(colster.getGreen() * COLOR_ADJUSTMENT);
+                colorValue = (byte)(colster.getGreen() * COLOR_ADJUSTMENT);
                 break;
             case 'b':
-                colorValue = (int)(colster.getBlue() * COLOR_ADJUSTMENT);
+                colorValue = (byte)(colster.getBlue() * COLOR_ADJUSTMENT);
                 break;
             default:
-                colorValue = (int)(colster.getBrightness() * COLOR_ADJUSTMENT);
+                colorValue = (byte)(colster.getBrightness() * COLOR_ADJUSTMENT);
         }
         
         // If the value should not be negative...
         if (negativeRange)
         {
             // ...put the value in the range of -50 - +50
-            colorValue = colorValue - (int)(COLOR_ADJUSTMENT / 2);
+            colorValue = (byte)(colorValue - COLOR_ADJUSTMENT / 2);
         }
         
         return colorValue;
@@ -785,7 +791,7 @@ public class Population
      * 
      * @return The height of each Individual (Measured in vertices)
      */
-    public int getVertexHeight()
+    public short getVertexHeight()
     {
         return vertexHeight;
     }
@@ -795,7 +801,7 @@ public class Population
      * 
      * @return The width of each Individual (Measured in vertices)
      */
-    public int getVertexWidth()
+    public short getVertexWidth()
     {
         return vertexWidth;
     }
@@ -827,11 +833,7 @@ public class Population
         
         double brightness = shade.getBrightness();
         
-        double randomValue;
-        
-        Random ranster = new Random();
-        
-        randomValue = ranster.nextDouble();
+        double randomValue = getRandomNumber(0, 1);
         
         // If the random value is greater than the value from the color's
         // brightness...
@@ -874,8 +876,8 @@ public class Population
     
     /**
      * Re-loads this population. This method is used in place of the regular
-     * load method to prevent an exception. As long as the count of Individuals
-     * is not changing, this method should be called in place of "load".
+     * load method to prevent an exception from occurring of a population of 0 
+     * being modified.
      * 
      * @param actionDescription A description of the change being made to the
      *                          population. It is used as the progress dialog's
@@ -905,10 +907,10 @@ public class Population
         int index = 0;
         
         // For each row of vertices on the terrain...
-        for (int i = 0; i < locations.length; i++)
+        for (short i = 0; i < locations.length; i++)
         {
             // ...and for each column of vertices on the terrain...
-            for (int j = 0; j < locations[i].length; j++)
+            for (short j = 0; j < locations[i].length; j++)
             {
                 // ...if an Individual is to be created there...
                 if (locations[i][j])
@@ -1034,10 +1036,10 @@ public class Population
         int count = 0;
         
         // For each row of vertices on the terrain...
-        for (int i = 0; i < locations.length; i++)
+        for (short i = 0; i < locations.length; i++)
         {
             // ...and for each column of vertices on the terrain...
-            for (int j = 0; j < locations[i].length; j++)
+            for (short j = 0; j < locations[i].length; j++)
             {
                 // ...if an Individual is to be created there...
                 if (locations[i][j])
@@ -1047,9 +1049,9 @@ public class Population
                             verticalUVSpacing, shift);
                     
                     // Get the correct shift amounts for this color
-                    int shiftX = getColorValue(true, 'r', shiftColor);
-                    int shiftY = getColorValue(true, 'g', shiftColor);
-                    int shiftZ = getColorValue(true, 'b', shiftColor);
+                    byte shiftX = getColorValue(true, 'r', shiftColor);
+                    byte shiftY = getColorValue(true, 'g', shiftColor);
+                    byte shiftZ = getColorValue(true, 'b', shiftColor);
                     
                     individuals[count].setShift(shiftX, shiftY, shiftZ);
                     
@@ -1065,7 +1067,7 @@ public class Population
      * 
      * @param angle The camera's vertical rotation value
      */
-    public void setRotationX(double angle)
+    public void setRotationX(short angle)
     {
         baseRotateX = angle;
         
@@ -1081,7 +1083,7 @@ public class Population
      * 
      * @param angle The camera's horizontal rotation value
      */
-    public void setRotationY(double angle)
+    public void setRotationY(short angle)
     {
         baseRotateY = angle;
         
@@ -1145,7 +1147,7 @@ public class Population
      * @param terrainPoints The point positions used in the creation of the
      *                      terrain's MeshView
      */
-    public void setVertexHeight(int heightster, float[] terrainPoints)
+    public void setVertexHeight(short heightster, float[] terrainPoints)
     {
         String actionDescription = "Changing Population Vertex Height";
         
@@ -1161,7 +1163,7 @@ public class Population
      * @param terrainPoints The point positions used in the creation of the
      *                      terrain's MeshView
      */
-    public void setVertexWidth(int widthster, float[] terrainPoints)
+    public void setVertexWidth(short widthster, float[] terrainPoints)
     {
         String actionDescription = "Changing Population Vertex Width";
         
@@ -1218,7 +1220,7 @@ public class Population
      * @param terrainDepth The new depth of the terrain (measured in vertices)
      * @param terrainPoints The point data used to create the terrain's MeshView
      */
-    public void updateForTerrainDepthChange(int terrainDepth,
+    public void updateForTerrainDepthChange(short terrainDepth,
             float[] terrainPoints)
     {
         String actionDescription = "Changing Terrain Depth";
@@ -1234,7 +1236,7 @@ public class Population
      * @param terrainWidth The new width of the terrain (measured in vertices)
      * @param terrainPoints The point data used to create the terrain's MeshView
      */
-    public void updateForTerrainWidthChange(int terrainWidth,
+    public void updateForTerrainWidthChange(short terrainWidth,
             float[] terrainPoints)
     {
         String actionDescription = "Changing Terrain Width";

@@ -14,9 +14,11 @@ public class TerrainTab
 {
     // The length of each side of each face on the mesh when the mesh is not
     // displaced
-    final int FACE_SIZE = 10;
+    final short FACE_SIZE = 10;
+    // Initial size of terrain (measured in vertices)
+    final short DEFAULT_VERTEX_SIZE = 50;
     
-    final int DEFAULT_SIZE = 50;
+    // Initial strength of the displacement map
     final int DEFAULT_STRENGTH = 50;
     
     final Image BLANK_IMAGE = new Image("graphics/blank.png");
@@ -30,18 +32,18 @@ public class TerrainTab
      */
     public TerrainTab()
     {
-        terster = new Terrain(DEFAULT_SIZE, DEFAULT_SIZE, FACE_SIZE,
-                DEFAULT_STRENGTH, BLANK_IMAGE);
+        terster = new Terrain(FACE_SIZE, DEFAULT_VERTEX_SIZE,
+                DEFAULT_VERTEX_SIZE, DEFAULT_STRENGTH, BLANK_IMAGE);
     }
     
     /**
-     * Gets the default size of the terrain in vertices
+     * Gets the default size of the terrain (measured in vertices)
      * 
      * @return The default size
      */
-    public int getDefaultSize()
+    public short getDefaultSize()
     {
-        return DEFAULT_SIZE;
+        return DEFAULT_VERTEX_SIZE;
     }
     
     /**

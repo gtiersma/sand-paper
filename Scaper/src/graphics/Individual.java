@@ -11,23 +11,23 @@ import javafx.scene.transform.Rotate;
 public class Individual extends MeshObject
 {
     // Added to the X rotation to ensure the Individual is facing the camera
-    final private int BASE_X_ROTATION = 90;
+    final private short BASE_X_ROTATION = 90;
     
     // How much the Individual should be shifted
-    private int shiftX;
-    private int shiftY;
-    private int shiftZ;
+    private byte shiftX;
+    private byte shiftY;
+    private byte shiftZ;
     
     // Half of the displacement strength. The Individual's default position is
     // in the middle of the displacement strength spectrum, so this value is
     // commonly needed in calculations.
-    private float halfStrength;
+    private int halfStrength;
     
     // The position of the vertex point on the terrain of where this mesh will
     // be placed
-    private double x;
-    private double y;
-    private double z;
+    private float x;
+    private float y;
+    private float z;
     
     // Rotations used to keep the mesh facing forward with all camera positions
     private Rotate xRotate;
@@ -36,31 +36,31 @@ public class Individual extends MeshObject
     /**
      * CONSTRUCTOR
      * 
-     * @param widthster The width of the mesh in vertices
-     * @param heightster The depth of the mesh in vertices
-     * @param fWidth The width of each face in the mesh when not displaced
-     * @param fHeight The height of each face in the mesh when not displaced
-     * @param strengthster The multiplier for the displacement map that is set
-     *                     by the user
      * @param xShift How much the mesh should be shifted on the x scale
      * @param yShift How much the mesh should be shifted on the y scale
      * @param zShift How much the mesh should be shifted on the z scale
+     * @param fWidth The width of each face in the mesh when not displaced
+     * @param fHeight The height of each face in the mesh when not displaced
+     * @param widthster The width of the mesh in vertices
+     * @param heightster The depth of the mesh in vertices
+     * @param xRot How much the camera is rotated on the x scale
+     * @param yRot How much the camera is rotated on the y scale
+     * @param strengthster The multiplier for the displacement map that is set
+     *                     by the user
      * @param eckster The x position of the vertex point on the terrain of where
                 this mesh will be placed
      * @param whyster The y position of the vertex point on the terrain of where
                 this mesh will be placed
      * @param zeester The z position of the vertex point on the terrain of where
                 this mesh will be placed
-     * @param xRot How much the camera is rotated on the x scale
-     * @param yRot How much the camera is rotated on the y scale
      * @param dister The displacement map
      */
-    public Individual(int widthster, int heightster, int fWidth, int fHeight,
-            int strengthster, int xShift, int yShift, int zShift,
-            double eckster, double whyster, double zeester, double xRot,
-            double yRot, Image dister)
+    public Individual(byte xShift, byte yShift, byte zShift, short fWidth,
+            short fHeight, short widthster, short heightster, short xRot,
+            short yRot, int strengthster, float eckster, float whyster,
+            float zeester, Image dister)
     {
-        super(widthster, heightster, fWidth, fHeight, strengthster, dister);
+        super(fWidth, fHeight, widthster, heightster, strengthster, dister);
         
         shiftX = xShift;
         shiftY = yShift;
@@ -94,22 +94,25 @@ public class Individual extends MeshObject
      * 
      * @return The vertex's position
      */
-    private double getRelativePositioning(int vertexX, int vertexZ,
+    private int getRelativePositioning(byte vertexX, byte vertexZ,
             char dimension)
     {
-        // Calculate the row and column of the pixel that should be retrieved
-        // for this particular vertex
-        int pixelRow = (int)(widthPixels * vertexX);
-        int pixelColumn = (int)(heightPixels * vertexZ);
+        // The center value for a color value's range (which is 0.0 - 1.0)
+        final double MIDDLE_COLOR = 0.5;
+        
+        // How far the vertex should be shifted. It may be negative.
+        short shiftAmount;
         
         // The position of the vertex if no displacement map was applied
         int originalPosition;
         
-        // How far the vertex should be shifted. It may be negative.
-        double shiftAmount;
+        // Calculate the row and column of the pixel that should be retrieved
+        // for this particular vertex
+        int pixelRow = widthPixels * vertexX;
+        int pixelColumn = heightPixels * vertexZ;
         
         // The new position of the vertex
-        double vertexPosition = 0;
+        int vertexPosition = 0;
         
         switch (dimension)
         {
@@ -123,7 +126,8 @@ public class Individual extends MeshObject
                 originalPosition = vertexX * faceWidth;
                 
                 // Calculate the amount to be shifted
-                shiftAmount = (redAmount - 0.5) * -displacementStrength;
+                shiftAmount = (short)((redAmount - MIDDLE_COLOR)
+                        * -displacementStrength);
                 
                 vertexPosition = originalPosition + shiftAmount;
                 
@@ -136,7 +140,8 @@ public class Individual extends MeshObject
                 double greenAmount
                         = vertexRelatives[pixelRow][pixelColumn].getGreen();
                 
-                vertexPosition = (greenAmount - 0.5) * -displacementStrength;
+                vertexPosition = (int)((greenAmount - MIDDLE_COLOR)
+                        * -displacementStrength);
                 
                 break;
                 
@@ -150,7 +155,8 @@ public class Individual extends MeshObject
                 originalPosition = vertexZ * faceDepth;
                 
                 // Calculate the amount to be shifted
-                shiftAmount = (blueAmount - 0.5) * -displacementStrength;
+                shiftAmount = (short)((blueAmount - MIDDLE_COLOR) 
+                        * -displacementStrength);
                 
                 vertexPosition = originalPosition + shiftAmount;
                 
@@ -206,23 +212,23 @@ public class Individual extends MeshObject
         int index = 0;
         
         // For each column of vertices in the mesh...
-        for (int i = 0; i < depth; i++)
+        for (byte i = 0; i < depth; i++)
         {
             // ...and for each row of vertices...
-            for (int j = 0; j < width; j++)
+            for (byte j = 0; j < width; j++)
             {
                 // ...get the x position.
-                points[index] = (float)getRelativePositioning(j, i, 'x');
+                points[index] = getRelativePositioning(j, i, 'x');
                 
                 index++;
                 
                 // Get the y position
-                points[index] = (float)getRelativePositioning(j, i, 'y');
+                points[index] = getRelativePositioning(j, i, 'y');
                 
                 index++;
                 
                 // Get the z position
-                points[index] = (float)getRelativePositioning(j, i, 'z');
+                points[index] = getRelativePositioning(j, i, 'z');
                 
                 index++;
             }
@@ -309,7 +315,7 @@ public class Individual extends MeshObject
      * @param yShift How much the Individual is to be shifted on the y scale
      * @param zShift How much the Individual is to be shifted on the z scale
      */
-    public void setShift(int xShift, int yShift, int zShift)
+    public void setShift(byte xShift, byte yShift, byte zShift)
     {
         shiftX = xShift;
         shiftY = yShift;
@@ -323,7 +329,7 @@ public class Individual extends MeshObject
      * 
      * @param angle How much the camera is set to be rotated on the x scale
      */
-    public void setRotationX(double angle)
+    public void setRotationX(short angle)
     {
         xRotate.setAngle(BASE_X_ROTATION - angle);
     }
@@ -333,7 +339,7 @@ public class Individual extends MeshObject
      * 
      * @param angle How much the camera is set to be rotated on the y scale
      */
-    public void setRotationY(double angle)
+    public void setRotationY(short angle)
     {
         yRotate.setAngle(-angle);
     }

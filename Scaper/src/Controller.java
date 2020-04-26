@@ -204,7 +204,7 @@ public class Controller
             if (listen && !newster.equals(""))
             {
                 // ...resize it.
-                setTerrainVertexWidth(Integer.parseInt(newster));
+                setTerrainVertexWidth(Short.parseShort(newster));
             }
         });
         // This focus listener prevents invalid text from remaining in the
@@ -224,7 +224,7 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                setTerrainVertexDepth(Integer.parseInt(newster));
+                setTerrainVertexDepth(Short.parseShort(newster));
             }
         });
         terrainTextVRD.focusedProperty().addListener((obster, oldster, newster)
@@ -241,7 +241,7 @@ public class Controller
         terrainSliderDMS.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
-            terTab.getTerrain().setDisplacementStrength(newster.floatValue());
+            terTab.getTerrain().setDisplacementStrength(newster.intValue());
             
             popTab.repositionPopulations(terTab.getTerrain().getPoints());
         
@@ -399,7 +399,7 @@ public class Controller
         cameraSliderFOVD.valueProperty().addListener((obster, oldster, newster)
                 ->
         {
-            camTab.setFieldOfView(newster.doubleValue());
+            camTab.setFieldOfView(newster.byteValue());
             
             preview.setCamera(camTab.getCamera());
         });
@@ -538,7 +538,7 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                setPopulationVertexWidth(Integer.parseInt(newster));
+                setPopulationVertexWidth(Short.parseShort(newster));
             }
         });
         populationTextVRW.focusedProperty().addListener((obster, oldster,
@@ -557,7 +557,7 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                setPopulationVertexHeight(Integer.parseInt(newster));
+                setPopulationVertexHeight(Short.parseShort(newster));
             }
         });
         populationTextVRH.focusedProperty().addListener((obster, oldster,
@@ -995,7 +995,7 @@ public class Controller
     @FXML
     protected void changeTerrainVertexDepth()
     {
-        int depth = Integer.parseInt(terrainTextVRD.getText());
+        short depth = Short.parseShort(terrainTextVRD.getText());
                 
         terTab.getTerrain().setDepth(depth);
             
@@ -1009,7 +1009,7 @@ public class Controller
     @FXML
     protected void changeTerrainVertexWidth()
     {
-        int width = Integer.parseInt(terrainTextVRW.getText());
+        short width = Short.parseShort(terrainTextVRW.getText());
                 
         terTab.getTerrain().setWidth(width);
             
@@ -1083,8 +1083,8 @@ public class Controller
     protected void createPopulation()
     {
         // Get the camera's rotation values
-        double xRotate = camTab.getXRotate().getAngle();
-        double yRotate = camTab.getYRotate().getAngle();
+        short xRotate = (short)camTab.getXRotate().getAngle();
+        short yRotate = (short)camTab.getYRotate().getAngle();
         
         String name;
         
@@ -1124,7 +1124,7 @@ public class Controller
     {
         listen = false;
         
-        int height = Integer.parseInt(populationTextVRH.getText());
+        short height = Short.parseShort(populationTextVRH.getText());
         
         height--;
         
@@ -1142,7 +1142,7 @@ public class Controller
     {
         listen = false;
         
-        int width = Integer.parseInt(populationTextVRW.getText());
+        short width = Short.parseShort(populationTextVRW.getText());
         
         width--;
         
@@ -1160,7 +1160,7 @@ public class Controller
     {
         listen = false;
         
-        int depth = Integer.parseInt(terrainTextVRD.getText());
+        short depth = Short.parseShort(terrainTextVRD.getText());
         
         depth--;
               
@@ -1178,7 +1178,7 @@ public class Controller
     {
         listen = false;
         
-        int width = Integer.parseInt(terrainTextVRW.getText());
+        short width = Short.parseShort(terrainTextVRW.getText());
         
         width--;
         
@@ -1407,7 +1407,7 @@ public class Controller
     {
         listen = false;
         
-        int height = Integer.parseInt(populationTextVRH.getText());
+        short height = Short.parseShort(populationTextVRH.getText());
         
         height++;
         
@@ -1425,7 +1425,7 @@ public class Controller
     {
         listen = false;
         
-        int width = Integer.parseInt(populationTextVRW.getText());
+        short width = Short.parseShort(populationTextVRW.getText());
         
         width++;
         
@@ -1443,7 +1443,7 @@ public class Controller
     {
         listen = false;
         
-        int depth = Integer.parseInt(terrainTextVRD.getText());
+        short depth = Short.parseShort(terrainTextVRD.getText());
         
         depth++;
                 
@@ -1461,7 +1461,7 @@ public class Controller
     {
         listen = false;
         
-        int width = Integer.parseInt(terrainTextVRW.getText());
+        short width = Short.parseShort(terrainTextVRW.getText());
         
         width++;
                 
@@ -1969,7 +1969,7 @@ public class Controller
      * 
      * @param height The height to be set
      */
-    protected void setPopulationVertexHeight(int height)
+    protected void setPopulationVertexHeight(short height)
     {
         if (validator.isPopulationSizeValid(height))
         {
@@ -1988,7 +1988,7 @@ public class Controller
      * 
      * @param width The width to be set
      */
-    protected void setPopulationVertexWidth(int width)
+    protected void setPopulationVertexWidth(short width)
     {
         if (validator.isPopulationSizeValid(width))
         {
@@ -2007,7 +2007,7 @@ public class Controller
      * 
      * @param depth The depth to be set
      */
-    protected void setTerrainVertexDepth(int depth)
+    protected void setTerrainVertexDepth(short depth)
     {
         if (validator.isTerrainSizeValid(depth))
         {
@@ -2027,7 +2027,7 @@ public class Controller
      * 
      * @param width The width to be set
      */
-    protected void setTerrainVertexWidth(int width)
+    protected void setTerrainVertexWidth(short width)
     {
         if (validator.isTerrainSizeValid(width))
         {
@@ -2105,7 +2105,7 @@ public class Controller
      * @param terrainSize The new size of the terrain
      */
     protected void updatePopulationsForTerrainSizeChange(boolean didWidthChange,
-            int terrainSize)
+            short terrainSize)
     {
         // If the terrain's width changed...
         if (didWidthChange)

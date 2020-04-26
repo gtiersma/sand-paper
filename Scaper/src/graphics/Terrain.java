@@ -13,18 +13,18 @@ public class Terrain extends MeshObject
     /**
      * CONSTRUCTOR
      * 
-     * @param widthster The width of the terrain in vertices
-     * @param depthster The depth of the terrain in vertices
      * @param fSize The length of each side of each face on the mesh when the
      * mesh is not displaced
+     * @param widthster The width of the terrain in vertices
+     * @param depthster The depth of the terrain in vertices
      * @param strengthster The multiplier for the displacement map that is set
      *                     by the user
      * @param dister The displacement map
      */
-    public Terrain(int widthster, int depthster, int fSize, int strengthster,
-            Image dister)
+    public Terrain(short fSize, short widthster, short depthster,
+            int strengthster, Image dister)
     {
-        super(widthster, depthster, fSize, fSize, strengthster, dister);
+        super(fSize, fSize, widthster, depthster, strengthster, dister);
     }
     
     /**
@@ -39,18 +39,20 @@ public class Terrain extends MeshObject
      * 
      * @return The approximate center position of the terrain
      */
-    public double getCenter(char dimension)
+    public float getCenter(char dimension)
     {
         // The number of points of the terrain of which their position will be
         // gathered.
-        final int CENTER_POINTS_AMOUNT = 5;
+        final byte CENTER_POINTS_AMOUNT = 5;
+        // The number of corners that the terrain has
+        final byte CORNERS_AMOUNT = 4;
         
-        int dimensionValue = getDimensionValue(dimension);
+        byte dimensionValue = getDimensionValue(dimension);
         
         // The average of the positions of the points
-        double average;
+        float average;
         // The sum of all of the positions of the points
-        double total = 0;
+        float total = 0;
         
         // The indexes of the points
         int[] indexes = new int[CENTER_POINTS_AMOUNT];
@@ -58,16 +60,16 @@ public class Terrain extends MeshObject
         // An estimation of the center-most point's index
         indexes[0] = width * (depth / 2) + (width / 2);
         // The point between the center and the back edge of the terrain
-        indexes[1] = indexes[0] - width * (depth / 4);
+        indexes[1] = indexes[0] - width * (depth / CORNERS_AMOUNT);
         // The point between the center and the left edge of the terrain
-        indexes[2] = indexes[0] - width / 4;
+        indexes[2] = indexes[0] - width / CORNERS_AMOUNT;
         // The point between the center and the right edge of the terrain
-        indexes[3] = indexes[0] + width / 4;
+        indexes[3] = indexes[0] + width / CORNERS_AMOUNT;
         // The point between the center and the front edge of the terrain
-        indexes[4] = indexes[0] + width * (depth / 4);
+        indexes[4] = indexes[0] + width * (depth / CORNERS_AMOUNT);
         
         // For each point...
-        for (int i = 0; i < CENTER_POINTS_AMOUNT; i++)
+        for (byte i = 0; i < CENTER_POINTS_AMOUNT; i++)
         {
             // ...calculate the index for the correct dimension.
             indexes[i] = indexes[i] * DIMENSIONS + dimensionValue;
@@ -87,7 +89,7 @@ public class Terrain extends MeshObject
      * 
      * @return The depth of the terrain (Measured in vertices)
      */
-    public int getDepth()
+    public short getDepth()
     {
         return depth;
     }
@@ -99,9 +101,9 @@ public class Terrain extends MeshObject
      * 
      * @return 0 if an 'x' is given, 1 for a 'y' and 2 for a 'z'
      */
-    private int getDimensionValue(char dimension)
+    private byte getDimensionValue(char dimension)
     {
-        int value = 0;
+        byte value = 0;
         
         if (dimension == 'y')
         {
@@ -121,15 +123,15 @@ public class Terrain extends MeshObject
      * 
      * @return The approximate furthest distance
      */
-    public double getFurthestPoint()
+    public float getFurthestPoint()
     {
         // The furthest distance for each dimension
-        double furthestX = getFurthestPoint('x');
-        double furthestY = getFurthestPoint('y');
-        double furthestZ = getFurthestPoint('z');
+        float furthestX = getFurthestPoint('x');
+        float furthestY = getFurthestPoint('y');
+        float furthestZ = getFurthestPoint('z');
         
         // The furthest distance of any of the dimension
-        double furthest;
+        float furthest;
         
         if (furthestX < furthestY)
         {
@@ -156,14 +158,14 @@ public class Terrain extends MeshObject
      * 
      * @return The approximate furthest distance
      */
-    private double getFurthestPoint(char dimension)
+    private float getFurthestPoint(char dimension)
     {
-        int dimensionValue = getDimensionValue(dimension);
+        byte dimensionValue = getDimensionValue(dimension);
         
-        double center = getCenter(dimension);
+        float center = getCenter(dimension);
         
         // The furthest point
-        double far = 0;
+        float far = 0;
         
         // The 4 corner points of the terrain
         int[] cornerPoints = {
@@ -174,14 +176,14 @@ public class Terrain extends MeshObject
                 };
         
         // For each point in a corner...
-        for (int i = 0; i < cornerPoints.length; i++)
+        for (byte i = 0; i < cornerPoints.length; i++)
         {
             // The index of the position of this corner point of the given
             // dimension
             int farIndex = cornerPoints[i] * DIMENSIONS + dimensionValue;
             
             // The distance this point is from the center
-            double possibleFar = Math.abs(points[farIndex] - center);
+            float possibleFar = Math.abs(points[farIndex] - center);
             
             // If it is the furthest from the terrain center so far...
             if (far < possibleFar)
@@ -210,7 +212,7 @@ public class Terrain extends MeshObject
      * 
      * @return The width of the terrain (Measured in vertices)
      */
-    public int getWidth()
+    public short getWidth()
     {
         return width;
     }
