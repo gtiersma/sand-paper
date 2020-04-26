@@ -1801,6 +1801,15 @@ public class Controller
             terrainComboT.setItems(null);
             terrainComboBM.setItems(null);
             terrainComboSM.setItems(null);
+            populationComboP.setItems(null);
+            populationComboS.setItems(null);
+            populationComboSW.setItems(null);
+            populationComboSH.setItems(null);
+            populationComboDR1.setItems(null);
+            populationComboDR2.setItems(null);
+            populationComboT.setItems(null);
+            populationComboBM.setItems(null);
+            populationComboSM.setItems(null);
             
             terrainComboDM.setValue("");
             terrainComboT.setValue("");
