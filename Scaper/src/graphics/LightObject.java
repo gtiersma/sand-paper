@@ -230,7 +230,9 @@ public class LightObject
      */
     public void setYPosition(int percentage, double far, double origin)
     {
-        yPercentage = percentage;
+        // Inverted the value causes all positive values to be above the terrain
+        // and negative values to be below it
+        yPercentage = -percentage;
         
         setYPosition(far, origin);
     }
