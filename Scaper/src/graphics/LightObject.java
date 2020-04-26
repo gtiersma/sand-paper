@@ -195,9 +195,7 @@ public class LightObject
     {
         xPercentage = percentage;
         
-        x = calculatePosition(far, origin, percentage);
-        
-        lightster.setTranslateX(x);
+        setXPosition(far, origin);
     }
     
     /**
@@ -234,9 +232,7 @@ public class LightObject
     {
         yPercentage = percentage;
         
-        y = calculatePosition(far, origin, percentage);
-        
-        lightster.setTranslateY(y);
+        setYPosition(far, origin);
     }
     
     /**
@@ -273,8 +269,6 @@ public class LightObject
     {
         zPercentage = percentage;
         
-        z = calculatePosition(far, origin, percentage);
-        
-        lightster.setTranslateZ(z);
+        setZPosition(far, origin);
     }
 }
