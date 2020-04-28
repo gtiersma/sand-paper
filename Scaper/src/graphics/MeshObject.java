@@ -163,8 +163,8 @@ public class MeshObject
         PixelReader readster = displacement.getPixelReader();
         
         // The distance of pixels between each pixel to be gathered.
-        int xSpacing = (int)(displacement.getWidth() / width);
-        int ySpacing = (int)(displacement.getHeight() / depth);
+        double xSpacing = displacement.getWidth() / width;
+        double ySpacing = displacement.getHeight() / depth;
         
         // For each column of pixels...
         for (short i = 0; i < width; i++)
@@ -180,8 +180,8 @@ public class MeshObject
                 
                 // Calculate the x and y position of the pixel in the map to be
                 // gathered for this vertex
-                int xPosition = xSpacing * i;
-                int yPosition = ySpacing * j;
+                int xPosition = (int)(xSpacing * i);
+                int yPosition = (int)(ySpacing * j);
                 
                 // Get the correct color
                 vertexRelatives[i][newJ] = readster.getColor(xPosition,
