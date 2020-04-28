@@ -116,7 +116,7 @@
                                     <Insets bottom="20.0" top="20.0" />
                                  </padding>
                                  <children>
-                                    <Label id="vertex" styleClass="head-label" text=" Vertex Resolution:" />
+                                    <Label id="vertex" styleClass="head-label" text=" Vertex Dimensions:" />
                                     <HBox id="terrainBoxVRW" alignment="CENTER" layoutX="10.0" layoutY="18.0" spacing="10.0">
                                        <children>
                                           <Label id="width" styleClass="medium-label" text=" Width:" />
@@ -229,7 +229,7 @@
                                     </HBox>
                                     <ImageView id="populationImageSH" fx:id="populationImageSH" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
                                     <Separator id="style-5" layoutX="10.0" layoutY="320.0" prefWidth="200.0" />
-                                    <Label id="vertex" styleClass="head-label" text=" Vertex Resolution:" />
+                                    <Label id="vertex" styleClass="head-label" text=" Vertex Dimensions:" />
                                     <HBox id="populationBoxVRW" alignment="CENTER" spacing="10.0">
                                        <children>
                                           <Label id="width" styleClass="medium-label" text=" Width:" />

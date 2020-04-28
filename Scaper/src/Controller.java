@@ -1558,7 +1558,7 @@ public class Controller
         populationSliderDRS.setValue(
                 activePopulation.getDisplacementStrength());
         
-        // Set vertex resolution TextFields
+        // Set vertex dimension TextFields
         populationTextVRH.setText(
                 Integer.toString(activePopulation.getVertexHeight()));
         populationTextVRW.setText(
