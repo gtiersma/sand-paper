@@ -1,4 +1,4 @@
-package controls;
+package generics;
 
 
 import javafx.concurrent.Service;

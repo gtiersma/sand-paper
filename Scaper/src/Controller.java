@@ -1,5 +1,6 @@
 
 
+import generics.InputVerifier;
 import graphics.LightObject;
 import graphics.Population;
 import graphics.Terrain;

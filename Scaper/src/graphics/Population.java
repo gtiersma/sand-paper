@@ -1,6 +1,7 @@
 package graphics;
 
-import controls.ProgressBarDialog;
+import generics.DeepCloner;
+import generics.ProgressBarDialog;
 import java.io.File;
 import java.util.Random;
 import javafx.concurrent.Service;
@@ -318,6 +319,8 @@ public class Population
     private void createIndividuals(String actionDescription,
             float[] terrainPoints)
     {
+        DeepCloner cloner = new DeepCloner();
+        
         // Constants of global variables. These are used in the service instead
         // of the original variables to avoid the possibility their values from
         // being changed by the outside thread while still in use by the
@@ -350,18 +353,19 @@ public class Population
         final double Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
                 TERRAIN_HEIGHT);
         
-        final TextureObject BUMP = bump;
-        final TextureObject SHIFT = shift;
-        final TextureObject SPECULAR = specular;
-        final TextureObject TEXTURE = texture;
-        final TextureObject WIDTH = width;
-        final TextureObject HEIGHT = height;
+        final TextureObject BUMP = new TextureObject(bump.getFile());
+        final TextureObject SHIFT = new TextureObject(shift.getFile());
+        final TextureObject SPECULAR = new TextureObject(specular.getFile());
+        final TextureObject TEXTURE = new TextureObject(texture.getFile());
+        final TextureObject WIDTH = new TextureObject(width.getFile());
+        final TextureObject HEIGHT = new TextureObject(height.getFile());
         
-        final float[] TERRAIN_POINTS = terrainPoints;
+        final float[] TERRAIN_POINTS = cloner.clone(terrainPoints);
         
-        final TextureObject[] DISPLACEMENT_RANGE = displacementRange;
+        final TextureObject[] DISPLACEMENT_RANGE
+                = cloner.clone(displacementRange);
         
-        final boolean[][] LOCATIONS = locations;
+        final boolean[][] LOCATIONS = cloner.clone(locations);
         
         individualService = new Service<Individual[]>()
         {
@@ -421,6 +425,8 @@ public class Population
                         
                                 updateProgress(progress, done);
                                 progress++;
+                                System.out.println(progress + " of " + done);
+                                System.out.println((progress / done * 100) + "%");
                             }
                         }
                 
