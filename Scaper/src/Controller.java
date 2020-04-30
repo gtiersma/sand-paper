@@ -592,7 +592,7 @@ public class Controller
      * @param eventster The action event
      */
     @FXML
-    protected void addColorTexture(ActionEvent eventster)
+    private void addColorTexture(ActionEvent eventster)
     {
         // If the user successfully supplied an image...
         if (texTab.addTexture(true))
@@ -629,7 +629,7 @@ public class Controller
      * @param eventster The action event
      */
     @FXML
-    protected void addGrayTexture(ActionEvent eventster)
+    private void addGrayTexture(ActionEvent eventster)
     {
         // If the user successfully supplied an image...
         if (texTab.addTexture(false))
@@ -661,7 +661,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changeDisplacement(ActionEvent eventster)
+    private void changeDisplacement(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -695,7 +695,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changeFirstDisplacement(ActionEvent eventster)
+    private void changeFirstDisplacement(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -723,7 +723,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changeHeight(ActionEvent eventster)
+    private void changeHeight(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -751,7 +751,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changePlacement(ActionEvent eventster)
+    private void changePlacement(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -779,7 +779,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changePopulationBump(ActionEvent eventster)
+    private void changePopulationBump(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -806,7 +806,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changePopulationSpecular(ActionEvent eventster)
+    private void changePopulationSpecular(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -833,7 +833,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changePopulationTexture(ActionEvent eventster)
+    private void changePopulationTexture(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -861,7 +861,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changeSecondDisplacement(ActionEvent eventster)
+    private void changeSecondDisplacement(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -889,7 +889,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changeShift(ActionEvent eventster)
+    private void changeShift(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -915,7 +915,7 @@ public class Controller
      * @param eventster The action event
      */
     @FXML
-    protected void changeTerrainBump(ActionEvent eventster)
+    private void changeTerrainBump(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -942,7 +942,7 @@ public class Controller
      * @param eventster The action event
      */
     @FXML
-    protected void changeTerrainSpecular(ActionEvent eventster)
+    private void changeTerrainSpecular(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -969,7 +969,7 @@ public class Controller
      * @param eventster The action event
      */
     @FXML
-    protected void changeTerrainTexture(ActionEvent eventster)
+    private void changeTerrainTexture(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -994,7 +994,7 @@ public class Controller
      * the user changes the value in the text field.
      */
     @FXML
-    protected void changeTerrainVertexDepth()
+    private void changeTerrainVertexDepth()
     {
         short depth = Short.parseShort(terrainTextVRD.getText());
                 
@@ -1008,7 +1008,7 @@ public class Controller
      * the user changes the value in the text field.
      */
     @FXML
-    protected void changeTerrainVertexWidth()
+    private void changeTerrainVertexWidth()
     {
         short width = Short.parseShort(terrainTextVRW.getText());
                 
@@ -1024,7 +1024,7 @@ public class Controller
      * @param eventster The event listener
      */
     @FXML
-    protected void changeWidth(ActionEvent eventster)
+    private void changeWidth(ActionEvent eventster)
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -1052,7 +1052,7 @@ public class Controller
      * @param previewItems A group containing all objects to be used in the
      *                     SubScene preview except the Populations
      */
-    protected void concludePopulationServices(Group previewItems)
+    private void concludePopulationServices(Group previewItems)
     {
         Service services[] = popTab.getServices();
             
@@ -1094,7 +1094,7 @@ public class Controller
      * light tab.
      */
     @FXML
-    protected void createLight()
+    private void createLight()
     {
         String name = ligTab.createLight();
             
@@ -1125,7 +1125,7 @@ public class Controller
      * on the population tab.
      */
     @FXML
-    protected void createPopulation()
+    private void createPopulation()
     {
         // Get the camera's rotation values
         short xRotate = (short)camTab.getXRotate().getAngle();
@@ -1165,7 +1165,7 @@ public class Controller
      * TextField is also updated to reflect the changes.
      */
     @FXML
-    protected void decrementPopulationVertexHeight()
+    private void decrementPopulationVertexHeight()
     {
         listen = false;
         
@@ -1183,7 +1183,7 @@ public class Controller
      * TextField is also updated to reflect the changes.
      */
     @FXML
-    protected void decrementPopulationVertexWidth()
+    private void decrementPopulationVertexWidth()
     {
         listen = false;
         
@@ -1201,7 +1201,7 @@ public class Controller
      * also updated to reflect the changes.
      */
     @FXML
-    protected void decrementTerrainVertexDepth()
+    private void decrementTerrainVertexDepth()
     {
         listen = false;
         
@@ -1219,7 +1219,7 @@ public class Controller
      * also updated to reflect the changes.
      */
     @FXML
-    protected void decrementTerrainVertexWidth()
+    private void decrementTerrainVertexWidth()
     {
         listen = false;
         
@@ -1236,7 +1236,7 @@ public class Controller
      * Deletes the currently-selected light
      */
     @FXML
-    protected void deleteLight()
+    private void deleteLight()
     {
         // The index of the currently selected light
         int selectedIndex
@@ -1293,7 +1293,7 @@ public class Controller
      * Deletes the currently-selected population
      */
     @FXML
-    protected void deletePopulation()
+    private void deletePopulation()
     {
         // The index of the currently selected population
         int selectedIndex
@@ -1359,7 +1359,7 @@ public class Controller
      * 
      * @param toEnable Whether or not to enable or disable the controls
      */
-    protected void enableLightControls(boolean toEnable)
+    private void enableLightControls(boolean toEnable)
     {
         lightChoiceL.setDisable(!toEnable);
         lightButtonLD.setDisable(!toEnable);
@@ -1376,7 +1376,7 @@ public class Controller
      * 
      * @param toEnable Whether or not to enable or disable the controls
      */
-    protected void enablePopulationControls(boolean toEnable)
+    private void enablePopulationControls(boolean toEnable)
     {
         populationChoiceP.setDisable(!toEnable);
         populationButtonPRG.setDisable(!toEnable);
@@ -1405,7 +1405,7 @@ public class Controller
      * @param eventster The action event
      */
     @FXML
-    protected void exit(ActionEvent eventster)
+    private void exit(ActionEvent eventster)
     {
         Alert confirmation = new Alert(AlertType.CONFIRMATION);
         
@@ -1426,7 +1426,7 @@ public class Controller
     /**
      * Formats the controls that need to be formatted
      */
-    protected void formatControls()
+    private void formatControls()
     {
         validator.formatNumericTextField(terrainTextVRW);
         validator.formatNumericTextField(terrainTextVRD);
@@ -1448,7 +1448,7 @@ public class Controller
      * TextField is also updated to reflect the changes.
      */
     @FXML
-    protected void incrementPopulationVertexHeight()
+    private void incrementPopulationVertexHeight()
     {
         listen = false;
         
@@ -1466,7 +1466,7 @@ public class Controller
      * TextField is also updated to reflect the changes.
      */
     @FXML
-    protected void incrementPopulationVertexWidth()
+    private void incrementPopulationVertexWidth()
     {
         listen = false;
         
@@ -1484,7 +1484,7 @@ public class Controller
      * also updated to reflect the changes.
      */
     @FXML
-    protected void incrementTerrainVertexDepth()
+    private void incrementTerrainVertexDepth()
     {
         listen = false;
         
@@ -1502,7 +1502,7 @@ public class Controller
      * also updated to reflect the changes.
      */
     @FXML
-    protected void incrementTerrainVertexWidth()
+    private void incrementTerrainVertexWidth()
     {
         listen = false;
         
@@ -1518,7 +1518,7 @@ public class Controller
     /**
      * Loads the properties of the active light into the light tab's controls
      */
-    protected void loadLight()
+    private void loadLight()
     {
         LightObject activeLight = ligTab.getActiveLight();
         
@@ -1533,7 +1533,7 @@ public class Controller
      * Loads the properties of the active population into the population tab's
      * controls
      */
-    protected void loadPopulation()
+    private void loadPopulation()
     {
         listen = false;
         
@@ -1618,7 +1618,7 @@ public class Controller
      * @param eventster The action event
      */
     @FXML
-    protected void openAbout(ActionEvent eventster)
+    private void openAbout(ActionEvent eventster)
     {
         Alert alster = new Alert(AlertType.INFORMATION);
         
@@ -1646,7 +1646,7 @@ public class Controller
      * Prepares the preview for saving a rendered image. This should be executed
      * immediately before an image is to be saved.
      */
-    protected void prepareForRender()
+    private void prepareForRender()
     {
         int width = renTab.getWidth();
         int height = renTab.getHeight();
@@ -1660,7 +1660,7 @@ public class Controller
     /**
      * Gets the preview ready to be shown
      */
-    protected void preparePreview()
+    private void preparePreview()
     {
         terTab.prepareTerrain();
         
@@ -1680,7 +1680,7 @@ public class Controller
      * the camera and lights). For use whenever the terrain's size or shape has
      * changed.
      */
-    protected void recenterOnTerrain()
+    private void recenterOnTerrain()
     {
         // Estimation of the center point of the terrain
         int terrainCenterX;
@@ -1709,7 +1709,7 @@ public class Controller
     /**
      * Refreshes the content in the preview pane
      */
-    protected void refreshPreview()
+    private void refreshPreview()
     {
         int lightAmount = ligTab.getLightAmount();
         int populationAmount = popTab.getPopulationAmount();
@@ -1756,7 +1756,7 @@ public class Controller
      * population's properties
      */
     @FXML
-    protected void regeneratePopulation()
+    private void regeneratePopulation()
     {
         // The title for the progress dialog
         String actionDescription = "Re-generating Population";
@@ -1771,7 +1771,7 @@ public class Controller
      * Removes the color from the ImageView previews for maps that are to be
      * grayscale
      */
-    protected void removeViewColor()
+    private void removeViewColor()
     {
         ColorAdjust grayscale = new ColorAdjust();
         grayscale.setSaturation(-1);
@@ -1788,7 +1788,7 @@ public class Controller
      * @param eventster The action event
      */
     @FXML
-    protected void reset(ActionEvent eventster)
+    private void reset(ActionEvent eventster)
     {
         Alert confirmation = new Alert(AlertType.CONFIRMATION);
         
@@ -1907,7 +1907,7 @@ public class Controller
      * Resets the controls on the light tab to their default values (excluding
      * the choice box)
      */
-    protected void resetLightControls()
+    private void resetLightControls()
     {
         int x = ligTab.getDefaultX();
         int y = ligTab.getDefaultY();
@@ -1930,7 +1930,7 @@ public class Controller
      * Resets the controls on the population tab to their default values
      * (excluding the choice box listing all of the populations)
      */
-    protected void resetPopulationControls()
+    private void resetPopulationControls()
     {
         // Clear map previews
         populationImageP.setImage(null);
@@ -1962,7 +1962,7 @@ public class Controller
     /**
      * Resets the preview's size, re-centering the camera on the terrain
      */
-    protected void resetPreviewSize()
+    private void resetPreviewSize()
     {
         // To be centered, the terrain must be adjusted by half of the preview's
         // size
@@ -1978,7 +1978,7 @@ public class Controller
      * saveAs method.
      */
     @FXML
-    protected void save()
+    private void save()
     {
         prepareForRender();
         
@@ -1996,7 +1996,7 @@ public class Controller
      * Has the user save a rendered image through a file chooser
      */
     @FXML
-    protected void saveAs()
+    private void saveAs()
     {
         prepareForRender();
         
@@ -2016,7 +2016,7 @@ public class Controller
      * 
      * @param height The height to be set
      */
-    protected void setPopulationVertexHeight(short height)
+    private void setPopulationVertexHeight(short height)
     {
         if (validator.isPopulationSizeValid(height))
         {
@@ -2035,7 +2035,7 @@ public class Controller
      * 
      * @param width The width to be set
      */
-    protected void setPopulationVertexWidth(short width)
+    private void setPopulationVertexWidth(short width)
     {
         if (validator.isPopulationSizeValid(width))
         {
@@ -2054,7 +2054,7 @@ public class Controller
      * 
      * @param depth The depth to be set
      */
-    protected void setTerrainVertexDepth(short depth)
+    private void setTerrainVertexDepth(short depth)
     {
         if (validator.isTerrainSizeValid(depth))
         {
@@ -2074,7 +2074,7 @@ public class Controller
      * 
      * @param width The width to be set
      */
-    protected void setTerrainVertexWidth(short width)
+    private void setTerrainVertexWidth(short width)
     {
         if (validator.isTerrainSizeValid(width))
         {
@@ -2093,7 +2093,7 @@ public class Controller
      * 
      * @param alster The alert to be stylized
      */
-    protected void styleDialog(Alert alster)
+    private void styleDialog(Alert alster)
     {
         DialogPane dister = alster.getDialogPane();
         
@@ -2117,7 +2117,7 @@ public class Controller
      *         validated, the spinner's previous value that is provided as a
      *         parameter.
      */
-    protected int validateSpinner(boolean mustBePositive, int oldValue,
+    private int validateSpinner(boolean mustBePositive, int oldValue,
             Spinner spinster)
     {
         int validValue;
@@ -2151,7 +2151,7 @@ public class Controller
      * @param didWidthChange Whether or not the terrain's width was adjusted
      * @param terrainSize The new size of the terrain
      */
-    protected void updatePopulationsForTerrainSizeChange(boolean didWidthChange,
+    private void updatePopulationsForTerrainSizeChange(boolean didWidthChange,
             short terrainSize)
     {
         // If the terrain's width changed...
