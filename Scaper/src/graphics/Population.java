@@ -422,11 +422,9 @@ public class Population
                             
                                     currentIndex++;
                                 }
-                        
+                                
                                 updateProgress(progress, done);
                                 progress++;
-                                System.out.println(progress + " of " + done);
-                                System.out.println((progress / done * 100) + "%");
                             }
                         }
                 
@@ -653,9 +651,9 @@ public class Population
     /**
      * Gets the population of individual meshes
      * 
-     * @return the population
+     * @return a Group of the population's meshes
      */
-    public Group getPopulation()
+    public Group getMeshes()
     {
         Group groupster = new Group();
         
@@ -853,7 +851,7 @@ public class Population
     }
     
     /**
-     * Gets whether or not the service is ready for use
+     * Gets whether or not the service is ready for use (or in use)
      * 
      * @return Whether or not the service is ready for use
      */

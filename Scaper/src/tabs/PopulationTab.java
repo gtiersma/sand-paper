@@ -2,6 +2,7 @@ package tabs;
 
 import graphics.Population;
 import java.util.Optional;
+import javafx.concurrent.Service;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
@@ -38,6 +39,29 @@ public class PopulationTab
         activePopulation = null;
         
         populations = new Population[0];
+    }
+    
+    /**
+     * Gets whether or not at least 1 population has its service either ready to
+     * be used or already in use.
+     * 
+     * @return Whether or not a population's service is ready for use
+     */
+    public boolean isServicePrepared()
+    {
+        boolean prepared = false;
+        
+        for (int i = 0; i < populations.length; i++)
+        {
+            if (populations[i].isServicePrepared())
+            {
+                prepared = true;
+                
+                i = populations.length;
+            }
+        }
+        
+        return prepared;
     }
     
     /**
@@ -273,15 +297,15 @@ public class PopulationTab
     }
     
     /**
-     * Gets the population at the given index
+     * Gets the Population object at the given index
      * 
-     * @param index The index of which population to be returned
+     * @param index The index of which Population to be returned
      * 
-     * @return A population
+     * @return A Population object
      */
-    public Group getPopulation(int index)
+    public Population getPopulation(int index)
     {
-        return populations[index].getPopulation();
+        return populations[index];
     }
     
     /**
@@ -292,6 +316,23 @@ public class PopulationTab
     public int getPopulationAmount()
     {
         return populations.length;
+    }
+    
+    /**
+     * Gets all of the Service objects belonging to all of the Populations
+     * 
+     * @return The populations' Service objects
+     */
+    public Service[] getServices()
+    {
+        Service[] services = new Service[populations.length];
+        
+        for (short i = 0; i < services.length; i++)
+        {
+            services[i] = populations[i].getService();
+        }
+        
+        return services;
     }
     
     /**
