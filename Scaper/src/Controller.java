@@ -655,6 +655,76 @@ public class Controller
     }
     
     /**
+     * Adds all of the Population objects to the preview
+     * 
+     * @param previewItems A group containing all objects to be used in the
+     *                     SubScene preview except the Populations
+     */
+    private void addPopulationsToPreview(Group previewItems)
+    {
+        Service[] services = popTab.getServices();
+        
+        // As long as there is at least 1 Population object...
+        if (services.length > 0)
+        {
+            // ...disable all of the controls
+            everything.setDisable(true);
+            
+            // For each of the Populations...
+            for (short i = 0; i < services.length; i++)
+            {
+                // ...if the Population's Service is in use...
+                if (popTab.getPopulation(i).isServicePrepared())
+                {
+                    // The incrementation variable must be final to be used in
+                    // the lando
+                    final short I = i;
+            
+                    // Once the service is finished...
+                    services[i].setOnSucceeded(e ->
+                    {
+                        // ...perform the post-service activities on the active
+                        // population.
+                        popTab.getPopulation(I).concludeService();
+                
+                        addPopulationToPreview(I, previewItems);
+                    });
+                }
+                // ...otherwise, if the Population is not using a Service...
+                else
+                {
+                    // ...just add it.
+                    addPopulationToPreview(i, previewItems);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Adds a population object to the preview. Re-enables all of the controls 
+     * if there are no longer any population objects running a Service.
+     * 
+     * @param index The index of the Population object to add to the preview
+     * @param previewItems All of the other items in the preview (terrain,
+     *                     lights, etc)
+     */
+    private void addPopulationToPreview(short index, Group previewItems)
+    {
+        // Add the population's meshes to the Group
+        previewItems.getChildren().add(popTab.getPopulation(index).getMeshes());
+                
+        // Apply the content to the preview pane
+        preview.setRoot(previewItems);
+
+        // If all of the populations Services are finished...
+        if (!popTab.isServicePrepared())
+        {
+            // ...re-enable all of the controls
+            everything.setDisable(false);
+        }
+    }
+    
+    /**
      * Changes the terrain's displacement map to what is currently set in the
      * terrain tab's displacement combo box
      * 
@@ -1042,50 +1112,6 @@ public class Controller
                     terTab.getTerrain().getPoints());
         
             refreshPreview();
-        }
-    }
-    
-    /**
-     * Properly brings all Population Services to end. For mandatory use when
-     * all Population Services are being used.
-     * 
-     * @param previewItems A group containing all objects to be used in the
-     *                     SubScene preview except the Populations
-     */
-    private void concludePopulationServices(Group previewItems)
-    {
-        Service services[] = popTab.getServices();
-            
-        // Disable all of the controls
-        everything.setDisable(true);
-        
-        // For each of the Populations...
-        for (short i = 0; i < services.length; i++)
-        {
-            // The incrementation variable must be final to be used in the lando
-            final short I = i;
-            
-            // Once the service is finished...
-            services[i].setOnSucceeded(e ->
-            {
-                // ...perform the post-service activities on the active
-                // population.
-                popTab.getPopulation(I).concludeService();
-                
-                // Add the population of MeshViews to the Group
-                previewItems.getChildren().add(
-                        popTab.getPopulation(I).getMeshes());
-            
-                // Apply the content to the preview pane
-                preview.setRoot(previewItems);
-                
-                // If all of the Services are finished...
-                if (!popTab.isServicePrepared())
-                {
-                    // ...re-enable all of the controls
-                    everything.setDisable(false);
-                }
-            });
         }
     }
     
@@ -1712,7 +1738,6 @@ public class Controller
     private void refreshPreview()
     {
         int lightAmount = ligTab.getLightAmount();
-        int populationAmount = popTab.getPopulationAmount();
         
         Group previewItems = new Group();
         
@@ -1729,26 +1754,10 @@ public class Controller
             previewItems.getChildren().add(ligTab.getLight(i).getPointLight());
         }
         
-        // If at least 1 population exists, and a Population's Service is about
-        // to run...
-        if (popTab.populationExists() && popTab.isServicePrepared())
-        {
-            // ...get ready to conclude the services.
-            concludePopulationServices(previewItems);
-        }
-        // ...otherwise...
-        else
-        {
-            // ...add each population.
-            for (int i = 0; i < populationAmount; i++)
-            {
-                previewItems.getChildren().add(
-                        popTab.getPopulation(i).getMeshes());
-            }
-            
-            // Apply the content to the preview pane
-            preview.setRoot(previewItems);
-        }
+        // Apply the content to the preview pane
+        preview.setRoot(previewItems);
+        
+        addPopulationsToPreview(previewItems);
     }
     
     /**
