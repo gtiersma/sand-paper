@@ -30,7 +30,7 @@ public class Population
     
     // Default textures to use for when no maps have been selected by the user
     private final TextureObject GRAY_TEXTURE
-            = new TextureObject(new File("src/graphics/gray.png"));
+            = new TextureObject(new File("src/graphics/unassignedGray.png"));
     private final TextureObject WHITE_TEXTURE = new TextureObject();
     
     // Whether or not the service is ready to be used

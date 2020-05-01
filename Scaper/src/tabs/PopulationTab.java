@@ -22,7 +22,7 @@ public class PopulationTab
     
     final private int DEFAULT_DISPLACEMENT_STRENGTH = 5;
     
-    final Image BLANK_IMAGE = new Image("graphics/blank.png");
+    final Image BLANK_IMAGE = new Image("graphics/unassignedWhite.png");
     
     // The Population that the user currently has selected in the Population
     // selection combo box

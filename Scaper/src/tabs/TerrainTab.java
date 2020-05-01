@@ -21,7 +21,7 @@ public class TerrainTab
     // Initial strength of the displacement map
     final int DEFAULT_STRENGTH = 50;
     
-    final Image BLANK_IMAGE = new Image("graphics/blank.png");
+    final Image BLANK_IMAGE = new Image("graphics/unassignedWhite.png");
     
     Terrain terster;
     

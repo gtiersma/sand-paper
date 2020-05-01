@@ -524,9 +524,8 @@ public class Controller
             if (listen == true)
             {
                 // Index of currently selected population
-                int selectedIndex =
-                        populationChoiceP.getSelectionModel()
-                                .getSelectedIndex();
+                int selectedIndex = populationChoiceP.getSelectionModel()
+                        .getSelectedIndex();
             
                 popTab.setActivePopulation(selectedIndex);
             

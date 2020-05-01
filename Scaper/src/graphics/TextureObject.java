@@ -2,7 +2,6 @@ package graphics;
 
 
 import java.io.File;
-import java.util.Objects;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +17,10 @@ public class TextureObject
 {
     // The size of the image view
     final private int VIEW_SIZE = 80;
+   
+    // Names of images used for unassigned textures
+    final private String[] EMPTY_NAMES = {"unassignedGray.png",
+        "unassignedWhite.png"};
     
     // The path to the texture
     private String path;
@@ -57,7 +60,7 @@ public class TextureObject
     public TextureObject()
     {
         // When no parameter is given, the blank texture is assigned
-        filster = new File("src/graphics/blank.png");
+        filster = new File("src/graphics/unassignedWhite.png");
         path = filster.toString();
         name = path.substring(path.lastIndexOf("\\") + 1);
         imster = new Image("file:" + path);
@@ -120,9 +123,23 @@ public class TextureObject
      */
     public String getName()
     {
+        // Whether or not this texture's name should be hidden
+        boolean nameShouldBeHidden = false;
+        
         String namster = "";
         
-        if (!Objects.equals(name, "blank.png"))
+        // For each possible name of an image used for unassigned textures...
+        for (byte i = 0; i < EMPTY_NAMES.length; i++)
+        {
+            // ...if this texture has one of those names...
+            if (name.equals(EMPTY_NAMES[i]))
+            {
+                // ...its name should be hidden from the user.
+                nameShouldBeHidden = true;
+            }
+        }
+        
+        if (!nameShouldBeHidden)
         {
             namster = name;
         }
