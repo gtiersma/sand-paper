@@ -260,11 +260,8 @@ public class Population
         // the Individual's faces
         short faceWidth;
         short faceHeight;
-                
-        // Calculates the index of the point on the terrain to which
-        // this Individual is to be created upon
-        int pointIndex = ((locationY * terrainWidth) + locationX)
-                * THREE_DIMENSIONS;
+             
+        int pointIndex = getBasePointIndex(locationX, locationY, terrainWidth);
                     
         // The position of the point on the terrain to which this
         // new Individual will belong
@@ -329,7 +326,7 @@ public class Population
         final short BASE_ROTATE_Y = baseRotateY;
         
         final short TERRAIN_WIDTH = (short)locations.length;
-        final short TERRAIN_HEIGHT = (short)locations[0].length;
+        final short TERRAIN_DEPTH = (short)locations[0].length;
         
         final short VERTEX_WIDTH = vertexWidth;
         final short VERTEX_HEIGHT = vertexHeight;
@@ -343,15 +340,15 @@ public class Population
         final double X_SHIFT_SPACE = getUVSpacing(shift.getWidth(),
                 TERRAIN_WIDTH);
         final double Y_SHIFT_SPACE = getUVSpacing(shift.getHeight(),
-                TERRAIN_HEIGHT);
+                TERRAIN_DEPTH);
         final double X_WIDTH_SPACE = getUVSpacing(width.getWidth(),
                 TERRAIN_WIDTH);
         final double Y_WIDTH_SPACE = getUVSpacing(width.getHeight(),
-                TERRAIN_HEIGHT);
+                TERRAIN_DEPTH);
         final double X_HEIGHT_SPACE = getUVSpacing(height.getWidth(),
                 TERRAIN_WIDTH);
         final double Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
-                TERRAIN_HEIGHT);
+                TERRAIN_DEPTH);
         
         final TextureObject BUMP = new TextureObject(bump.getFile());
         final TextureObject SHIFT = new TextureObject(shift.getFile());
@@ -383,7 +380,7 @@ public class Population
                 
                         // Used for keeping track of progress for the progress
                         // bar
-                        int done = TERRAIN_WIDTH * TERRAIN_HEIGHT;
+                        int done = TERRAIN_WIDTH * TERRAIN_DEPTH;
                         int progress = 0;
                 
                         Individual[] newIndividuals = new Individual[SIZE];
@@ -393,7 +390,7 @@ public class Population
                         {
                             // ...and for each column of vertices on the
                             // terrain...
-                            for (short j = 0; j < TERRAIN_HEIGHT; j++)
+                            for (short j = 0; j < TERRAIN_DEPTH; j++)
                             {
                                 // ...if an Individual is to be created there...
                                 if (LOCATIONS[i][j])
@@ -499,6 +496,35 @@ public class Population
         }
         
         return newDisplacement;
+    }
+    
+    /**
+     * Gets the index of the point in the terrain's point array to which an
+     * Individual's position will be based upon
+     * 
+     * @param locationX The column of vertices on the terrain that contains the
+     *                  base point
+     * @param locationY The row of vertices on the terrain that contains the
+     *                  base point
+     * @param terrainWidth The width of the terrain (measured in vertices)
+     * 
+     * @return The index in the terrain's point array of an Individual's base
+     *         point
+     */
+    private int getBasePointIndex(short locationX, short locationY,
+            short terrainWidth)
+    {
+        // The row of vertices in the terrain that the base point belongs to
+        int row = locationY * terrainWidth;
+        
+        // The numbered vertex that is a base point if the terrain's vertices
+        // are numbered left-to-right, up-to-down
+        int position = row + locationX;
+        
+        // Factor in the fact that there are 3 vertices for each point
+        int index = position * THREE_DIMENSIONS;
+        
+        return index;
     }
     
     /**
@@ -907,7 +933,10 @@ public class Population
      */
     public void reposition(float[] terrainPoints)
     {
-        // The index of the Individual currently being repositioned
+        // The length of the array that maps out the Individual's position is
+        // equal to the terrain's width
+        short terrainWidth = (short)locations.length;
+        
         int index = 0;
         
         // For each row of vertices on the terrain...
@@ -921,7 +950,7 @@ public class Population
                 {
                     // ...get the index of the coordinates for the vertex for
                     // the current Individual.
-                    int xIndex = index * 3;
+                    int xIndex = getBasePointIndex(i, j, terrainWidth);
                     int yIndex = xIndex + 1;
                     int zIndex = xIndex + 2;
                     

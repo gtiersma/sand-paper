@@ -3,7 +3,6 @@ package tabs;
 import graphics.Population;
 import java.util.Optional;
 import javafx.concurrent.Service;
-import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextInputDialog;
