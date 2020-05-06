@@ -121,8 +121,9 @@ public class InputVerifier
     {
         boolean valid = false;
         
-        // As long as the spinner's value is not blank...
-        if (!value.equals(""))
+        // As long as the spinner's value is not blank or just a negative
+        // sign...
+        if (!value.equals("") && !value.equals("-"))
         {
             // Regex that forces the number to be within a certain digit count
             String regex = "\\d{0," + MAX_SPINNER_DIGIT_AMOUNT + "}";
