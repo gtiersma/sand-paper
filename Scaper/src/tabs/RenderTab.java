@@ -196,16 +196,6 @@ public class RenderTab
     }
     
     /**
-     * Set the preferred rendered image height
-     * 
-     * @param heightster The rendered image height
-     */
-    public void setHeight(String heightster)
-    {
-        height = Integer.parseInt(heightster);
-    }
-    
-    /**
      * Set the preferred rendered image width
      * 
      * @param widthster The rendered image width
@@ -213,15 +203,5 @@ public class RenderTab
     public void setWidth(int widthster)
     {
         width = widthster;
-    }
-    
-    /**
-     * Set the preferred rendered image width
-     * 
-     * @param widthster The rendered image width
-     */
-    public void setWidth(String widthster)
-    {
-        width = Integer.parseInt(widthster);
     }
 }
