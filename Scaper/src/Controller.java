@@ -1676,6 +1676,19 @@ public class Controller
         int width = renTab.getWidth();
         int height = renTab.getHeight();
         
+        // If one of the render's spinners still has focus, any changes made in
+        // that spinner may have not been updated. This will block fixes that.
+        if (renderSpinnerRW.isFocused())
+        {
+            width = validateSpinner(true, width, renderSpinnerRW);
+            renTab.setWidth(width);
+        }
+        else if (renderSpinnerRH.isFocused())
+        {
+            height = validateSpinner(true, height, renderSpinnerRH);
+            renTab.setHeight(height);
+        }
+        
         camTab.setCameraOffset(width / 2, height / 2);
         
         preview.setWidth(width);
