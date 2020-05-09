@@ -144,7 +144,7 @@
                                     <HBox id="terrainBoxDMS" alignment="CENTER" layoutX="10.0" layoutY="18.0" spacing="10.0">
                                        <children>
                                           <Label id="strength" styleClass="medium-label" text=" Strength:" />
-                                          <Slider id="horizontal-slider" fx:id="terrainSliderDMS" minorTickCount="1" showTickLabels="true" snapToTicks="true" value="50.0" />
+                                          <Slider id="horizontal-slider" fx:id="terrainSliderDMS" minorTickCount="1" showTickLabels="true" value="50.0" />
                                        </children>
                                     </HBox>
                                     <Separator id="style-5" prefWidth="200.0" />
