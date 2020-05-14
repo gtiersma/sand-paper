@@ -1689,8 +1689,16 @@ public class Controller
             renTab.setHeight(height);
         }
         
+        // Adjust the camera's position so that the render will be centered on
+        // the same point as the preview
         camTab.setCameraOffset(width / 2, height / 2);
         
+        // Zoom the camera so that approximately the same content visible in the
+        // preview is visible in the render
+        camTab.zoomForRender(cameraSpinnerPAZ.getValue(),
+                renTab.getDimensionAverage());
+        
+        // Resize the preview to match the size of the render
         preview.setWidth(width);
         preview.setHeight(height);
     }
@@ -1988,6 +1996,8 @@ public class Controller
         // To be centered, the terrain must be adjusted by half of the preview's
         // size
         camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
+        
+        camTab.setZoom(cameraSpinnerPAZ.getValue());
         
         preview.setWidth(PREVIEW_WIDTH);
         preview.setHeight(PREVIEW_HEIGHT);

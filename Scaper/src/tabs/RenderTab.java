@@ -89,6 +89,16 @@ public class RenderTab
     }
     
     /**
+     * Gets the average of the width and height dimensions
+     * 
+     * @return The average of the dimensions
+     */
+    public int getDimensionAverage()
+    {
+        return (width + height) / 2;
+    }
+    
+    /**
      * Gets the width of the render
      * 
      * @return The width

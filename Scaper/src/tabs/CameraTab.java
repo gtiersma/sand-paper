@@ -12,12 +12,28 @@ public class CameraTab
 {
     final private byte DEFAULT_FIELD_OF_VIEW = 30;
     
+    // The number of pixels that are grouped for each zoom-per-pixel bracket.
+    // For example, if this is set to 250, an average render image dimension
+    // between 0-250 would be the bracket for index 0 of the zoom-per-pixel
+    // array, an average dimension between 250-500 would be for index 1, etc.
+    final private short ZOOM_PIXEL_RANGE = 250;
+    
     final private int DEFAULT_HORIZONTAL_ANGLE = 0;
     final private int DEFAULT_VERTICAL_ANGLE = 45;
     final private int DEFAULT_ZOOM = 0;
     
     final private double NEAR_CLIP = 0.1;
     final private double FAR_CLIP = Double.MAX_VALUE;
+    
+    // How much the camera is to zoom per pixel of the render image's dimensions
+    // set by the user (used when creating a render image). Which index is used
+    // is dependant on the average dimension size currently set. ZOOM_PIXEL
+    // _RANGE is the number of pixels that each index is grouped by.
+    
+    // There should be a formula to calculate these values, but it has not been
+    // developed yet, so until then, these constants are used.
+    final private double[] RENDER_ZOOM_PER_PIXEL = {-6, -1, 0, 0.5, 1, 1, 1,
+            1.2, 1.3, 1.4, 1.4, 1.5};
     
     // The angle to which the mesh should be rotating (simulating the effect of
     // the camera orbiting and being rotated around the mesh)
@@ -125,6 +141,41 @@ public class CameraTab
     }
     
     /**
+     * Gets the amount that is needed to zoom in or out for creating a render
+     * 
+     * @param dimensionAverage The average of the width and height that is set
+     *                         to be the image's dimensions
+     * 
+     * @return The amount to zoom for rendering an image
+     */
+    private int getRenderZoom(int resolutionAverage)
+    {
+        // The index of the render-zoom-per-pixel array that will contain the
+        // amount the camera is to zoom per pixel of the dimension average
+        byte zoomIndex = (byte)(resolutionAverage / ZOOM_PIXEL_RANGE);
+        
+        // The additional amount for the camera to zoom
+        int extraZoom;
+        
+        // The amount the camera is to zoom per pizel of the dimension average
+        double zoomPerPixel;
+        
+        // If the calculated index is not within the array's size...
+        if (zoomIndex >= RENDER_ZOOM_PER_PIXEL.length)
+        {
+            // ...make it the last index of the array.
+            zoomIndex = (byte)(RENDER_ZOOM_PER_PIXEL.length - 1);
+        }
+        
+        zoomPerPixel = RENDER_ZOOM_PER_PIXEL[zoomIndex];
+        
+        // Calculate the total zoom amount
+        extraZoom = (int)(resolutionAverage * zoomPerPixel);
+        
+        return extraZoom;
+    }
+    
+    /**
      * Gets how far the camera is to be adjusted on the x axis from its central
      * position
      * 
@@ -211,7 +262,9 @@ public class CameraTab
         // zoomed in relative to the farthest point from the mesh center
         final double FURTHEST_POINT_ADJUSTMENT = -1.2;
         
-        double z = originZ + zoom + (furthest * FURTHEST_POINT_ADJUSTMENT);
+        double adjustment = furthest * FURTHEST_POINT_ADJUSTMENT;
+        
+        double z = originZ + zoom + adjustment;
         
         camster.setTranslateZ(z);
     }
@@ -347,12 +400,29 @@ public class CameraTab
      * Zooms the camera either in or out
      * 
      * @param zoomster How far to zoom the camera in. A negative value will zoom
-     * the camera out
+     *                 the camera out.
      */
     public void setZoom(int zoomster)
     {
         zoom = zoomster;
         
         refreshZoom();
+    }
+    
+    /**
+     * Zooms the camera either in or out for the creation of a render image
+     * 
+     * @param zoomster How far to zoom the camera in. A negative value will zoom
+     *                 the camera out.
+     * @param dimensionAverage The average of the width and height that is set
+     *                          to be the image's dimensions
+     */
+    public void zoomForRender(int zoomster, int dimensionAverage)
+    {
+        int extraZoom = getRenderZoom(dimensionAverage);
+        
+        // Zoom the regular amount in addition to the zoom adjustment for the
+        // render
+        setZoom(zoomster + extraZoom);
     }
 }
