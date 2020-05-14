@@ -44,7 +44,7 @@ public class TextureObject
     {
         filster = fileFile;
         path = fileFile.toString();
-        name = path.substring(path.lastIndexOf("\\") + 1);
+        name = path.substring(path.lastIndexOf("\\") + 1, path.indexOf("."));
         imster = new Image("file:" + path);
         pixster = imster.getPixelReader();
         
@@ -62,7 +62,7 @@ public class TextureObject
         // When no parameter is given, the blank texture is assigned
         filster = new File("src/graphics/unassignedWhite.png");
         path = filster.toString();
-        name = path.substring(path.lastIndexOf("\\") + 1);
+        name = path.substring(path.lastIndexOf("\\") + 1, path.indexOf("."));
         imster = new Image("file:" + path);
         pixster = imster.getPixelReader();
         
@@ -178,6 +178,22 @@ public class TextureObject
     }
     
     /**
+     * Increments a given String. The string must be entirely a number.
+     * 
+     * @return The incremented String
+     */
+    private String incrementString(String stringster)
+    {
+        int number = Integer.parseInt(stringster);
+                
+        number++;
+        
+        String incrementedString = Integer.toString(number);
+        
+        return incrementedString;
+    }
+    
+    /**
      * Gets whether or not there is an error with loading the image
      * 
      * @return Whether or not there is an error with loading the image
@@ -196,5 +212,65 @@ public class TextureObject
         ColorAdjust grayscale = new ColorAdjust();
         grayscale.setSaturation(-1);
         viewster.setEffect(grayscale);
+    }
+    
+    /**
+     * Changes the name to prevent duplicate names with another TextureObject.
+     * 
+     * It changes the name by incrementing a number at the end of the name. If
+     * there is not a number at the end of the name, it appends "_2" to the
+     * name.
+     */
+    public void rename()
+    {
+        // The digits at the end of the name
+        String endDigits = "";
+        
+        // For each character in the name (going from the end to the
+        // beginning)...
+        for (int i = name.length() - 1; i > -1; i--)
+        {
+            // ...if the character is a digit...
+            if (Character.isDigit(name.charAt(i)))
+            {
+                // ...concat it to the beginning of the ending digits.
+                endDigits = name.charAt(i) + endDigits;
+                
+                // If the beginning of the string has been reached...
+                if (i == 0)
+                {
+                    // ...increment the digits gathered and make it the new
+                    // name.
+                    name = incrementString(endDigits);
+                }
+            }
+            // ...otherwise, if the character is not a digit and is the last
+            // character in the name...
+            else if (endDigits.equals(""))
+            {
+                // ...append the number 2 to the end.
+                name = name + "_2";
+                
+                // Exit the loop
+                i = -1;
+            }
+            // ...otherwise...
+            else
+            {
+                // ...get the number of characters in the name excluding the
+                // number at the end.
+                int lengthWithoutNumber = name.length() - endDigits.length();
+                
+                // Increment the number from the end of the string
+                String newNumber = incrementString(endDigits);
+                
+                // Replace the number at the end of the string with the new
+                // incremented number
+                name = name.substring(0, lengthWithoutNumber) + newNumber;
+                
+                // Exit the loop
+                i = -1;
+            }
+        }
     }
 }

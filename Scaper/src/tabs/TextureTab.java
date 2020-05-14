@@ -87,14 +87,18 @@ public class TextureTab
                     // ...if it is to be a colored texture...
                     if (color)
                     {
-                        // ...add it to the array of colored textures.
-                        colorTextures = addToArray(colorTextures, texster);
+                        // ...change its name if the name already exists.
+                        checkForDuplicateName(texster, colorTextures);
+                        //  Add it to the array of colored textures
+                        colorTextures = addToArray(texster, colorTextures);
                     }
                     // ...otherwise...
                     else
                     {
-                        // ...add it to the array of grayscale textures.
-                        grayTextures = addToArray(grayTextures, texster);
+                        // ...change its name if the name already exists.
+                        checkForDuplicateName(texster, grayTextures);
+                        // Add it to the array of grayscale textures
+                        grayTextures = addToArray(texster, grayTextures);
                         // Remove its color
                         grayTextures[grayTextures.length - 1].removeColor();
                     }
@@ -124,13 +128,13 @@ public class TextureTab
     /**
      * Adds a texture object to an array
      * 
-     * @param texsters The array of texture objects
      * @param texster The texture object to be added to the array
+     * @param texsters The array of texture objects
      * 
      * @return The array of texture objects with the new texture object
      */
-    private TextureObject[] addToArray(TextureObject[] texsters,
-            TextureObject texster)
+    private TextureObject[] addToArray(TextureObject texster,
+            TextureObject[] texsters)
     {
         // The current size
         int size = texsters.length;
@@ -145,6 +149,40 @@ public class TextureTab
         newTexsters[size] = texster;
         
         return newTexsters;
+    }
+    
+    /**
+     * Checks if the given TextureObject has a name that matches a texture that
+     * is already present in the given array. It changes the given
+     * TextureObject's name if a match is found.
+     * 
+     * @param texster The TextureObject which may need to have its name changed
+     * @param texsters The array of TextureObjects to compare names from
+     */
+    private void checkForDuplicateName(TextureObject texster,
+            TextureObject[] texsters)
+    {
+        String name = texster.getName();
+        
+        // For each TextureObject in the array...
+        for (int i = 0; i < texsters.length; i++)
+        {
+            // ...get its name.
+            String existingName = texsters[i].getName();
+                
+            // If the name matches...
+            if (existingName.equals(name))
+            {
+                // ...rename the TextureObject.
+                texster.rename();
+                
+                // Make sure none of the TextureObjects match the new name
+                checkForDuplicateName(texster, texsters);
+                    
+                // Exit the loop
+                i = texsters.length;
+            }
+        }
     }
     
     /**
