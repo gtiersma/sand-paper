@@ -67,8 +67,8 @@ public class Population
     
     // The maps for each Individual
     private TextureObject bump;
+    private TextureObject diffuse;
     private TextureObject specular;
-    private TextureObject texture;
     
     // A grayscale image for the probability of an Individual being created on a
     // specific vertex on the Terrain
@@ -126,7 +126,7 @@ public class Population
         
         bump = WHITE_TEXTURE;
         specular = WHITE_TEXTURE;
-        texture = WHITE_TEXTURE;
+        diffuse = WHITE_TEXTURE;
         
         shift = GRAY_TEXTURE;
         placement = WHITE_TEXTURE;
@@ -233,9 +233,9 @@ public class Population
      * @param terrainPoints The array of point positions used in the creation of
      *                      the terrain
      * @param bumpster The bump map for this population
+     * @param difster The diffuse map for this population
      * @param shiftster The shift map for this population
      * @param specster The specular map for this population
-     * @param texster The texture for this population
      * @param widther The width map for this population
      * @param heightster The height map for this population
      * @param dRange The 2 displacement maps used to define the range to which
@@ -246,8 +246,8 @@ public class Population
             short yRotate, int dStrength, double xShiftSpace,
             double yShiftSpace, double xWidthSpace, double yWidthSpace,
             double xHeightSpace, double yHeightSpace, float[] terrainPoints,
-            TextureObject bumpster, TextureObject shiftster,
-            TextureObject specster, TextureObject texster,
+            TextureObject bumpster,  TextureObject difster,
+            TextureObject shiftster, TextureObject specster,
             TextureObject widthster, TextureObject heightster,
             TextureObject[] dRange)
     {
@@ -301,7 +301,7 @@ public class Population
         
         newIndividual.load();
         
-        newIndividual.setTexture(texster.getImage());
+        newIndividual.setDiffuse(difster.getImage());
         newIndividual.setBump(bumpster.getImage());
         newIndividual.setSpecular(specster.getImage());
         
@@ -353,7 +353,7 @@ public class Population
         final TextureObject BUMP = new TextureObject(bump.getFile());
         final TextureObject SHIFT = new TextureObject(shift.getFile());
         final TextureObject SPECULAR = new TextureObject(specular.getFile());
-        final TextureObject TEXTURE = new TextureObject(texture.getFile());
+        final TextureObject DIFFUSE = new TextureObject(diffuse.getFile());
         final TextureObject WIDTH = new TextureObject(width.getFile());
         final TextureObject HEIGHT = new TextureObject(height.getFile());
         
@@ -409,9 +409,10 @@ public class Population
                                                     Y_WIDTH_SPACE,
                                                     X_HEIGHT_SPACE,
                                                     Y_HEIGHT_SPACE,
-                                                    TERRAIN_POINTS, BUMP, SHIFT,
-                                                    SPECULAR, TEXTURE, WIDTH,
-                                                    HEIGHT, DISPLACEMENT_RANGE);
+                                                    TERRAIN_POINTS, BUMP,
+                                                    DIFFUSE, SHIFT, SPECULAR,
+                                                    WIDTH, HEIGHT,
+                                                    DISPLACEMENT_RANGE);
         
                                     // Add the new Individual to the new array
                                     newIndividuals[currentIndex] =
@@ -793,13 +794,13 @@ public class Population
     }
     
     /**
-     * Gets the texture
+     * Gets the diffuse map
      * 
-     * @return A TextureObject of the texture
+     * @return A TextureObject of the diffuse map
      */
-    public TextureObject getTexture()
+    public TextureObject getDiffuse()
     {
-        return texture;
+        return diffuse;
     }
     
     /**
@@ -1045,8 +1046,8 @@ public class Population
         
         load(actionDescription, terrainPoints);
         
-        setTexture(texture);
         setBumpMap(bump);
+        setDiffuse(diffuse);
         setSpecularMap(specular);
     }
     
@@ -1159,17 +1160,17 @@ public class Population
     }
     
     /**
-     * Sets the texture
+     * Sets the diffuse map
      * 
-     * @param texster A texture
+     * @param difster A diffuse map
      */
-    public void setTexture(TextureObject texster)
+    public void setDiffuse(TextureObject difster)
     {
-        texture = texster;
+        diffuse = difster;
         
         for (Individual individual : individuals)
         {
-            individual.setTexture(texture.getImage());
+            individual.setDiffuse(diffuse.getImage());
         }
     }
     
@@ -1327,7 +1328,7 @@ public class Population
         
         stringster = stringster + "Bump map: " + bump.getName() + "\n";
         stringster = stringster + "Specular map: " + specular.getName() + "\n";
-        stringster = stringster + "Texture map: " + texture.getName() + "\n\n";
+        stringster = stringster + "Diffuse map: " + diffuse.getName() + "\n\n";
         
         stringster = stringster + "Shift image: " + shift.getName() + "\n";
         stringster = stringster + "Width image: " + width.getName() + "\n";

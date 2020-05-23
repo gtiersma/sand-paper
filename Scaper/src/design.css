@@ -401,6 +401,11 @@
     -fx-graphic: url("/icons/depth.png");
 }
 
+#diffuse .tab-label, #diffuse
+{
+    -fx-graphic: url("/icons/diffuse.png");
+}
+
 #displacement
 {
     -fx-graphic: url("/icons/displacement.png");

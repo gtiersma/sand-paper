@@ -150,8 +150,8 @@
                                     <Separator id="style-5" prefWidth="200.0" />
                                     <HBox id="terrainBoxT" alignment="CENTER" layoutX="10.0" layoutY="18.0" spacing="10.0">
                                        <children>
-                                          <Label id="textures" styleClass="medium-label" text="Texture:" />
-                                          <ComboBox id="style-5" fx:id="terrainComboT" onAction="#changeTerrainTexture" prefWidth="150.0" />
+                                          <Label id="diffuse" styleClass="medium-label" text="Diffuse Map:" />
+                                          <ComboBox id="style-5" fx:id="terrainComboT" onAction="#changeTerrainDiffuse" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="terrainImageT" fx:id="terrainImageT" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
@@ -279,8 +279,8 @@
                                     <Separator id="style-5" prefWidth="200.0" />
                                     <HBox id="populationBoxT" alignment="CENTER" spacing="10.0">
                                        <children>
-                                          <Label id="textures" styleClass="medium-label" text="Texture:" />
-                                          <ComboBox id="style-4" fx:id="populationComboT" disable="true" onAction="#changePopulationTexture" prefWidth="150.0" />
+                                          <Label id="diffuse" styleClass="medium-label" text="Diffuse Map:" />
+                                          <ComboBox id="style-4" fx:id="populationComboT" disable="true" onAction="#changePopulationDiffuse" prefWidth="150.0" />
                                        </children>
                                     </HBox>
                                     <ImageView id="populationImageT" fx:id="populationImageT" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />

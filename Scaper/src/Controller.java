@@ -869,6 +869,33 @@ public class Controller
     }
     
     /**
+     * Changes the currently-selected population's diffuse map to what is
+     * currently set in the population tab's diffuse map combo box
+     * 
+     * @param eventster The event listener
+     */
+    @FXML
+    private void changePopulationDiffuse(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = populationComboT.getValue().toString();
+            
+            // Get the image belonging to that name
+            TextureObject texster = texTab.getTexture(true, name);
+
+            populationImageT.setImage(texster.getImage());
+            
+            // Set the image as the population's diffuse map
+            popTab.getActivePopulation().setDiffuse(texster);
+        
+            refreshPreview();
+        }
+    }
+    
+    /**
      * Changes the currently-selected population's specular map to what is
      * currently set in the population tab's specular map combo box
      * 
@@ -890,33 +917,6 @@ public class Controller
             
             // Set the image as the specular map
             popTab.getActivePopulation().setSpecularMap(texster);
-        
-            refreshPreview();
-        }
-    }
-    
-    /**
-     * Changes the currently-selected population's texture to what is currently
-     * set in the population tab's texture combo box
-     * 
-     * @param eventster The event listener
-     */
-    @FXML
-    private void changePopulationTexture(ActionEvent eventster)
-    {
-        // If action listeners are not to be ignored at the moment...
-        if (listen)
-        {
-            // ...get the selected image name from the combo box.
-            String name = populationComboT.getValue().toString();
-            
-            // Get the image belonging to that name
-            TextureObject texster = texTab.getTexture(true, name);
-
-            populationImageT.setImage(texster.getImage());
-            
-            // Set the image as the population's texture
-            popTab.getActivePopulation().setTexture(texster);
         
             refreshPreview();
         }
@@ -1005,6 +1005,33 @@ public class Controller
     }
     
     /**
+     * Changes the terrain's diffuse map to what is currently set in the diffuse
+     * map combo box
+     * 
+     * @param eventster The action event
+     */
+    @FXML
+    private void changeTerrainDiffuse(ActionEvent eventster)
+    {
+        // If action listeners are not to be ignored at the moment...
+        if (listen)
+        {
+            // ...get the selected image name from the combo box.
+            String name = terrainComboT.getValue().toString();
+            
+            // Get the image belonging to that name
+            Image imster = texTab.getImageByName(true, name);
+
+            terrainImageT.setImage(imster);
+
+            // Set the image as the diffuse map
+            terTab.getTerrain().setDiffuse(imster);
+        
+            refreshPreview();
+        }
+    }
+    
+    /**
      * Changes the terrain's specular map to what is currently set in the
      * specular map combo box
      * 
@@ -1026,33 +1053,6 @@ public class Controller
             
             // Set the image as the specular map
             terTab.getTerrain().setSpecular(terrainImageSM.getImage());
-        
-            refreshPreview();
-        }
-    }
-    
-    /**
-     * Changes the terrain's texture to what is currently set in the texture
-     * combo box
-     * 
-     * @param eventster The action event
-     */
-    @FXML
-    private void changeTerrainTexture(ActionEvent eventster)
-    {
-        // If action listeners are not to be ignored at the moment...
-        if (listen)
-        {
-            // ...get the selected image name from the combo box.
-            String name = terrainComboT.getValue().toString();
-            
-            // Get the image belonging to that name
-            Image imster = texTab.getImageByName(true, name);
-
-            terrainImageT.setImage(imster);
-
-            // Set the image as the texture
-            terTab.getTerrain().setTexture(imster);
         
             refreshPreview();
         }
@@ -1569,7 +1569,7 @@ public class Controller
         String heightName;
         String displacementName1;
         String displacementName2;
-        String textureName;
+        String diffuseName;
         String bumpName;
         String specularName;
         
@@ -1582,7 +1582,7 @@ public class Controller
         heightName = activePopulation.getHeight().getName();
         displacementName1 = activePopulation.getFirstDisplacement().getName();
         displacementName2 = activePopulation.getSecondDisplacement().getName();
-        textureName = activePopulation.getTexture().getName();
+        diffuseName = activePopulation.getDiffuse().getName();
         bumpName = activePopulation.getBumpMap().getName();
         specularName = activePopulation.getSpecularMap().getName();
         
@@ -1597,7 +1597,7 @@ public class Controller
                 = texTab.getTexture(true, displacementName1);
         TextureObject displacementTexture2
                 = texTab.getTexture(true, displacementName2);
-        TextureObject diffuseTexture = texTab.getTexture(true, textureName);
+        TextureObject diffuseTexture = texTab.getTexture(true, diffuseName);
         TextureObject bumpTexture = texTab.getTexture(true, bumpName);
         TextureObject specularTexture = texTab.getTexture(true, specularName);
 
@@ -1620,7 +1620,7 @@ public class Controller
         populationComboSH.setValue(heightName);
         populationComboDR1.setValue(displacementName1);
         populationComboDR2.setValue(displacementName2);
-        populationComboT.setValue(textureName);
+        populationComboT.setValue(diffuseName);
         populationComboBM.setValue(bumpName);
         populationComboSM.setValue(specularName);
         

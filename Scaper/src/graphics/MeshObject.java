@@ -67,7 +67,7 @@ public class MeshObject
     // Displacement map
     protected Image displacement;
     
-    // Contains the texture, bump map and displacement map
+    // Contains the diffuse, bump and displacement map
     protected PhongMaterial texture;
     
     // The mesh
@@ -390,6 +390,16 @@ public class MeshObject
     }
     
     /**
+     * Sets the mesh's diffuse map
+     * 
+     * @param difster The diffuse map
+     */
+    public void setDiffuse(Image difster)
+    {
+        texture.setDiffuseMap(difster);
+    }
+    
+    /**
      * Sets the mesh's displacement map
      * 
      * @param dister The displacement map
@@ -433,16 +443,6 @@ public class MeshObject
     public void setSpecular(Image specster)
     {
         texture.setSpecularMap(specster);
-    }
-    
-    /**
-     * Sets the mesh's texture map
-     * 
-     * @param texster The texture map
-     */
-    public void setTexture(Image texster)
-    {
-        texture.setDiffuseMap(texster);
     }
     
     /**

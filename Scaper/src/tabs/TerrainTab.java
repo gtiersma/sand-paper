@@ -71,7 +71,7 @@ public class TerrainTab
      */
     public void prepareTerrain()
     {
-        terster.setTexture(BLANK_IMAGE);
+        terster.setDiffuse(BLANK_IMAGE);
         terster.load();
     }
 }
