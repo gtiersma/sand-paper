@@ -53,6 +53,25 @@
           </Menu>
           <Menu id="style-1" text="_Help">
             <items>
+                  <Menu text="_Tutorials">
+                    <items>
+                      <MenuItem onAction="#openBeginnerTutorial" text="_Beginner">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="B" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                           </accelerator></MenuItem>
+                        <MenuItem disable="true" text="_Intermediate">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="I" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                           </accelerator></MenuItem>
+                        <MenuItem disable="true" text="A_dvanced">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="D" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                           </accelerator></MenuItem>
+                    </items>
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="T" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                     </accelerator>
+                  </Menu>
               <MenuItem id="style-1" fx:id="aboutMenu" onAction="#openAbout" text="_About">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="A" control="UP" meta="UP" shift="UP" shortcut="DOWN" />

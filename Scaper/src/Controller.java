@@ -1,10 +1,12 @@
 
 
+import static com.sun.javafx.PlatformUtil.isWindows;
 import generics.InputVerifier;
 import graphics.LightObject;
 import graphics.Population;
 import graphics.Terrain;
 import graphics.TextureObject;
+import java.io.IOException;
 import tabs.TextureTab;
 import tabs.TerrainTab;
 import tabs.RenderTab;
@@ -13,7 +15,6 @@ import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.SceneAntialiasing;
@@ -587,11 +588,9 @@ public class Controller
     
     /**
      * Gets a colored texture from the user through a file chooser
-     * 
-     * @param eventster The action event
      */
     @FXML
-    private void addColorTexture(ActionEvent eventster)
+    private void addColorTexture()
     {
         // If the user successfully supplied an image...
         if (texTab.addTexture(true))
@@ -624,11 +623,9 @@ public class Controller
     
     /**
      * Gets a grayscale texture from the user through a file chooser
-     * 
-     * @param eventster The action event
      */
     @FXML
-    private void addGrayTexture(ActionEvent eventster)
+    private void addGrayTexture()
     {
         // If the user successfully supplied an image...
         if (texTab.addTexture(false))
@@ -726,11 +723,9 @@ public class Controller
     /**
      * Changes the terrain's displacement map to what is currently set in the
      * terrain tab's displacement combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changeDisplacement(ActionEvent eventster)
+    private void changeDisplacement()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -760,11 +755,9 @@ public class Controller
      * Changes the currently-selected population's first displacement map in its
      * displacement range to what is currently set in the population tab's first
      * displacement map combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changeFirstDisplacement(ActionEvent eventster)
+    private void changeFirstDisplacement()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -788,11 +781,9 @@ public class Controller
     /**
      * Changes the currently-selected population's height image to what is
      * currently set in the population tab's height combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changeHeight(ActionEvent eventster)
+    private void changeHeight()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -816,11 +807,9 @@ public class Controller
     /**
      * Changes the currently-selected population's placement image to what is
      * currently set in the population tab's placement combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changePlacement(ActionEvent eventster)
+    private void changePlacement()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -844,11 +833,9 @@ public class Controller
     /**
      * Changes the currently-selected population's bump map to what is currently
      * set in the population tab's bump map combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changePopulationBump(ActionEvent eventster)
+    private void changePopulationBump()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -871,11 +858,9 @@ public class Controller
     /**
      * Changes the currently-selected population's diffuse map to what is
      * currently set in the population tab's diffuse map combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changePopulationDiffuse(ActionEvent eventster)
+    private void changePopulationDiffuse()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -898,11 +883,9 @@ public class Controller
     /**
      * Changes the currently-selected population's specular map to what is
      * currently set in the population tab's specular map combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changePopulationSpecular(ActionEvent eventster)
+    private void changePopulationSpecular()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -926,11 +909,9 @@ public class Controller
      * Changes the currently-selected population's second displacement map in
      * its displacement range to what is currently set in the population tab's
      * second displacement map combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changeSecondDisplacement(ActionEvent eventster)
+    private void changeSecondDisplacement()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -954,11 +935,9 @@ public class Controller
     /**
      * Changes the currently-selected population's shift image to what is
      * currently set in the population tab's shift combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changeShift(ActionEvent eventster)
+    private void changeShift()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -980,11 +959,9 @@ public class Controller
     /**
      * Changes the terrain's bump map to what is currently set in the terrain
      * tab's bump map combo box
-     * 
-     * @param eventster The action event
      */
     @FXML
-    private void changeTerrainBump(ActionEvent eventster)
+    private void changeTerrainBump()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -1007,11 +984,9 @@ public class Controller
     /**
      * Changes the terrain's diffuse map to what is currently set in the diffuse
      * map combo box
-     * 
-     * @param eventster The action event
      */
     @FXML
-    private void changeTerrainDiffuse(ActionEvent eventster)
+    private void changeTerrainDiffuse()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -1034,11 +1009,9 @@ public class Controller
     /**
      * Changes the terrain's specular map to what is currently set in the
      * specular map combo box
-     * 
-     * @param eventster The action event
      */
     @FXML
-    private void changeTerrainSpecular(ActionEvent eventster)
+    private void changeTerrainSpecular()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -1089,11 +1062,9 @@ public class Controller
     /**
      * Changes the currently-selected population's width image to what is
      * currently set in the population tab's width combo box
-     * 
-     * @param eventster The event listener
      */
     @FXML
-    private void changeWidth(ActionEvent eventster)
+    private void changeWidth()
     {
         // If action listeners are not to be ignored at the moment...
         if (listen)
@@ -1426,11 +1397,9 @@ public class Controller
     
     /**
      * Exits the program if the user chooses to do so
-     * 
-     * @param eventster The action event
      */
     @FXML
-    private void exit(ActionEvent eventster)
+    private void exit()
     {
         Alert confirmation = new Alert(AlertType.CONFIRMATION);
         
@@ -1639,11 +1608,9 @@ public class Controller
     
     /**
      * Shows the About box
-     * 
-     * @param eventster The action event
      */
     @FXML
-    private void openAbout(ActionEvent eventster)
+    private void openAbout()
     {
         Alert alster = new Alert(AlertType.INFORMATION);
         
@@ -1665,6 +1632,43 @@ public class Controller
         alster.setGraphic(new ImageView("/icons/icon.png"));
         
         alster.showAndWait();
+    }
+    
+    /**
+     * Opens the beginner-level PDF tutorial file with the default program set
+     * by the OS
+     */
+    @FXML
+    private void openBeginnerTutorial()
+    {
+        final String FILE = "tutorials\\beginner.pdf";
+        
+        String command;
+        
+        // If the OS is Windows...
+        if (isWindows())
+        {
+            // ...use the windows command to open a file.
+            command = "cmd /C start " + FILE;
+        }
+        // ...otherwise...
+        else
+        {
+            // ...it must be a linux OS. Use the linux command.
+            command = "xdg-open " + FILE;
+        }
+        
+        try
+        {
+            // Open the tutorial
+            Runtime.getRuntime().exec(command);
+        }
+        // If it cannot be opened...
+        catch (IOException ex)
+        {
+            // ...tell the user.
+            showTutorialErrorDialog();
+        }
     }
     
     /**
@@ -1813,11 +1817,9 @@ public class Controller
     /**
      * Resets all of the properties in the scene to their default values if the
      * user chooses to do so
-     * 
-     * @param eventster The action event
      */
     @FXML
-    private void reset(ActionEvent eventster)
+    private void reset()
     {
         Alert confirmation = new Alert(AlertType.CONFIRMATION);
         
@@ -2117,6 +2119,27 @@ public class Controller
                 
             terrainTextVRW.setText(Integer.toString(width));
         }
+    }
+    
+    /**
+     * Display the error dialog telling the user that Sand Paper failed to open
+     * a tutorial file
+     */
+    private void showTutorialErrorDialog()
+    {
+        Alert alster = new Alert(AlertType.ERROR);
+        
+        styleDialog(alster);
+        
+        alster.setTitle("Error");
+        alster.setHeaderText("Unable to Open Tutorial");
+        alster.setContentText("Sand Paper is unable to open the tutorial file."
+        + "\n\nThe tutorial file can be found in the tutorials directory"
+        + " included with Sand Paper. Please try opening the file from there.");
+        
+        alster.setGraphic(new ImageView("/icons/icon.png"));
+        
+        alster.showAndWait();
     }
     
     /**
