@@ -22,11 +22,11 @@ Sand Paper is designed to function as a companion application that is used in co
 # Features
 
 * Import an image as a displacement map to define the object's shape. Sand Paper uses colored displacements maps to position vertices in three dimensions.
-* Bump and specular map support.
-* Create populations (groups of 3D objects) from maps defining their shape, position and appearance.
-* Create and easily position lights.
-* An easily adjustable camera.
-* Save renders of the 3D scenery as PNG images.
+* Bump and specular map support
+* Create populations (groups of 3D objects) from images that are used to define their shape, position and appearance
+* Create and easily position lights
+* An easily adjustable camera
+* Save renders of the 3D scenery as PNG images
 
 # Change Log
 
@@ -41,23 +41,33 @@ Sand Paper is designed to function as a companion application that is used in co
 ..* camera tab implemented, allowing the user to control the camera
 ..* light tab implemented, allowing the user to control the lighting
 ..* minor bug fixes and improvements
+
+* v0.7 (6/10/2020)
+..* population tab implemented, allowing the user to create and customize populations
+..* added a help box, however it is not yet functional
+..* visual redesign
+..* a beginner tutorial is available
+..* a progress bar dialog appears during tasks that may take more than a second
+..* all of the controls have their input validated
+..* many major and minor bug fixes
   
 # To-Do List
 
-* Create a novice, intermediate and advanced tutorial
+* Create an intermediate and advanced tutorial
 * Make the help box functional
 * Create a complete manual
 * Make stage/panes resizable
 * Finish shortcuts, hot-keys, keyboard controls, tab-order on controls
-* Create a project file format
+* Create a project file format, allowing users to save and load all of the values set in the controls
 * Ability to remove imported textures
 * Have Sand Paper occasionally check imported textures for changes, so that the user will not have to re-import textures every time they make a change
 * Fix the delay that can occur after the progress dialog closes and before the stage becomes active
+* Replace a few of the sliders with spinners
 
 # Copyright
 
 Sand Paper 3D Modeling Solution (formerly tentatively titled, "Project Scaper")
-Copyright (C) 2019-2020  George Tiersma
+Copyright (C) 2019-2020 George Tiersma
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
