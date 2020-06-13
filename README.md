@@ -37,25 +37,25 @@ This tutorial is also accessible from within the program. It can be found on the
 # Change Log
 
 * v0.5 (6/23/2019)
-.. * beta release
+    * beta release
   
 * v0.51 (7/21/2019)
-.. * multi-threading functionality for vertex calculations
-.. * minor bug fixes and improvements
+    * multi-threading functionality for vertex calculations
+    * minor bug fixes and improvements
 
 * v0.6 (12/16/2019)
-.. * camera tab implemented, allowing the user to control the camera
-.. * light tab implemented, allowing the user to control the lighting
-.. * minor bug fixes and improvements
+    * camera tab implemented, allowing the user to control the camera
+    * light tab implemented, allowing the user to control the lighting
+    * minor bug fixes and improvements
 
 * v0.7 (6/10/2020)
-.. * population tab implemented, allowing the user to create and customize populations
-.. * added a help box, however it is not yet functional
-.. * visual redesign
-.. * a beginner tutorial is available
-.. * a progress bar dialog appears during tasks that may take more than a second
-.. * all of the controls have their input validated
-.. * many major and minor bug fixes
+    * population tab implemented, allowing the user to create and customize populations
+    * added a help box, however it is not yet functional
+    * visual redesign
+    * a beginner tutorial is available
+    * a progress bar dialog appears during tasks that may take more than a second
+    * all of the controls have their input validated
+    * many major and minor bug fixes
   
 # To-Do List
 
