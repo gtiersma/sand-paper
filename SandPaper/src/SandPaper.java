@@ -33,9 +33,8 @@ public class SandPaper extends Application
         
         try
         {
-            Parent parster;
-            
-            parster = FXMLLoader.load(getClass().getResource("GUI.fxml"));
+            Parent parster
+                    = FXMLLoader.load(getClass().getResource("GUI.fxml"));
     
             Scene scenster = new Scene(parster, WINDOW_WIDTH, WINDOW_HEIGHT);
         
@@ -52,6 +51,7 @@ public class SandPaper extends Application
         catch (IOException ex)
         {
             showLaunchError();
+            Logger.getLogger(SandPaper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

@@ -6,6 +6,7 @@ import graphics.LightObject;
 import graphics.Population;
 import graphics.Terrain;
 import graphics.TextureObject;
+import helpBox.Adviser;
 import java.io.IOException;
 import tabs.TextureTab;
 import tabs.TerrainTab;
@@ -182,6 +183,10 @@ public class Controller
                 SceneAntialiasing.BALANCED);
         // Place the preview in the split pane in the scene
         splitster.getItems().set(0, preview);
+        
+        // Prepare the help box
+        Adviser adster = new Adviser();
+        adster.load();
         
         removeViewColor();
         
