@@ -28,13 +28,18 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -74,6 +79,7 @@ public class Controller
     // until it is set to true again.
     private boolean listen;
     
+    Adviser helper;
     private InputVerifier validator;
     
     // FXML apparently does not like SubScenes very much, so this control is
@@ -85,7 +91,11 @@ public class Controller
     // Below are the controls taken from the FXML file. They are sorted
     // alphabetically by control type
     
+    @FXML private Button texturesButtonCA;
+    @FXML private Button texturesButtonGA;
+    @FXML private Button lightButtonLN;
     @FXML private Button lightButtonLD;
+    @FXML private Button populationButtonPN;
     @FXML private Button populationButtonPRG;
     @FXML private Button populationButtonPD;
     @FXML private Button populationButtonVRWD;
@@ -100,7 +110,7 @@ public class Controller
     @FXML private ColorPicker lightColorC;
     
     @FXML private ComboBox terrainComboDM;
-    @FXML private ComboBox terrainComboT;
+    @FXML private ComboBox terrainComboDM2;
     @FXML private ComboBox terrainComboBM;
     @FXML private ComboBox terrainComboSM;
     @FXML private ComboBox populationComboP;
@@ -109,7 +119,7 @@ public class Controller
     @FXML private ComboBox populationComboSH;
     @FXML private ComboBox populationComboDR1;
     @FXML private ComboBox populationComboDR2;
-    @FXML private ComboBox populationComboT;
+    @FXML private ComboBox populationComboDM;
     @FXML private ComboBox populationComboBM;
     @FXML private ComboBox populationComboSM;
     
@@ -133,6 +143,9 @@ public class Controller
     @FXML private RadioButton cameraRadioFOVH;
     @FXML private RadioButton cameraRadioFOVV;
     
+    @FXML private ScrollPane texturesScrollC;
+    @FXML private ScrollPane texturesScrollG;
+    
     @FXML private Slider terrainSliderDMS;
     @FXML private Slider cameraSliderAH;
     @FXML private Slider cameraSliderAV;
@@ -150,6 +163,15 @@ public class Controller
     
     @FXML private SplitPane splitster;
     
+    @FXML private Tab texturesTab;
+    @FXML private Tab terrainTab;
+    @FXML private Tab populationTab;
+    @FXML private Tab renderTab;
+    @FXML private Tab cameraTab;
+    @FXML private Tab lightTab;
+    
+    @FXML private TextArea helpBox;
+    
     @FXML private TextField terrainTextVRW;
     @FXML private TextField terrainTextVRD;
     @FXML private TextField populationTextVRW;
@@ -162,6 +184,7 @@ public class Controller
      */
     public Controller()
     {
+        helper = new Adviser();
         validator = new InputVerifier();
         
         ligTab = new LightTab();
@@ -185,8 +208,8 @@ public class Controller
         splitster.getItems().set(0, preview);
         
         // Prepare the help box
-        Adviser adster = new Adviser();
-        adster.load();
+        helper.load();
+        loadTooltips();
         
         removeViewColor();
         
@@ -589,6 +612,118 @@ public class Controller
             }
         });
         
+        
+        //----------------------------------------------------------------------
+        // Listeners for the Help Box
+        //----------------------------------------------------------------------
+        
+        // A tab cannot directly have a hover listener, so its tab pane must
+        // have one instead.
+        texturesTab.getTabPane().hoverProperty().addListener((event)->
+                displayHelp(texturesTab));
+        texturesScrollC.hoverProperty().addListener((event)->
+                displayHelp(texturesScrollC));
+        texturesButtonCA.hoverProperty().addListener((event)->
+                displayHelp(texturesButtonCA));
+        texturesScrollG.hoverProperty().addListener((event)->
+                displayHelp(texturesScrollG));
+        texturesButtonGA.hoverProperty().addListener((event)->
+                displayHelp(texturesButtonGA));
+        
+        terrainTab.getTabPane().hoverProperty().addListener((event)->
+                displayHelp(terrainTab));
+        terrainTextVRW.hoverProperty().addListener((event)->
+                displayHelp(terrainTextVRW));
+        terrainTextVRD.hoverProperty().addListener((event)->
+                displayHelp(terrainTextVRD));
+        terrainComboDM.hoverProperty().addListener((event)->
+                displayHelp(terrainComboDM));
+        terrainSliderDMS.hoverProperty().addListener((event)->
+                displayHelp(terrainSliderDMS));
+        terrainComboDM2.hoverProperty().addListener((event)->
+                displayHelp(terrainComboDM2));
+        terrainComboBM.hoverProperty().addListener((event)->
+                displayHelp(terrainComboBM));
+        terrainComboSM.hoverProperty().addListener((event)->
+                displayHelp(terrainComboSM));
+        
+        populationTab.getTabPane().hoverProperty().addListener((event)->
+                displayHelp(populationTab));
+        populationChoiceP.hoverProperty().addListener((event)->
+                displayHelp(populationChoiceP));
+        populationButtonPN.hoverProperty().addListener((event)->
+                displayHelp(populationButtonPN));
+        populationButtonPRG.hoverProperty().addListener((event)->
+                displayHelp(populationButtonPRG));
+        populationButtonPD.hoverProperty().addListener((event)->
+                displayHelp(populationButtonPD));
+        populationComboP.hoverProperty().addListener((event)->
+                displayHelp(populationComboP));
+        populationComboS.hoverProperty().addListener((event)->
+                displayHelp(populationComboS));
+        populationComboSW.hoverProperty().addListener((event)->
+                displayHelp(populationComboSW));
+        populationComboSH.hoverProperty().addListener((event)->
+                displayHelp(populationComboSH));
+        populationTextVRW.hoverProperty().addListener((event)->
+                displayHelp(populationTextVRW));
+        populationTextVRH.hoverProperty().addListener((event)->
+                displayHelp(populationTextVRH));
+        populationComboDR1.hoverProperty().addListener((event)->
+                displayHelp(populationComboDR1));
+        populationComboDR2.hoverProperty().addListener((event)->
+                displayHelp(populationComboDR2));
+        populationComboDM.hoverProperty().addListener((event)->
+                displayHelp(populationComboDM));
+        populationComboBM.hoverProperty().addListener((event)->
+                displayHelp(populationComboBM));
+        populationComboSM.hoverProperty().addListener((event)->
+                displayHelp(populationComboSM));
+        
+        renderTab.getTabPane().hoverProperty().addListener((event)->
+                displayHelp(renderTab));
+        renderSpinnerRW.hoverProperty().addListener((event)->
+                displayHelp(renderSpinnerRW));
+        renderSpinnerRH.hoverProperty().addListener((event)->
+                displayHelp(renderSpinnerRH));
+        renderColorBC.hoverProperty().addListener((event)->
+                displayHelp(renderColorBC));
+        
+        cameraTab.getTabPane().hoverProperty().addListener((event)->
+                displayHelp(cameraTab));
+        cameraSliderAH.hoverProperty().addListener((event)->
+                displayHelp(cameraSliderAH));
+        cameraSliderAV.hoverProperty().addListener((event)->
+                displayHelp(cameraSliderAV));
+        cameraSpinnerPAH.hoverProperty().addListener((event)->
+                displayHelp(cameraSpinnerPAH));
+        cameraSpinnerPAV.hoverProperty().addListener((event)->
+                displayHelp(cameraSpinnerPAV));
+        cameraSpinnerPAZ.hoverProperty().addListener((event)->
+                displayHelp(cameraSpinnerPAZ));
+        cameraSliderFOVD.hoverProperty().addListener((event)->
+                displayHelp(cameraSliderFOVD));
+        cameraRadioFOVH.hoverProperty().addListener((event)->
+                displayHelp(cameraRadioFOVH));
+        cameraRadioFOVV.hoverProperty().addListener((event)->
+                displayHelp(cameraRadioFOVV));
+        
+        lightTab.getTabPane().hoverProperty().addListener((event)->
+                displayHelp(lightTab));
+        lightChoiceL.hoverProperty().addListener((event)->
+                displayHelp(lightChoiceL));
+        lightButtonLN.hoverProperty().addListener((event)->
+                displayHelp(lightButtonLN));
+        lightButtonLD.hoverProperty().addListener((event)->
+                displayHelp(lightButtonLD));
+        lightSpinnerPX.hoverProperty().addListener((event)->
+                displayHelp(lightSpinnerPX));
+        lightSpinnerPY.hoverProperty().addListener((event)->
+                displayHelp(lightSpinnerPY));
+        lightSpinnerPZ.hoverProperty().addListener((event)->
+                displayHelp(lightSpinnerPZ));
+        lightColorC.hoverProperty().addListener((event)->
+                displayHelp(lightColorC));
     }
     
     /**
@@ -610,14 +745,14 @@ public class Controller
             ObservableList<String> obster = texTab.getTextureNames(true);
             
             // Set the list to the combo boxes for maps
-            terrainComboT.setItems(obster);
+            terrainComboDM2.setItems(obster);
             terrainComboDM.setItems(obster);
             terrainComboBM.setItems(obster);
             terrainComboSM.setItems(obster);
             populationComboS.setItems(obster);
             populationComboDR1.setItems(obster);
             populationComboDR2.setItems(obster);
-            populationComboT.setItems(obster);
+            populationComboDM.setItems(obster);
             populationComboBM.setItems(obster);
             populationComboSM.setItems(obster);
             
@@ -871,7 +1006,7 @@ public class Controller
         if (listen)
         {
             // ...get the selected image name from the combo box.
-            String name = populationComboT.getValue().toString();
+            String name = populationComboDM.getValue().toString();
             
             // Get the image belonging to that name
             TextureObject texster = texTab.getTexture(true, name);
@@ -997,7 +1132,7 @@ public class Controller
         if (listen)
         {
             // ...get the selected image name from the combo box.
-            String name = terrainComboT.getValue().toString();
+            String name = terrainComboDM2.getValue().toString();
             
             // Get the image belonging to that name
             Image imster = texTab.getImageByName(true, name);
@@ -1354,6 +1489,28 @@ public class Controller
     }
     
     /**
+     * Displays information of the given control in the help box
+     */
+    private void displayHelp(Control conster)
+    {
+        String key = conster.getId();
+        String info = helper.getText(key);
+            
+        helpBox.setText(info);
+    }
+    
+    /**
+     * Displays information of the given tab in the help box
+     */
+    private void displayHelp(Tab conster)
+    {
+        String key = conster.getId();
+        String info = helper.getText(key);
+            
+        helpBox.setText(info);
+    }
+    
+    /**
      * Either enables or disables the controls for manipulating lights. This
      * does not include the "new" button, as that button should always be
      * enabled.
@@ -1395,7 +1552,7 @@ public class Controller
         populationComboDR1.setDisable(!toEnable);
         populationComboDR2.setDisable(!toEnable);
         populationSliderDRS.setDisable(!toEnable);
-        populationComboT.setDisable(!toEnable);
+        populationComboDM.setDisable(!toEnable);
         populationComboBM.setDisable(!toEnable);
         populationComboSM.setDisable(!toEnable);
     }
@@ -1594,7 +1751,7 @@ public class Controller
         populationComboSH.setValue(heightName);
         populationComboDR1.setValue(displacementName1);
         populationComboDR2.setValue(displacementName2);
-        populationComboT.setValue(diffuseName);
+        populationComboDM.setValue(diffuseName);
         populationComboBM.setValue(bumpName);
         populationComboSM.setValue(specularName);
         
@@ -1609,6 +1766,93 @@ public class Controller
                 Integer.toString(activePopulation.getVertexWidth()));
         
         listen = true;
+    }
+    
+    /**
+     * Creates a tooltip for the given control
+     */
+    private void loadTooltip(Control conster)
+    {
+        // The key to be looked up for each control is stored as the control's
+        // CSS ID.
+        String key = conster.getId();
+        String title = helper.getTitle(key);
+        
+        conster.setTooltip(new Tooltip(title));
+    }
+    
+    /**
+     * Creates a tooltip for the given tab
+     */
+    private void loadTooltip(Tab tabster)
+    {
+        String key = tabster.getId();
+        String title = helper.getTitle(key);
+        
+        tabster.setTooltip(new Tooltip(title));
+    }
+    
+    /**
+     * Creates tooltips for all of the controls
+     */
+    private void loadTooltips()
+    {
+        loadTooltip(texturesTab);
+        loadTooltip(texturesScrollC);
+        // These 2 commented buttons throw null exceptions. Not sure why
+        //loadTooltip(texturesButtonCA);
+        loadTooltip(texturesScrollG);
+        //loadTooltip(texturesButtonGA);
+        
+        loadTooltip(terrainTab);
+        loadTooltip(terrainTextVRW);
+        loadTooltip(terrainTextVRD);
+        loadTooltip(terrainComboDM);
+        loadTooltip(terrainSliderDMS);
+        loadTooltip(terrainComboDM2);
+        loadTooltip(terrainComboBM);
+        loadTooltip(terrainComboSM);
+        
+        loadTooltip(populationTab);
+        loadTooltip(populationChoiceP);
+        loadTooltip(populationButtonPN);
+        loadTooltip(populationButtonPRG);
+        loadTooltip(populationButtonPD);
+        loadTooltip(populationComboP);
+        loadTooltip(populationComboS);
+        loadTooltip(populationComboSW);
+        loadTooltip(populationComboSH);
+        loadTooltip(populationTextVRW);
+        loadTooltip(populationTextVRH);
+        loadTooltip(populationComboDR1);
+        loadTooltip(populationComboDR2);
+        loadTooltip(populationComboDM);
+        loadTooltip(populationComboBM);
+        loadTooltip(populationComboSM);
+        
+        loadTooltip(renderTab);
+        loadTooltip(renderSpinnerRW);
+        loadTooltip(renderSpinnerRH);
+        loadTooltip(renderColorBC);
+        
+        loadTooltip(cameraTab);
+        loadTooltip(cameraSliderAH);
+        loadTooltip(cameraSliderAV);
+        loadTooltip(cameraSpinnerPAH);
+        loadTooltip(cameraSpinnerPAV);
+        loadTooltip(cameraSpinnerPAZ);
+        loadTooltip(cameraSliderFOVD);
+        loadTooltip(cameraRadioFOVH);
+        loadTooltip(cameraRadioFOVV);
+        
+        loadTooltip(lightTab);
+        loadTooltip(lightChoiceL);
+        loadTooltip(lightButtonLN);
+        loadTooltip(lightButtonLD);
+        loadTooltip(lightSpinnerPX);
+        loadTooltip(lightSpinnerPY);
+        loadTooltip(lightSpinnerPZ);
+        loadTooltip(lightColorC);
     }
     
     /**
@@ -1856,7 +2100,7 @@ public class Controller
             
             // Remove combo box choices
             terrainComboDM.setItems(null);
-            terrainComboT.setItems(null);
+            terrainComboDM2.setItems(null);
             terrainComboBM.setItems(null);
             terrainComboSM.setItems(null);
             populationComboP.setItems(null);
@@ -1865,13 +2109,13 @@ public class Controller
             populationComboSH.setItems(null);
             populationComboDR1.setItems(null);
             populationComboDR2.setItems(null);
-            populationComboT.setItems(null);
+            populationComboDM.setItems(null);
             populationComboBM.setItems(null);
             populationComboSM.setItems(null);
             
             // Empty combo boxes
             terrainComboDM.setValue("");
-            terrainComboT.setValue("");
+            terrainComboDM2.setValue("");
             terrainComboBM.setValue("");
             terrainComboSM.setValue("");
             
@@ -1990,7 +2234,7 @@ public class Controller
         populationComboDR1.setValue("");
         populationComboDR2.setValue("");
         populationSliderDRS.setValue(popTab.getDefaultDisplacementStrength());
-        populationComboT.setValue("");
+        populationComboDM.setValue("");
         populationComboBM.setValue("");
         populationComboSM.setValue("");
     }

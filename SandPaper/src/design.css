@@ -386,7 +386,7 @@
     -fx-graphic: url("/icons/bump.png");
 }
 
-#camera .tab-label
+#cameraTab .tab-label
 {
     -fx-graphic: url("/icons/camera.png");
 }
@@ -426,7 +426,7 @@
     -fx-graphic: url("/icons/leftArrow.png");
 }
 
-#lights .tab-label, #lights
+#lightsTab .tab-label, #lights
 {
     -fx-graphic: url("/icons/lights.png");
 }
@@ -436,12 +436,12 @@
     -fx-graphic: url("/icons/placement.png");
 }
 
-#population .tab-label, #population
+#populationsTab .tab-label, #population
 {
     -fx-graphic: url("/icons/population.png");
 }
 
-#render .tab-label
+#renderTab .tab-label
 {
     -fx-graphic: url("/icons/render.png");
 }
@@ -476,12 +476,12 @@
     -fx-graphic: url("/icons/strength.png");
 }
 
-#terrain .tab-label
+#terrainTab .tab-label
 {
     -fx-graphic: url("/icons/terrain.png");
 }
 
-#textures .tab-label, #textures
+#texturesTab .tab-label, #texturesTab
 {
     -fx-graphic: url("/icons/textures.png");
 }

@@ -6,60 +6,6 @@ Data to be used by Sand Paper's help box
 
 
 <root>
-    <group name="menu">
-        <control name="file">
-            <title>The file menu</title>
-            <text>A menu to access the basic program actions.</text>
-        </control>
-        <control name="fileReset">
-            <title>The reset option</title>
-            <text>Resets everything in Sand Paper back to the point when it was 
-            first opened.</text>
-        </control>
-        <control name="fileSave">
-            <title>The save option</title>
-            <text>Saves a rendered image of the terrain's current appearance 
-            (overwriting a previously saved image if it exists).</text>
-        </control>
-        <control name="fileSaveAs">
-            <title>The save as option</title>
-            <text>Saves a rendered image of the terrain's current 
-            appearance.</text>
-        </control>
-        <control name="fileExit">
-            <title>The exit option</title>
-            <text>Exits the Sand Paper program.</text>
-        </control>
-        <control name="help">
-            <title>The help menu</title>
-            <text>Provides information regarding the Sand Paper program.</text>
-        </control>
-        <control name="helpTutorials">
-            <title>The tutorials menu</title>
-            <text>Step-by-step instructions on how the Sand Paper program could
-            be used.</text>
-        </control>
-        <control name="helpTutorialsBeginner">
-            <title>The beginner tutorial</title>
-            <text>Opens a beginner-level Sand Paper tutorial in a PDF
-            file.</text>
-        </control>
-        <control name="helpTutorialsIntermediate">
-            <title>The intermediate tutorial</title>
-            <text>Opens an intermediate-level Sand Paper tutorial in a PDF
-            file./n/nThis tutorial is not yet available.</text>
-        </control>
-        <control name="helpTutorialsAdvanced">
-            <title>The advanced tutorial</title>
-            <text>Opens an advanced-level Sand Paper tutorial in a PDF
-            file./n/nThis tutorial is not yet available.</text>
-        </control>
-        <control name="helpAbout">
-            <title>Information about Sand Paper</title>
-            <text>Opens a window with information about Sand Paper.</text>
-        </control>
-    </group>
-    
     <group name="textures">
         <control name="texturesTab">
             <title>The textures tab</title>
@@ -138,6 +84,13 @@ Data to be used by Sand Paper's help box
             want to begin with a gray (R:127, G:127, B:127) background and then 
             add or remove red, green or blue at different areas of the map to 
             the desired shape.</text>
+        </control>
+        <control name="terrainStrength">
+            <title>The control for setting how much the terrain should be 
+            displaced</title>
+            <text>A higher value will make the displacement more extreme, 
+            moving the vertices out more. A lower value will make it less 
+            noticeable, keeping the vertices closer in.</text>
         </control>
         <control name="terrainDiffuse">
             <title>The diffuse map that the terrain uses</title>
@@ -310,6 +263,13 @@ Data to be used by Sand Paper's help box
             each object in the population have the exact same shape, choose the 
             same image for both of the maps.</text>
         </control>
+        <control name="populationsStrength">
+            <title>The control for setting how much the population should be 
+            displaced</title>
+            <text>A higher value will make the displacement more extreme, 
+            moving the vertices out more. A lower value will make it less 
+            noticeable, keeping the vertices closer in.</text>
+        </control>
         <control name="populationsDiffuse">
             <title>The diffuse map that the population uses</title>
             <text>Choose a color texture that has been imported to use as a 
@@ -356,13 +316,13 @@ Data to be used by Sand Paper's help box
             or "Save As..." from the File menu.</text>
         </control>
         <control name="renderResolution">
-            <title>The resolution of an exported rendered image</title>
+            <title>The resolution for the rendered image when exported</title>
             <text>Set the width and height that the image render of the 
             terrain should be when saved./n/nThe unit of measurement is 
             pixels.</text>
         </control>
         <control name="renderColor">
-            <title>The color of the background</title>
+            <title>The background color selector</title>
             <text>Set the color of the background behind the terrain.</text>
         </control>
     </group>
@@ -377,19 +337,19 @@ Data to be used by Sand Paper's help box
             look like, so can the virtual camera.</text>
         </control>
         <control name="cameraHorizontal">
-            <title>The horizontal angle of the camera</title>
+            <title>The horizontal camera angle slider</title>
             <text>The angle around the side of the terrain to view it at./n/n0 
             and 360 are the front./n/n90 and 270 are the sides./n/n180 is 
             behind it.</text>
         </control>
         <control name="cameraVertical">
-            <title>The vertical angle of the camera</title>
+            <title>The vertical camera angle slider</title>
             <text>The angle of how far above the terrain to view it./n/n0 will 
             view the terrain at eye level./n/n90 will view the terrain directly 
             above it.</text>
         </control>
         <control name="cameraX">
-            <title>How far the camera's x position is adjusted</title>
+            <title>The camera x position adjustment</title>
             <text>Sand Paper always tries to automatically center the view of 
             the terrain. However, sometimes the camera view is not exactly 
             centered, or you may not want it to be centered./n/nIf that is the 
@@ -400,7 +360,7 @@ Data to be used by Sand Paper's help box
             center.</text>
         </control>
         <control name="cameraY">
-            <title>How far the camera's y position is adjusted</title>
+            <title>The camera y position adjustment</title>
             <text>Sand Paper always tries to automatically center the view of 
             the terrain. However, sometimes the camera view is not exactly 
             centered, or you may not want it to be centered./n/nIf that is the 
@@ -410,7 +370,7 @@ Data to be used by Sand Paper's help box
             0 will put it at what Sand Paper calculates to be the center.</text>
         </control>
         <control name="cameraZ">
-            <title>How far the camera's z position is adjusted</title>
+            <title>The camera z position adjustment</title>
             <text>Sand Paper always tries to automatically center the view of 
             the terrain. However, sometimes the camera view is not exactly 
             centered, or you may not want it to be centered./n/nIf that is the 
@@ -420,7 +380,7 @@ Data to be used by Sand Paper's help box
             will put it at what Sand Paper calculates to be the center.</text>
         </control>
         <control name="fieldOfViewDegrees">
-            <title>The angle to which the camera views the terrain</title>
+            <title>The slider for the field of view</title>
             <text>The virtual "lens angle" of the camera./n/nSetting it to a 
             larger number will have a "wide angle lens" effect, causing more on 
             the sides of the camera to be seen, but it may distort the view. A 
@@ -428,7 +388,7 @@ Data to be used by Sand Paper's help box
             terrain have a flat look to it.</text>
         </control>
         <control name="fieldOfViewOrientation">
-            <title>The orientation of the field of view</title>
+            <title>The orientation radio buttons for the field of view</title>
             <text>The orientation to which the field of view is to be based off 
             of.</text>
         </control>
@@ -456,7 +416,7 @@ Data to be used by Sand Paper's help box
             above this button.</text>
         </control>
         <control name="lightsDelete">
-            <title>The light deletion button</title>
+            <title>The delete light button</title>
             <text>Deletes the light that is currently selected.</text>
         </control>
         <control name="lightsX">
@@ -493,7 +453,7 @@ Data to be used by Sand Paper's help box
             100% will place it in front of the terrain.</text>
         </control>
         <control name="lightsColor">
-            <title>The color of the light</title>
+            <title>The light color selector</title>
             <text>The color of the light that is currently selected./n/n 
             Choosing a darker color will cause the light to be less intense, 
             whereas a brighter color will make it more intense.</text>

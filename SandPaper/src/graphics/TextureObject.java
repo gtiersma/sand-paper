@@ -60,7 +60,7 @@ public class TextureObject
     public TextureObject()
     {
         // When no parameter is given, the blank texture is assigned
-        filster = new File("src/graphics/unassignedWhite.png");
+        filster = new File("src/graphics/" + EMPTY_NAMES[1]);
         path = filster.toString();
         name = path.substring(path.lastIndexOf("\\") + 1, path.indexOf("."));
         imster = new Image("file:" + path);
