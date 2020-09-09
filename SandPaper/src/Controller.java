@@ -169,6 +169,9 @@ public class Controller
     @FXML private Tab renderTab;
     @FXML private Tab cameraTab;
     @FXML private Tab lightTab;
+
+    @FXML private TabPane rightTabs;
+    @FXML private TabPane bottomTabs;
     
     @FXML private TextArea helpBox;
     
@@ -600,8 +603,7 @@ public class Controller
             }
         });
         
-        populationSliderDRS.valueProperty().addListener(
-                (obster, oldster, newster) ->
+        tba.setOnSelectionChanged (e -> 
         {
             if (listen)
             {
@@ -612,6 +614,40 @@ public class Controller
             }
         });
         
+        //----------------------------------------------------------------------
+        // Listeners for the Tabs. These are used for indicating which tabs are
+        // currently open to the help box.
+        //----------------------------------------------------------------------
+        rightTabs.getSelectionModel().selectedItemProperty().addListener(obster, newster, oldster) ->
+        {
+            if (newster == textureTab)
+            {
+                helper.setRightTab(0);
+            }
+            else if (newster == terrainTab)
+            {
+                helper.setRightTab(1);
+            }
+            else if (newster == populationsTab)
+            {
+                helper.setRightTab(2);
+            }
+        });
+        bottomTabs.getSelectionModel().selectedItemProperty().addListener(obster, newster, oldster) ->
+        {
+            if (newster == renderTab)
+            {
+                helper.setBottomTab(0);
+            }
+            else if (newster == cameraTab)
+            {
+                helper.setBottomTab(1);
+            }
+            else if (newster == lightsTab)
+            {
+                helper.setBottomTab(2);
+            }
+        });
         
         //----------------------------------------------------------------------
         // Listeners for the Help Box
