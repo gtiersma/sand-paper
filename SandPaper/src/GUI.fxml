@@ -83,7 +83,7 @@
       <SplitPane id="splitster" fx:id="splitster" dividerPositions="0.5" prefHeight="300.0" prefWidth="200.0">
         <items>
             <Pane prefHeight="200.0" prefWidth="200.0" />
-            <TabPane id="style-2" prefHeight="200.0" prefWidth="756.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="rightTabs" prefHeight="200.0" prefWidth="756.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                   <Tab id="texturesTab" fx:id="texturesTab" text="Textures">
                      <content>
@@ -330,7 +330,7 @@
       </SplitPane>
       <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0">
         <items>
-            <TabPane id="style-2" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="bottomTabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab id="renderTab" fx:id="renderTab" text="Render">
                      <content>
