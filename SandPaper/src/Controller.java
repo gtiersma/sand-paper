@@ -36,6 +36,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -163,7 +164,7 @@ public class Controller
     
     @FXML private SplitPane splitster;
     
-    @FXML private Tab texturesTab;
+    @FXML private Tab textureTab;
     @FXML private Tab terrainTab;
     @FXML private Tab populationTab;
     @FXML private Tab renderTab;
@@ -603,50 +604,21 @@ public class Controller
             }
         });
         
-        tba.setOnSelectionChanged (e -> 
-        {
-            if (listen)
-            {
-                popTab.getActivePopulation().setDisplacementStrength(
-                        newster.intValue(), terTab.getTerrain().getPoints());
-                
-                refreshPreview();
-            }
-        });
-        
         //----------------------------------------------------------------------
         // Listeners for the Tabs. These are used for indicating which tabs are
         // currently open to the help box.
         //----------------------------------------------------------------------
-        rightTabs.getSelectionModel().selectedItemProperty().addListener(obster, newster, oldster) ->
+        rightTabs.getSelectionModel().selectedItemProperty().addListener((obster, newster, oldster) ->
         {
-            if (newster == textureTab)
-            {
-                helper.setRightTab(0);
-            }
-            else if (newster == terrainTab)
-            {
-                helper.setRightTab(1);
-            }
-            else if (newster == populationsTab)
-            {
-                helper.setRightTab(2);
-            }
+            int selectedIndex = rightTabs.getTabs().indexOf(newster);
+            
+            helper.setRightTab(selectedIndex);
         });
-        bottomTabs.getSelectionModel().selectedItemProperty().addListener(obster, newster, oldster) ->
+        bottomTabs.getSelectionModel().selectedItemProperty().addListener((obster, newster, oldster) ->
         {
-            if (newster == renderTab)
-            {
-                helper.setBottomTab(0);
-            }
-            else if (newster == cameraTab)
-            {
-                helper.setBottomTab(1);
-            }
-            else if (newster == lightsTab)
-            {
-                helper.setBottomTab(2);
-            }
+            int selectedIndex = bottomTabs.getTabs().indexOf(newster);
+            
+            helper.setBottomTab(selectedIndex);
         });
         
         //----------------------------------------------------------------------
@@ -655,8 +627,8 @@ public class Controller
         
         // A tab cannot directly have a hover listener, so its tab pane must
         // have one instead.
-        texturesTab.getTabPane().hoverProperty().addListener((event)->
-                displayHelp(texturesTab));
+        textureTab.getTabPane().hoverProperty().addListener((event)->
+                displayHelp(textureTab));
         texturesScrollC.hoverProperty().addListener((event)->
                 displayHelp(texturesScrollC));
         texturesButtonCA.hoverProperty().addListener((event)->
@@ -1526,9 +1498,13 @@ public class Controller
     
     /**
      * Displays information of the given control in the help box
+     * 
+     * @param conster The control to display information of
      */
     private void displayHelp(Control conster)
     {
+        // The control's CSS ID is used as the key for getting the control's
+        // info
         String key = conster.getId();
         String info = helper.getText(key);
             
@@ -1537,10 +1513,12 @@ public class Controller
     
     /**
      * Displays information of the given tab in the help box
+     * 
+     * @param tabster The tab to display information of
      */
-    private void displayHelp(Tab conster)
+    private void displayHelp(Tab tabster)
     {
-        String key = conster.getId();
+        String key = tabster.getId();
         String info = helper.getText(key);
             
         helpBox.setText(info);
@@ -1806,6 +1784,8 @@ public class Controller
     
     /**
      * Creates a tooltip for the given control
+     * 
+     * @param conster The control to assign a tooltip to
      */
     private void loadTooltip(Control conster)
     {
@@ -1819,6 +1799,8 @@ public class Controller
     
     /**
      * Creates a tooltip for the given tab
+     * 
+     * @param tabster The tab to assign a tooltip to
      */
     private void loadTooltip(Tab tabster)
     {
@@ -1833,7 +1815,7 @@ public class Controller
      */
     private void loadTooltips()
     {
-        loadTooltip(texturesTab);
+        loadTooltip(textureTab);
         loadTooltip(texturesScrollC);
         // These 2 commented buttons throw null exceptions. Not sure why
         //loadTooltip(texturesButtonCA);

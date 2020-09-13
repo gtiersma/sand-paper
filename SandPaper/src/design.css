@@ -426,7 +426,7 @@
     -fx-graphic: url("/icons/leftArrow.png");
 }
 
-#lightsTab .tab-label, #lights
+#lightTab .tab-label, #light
 {
     -fx-graphic: url("/icons/lights.png");
 }
@@ -436,7 +436,7 @@
     -fx-graphic: url("/icons/placement.png");
 }
 
-#populationsTab .tab-label, #population
+#populationTab .tab-label, #population
 {
     -fx-graphic: url("/icons/population.png");
 }
@@ -481,7 +481,7 @@
     -fx-graphic: url("/icons/terrain.png");
 }
 
-#texturesTab .tab-label, #texturesTab
+#textureTab .tab-label, #textureTab
 {
     -fx-graphic: url("/icons/textures.png");
 }

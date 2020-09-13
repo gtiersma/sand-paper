@@ -7,7 +7,7 @@ Data to be used by Sand Paper's help box
 
 <root>
     <group name="textures">
-        <control name="texturesTab">
+        <control name="textureTab">
             <title>The textures tab</title>
             <text>The tab for importing textures.</text>
         </control>

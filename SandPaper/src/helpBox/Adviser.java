@@ -22,22 +22,22 @@ import javax.xml.stream.events.XMLEvent;
 public class Adviser
 {
     // The "index" of the tab initially opened when Sand Paper is first launched
-    final private byte INITIAL_OPEN_TAB = 0;
+    final private int INITIAL_OPEN_TAB = 0;
     
     // The help box message displayed for when no information can be found for a
     // certain control
     final private String DEFAULT_MESSAGE = "Welcome to Sand Paper.\n\nThis " +
             "is the help box. It displays useful information about what the " +
             "cursor is currently hovering over.\n\nNot sure where to start? " +
-            "Why not take a look at the tutorials?! They can be found in the " +
+            "Why not take a look at the tutorials? They can be found in the " +
             "help menu.";
     final private String XML_PATH = "src/helpBox/help.xml";
     
     // 0-based values used to keep track of which tabs are currently open
     // For example, if bottomOpenTab's value is 0, the render tab must be open.
     // If it is 1, the camera tab must be open.
-    private byte bottomOpenTab;
-    private byte rightOpenTab;
+    private int bottomOpenTab;
+    private int rightOpenTab;
     
     // The description for each control (organized in groups for faster access)
     private Map<String, String> textures;
@@ -207,7 +207,7 @@ public class Adviser
      */
     public String getText(String key)
     {
-        String textster = "";
+        String textster = null;
         
         // See if a match can be found in the hashmap for the currently-open tab
         // on the right
@@ -226,7 +226,7 @@ public class Adviser
         }
         
         // If a match was not found...
-        if (textster.equals(""))
+        if (textster == null)
         {
             // ...see if a match can be found in the hashmap for the
             // currently-open tab on the bottom.
@@ -392,5 +392,29 @@ public class Adviser
         {
             System.out.println("ERROR: Help XML file is corrupt");
         }
+    }
+    
+    /**
+     * Updates the Adviser's variable that keeps track of which tab is currently
+     * open on the bottom tab pane
+     * 
+     * @param selectedTab The index of the tab that's currently open in the
+     * bottom tab pane
+     */
+    public void setBottomTab(int selectedTab)
+    {
+        bottomOpenTab = selectedTab;
+    }
+    
+    /**
+     * Updates the Adviser's variable that keeps track of which tab is currently
+     * open on the right tab pane
+     * 
+     * @param selectedTab The index of the tab that's currently open in the
+     * right tab pane
+     */
+    public void setRightTab(int selectedTab)
+    {
+        rightOpenTab = selectedTab;
     }
 }

@@ -85,7 +85,7 @@
             <Pane prefHeight="200.0" prefWidth="200.0" />
             <TabPane fx:id="rightTabs" prefHeight="200.0" prefWidth="756.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                  <Tab id="texturesTab" fx:id="texturesTab" text="Textures">
+                  <Tab id="textureTab" fx:id="textureTab" text="Textures">
                      <content>
                         <ScrollPane id="style-3" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
                            <content>
@@ -195,7 +195,7 @@
                            </content>
                         </ScrollPane>
                      </content></Tab>
-               <Tab id="populationsTab" fx:id="populationTab" text="Populations">
+               <Tab id="populationTab" fx:id="populationTab" text="Populations">
                <content>
                </content>
                      <content>
@@ -457,7 +457,7 @@
                         </HBox>
                      </content>
                 </Tab>
-                <Tab id="lightsTab" fx:id="lightTab" text="Light">
+                <Tab id="lightTab" fx:id="lightTab" text="Light">
                      <content>
                         <HBox id="cameraBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <padding>
