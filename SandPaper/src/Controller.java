@@ -170,9 +170,6 @@ public class Controller
     @FXML private Tab renderTab;
     @FXML private Tab cameraTab;
     @FXML private Tab lightTab;
-
-    @FXML private TabPane rightTabs;
-    @FXML private TabPane bottomTabs;
     
     @FXML private TextArea helpBox;
     
@@ -608,17 +605,60 @@ public class Controller
         // Listeners for the Tabs. These are used for indicating which tabs are
         // currently open to the help box.
         //----------------------------------------------------------------------
-        rightTabs.getSelectionModel().selectedItemProperty().addListener((obster, newster, oldster) ->
+        textureTab.setOnSelectionChanged(event ->
         {
-            int selectedIndex = rightTabs.getTabs().indexOf(newster);
-            
-            helper.setRightTab(selectedIndex);
+            if (textureTab.isSelected())
+            {
+                final int TEXTURE_TAB_INDEX = 0;
+                
+                helper.setRightTab(TEXTURE_TAB_INDEX);
+            }
         });
-        bottomTabs.getSelectionModel().selectedItemProperty().addListener((obster, newster, oldster) ->
+        terrainTab.setOnSelectionChanged(event ->
         {
-            int selectedIndex = bottomTabs.getTabs().indexOf(newster);
-            
-            helper.setBottomTab(selectedIndex);
+            if (terrainTab.isSelected())
+            {
+                final int TERRAIN_TAB_INDEX = 1;
+                
+                helper.setRightTab(TERRAIN_TAB_INDEX);
+            }
+        });
+        populationTab.setOnSelectionChanged(event ->
+        {
+            if (populationTab.isSelected())
+            {
+                final int POPULATIONS_TAB_INDEX = 2;
+                
+                helper.setRightTab(POPULATIONS_TAB_INDEX);
+            }
+        });
+        
+        renderTab.setOnSelectionChanged(event ->
+        {
+            if (renderTab.isSelected())
+            {
+                final int RENDER_TAB_INDEX = 0;
+                
+                helper.setBottomTab(RENDER_TAB_INDEX);
+            }
+        });
+        cameraTab.setOnSelectionChanged(event ->
+        {
+            if (cameraTab.isSelected())
+            {
+                final int CAMERA_TAB_INDEX = 1;
+                
+                helper.setBottomTab(CAMERA_TAB_INDEX);
+            }
+        });
+        lightTab.setOnSelectionChanged(event ->
+        {
+            if (lightTab.isSelected())
+            {
+                final int LIGHTS_TAB_INDEX = 2;
+                
+                helper.setBottomTab(LIGHTS_TAB_INDEX);
+            }
         });
         
         //----------------------------------------------------------------------
