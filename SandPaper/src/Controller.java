@@ -171,6 +171,9 @@ public class Controller
     @FXML private Tab cameraTab;
     @FXML private Tab lightTab;
     
+    @FXML private TabPane rightTabs;
+    @FXML private TabPane bottomTabs;
+    
     @FXML private TextArea helpBox;
     
     @FXML private TextField terrainTextVRW;
@@ -609,27 +612,27 @@ public class Controller
         {
             if (textureTab.isSelected())
             {
-                final int TEXTURE_TAB_INDEX = 0;
+                int tabIndex = rightTabs.getTabs().indexOf(textureTab);
                 
-                helper.setRightTab(TEXTURE_TAB_INDEX);
+                helper.setRightTab(tabIndex);
             }
         });
         terrainTab.setOnSelectionChanged(event ->
         {
             if (terrainTab.isSelected())
             {
-                final int TERRAIN_TAB_INDEX = 1;
+                int tabIndex = rightTabs.getTabs().indexOf(terrainTab);
                 
-                helper.setRightTab(TERRAIN_TAB_INDEX);
+                helper.setRightTab(tabIndex);
             }
         });
         populationTab.setOnSelectionChanged(event ->
         {
             if (populationTab.isSelected())
             {
-                final int POPULATIONS_TAB_INDEX = 2;
+                int tabIndex = rightTabs.getTabs().indexOf(populationTab);
                 
-                helper.setRightTab(POPULATIONS_TAB_INDEX);
+                helper.setRightTab(tabIndex);
             }
         });
         
@@ -637,27 +640,27 @@ public class Controller
         {
             if (renderTab.isSelected())
             {
-                final int RENDER_TAB_INDEX = 0;
+                int tabIndex = bottomTabs.getTabs().indexOf(renderTab);
                 
-                helper.setBottomTab(RENDER_TAB_INDEX);
+                helper.setBottomTab(tabIndex);
             }
         });
         cameraTab.setOnSelectionChanged(event ->
         {
             if (cameraTab.isSelected())
             {
-                final int CAMERA_TAB_INDEX = 1;
+                int tabIndex = bottomTabs.getTabs().indexOf(cameraTab);
                 
-                helper.setBottomTab(CAMERA_TAB_INDEX);
+                helper.setBottomTab(tabIndex);
             }
         });
         lightTab.setOnSelectionChanged(event ->
         {
             if (lightTab.isSelected())
             {
-                final int LIGHTS_TAB_INDEX = 2;
+                int tabIndex = bottomTabs.getTabs().indexOf(lightTab);
                 
-                helper.setBottomTab(LIGHTS_TAB_INDEX);
+                helper.setBottomTab(tabIndex);
             }
         });
         
