@@ -21,8 +21,13 @@ import javax.xml.stream.events.XMLEvent;
 
 public class Adviser
 {
-    // The "index" of the tab initially opened when Sand Paper is first launched
-    final private int INITIAL_OPEN_TAB = 0;
+    // The index positions for each tab
+    final private int TEXTURES_TAB_INDEX = 0;
+    final private int TERRAIN_TAB_INDEX = 1;
+    final private int POPULATIONS_TAB_INDEX = 2;
+    final private int RENDER_TAB_INDEX = 0;
+    final private int CAMERA_TAB_INDEX = 1;
+    final private int LIGHTS_TAB_INDEX = 2;
     
     // The help box message displayed for when no information can be found for a
     // certain control
@@ -33,12 +38,6 @@ public class Adviser
             "help menu.";
     final private String XML_PATH = "src/helpBox/help.xml";
     
-    // 0-based values used to keep track of which tabs are currently open
-    // For example, if bottomOpenTab's value is 0, the render tab must be open.
-    // If it is 1, the camera tab must be open.
-    private int bottomOpenTab;
-    private int rightOpenTab;
-    
     // The description for each control (organized in groups for faster access)
     private Map<String, String> textures;
     private Map<String, String> terrain;
@@ -47,14 +46,12 @@ public class Adviser
     private Map<String, String> camera;
     private Map<String, String> lights;
     
-    // The tooltip string for each control (organized in groups for faster
-    // access)
-    private Map<String, String> texturesTips;
-    private Map<String, String> terrainTips;
-    private Map<String, String> populationsTips;
-    private Map<String, String> renderTips;
-    private Map<String, String> cameraTips;
-    private Map<String, String> lightsTips;
+    // The tooltip string for each control
+    private Map<String, String> tips;
+    
+    // Pointers to the currently open tabs
+    private Map<String, String> bottomOpen;
+    private Map<String, String> rightOpen;
     
     private XMLInputFactory facster;
     private XMLEventReader readster;
@@ -64,9 +61,6 @@ public class Adviser
      */
     public Adviser() 
     {
-        bottomOpenTab = INITIAL_OPEN_TAB;
-        rightOpenTab = INITIAL_OPEN_TAB;
-        
         textures = new HashMap();
         terrain = new HashMap();
         populations = new HashMap();
@@ -74,12 +68,11 @@ public class Adviser
         camera = new HashMap();
         lights = new HashMap();
         
-        texturesTips = new HashMap();
-        terrainTips = new HashMap();
-        populationsTips = new HashMap();
-        renderTips = new HashMap();
-        cameraTips = new HashMap();
-        lightsTips = new HashMap();
+        tips = new HashMap();
+        
+        // Initialize to the initially open tabs
+        bottomOpen = render;
+        rightOpen = textures;
         
         facster = XMLInputFactory.newInstance();
     }
@@ -132,66 +125,33 @@ public class Adviser
      * given name is not found, the map returned is the textures controls map.
      * 
      * @param name The name of the hash map to be retrieved
-     * @param tips Whether or not the hash map being returned should contain
-     *             tool tip strings
      * 
      * @return The hash map
      */
-    private Map getHashMap(String name, boolean tips)
+    private Map getHashMap(String name)
     {
         Map mapster = textures;
         
-        if (tips)
+        switch(name)
         {
-            switch(name)
-            {
-                case "textures":
-                    mapster = texturesTips;
-                    break;
+            case "terrain":
+                mapster = terrain;
+                break;
                 
-                case "terrain":
-                    mapster = terrainTips;
-                    break;
+            case "populations":
+                mapster = populations;
+                break;
                 
-                case "populations":
-                    mapster = populationsTips;
-                    break;
+            case "render":
+                mapster = render;
+                break;
                 
-                case "render":
-                    mapster = renderTips;
-                    break;
+            case "camera":
+                mapster = camera;
+                break;
                 
-                case "camera":
-                    mapster = cameraTips;
-                    break;
-                
-                case "lights":
-                    mapster = lightsTips;
-            }
-        }
-        else
-        {
-            switch(name)
-            {
-                case "terrain":
-                    mapster = terrain;
-                    break;
-                
-                case "populations":
-                    mapster = populations;
-                    break;
-                
-                case "render":
-                    mapster = render;
-                    break;
-                
-                case "camera":
-                    mapster = camera;
-                    break;
-                
-                case "lights":
-                    mapster = lights;
-            }
+            case "lights":
+                mapster = lights; 
         }
         
         return mapster;
@@ -202,53 +162,25 @@ public class Adviser
      * 
      * @param key The string used to look up the control's information
      * 
-     * @return The information for the control. An empty string is returned if a
-     *         match cannot be found.
+     * @return The information for the control. The default message is returned
+     *         if a match cannot be found.
      */
     public String getText(String key)
     {
-        String textster = null;
+        // Initialize to the main help message (in case no match is found)
+        String textster = DEFAULT_MESSAGE;
         
-        // See if a match can be found in the hashmap for the currently-open tab
-        // on the right
-        switch(rightOpenTab)
+        // If the hashmap for the tab currently open on the right has a match...
+        if (rightOpen.containsKey(key))
         {
-            case 0:
-                textster = textures.get(key);
-                break;
-                
-            case 1:
-                textster = terrain.get(key);
-                break;
-                
-            case 2:
-                textster = populations.get(key);
+            // ...get it.
+            textster = rightOpen.get(key);
         }
-        
-        // If a match was not found...
-        if (textster == null)
+        // ...otherwise, if the hashmap for the other tab has a match...
+        else if (bottomOpen.containsKey(key))
         {
-            // ...see if a match can be found in the hashmap for the
-            // currently-open tab on the bottom.
-            switch(bottomOpenTab)
-            {
-                case 0:
-                    textster = render.get(key);
-                    break;
-                
-                case 1:
-                    textster = camera.get(key);
-                    break;
-                
-                case 2:
-                    textster = lights.get(key);
-            }
-        }
-        // ...otherwise...
-        else
-        {
-            // ...have the help box display the default message.
-            textster = DEFAULT_MESSAGE;
+            // ...get it.
+            textster = bottomOpen.get(key);
         }
         
         return textster;
@@ -266,40 +198,9 @@ public class Adviser
     {
         String title = "";
         
-        // See if a match can be found in the hashmap for the currently-open tab
-        // on the right
-        switch(rightOpenTab)
+        if (tips.containsKey(key))
         {
-            case 0:
-                title = texturesTips.get(key);
-                break;
-                
-            case 1:
-                title = terrainTips.get(key);
-                break;
-                
-            case 2:
-                title = populationsTips.get(key);
-        }
-        
-        // If a match was not found...
-        if (title == null)
-        {
-            // ...see if a match can be found in the hashmap for the
-            // currently-open tab on the bottom.
-            switch(bottomOpenTab)
-            {
-                case 0:
-                    title = renderTips.get(key);
-                    break;
-                
-                case 1:
-                    title = cameraTips.get(key);
-                    break;
-                
-                case 2:
-                    title = lightsTips.get(key);
-            }
+            title = tips.get(key);
         }
         
         return title;
@@ -320,7 +221,6 @@ public class Adviser
             // It is initialized to the textures control map to keep it from
             // being null (for safety).
             Map<String, String> currentMap = textures;
-            Map<String, String> currentTips = texturesTips;
                 
             // Open the XML
             readster = facster.createXMLEventReader(
@@ -349,8 +249,7 @@ public class Adviser
                             String attribute = getAttribute(startster, "name");
                             // Set the current HashMap to the one that belongs
                             // to this group.
-                            currentMap = getHashMap(attribute, false);
-                            currentTips = getHashMap(attribute, true);
+                            currentMap = getHashMap(attribute);
                             break;
                     
                         // If it belongs to a control element...
@@ -359,14 +258,13 @@ public class Adviser
                             controlID = getAttribute(startster, "name");
                             break;
                             
-                        // If it belongs to a textster element...
+                        // If it belongs to a title element...
                         case "title":
-                            // ...the next event will contain the textster. Get it.
+                            // ...the next event will contain the title. Get it.
                             evster = readster.nextEvent();
-                            // ...get the textster from it to use as the help box
-                            // text.
+                            // ...get the title from it to use as a tooltip.
                             String title = evster.asCharacters().getData();
-                            currentTips.put(controlID, title);
+                            tips.put(controlID, title);
                             break;
                             
                         // If it belongs to a text element...
@@ -398,23 +296,47 @@ public class Adviser
      * Updates the Adviser's variable that keeps track of which tab is currently
      * open on the bottom tab pane
      * 
-     * @param selectedTab The index of the tab that's currently open in the
-     * bottom tab pane
+     * @param index The index of the tab that's currently open in the bottom tab
+     * pane
      */
-    public void setBottomTab(int selectedTab)
+    public void setBottomTab(int index)
     {
-        bottomOpenTab = selectedTab;
+        switch(index)
+        {
+            case RENDER_TAB_INDEX:
+                bottomOpen = render;
+                break;
+                
+            case CAMERA_TAB_INDEX:
+                bottomOpen = camera;
+                break;
+                
+            case LIGHTS_TAB_INDEX:
+                bottomOpen = lights;
+        }
     }
     
     /**
      * Updates the Adviser's variable that keeps track of which tab is currently
      * open on the right tab pane
      * 
-     * @param selectedTab The index of the tab that's currently open in the
-     * right tab pane
+     * @param index The index of the tab that's currently open in the right tab
+     * pane
      */
-    public void setRightTab(int selectedTab)
+    public void setRightTab(int index)
     {
-        rightOpenTab = selectedTab;
+        switch(index)
+        {
+            case TEXTURES_TAB_INDEX:
+                bottomOpen = textures;
+                break;
+                
+            case TERRAIN_TAB_INDEX:
+                bottomOpen = terrain;
+                break;
+                
+            case POPULATIONS_TAB_INDEX:
+                bottomOpen = populations;
+        }
     }
 }

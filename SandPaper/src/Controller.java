@@ -670,8 +670,11 @@ public class Controller
         
         // A tab cannot directly have a hover listener, so its tab pane must
         // have one instead.
-        textureTab.getTabPane().hoverProperty().addListener((event)->
-                displayHelp(textureTab));
+        rightTabs.hoverProperty().addListener((event)->
+                displayHelp(rightTabs.getSelectionModel().getSelectedItem()));
+        bottomTabs.hoverProperty().addListener((event)->
+                displayHelp(bottomTabs.getSelectionModel().getSelectedItem()));
+        
         texturesScrollC.hoverProperty().addListener((event)->
                 displayHelp(texturesScrollC));
         texturesButtonCA.hoverProperty().addListener((event)->
@@ -681,8 +684,6 @@ public class Controller
         texturesButtonGA.hoverProperty().addListener((event)->
                 displayHelp(texturesButtonGA));
         
-        terrainTab.getTabPane().hoverProperty().addListener((event)->
-                displayHelp(terrainTab));
         terrainTextVRW.hoverProperty().addListener((event)->
                 displayHelp(terrainTextVRW));
         terrainTextVRD.hoverProperty().addListener((event)->
@@ -698,8 +699,6 @@ public class Controller
         terrainComboSM.hoverProperty().addListener((event)->
                 displayHelp(terrainComboSM));
         
-        populationTab.getTabPane().hoverProperty().addListener((event)->
-                displayHelp(populationTab));
         populationChoiceP.hoverProperty().addListener((event)->
                 displayHelp(populationChoiceP));
         populationButtonPN.hoverProperty().addListener((event)->
@@ -731,8 +730,6 @@ public class Controller
         populationComboSM.hoverProperty().addListener((event)->
                 displayHelp(populationComboSM));
         
-        renderTab.getTabPane().hoverProperty().addListener((event)->
-                displayHelp(renderTab));
         renderSpinnerRW.hoverProperty().addListener((event)->
                 displayHelp(renderSpinnerRW));
         renderSpinnerRH.hoverProperty().addListener((event)->
@@ -740,8 +737,6 @@ public class Controller
         renderColorBC.hoverProperty().addListener((event)->
                 displayHelp(renderColorBC));
         
-        cameraTab.getTabPane().hoverProperty().addListener((event)->
-                displayHelp(cameraTab));
         cameraSliderAH.hoverProperty().addListener((event)->
                 displayHelp(cameraSliderAH));
         cameraSliderAV.hoverProperty().addListener((event)->
@@ -759,8 +754,6 @@ public class Controller
         cameraRadioFOVV.hoverProperty().addListener((event)->
                 displayHelp(cameraRadioFOVV));
         
-        lightTab.getTabPane().hoverProperty().addListener((event)->
-                displayHelp(lightTab));
         lightChoiceL.hoverProperty().addListener((event)->
                 displayHelp(lightChoiceL));
         lightButtonLN.hoverProperty().addListener((event)->
