@@ -128,7 +128,7 @@ Data to be used by Sand Paper's help box
     </group>
     
     <group name="populations">
-        <control name="populationsTab">
+        <control name="populationTab">
             <title>The populations tab</title>
             <text>This tab is used for creating and modifying populations. In
             Sand Paper, populations are a group of planes that are spread 
@@ -395,7 +395,7 @@ Data to be used by Sand Paper's help box
     </group>
     
     <group name="lights">
-        <control name="lightsTab">
+        <control name="lightTab">
             <title>The lights tab</title>
             <text>The lights tab can be used to create and edit lights around 
             the terrain./n/nIn 3D modeling, a light is a specific spot that 

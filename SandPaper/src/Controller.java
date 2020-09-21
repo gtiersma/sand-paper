@@ -723,6 +723,8 @@ public class Controller
                 displayHelp(populationComboDR1));
         populationComboDR2.hoverProperty().addListener((event)->
                 displayHelp(populationComboDR2));
+        populationSliderDRS.hoverProperty().addListener((event)->
+                displayHelp(populationSliderDRS));
         populationComboDM.hoverProperty().addListener((event)->
                 displayHelp(populationComboDM));
         populationComboBM.hoverProperty().addListener((event)->
