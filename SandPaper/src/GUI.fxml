@@ -148,7 +148,7 @@
                                        <children>
                                           <Label id="depth" styleClass="medium-label" text=" Depth:" />
                                           <Button id="left" fx:id="terrainButtonVRDD" mnemonicParsing="false" onAction="#decrementTerrainVertexDepth" />
-                                          <TextField id="terrainVertexHeight" fx:id="terrainTextVRD" alignment="CENTER_RIGHT" maxWidth="75.0" text="50" />
+                                          <TextField id="terrainVertexDepth" fx:id="terrainTextVRD" alignment="CENTER_RIGHT" maxWidth="75.0" text="50" />
                                           <Button id="right" fx:id="terrainButtonVRDI" mnemonicParsing="false" onAction="#incrementTerrainVertexDepth" />
                                        </children>
                                     </HBox>

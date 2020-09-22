@@ -328,15 +328,15 @@ public class Adviser
         switch(index)
         {
             case TEXTURES_TAB_INDEX:
-                bottomOpen = textures;
+                rightOpen = textures;
                 break;
                 
             case TERRAIN_TAB_INDEX:
-                bottomOpen = terrain;
+                rightOpen = terrain;
                 break;
                 
             case POPULATIONS_TAB_INDEX:
-                bottomOpen = populations;
+                rightOpen = populations;
         }
     }
 }

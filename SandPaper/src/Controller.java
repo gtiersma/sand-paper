@@ -1882,6 +1882,7 @@ public class Controller
         loadTooltip(populationTextVRH);
         loadTooltip(populationComboDR1);
         loadTooltip(populationComboDR2);
+        loadTooltip(populationSliderDRS);
         loadTooltip(populationComboDM);
         loadTooltip(populationComboBM);
         loadTooltip(populationComboSM);
