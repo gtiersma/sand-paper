@@ -675,6 +675,12 @@ public class Controller
         bottomTabs.hoverProperty().addListener((event)->
                 displayHelp(bottomTabs.getSelectionModel().getSelectedItem()));
         
+        // Return's the help box's message to its original, introductory message
+        // when the cursor is moved from a tab pane to over the preview
+        preview.hoverProperty().addListener((event)->
+                helpBox.setText(helper.getDefaultText())
+                );
+        
         texturesScrollC.hoverProperty().addListener((event)->
                 displayHelp(texturesScrollC));
         texturesButtonCA.hoverProperty().addListener((event)->

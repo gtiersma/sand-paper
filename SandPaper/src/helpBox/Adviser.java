@@ -121,6 +121,17 @@ public class Adviser
     }
     
     /**
+     * Gets the initial message for the help box. This is the message used when 
+     * the cursor is not hovering over a control.
+     * 
+     * @return The original help box message
+     */
+    public String getDefaultText()
+    {
+        return DEFAULT_MESSAGE;
+    }
+    
+    /**
      * Gets a reference to the hash map of the given name. If a match of the
      * given name is not found, the map returned is the textures controls map.
      * 
