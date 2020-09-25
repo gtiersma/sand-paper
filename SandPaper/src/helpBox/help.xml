@@ -8,29 +8,30 @@ Data to be used by Sand Paper's help box
 <root>
     <group name="textures">
         <control name="textureTab">
-            <title>The textures tab</title>
-            <text>The tab for importing textures.</text>
+            <title>Tab for importing textures</title>
+            <text>The tab for managing which textures are available for use in
+            Sand Paper.</text>
         </control>
         <control name="texturesColored">
-            <title>The colored textures box</title>
+            <title>The imported color textures</title>
             <text>Contains all of the imported textures that have color./n/n
             These textures can be used as shift, diffuse, displacement, bump or 
             specular maps for the terrain or a population.</text>
         </control>
         <control name="texturesColoredAdd">
-            <title>The add texture button for colored textures</title>
-            <text>Import a texture to be used as a colored map./n/nColored maps
-            can be used as shift, diffuse, displacement, bump or specular maps 
-            for the terrain or a population.</text>
+            <title>Import a colored texture</title>
+            <text>Import a texture to be used as a colored map./n/nColored
+            textures can be used as shift, diffuse, displacement, bump or  
+            specular maps for the terrain or a population.</text>
         </control>
         <control name="texturesGrayscale">
-            <title>The grayscale textures box</title>
+            <title>The imported colorless textures</title>
             <text>Contains all of the imported textures that have no color./n/n
             These textures can be used as placement, width or height maps for a 
             population.</text>
         </control>
         <control name="texturesGrayscaleAdd">
-            <title>The add texture button for colorless textures</title>
+            <title>Import a colorless texture</title>
             <text>Import a texture to be used as a colorless map./n/nColorless 
             maps can be used as placement, width or height maps for a 
             population.</text>
@@ -39,38 +40,38 @@ Data to be used by Sand Paper's help box
     
     <group name="terrain">
         <control name="terrainTab">
-            <title>The terrain tab</title>
+            <title>Tab for making changes to the terrain</title>
             <text>The tab for adjusting the terrain./n/nThe terrain is the base 
-            flat surface that is used with making the 3D surface.</text>
+            flat surface that is used to have its shape shifted.</text>
         </control>
         <control name="terrainVertexWidth">
-            <title>The width of the terrain</title>
+            <title>Change the terrain's width/quality</title>
             <text>The number of vertices that make up the width of the terrain. 
             Each vertex is a point in the terrain that is raised or lowered./n/n
             Increasing the number will make the terrain wider, smoother and 
             more detailed, but it is more demanding on your computer. 
             Decreasing the number will do the opposite./n/nIt is best to use a
-            low number while working with the terrain and populations, then use 
-            a high number just before creating an image render./n/nBe careful
-            with using high numbers on older computers. If you are unsure, it 
-            is best to slowly increase the number (50 or 100 at a time) and see 
-            how the computer handles it.</text>
+            low number while making adjustments with the terrain and  
+            populations, then use a high number just before creating an image 
+            render./n/nBe careful with using high numbers on older computers. 
+            If you are unsure, it is best to slowly increase the number (50 or  
+            100 at a time) and see how the computer handles it.</text>
         </control>
         <control name="terrainVertexDepth">
-            <title>The depth of the terrain</title>
+            <title>Change the terrain's depth/quality</title>
             <text>The number of vertices that make up the depth of the terrain. 
             Each vertex is a point in the terrain that is raised or lowered./n/n
-            Increasing the number will make the terrain longer, smoother and 
+            Increasing the number will make the terrain wider, smoother and 
             more detailed, but it is more demanding on your computer. 
             Decreasing the number will do the opposite./n/nIt is best to use a
-            low number while working with the terrain and populations, then use 
-            a high number just before creating an image render./n/nBe careful
-            with using high numbers on older computers. If you are unsure, it 
-            is best to slowly increase the number (50 or 100 at a time) and see 
-            how the computer handles it.</text>
+            low number while making adjustments with the terrain and  
+            populations, then use a high number just before creating an image 
+            render./n/nBe careful with using high numbers on older computers. 
+            If you are unsure, it is best to slowly increase the number (50 or  
+            100 at a time) and see how the computer handles it.</text>
         </control>
         <control name="terrainDisplacement">
-            <title>The displacement map that the terrain uses</title>
+            <title>Set the terrain's shape</title>
             <text>Choose a color texture that has been imported to use as a 
             displacement map. A displacement map defines the shape of the 
             terrain./n/nHow a certain part of the terrain is shifted is
@@ -78,30 +79,30 @@ Data to be used by Sand Paper's help box
             red will shift left. Less red will shift right./nMore green will 
             shift up. Less green will shift down./nMore blue will shift 
             forward. Less blue will shift backward./n/nIt is best for beginners 
-            to create these maps by beginning with an image with a black 
+            to create these maps by starting with an image with a black 
             background and painting using only green at different opacities to 
             raise certain areas by certain amounts. More advanced users may 
             want to begin with a gray (R:127, G:127, B:127) background and then 
             add or remove red, green or blue at different areas of the map to 
-            the desired shape.</text>
+            attain the desired shape.</text>
         </control>
         <control name="terrainStrength">
-            <title>The control for setting how much the terrain should be 
-            displaced</title>
+            <title>Grow/shrink the terrain's shape</title>
             <text>A higher value will make the displacement more extreme, 
             moving the vertices out more. A lower value will make it less 
             noticeable, keeping the vertices closer in.</text>
         </control>
         <control name="terrainDiffuse">
-            <title>The diffuse map that the terrain uses</title>
+            <title>Set the terrain surface's appearance</title>
             <text>Choose a color texture that has been imported to use as a 
             diffuse map. A diffuse map is the actual appearance of the terrain.
             /n/nA diffuse map can be thought of as being similar to wrapping
             paper. It does not change the shape of the terrain at all, but it 
-            determines the color and patterns covering the terrain.</text>
+            determines the color and patterns covering the terrain./n/n
+            Transparency is supported.</text>
         </control>
         <control name="terrainBump">
-            <title>The bump map that the terrain uses</title>
+            <title>Set the terrain's surface details</title>
             <text>Choose a color texture that has been imported to use as a 
             bump map. A bump map defines the tiny details of the shape of the 
             terrain./n/nBump maps technically do not change the shape of the 
@@ -111,10 +112,10 @@ Data to be used by Sand Paper's help box
             known as a normal map. These maps are difficult to create by hand,
             however, there are applications (such as GIMP) that are capable of 
             applying a filter on the diffuse map to generate a normal map that 
-            can be used here.</text>
+            can be used.</text>
         </control>
         <control name="terrainSpecular">
-            <title>The specular map that the terrain uses</title>
+            <title>Set the terrain's shiny-ness</title>
             <text>Choose a color texture that has been imported to use as a 
             specular map. A specular map determines how much light the terrain
             should reflect./n/nThe darker parts of the specular map will make 
@@ -129,53 +130,55 @@ Data to be used by Sand Paper's help box
     
     <group name="populations">
         <control name="populationTab">
-            <title>The populations tab</title>
+            <title>Tab for managing the populations</title>
             <text>This tab is used for creating and modifying populations. In
             Sand Paper, populations are a group of planes that are spread 
             across the surface of the terrain. By default, these planes always 
             face the camera to help convey the allusion that they are 3D 
             objects when a rendered image is created./n/nPopulations are useful 
-            for creating trees, grass, hair, people in a crowd or other things 
-            that may stand up from the terrain's surface./n/nLarge populations
-            may be demanding on your PC (especially when the terrain has high 
-            vertex dimensions.</text>
+            for creating trees, shrubery, poles, people in a crowd or other  
+            things that may stand up from the terrain's surface./n/nIt can be 
+            tricky to make them look real in Sand Paper, so it's recommended 
+            to do adjustments on them in an image editor after rendering./n/n
+            Large populations may be demanding on your PC (especially when the 
+            terrain has high vertex dimensions).</text>
         </control>
         <control name="populationsChosen">
-            <title>The population selection box</title>
+            <title>Choose which population to modify</title>
             <text>Select a population to edit in this box. Any changes made to 
             the settings on this tab will apply only to the population selected 
             in this box.</text>
         </control>
         <control name="populationsNew">
-            <title>The new population button</title>
-            <text>Creates a new population./n/nYou will get to give the 
-            population a name. The population will then be selectable in the 
-            combo box directly above this button.</text>
+            <title>Create a new population</title>
+            <text>Click to create a new population./n/nAfter giving the 
+            population a name, it will then be selectable in the combo box 
+            directly above this button.</text>
         </control>
         <control name="populationsGenerate">
-            <title>The button for recreating the population</title>
+            <title>Re-construct the population</title>
             <text>Generates the population again./n/nSince random numbers are 
             used when calculating the population's placement and displacement, 
             the population will most-likely have a slightly different 
             appearance.</text>
         </control>
         <control name="populationsDelete">
-            <title>The population deletion button</title>
+            <title>Delete the population</title>
             <text>Deletes the population that is currently selected.</text>
         </control>
         <control name="populationsPlacement">
-            <title>The placement map that the selected population uses</title>
+            <title>Set the population's density</title>
             <text>Choose a grayscale texture that has been imported to use as a 
-            placement map. A placement map determines where on the terrain the 
-            population should exist./n/nA black area on the map will cover the 
-            corresponding area on the terrain with the population. A white area 
-            on the map will make the corresponding area on the terrain void of 
-            the population. A gray area will be partially populated depending 
-            on how light or dark the area is./n/nUsing a dark placement map can 
-            usually be very demanding on the PC.</text>
+            placement map. A placement map determines where (and how much) on 
+            the terrain the population should exist./n/nA black area on the map 
+            will cover the corresponding area on the terrain with the 
+            population. A white area will make the corresponding area on the 
+            terrain void of the population. A gray area will be partially 
+            populated depending on how light or dark the gray area is./n/nUsing 
+            a dark placement map is usually very demanding on the PC.</text>
         </control>
         <control name="populationsShift">
-            <title>The shift map that the selected population uses</title>
+            <title>Set how the population should be shifted</title>
             <text>Choose a colored texture that has been imported to use as a 
             shift map. A shift map determines how much the population should be 
             moved in various areas./n/nThe amount of red that a certain area of
@@ -185,21 +188,18 @@ Data to be used by Sand Paper's help box
             forward or back</text>
         </control>
         <control name="populationsWidth">
-            <title>The map that determines the width of the selected 
-            population</title>
+            <title>Set the population's width</title>
             <text>Choose a grayscale texture that has been imported to use as a 
             width map. A width map determines how much space should be between 
-            each vertex horizontally./n/nThe darker a part of the map is, the
-            skinnier the population will be in the corresponding area on the
-            terrain. The lighter it is, the wider the population will be in the 
-            corresponding area./n/nUnlike changing the vertex dimensions, this 
-            map adjusts the width without lowering or raising the population's 
-            quality. In other words, this map changes the population's width 
-            without affecting the computer's performance.</text>
+            each pair of vertices horizontally./n/nThe darker a part of the map 
+            is, the skinnier the population will be in the corresponding area 
+            on the terrain. The lighter it is, the wider the population will be 
+            in the corresponding area./n/nUnlike changing the vertex 
+            dimensions, this map adjusts the width without lowering or raising 
+            the population's shape's quality.</text>
         </control>
         <control name="populationsHeight">
-            <title>The map that determines the height of the selected
-            population</title>
+            <title>Set the population's height</title>
             <text>Choose a grayscale texture that has been imported to use as a 
             map for the population's height. This map determines how much space 
             should exist between each vertex vertically./n/nThe darker a part 
@@ -207,55 +207,50 @@ Data to be used by Sand Paper's help box
             corresponding area on the terrain. The lighter it is, the taller 
             the population will be in the corresponding area./n/nUnlike 
             changing the vertex dimensions, this map adjusts the height without 
-            lowering or raising the population's quality. In other words, this 
-            map changes the population's height without affecting the 
-            computer's performance.</text>
+            lowering or raising the population's shape's quality.</text>
         </control>
         <control name="populationsVertexWidth">
-            <title>How many vertices should make up the width of each 
-            individual object</title>
-            <text>Choose how many vertices should exist in each row of vertices 
-            on the surface of each individual object in the population./n/nIn 
-            simple terms, not only does this number change the width of the 
-            population, it also changes the quality./n/nA larger number will 
-            help the population to look less jagged, but it comes at a cost of 
-            the computer's performance./n/nIf displacement maps are not being 
-            used for this population, it is best to set this to a low number (2 
-            or 3) since the population is completely flat. Otherwise, raise the 
-            number one at a time until either the population looks good enough 
-            or the computer starts taking a considerable amount of time to
-            generate the population's changes./n/nIf only the population's 
-            width needs to be changed (not the quality) it is better to change 
-            the width with only the size map if possible.</text>
+            <title>Set the shape quality/width</title>
+            <text>Choose how many vertices wide each individual object in the
+            population should be measured./n/nNot only does this number change 
+            the width of everything in the population, it also changes the 
+            quality./n/nA larger number will help the population to look less 
+            jagged, but it comes at a cost of the computer's performance./n/nIf 
+            displacement maps are not being used for this population, it is 
+            best to set this to a low number (2 or 3) since the population is 
+            completely flat. Otherwise, raise the number 1 at a time until 
+            either the population looks alright or the computer begins to delay 
+            when generating the population's changes./n/nIf only the 
+            population's width needs to be changed (not the quality) it is 
+            better to change the width with only the width size map if possible.
+            </text>
         </control>
         <control name="populationsVertexHeight">
-            <title>How many vertices should make up the height of each 
-            individual object</title>
-            <text>Choose how many vertices should exist in each column of 
-            vertices on the surface of each individual object in the population.
-            /n/nIn simple terms, not only does this number change the height of 
-            the population, it also changes the quality./n/nA larger number 
-            will help the population to look less jagged, but it comes at a 
-            cost of the computer's performance./n/nIf displacement maps are not 
-            being used for this population, it is best to set this to a low 
-            number (2 or 3) since the population is completely flat. Otherwise, 
-            raise the number one at a time until either the population looks 
-            good enough or the computer begins to take more than a few seconds 
-            to generate the population's changes./n/nIf only the population's 
-            height needs to be changed (not the quality) it is better to change 
-            the height with only the size map if possible.</text>
+            <title>Set the shape quality/height</title>
+            <text>Choose how many vertices high each individual object in the
+            population should be measured./n/nNot only does this number change 
+            the height of everything in the population, it also changes the 
+            quality./n/nA larger number will help the population to look less 
+            jagged, but it comes at a cost of the computer's performance./n/nIf 
+            displacement maps are not being used for this population, it is 
+            best to set this to a low number (2 or 3) since the population is 
+            completely flat. Otherwise, raise the number 1 at a time until 
+            either the population looks alright or the computer begins to delay 
+            when generating the population's changes./n/nIf only the 
+            population's height needs to be changed (not the quality) it is 
+            better to change the height with only the height size map if 
+            possible.</text>
         </control>
         <control name="populationsDisplacement">
-            <title>The range from which the selected population is displaced 
-            to</title>
+            <title>Set the 3D shape of everything in the population</title>
             <text>Choose two color textures that have been imported to create a 
             range of displacement for the population./n/nThese displacement 
             maps function in the same manner as the population's displacement 
-            map. The difference is that each vertex belonging to an individual 
-            object in the population is moved to a point somewhere between 
-            where it would be moved in either of the maps. The purpose of 
-            having a range is to allow each object in the population to have a
-            somewhat different shape if desired./n/nIf this is difficult to 
+            map. The difference is that each individual object in the 
+            population is given a displacement map generated at random with 
+            colors between what is seen in the 2 maps. This will give each 
+            object different (yet similar) displacement maps, thereby giving 
+            them somewhat different shapes./n/nIf this is difficult to 
             understand, think of one map as being the least of how much the 
             vertices should be positioned, and the other is the most. Each 
             vertex on each object in the population will be positioned based 
@@ -264,36 +259,36 @@ Data to be used by Sand Paper's help box
             same image for both of the maps.</text>
         </control>
         <control name="populationsStrength">
-            <title>The control for setting how much the population should be 
-            displaced</title>
-            <text>A higher value will make the displacement more extreme, 
-            moving the vertices out more. A lower value will make it less 
-            noticeable, keeping the vertices closer in.</text>
+            <title>Set how extreme the displacement should be</title>
+            <text>A higher value will make the displacement more extreme 
+            (moving the vertices outward more). A lower value will make it less 
+            noticeable, keeping the vertices closer-in.</text>
         </control>
         <control name="populationsDiffuse">
-            <title>The diffuse map that the population uses</title>
+            <title>Set the image for the population's appearance</title>
             <text>Choose a color texture that has been imported to use as a 
-            diffuse map. A diffuse map is the actual appearance of the 
-            population./n/nA diffuse map can be thought of as being similar to 
-            wrapping paper. It does not change the shape of the individual 
-            objects in the population at all, but it determines the color and 
-            patterns covering the each object in the population.</text>
+            diffuse map. A diffuse map is the actual appearance of each 
+            individual object in the population./n/nA diffuse map can be 
+            thought of as being similar to wrapping paper. It does not change 
+            the shape of the objects in the population at all, but it 
+            determines the color and patterns covering each object in the 
+            population.</text>
         </control>
         <control name="populationsBump">
-            <title>The bump map that the population uses</title>
+            <title>Set the details on each object</title>
             <text>Choose a color texture that has been imported to use as a 
             bump map. A bump map defines the tiny details of the shape of the 
-            objects in the population./n/nBump maps technically do not change 
-            the shape at all, but rather give the allusion of the shape 
-            changing slightly. It is useful for creating details on the surface 
-            such as bumps and cracks./n/nSand Paper uses a type of colored bump 
-            map known as a normal map. These maps are difficult to create by 
-            hand, however, there are applications (such as GIMP) that are 
-            capable of applying a filter on the diffuse map to generate a 
-            normal map that can be used here.</text>
+            individual objects in the population./n/nBump maps technically do 
+            not change the shape at all, but rather give the allusion of the 
+            shape changing slightly. It is useful for creating details on the 
+            surface such as bumps and cracks./n/nSand Paper uses a type of 
+            colored bump map known as a normal map. These maps are difficult to 
+            create by hand, however, there are applications (such as GIMP) that 
+            are capable of applying a filter on the diffuse map to generate a 
+            normal map that can be used.</text>
         </control>
         <control name="populationsSpecular">
-            <title>The specular map that the population uses</title>
+            <title>Set how shiny-ness of the objects in the population</title>
             <text>Choose a color texture that has been imported to use as a 
             specular map. A specular map determines how much light should be 
             reflected off of each individual object in the population./n/nThe 
@@ -309,27 +304,27 @@ Data to be used by Sand Paper's help box
     
     <group name="render">
         <control name="renderTab">
-            <title>The render tab</title>
+            <title>Tab for settings for creating a rendered image</title>
             <text>The render tab allows settings to be changed that are related 
-            to how a rendered image (a "picture") of the terrain should be 
-            created./n/nCreate and save a rendered image by choosing "Save..." 
-            or "Save As..." from the File menu.</text>
+            to how a rendered image (sort of like a "photo") of the terrain 
+            should be created./n/nCreate and save a rendered image by choosing 
+            "Save..." or "Save As..." from the File menu.</text>
         </control>
         <control name="renderResolution">
-            <title>The resolution for the rendered image when exported</title>
+            <title>Set how many pixels wide/high for the render</title>
             <text>Set the width and height that the image render of the 
             terrain should be when saved./n/nThe unit of measurement is 
             pixels.</text>
         </control>
         <control name="renderColor">
-            <title>The background color selector</title>
+            <title>Set the background color</title>
             <text>Set the color of the background behind the terrain.</text>
         </control>
     </group>
     
     <group name="camera">
         <control name="cameraTab">
-            <title>The camera tab</title>
+            <title>The tab for setting the terrain view</title>
             <text>The camera tab has settings to adjust how the camera views 
             the terrain./n/nIn 3D modeling, a camera is what controls 
             everything that is currently in view. Just like how a camera 
@@ -337,19 +332,19 @@ Data to be used by Sand Paper's help box
             look like, so can the virtual camera.</text>
         </control>
         <control name="cameraHorizontal">
-            <title>The horizontal camera angle slider</title>
-            <text>The angle around the side of the terrain to view it at./n/n0 
-            and 360 are the front./n/n90 and 270 are the sides./n/n180 is 
-            behind it.</text>
+            <title>Rotate left or right</title>
+            <text>The viewing angle around the side of the terrain./n/n0 and 
+            360 are the front./n/n90 and 270 are the sides./n/n180 is behind it.
+            </text>
         </control>
         <control name="cameraVertical">
-            <title>The vertical camera angle slider</title>
-            <text>The angle of how far above the terrain to view it./n/n0 will 
-            view the terrain at eye level./n/n90 will view the terrain directly 
+            <title>Rotate to the front or the top</title>
+            <text>The angle of how far up to view the terrain./n/n0 will view 
+            the terrain at eye level./n/n90 will view the terrain directly 
             above it.</text>
         </control>
         <control name="cameraX">
-            <title>The camera x position adjustment</title>
+            <title>Move the camera left or right</title>
             <text>Sand Paper always tries to automatically center the view of 
             the terrain. However, sometimes the camera view is not exactly 
             centered, or you may not want it to be centered./n/nIf that is the 
@@ -360,7 +355,7 @@ Data to be used by Sand Paper's help box
             center.</text>
         </control>
         <control name="cameraY">
-            <title>The camera y position adjustment</title>
+            <title>Move the camera up or down</title>
             <text>Sand Paper always tries to automatically center the view of 
             the terrain. However, sometimes the camera view is not exactly 
             centered, or you may not want it to be centered./n/nIf that is the 
@@ -370,7 +365,7 @@ Data to be used by Sand Paper's help box
             0 will put it at what Sand Paper calculates to be the center.</text>
         </control>
         <control name="cameraZ">
-            <title>The camera z position adjustment</title>
+            <title>Move the camera forward or back</title>
             <text>Sand Paper always tries to automatically center the view of 
             the terrain. However, sometimes the camera view is not exactly 
             centered, or you may not want it to be centered./n/nIf that is the 
@@ -380,7 +375,7 @@ Data to be used by Sand Paper's help box
             will put it at what Sand Paper calculates to be the center.</text>
         </control>
         <control name="fieldOfViewDegrees">
-            <title>The slider for the field of view</title>
+            <title>Set how wide the view is</title>
             <text>The virtual "lens angle" of the camera./n/nSetting it to a 
             larger number will have a "wide angle lens" effect, causing more on 
             the sides of the camera to be seen, but it may distort the view. A 
@@ -388,7 +383,7 @@ Data to be used by Sand Paper's help box
             terrain have a flat look to it.</text>
         </control>
         <control name="fieldOfViewOrientation">
-            <title>The orientation radio buttons for the field of view</title>
+            <title>Set what the FOV should be calculated from</title>
             <text>The orientation to which the field of view is to be based off 
             of.</text>
         </control>
@@ -396,31 +391,31 @@ Data to be used by Sand Paper's help box
     
     <group name="lights">
         <control name="lightTab">
-            <title>The lights tab</title>
+            <title>The tab for setting the light on the terrain</title>
             <text>The lights tab can be used to create and edit lights around 
             the terrain./n/nIn 3D modeling, a light is a specific spot that 
-            emitts virtual light to everything around. These can be used to 
+            emitts virtual light to everything around it. These can be used to 
             change how bright or dark certain areas of the terrain can 
             be.</text>
         </control>
         <control name="lightsChosen">
-            <title>The light selection box</title>
+            <title>Choose which light to edit</title>
             <text>Select a light to edit in this box. Any changes made to the 
             settings on this tab will apply only to the light selected in this 
             box.</text>
         </control>
         <control name="lightsNew">
-            <title>The new light button</title>
-            <text>Creates a new light./n/nYou will get to give the light a 
-            name. The light will then be selectable in the combo box directly 
-            above this button.</text>
+            <title>Create a new light</title>
+            <text>Click to create a new light./n/nAfter giving the light a 
+            name, it will then be selectable in the combo box directly above 
+            this button.</text>
         </control>
         <control name="lightsDelete">
-            <title>The delete light button</title>
+            <title>Delete the selected light</title>
             <text>Deletes the light that is currently selected.</text>
         </control>
         <control name="lightsX">
-            <title>The light's x position</title>
+            <title>Move the light left or right</title>
             <text>The x position of the light that is currently selected./n/n
             Lights in Sand Paper are positioned with a percentage used as a 
             unit of measurement./n/n0% will place the light on the left edge of 
@@ -430,7 +425,7 @@ Data to be used by Sand Paper's help box
             right of the terrain.</text>
         </control>
         <control name="lightsY">
-            <title>The light's y position</title>
+            <title>Move the light up or down</title>
             <text>The y position of the light that is currently selected./n/n
             Lights in Sand Paper are positioned with a percentage used as a 
             unit of measurement./n/n0% will place the light above the terrain 
@@ -443,7 +438,7 @@ Data to be used by Sand Paper's help box
             terrain's size.</text>
         </control>
         <control name="lightsZ">
-            <title>The light's z position</title>
+            <title>Move the light forward or back</title>
             <text>The z position of the light that is currently selected./n/n
             Lights in Sand Paper are positioned with a percentage used as a 
             unit of measurement./n/n0% will place the light at the back edge of 
@@ -453,7 +448,7 @@ Data to be used by Sand Paper's help box
             100% will place it in front of the terrain.</text>
         </control>
         <control name="lightsColor">
-            <title>The light color selector</title>
+            <title>Set the light's color</title>
             <text>The color of the light that is currently selected./n/n 
             Choosing a darker color will cause the light to be less intense, 
             whereas a brighter color will make it more intense.</text>
