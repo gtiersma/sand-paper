@@ -16,6 +16,7 @@ import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.SceneAntialiasing;
@@ -45,6 +46,10 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -65,6 +70,12 @@ public class Controller
     final private int PREVIEW_WIDTH = 800;
     // The height of the preview of the model
     final private int PREVIEW_HEIGHT = 400;
+    
+    // The key combos to scroll the help box up or down
+    final private KeyCombination HELP_SCROLL_DOWN
+            = new KeyCodeCombination(KeyCode.DOWN, KeyCombination.CONTROL_DOWN);
+    final private KeyCombination HELP_SCROLL_UP
+            = new KeyCodeCombination(KeyCode.UP, KeyCombination.CONTROL_DOWN);
     
     // Instantiate an object for each tab. Each of these objects control the
     // functionality relating to that tab.
@@ -667,6 +678,19 @@ public class Controller
         //----------------------------------------------------------------------
         // Listeners for the Help Box
         //----------------------------------------------------------------------
+        
+        // Key combo listener for scrolling the help box
+        everything.setOnKeyPressed((KeyEvent event) ->
+        {
+            if (HELP_SCROLL_DOWN.match(event))
+            {
+                scrollHelpBox(true);
+            }
+            else if (HELP_SCROLL_UP.match(event))
+            {
+                scrollHelpBox(false);
+            }
+        });
         
         // A tab cannot directly have a hover listener, so its tab pane must
         // have one instead.
@@ -2353,6 +2377,26 @@ public class Controller
         renTab.saveAs(writster);
         
         resetPreviewSize();
+    }
+    
+    
+    /**
+     * Scrolls the help box if it currently has a scroll bar
+     * 
+     * @param down Whether or not it should scroll down
+     */
+    private void scrollHelpBox(boolean down)
+    {
+        final byte SCROLL_AMOUNT = 5;
+        
+        if (down)
+        {
+            helpBox.setScrollTop(helpBox.getScrollTop() + SCROLL_AMOUNT);
+        }
+        else
+        {
+            helpBox.setScrollTop(helpBox.getScrollTop() - SCROLL_AMOUNT);
+        }
     }
     
     /**
