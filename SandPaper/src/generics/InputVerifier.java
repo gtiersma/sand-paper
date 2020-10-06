@@ -78,20 +78,7 @@ public class InputVerifier
      */
     private boolean isMeshSizeValid(int maxSize, int size)
     {
-        boolean valid = false;
-        
-        // If the size is not too big...
-        if (size <= maxSize)
-        {
-            // ...and it is not too small...
-            if (size >= MIN_MESH_SIZE)
-            {
-                // ...it is valid.
-                valid = true;
-            }
-        }
-        
-        return valid;
+        return (size <= maxSize) && (size >= MIN_MESH_SIZE);
     }
     
     /**
@@ -142,12 +129,8 @@ public class InputVerifier
                 regex = "-?" + regex;
             }
         
-            // As long as the value is approved by the regex...
-            if (value.matches(regex))
-            {
-                // ...it is valid.
-                valid = true;
-            }
+            // Get if it is valid
+            valid = value.matches(regex);
         }
         // ...otherwise, if the value is blank, valid remains false.
         

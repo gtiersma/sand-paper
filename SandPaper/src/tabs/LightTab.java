@@ -308,12 +308,8 @@ public class LightTab
         // For each light...
         for (LightObject light : lights)
         {
-            // ...if its name matches this function's parameter...
-            if (light.getName().equals(name))
-            {
-                // ...it is a duplicate.
-                duplicate = true;
-            }
+            // ...if the its name matches, it's a duplicate.
+            duplicate = light.getName().equals(name);
         }
         
         return duplicate;
@@ -326,14 +322,7 @@ public class LightTab
      */
     public boolean lightExists()
     {
-        boolean lightExists = false;
-        
-        if (lights.length > 0)
-        {
-            lightExists = true;
-        }
-        
-        return lightExists;
+        return lights.length > 0;
     }
     
     /**

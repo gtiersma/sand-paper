@@ -860,19 +860,15 @@ public class Population
      */
     private boolean isRandomlyBrightEnough(Color shade)
     {
-        boolean brightEnough = false;
+        boolean brightEnough;
         
         double brightness = shade.getBrightness();
         
         double randomValue = getRandomNumber(0, 1);
         
-        // If the random value is greater than the value from the color's
-        // brightness...
-        if (brightness < randomValue)
-        {
-            // ...true is to be returned.
-            brightEnough = true;
-        }
+        // Whether or not the color happens to be bright enough for the random
+        // value
+        brightEnough = brightness < randomValue;
         
         return brightEnough;
     }

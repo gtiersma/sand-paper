@@ -348,12 +348,8 @@ public class PopulationTab
         // For each population...
         for (Population population : populations)
         {
-            // ...if its name matches this function's parameter...
-            if (population.getName().equals(name))
-            {
-                // ...it is a duplicate.
-                duplicate = true;
-            }
+            // ...if its name matches, it's a duplicate.
+            duplicate = population.getName().equals(name);
         }
         
         return duplicate;
@@ -366,14 +362,7 @@ public class PopulationTab
      */
     public boolean populationExists()
     {
-        boolean exists = true;
-        
-        if (populations.length == 0)
-        {
-            exists = false;
-        }
-        
-        return exists;
+        return populations.length == 0;
     }
     
     /**

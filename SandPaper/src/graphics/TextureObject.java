@@ -131,12 +131,8 @@ public class TextureObject
         // For each possible name of an image used for unassigned textures...
         for (byte i = 0; i < EMPTY_NAMES.length; i++)
         {
-            // ...if this texture has one of those names...
-            if (name.equals(EMPTY_NAMES[i]))
-            {
-                // ...its name should be hidden from the user.
-                nameShouldBeHidden = true;
-            }
+            // ...check if it is the name of an empty texture.
+            nameShouldBeHidden = name.equals(EMPTY_NAMES[i]);
         }
         
         if (!nameShouldBeHidden)
