@@ -16,7 +16,6 @@ import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.SceneAntialiasing;
@@ -52,6 +51,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import tabs.CameraTab;
 import tabs.LightTab;
@@ -1565,6 +1565,25 @@ public class Controller
     }
     
     /**
+     * Displays information of the given control's key in the help box
+     * 
+     * @param controlKey A key used to look up the information for the help box
+     */
+    private void displayHelp(String controlKey)
+    {
+        double helpBoxWidth = helpBox.getWidth();
+        double helpBoxHeight = helpBox.getHeight();
+        
+        String info;
+        
+        Font boxFont = helpBox.getFont();
+        
+        info = helper.getText(helpBoxWidth, helpBoxHeight, controlKey, boxFont);
+        
+        helpBox.setText(info);
+    }
+    
+    /**
      * Displays information of the given control in the help box
      * 
      * @param conster The control to display information of
@@ -1573,10 +1592,7 @@ public class Controller
     {
         // The control's CSS ID is used as the key for getting the control's
         // info
-        String key = conster.getId();
-        String info = helper.getText(key);
-            
-        helpBox.setText(info);
+        displayHelp(conster.getId());
     }
     
     /**
@@ -1586,10 +1602,7 @@ public class Controller
      */
     private void displayHelp(Tab tabster)
     {
-        String key = tabster.getId();
-        String info = helper.getText(key);
-            
-        helpBox.setText(info);
+        displayHelp(tabster.getId());
     }
     
     /**

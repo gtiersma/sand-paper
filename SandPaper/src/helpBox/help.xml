@@ -27,7 +27,7 @@ Colored textures can be used as shift, diffuse, displacement, bump or specular m
             <title>The imported colorless textures</title>
             <text><![CDATA[Contains all of the imported textures that have no color.
                 
-            These textures can be used as placement, width or height maps for a population.]]></text>
+These textures can be used as placement, width or height maps for a population.]]></text>
         </control>
         <control name="texturesGrayscaleAdd">
             <title>Import a colorless texture</title>

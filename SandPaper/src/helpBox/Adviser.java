@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -36,6 +38,8 @@ public class Adviser
             "cursor is currently hovering over.\n\nNot sure where to start? " +
             "Why not take a look at the tutorials? They can be found in the " +
             "help menu.";
+    final private String SCROLL_INSTRUCTIONS = "Use ctrl+up and ctrl+down to " +
+            "scroll through this help box.";
     final private String XML_PATH = "src/helpBox/help.xml";
     
     // The description for each control (organized in groups for faster access)
@@ -171,12 +175,16 @@ public class Adviser
     /**
      * Gets information for a control that belongs to the given key
      * 
+     * @param boxWidth The width of the help box
+     * @param boxHeight The height of the help box
      * @param key The string used to look up the control's information
+     * @param fontster The font used in the help box
      * 
      * @return The information for the control. The default message is returned
      *         if a match cannot be found.
      */
-    public String getText(String key)
+    public String getText(double boxWidth, double boxHeight, String key,
+            Font fontster)
     {
         // Initialize to the main help message (in case no match is found)
         String textster = DEFAULT_MESSAGE;
@@ -192,6 +200,13 @@ public class Adviser
         {
             // ...get it.
             textster = bottomOpen.get(key);
+        }
+        
+        // If the text does not fit in the help box...
+        if (isBoxTooSmall(boxWidth, boxHeight, textster, fontster))
+        {
+            // ...concat the instructions to scroll the help box.
+            textster = SCROLL_INSTRUCTIONS + "\n\n" + textster;
         }
         
         return textster;
@@ -215,6 +230,52 @@ public class Adviser
         }
         
         return title;
+    }
+    
+    /**
+     * Get whether or not the information fits in the help box without the need
+     * of a scroll bar.
+     * 
+     * @param boxWidth The width of the help box
+     * @param boxHeight The height of the help box
+     * @param helpInfo The information to be put in the help box
+     * @param fontster The font used in the help box
+     * 
+     * @return Whether or not the help info fits
+     */
+    private boolean isBoxTooSmall(double boxWidth, double boxHeight,
+            String helpInfo, Font fontster)
+    {
+        // Whether or not it fits
+        boolean boxTooSmall = true;
+        
+        // How many pixels high the font is
+        double characterHeight;
+        // The number of rows of text
+        double rowAmount;
+        // The height of all the rows of text
+        double textPixelHeight;
+        // The length of all the text (without word wrap)
+        double textPixelLength;
+        
+        Text textster = new Text(helpInfo);
+        textster.setFont(fontster);
+        
+        characterHeight = textster.getLayoutBounds().getHeight();
+        textPixelLength = textster.getLayoutBounds().getWidth();
+        
+        rowAmount = textPixelLength / boxWidth;
+        
+        textPixelHeight = rowAmount * characterHeight;
+        
+        // If the height of the text is less than the height of the help box...
+        if (textPixelHeight < boxHeight)
+        {
+            // ...the text fits without needing scroll bar.
+            boxTooSmall = false;
+        }
+        
+        return boxTooSmall;
     }
     
     /**

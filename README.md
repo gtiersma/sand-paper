@@ -60,7 +60,6 @@ This tutorial is also accessible from within the program. It can be found on the
 # To-Do List
 
 * Create an intermediate and advanced tutorial
-* Make the help box functional
 * Create a complete manual
 * Make stage/panes resizable
 * Finish shortcuts, hot-keys, keyboard controls, tab-order on controls
