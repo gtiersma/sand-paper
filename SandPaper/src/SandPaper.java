@@ -28,6 +28,7 @@ public class SandPaper extends Application
     @Override
     public void start(Stage stagester)
     {
+        final int MIN_WINDOW_SIZE = 400;
         final int WINDOW_WIDTH = 1200;
         final int WINDOW_HEIGHT = 600;
         
@@ -41,11 +42,12 @@ public class SandPaper extends Application
             scenster.getStylesheets().add("design.css");
         
             // Prepare the stage
+            stagester.setMinHeight(MIN_WINDOW_SIZE);
+            stagester.setMinWidth(MIN_WINDOW_SIZE);
             stagester.setTitle("Sand Paper v0.7");
             stagester.getIcons().add(new Image(SandPaper.class.getResourceAsStream(
                 "icons/icon.png")));
             stagester.setScene(scenster);
-            stagester.setResizable(false);
             stagester.show();
         }
         catch (IOException ex)
