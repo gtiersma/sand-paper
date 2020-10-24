@@ -34,6 +34,10 @@ public class SandPaper extends Application
         
         try
         {
+            // The icon for Sand Paper's title bar
+            Image icon = new Image(
+                    SandPaper.class.getResourceAsStream("icons/icon.png"));
+            
             Parent parster
                     = FXMLLoader.load(getClass().getResource("GUI.fxml"));
     
@@ -45,15 +49,15 @@ public class SandPaper extends Application
             stagester.setMinHeight(MIN_WINDOW_SIZE);
             stagester.setMinWidth(MIN_WINDOW_SIZE);
             stagester.setTitle("Sand Paper v0.7");
-            stagester.getIcons().add(new Image(SandPaper.class.getResourceAsStream(
-                "icons/icon.png")));
+            stagester.getIcons().add(icon);
             stagester.setScene(scenster);
             stagester.show();
         }
         catch (IOException ex)
         {
             showLaunchError();
-            Logger.getLogger(SandPaper.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SandPaper.class.getName()).log(Level.SEVERE, null,
+                    ex);
         }
     }
     

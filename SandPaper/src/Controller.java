@@ -50,6 +50,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -66,10 +67,10 @@ import tabs.PopulationTab;
  */
 public class Controller
 {
-    // The width of the preview of the model
-    final private int PREVIEW_WIDTH = 800;
-    // The height of the preview of the model
-    final private int PREVIEW_HEIGHT = 400;
+    // The initial width of the preview of the model
+    final private int DEFAULT_PREVIEW_WIDTH = 800;
+    // The initial height of the preview of the model
+    final private int DEFAULT_PREVIEW_HEIGHT = 400;
     
     // The key combos to scroll the help box up or down
     final private KeyCombination HELP_SCROLL_DOWN
@@ -152,6 +153,8 @@ public class Controller
     @FXML private ImageView populationImageBM;
     @FXML private ImageView populationImageSM;
     
+    @FXML private Pane previewContainer;
+    
     @FXML private RadioButton cameraRadioFOVH;
     @FXML private RadioButton cameraRadioFOVV;
     
@@ -172,8 +175,6 @@ public class Controller
     @FXML private Spinner<Integer> lightSpinnerPX;
     @FXML private Spinner<Integer> lightSpinnerPY;
     @FXML private Spinner<Integer> lightSpinnerPZ;
-    
-    @FXML private SplitPane splitster;
     
     @FXML private Tab textureTab;
     @FXML private Tab terrainTab;
@@ -217,10 +218,12 @@ public class Controller
      */
     public void initialize()
     {
-        preview = new SubScene(new Group(), PREVIEW_WIDTH, PREVIEW_HEIGHT, true,
+        // The size that the SubScene is initialized to does not matter. It will
+        // automatically be resized to fit its pane.
+        preview = new SubScene(new Group(), 1, 1, true,
                 SceneAntialiasing.BALANCED);
         // Place the preview in the split pane in the scene
-        splitster.getItems().set(0, preview);
+        previewContainer.getChildren().set(0, preview);
         
         // Prepare the help box
         helper.load();
@@ -2065,7 +2068,13 @@ public class Controller
         
         // To be centered, the terrain must be adjusted by half of the preview's
         // size
-        camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
+        camTab.setCameraOffset(DEFAULT_PREVIEW_WIDTH / 2, DEFAULT_PREVIEW_HEIGHT
+                / 2);
+        
+        // Force the preview to automatically resize when the user resizes the
+        // adjacent panes
+        preview.heightProperty().bind(previewContainer.heightProperty());
+        preview.widthProperty().bind(previewContainer.widthProperty());
         
         recenterOnTerrain();
         
@@ -2346,12 +2355,12 @@ public class Controller
     {
         // To be centered, the terrain must be adjusted by half of the preview's
         // size
-        camTab.setCameraOffset(PREVIEW_WIDTH / 2, PREVIEW_HEIGHT / 2);
+        camTab.setCameraOffset(DEFAULT_PREVIEW_WIDTH / 2, DEFAULT_PREVIEW_HEIGHT / 2);
         
         camTab.setZoom(cameraSpinnerPAZ.getValue());
         
-        preview.setWidth(PREVIEW_WIDTH);
-        preview.setHeight(PREVIEW_HEIGHT);
+        preview.setWidth(DEFAULT_PREVIEW_WIDTH);
+        preview.setHeight(DEFAULT_PREVIEW_HEIGHT);
     }
     
     /**
