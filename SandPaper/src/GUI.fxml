@@ -80,7 +80,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.67" orientation="VERTICAL">
+      <SplitPane dividerPositions="0.67" orientation="VERTICAL" prefHeight="600.0">
          <items>
             <SplitPane dividerPositions="0.67" prefHeight="300.0" prefWidth="200.0">
               <items>
