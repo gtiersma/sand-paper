@@ -345,7 +345,7 @@
                   <Insets />
                </opaqueInsets>
             </SplitPane>
-            <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0">
+            <SplitPane dividerPositions="0.83" prefHeight="200.0" prefWidth="200.0">
               <items>
                   <TabPane fx:id="bottomTabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
@@ -545,7 +545,7 @@
                         </Tab>
                     </tabs>
                   </TabPane>
-                  <TextArea id="style-1" fx:id="helpBox" maxWidth="200.0" prefHeight="200.0" prefWidth="200.0" text="Welcome to Sand Paper.&#10;&#10;This is the help box. It displays useful information about what the cursor is currently hovering over.&#10;&#10;Not sure where to start? Why not take a look at the tutorials?! They can be found in the help menu." wrapText="true" />
+                  <TextArea id="style-1" fx:id="helpBox" prefHeight="200.0" prefWidth="200.0" text="Welcome to Sand Paper.&#10;&#10;This is the help box. It displays useful information about what the cursor is currently hovering over.&#10;&#10;Not sure where to start? Why not take a look at the tutorials?! They can be found in the help menu." wrapText="true" />
               </items>
             </SplitPane>
          </items>
