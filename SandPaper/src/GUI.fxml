@@ -88,21 +88,21 @@
                      <children>
                         <Pane prefHeight="200.0" prefWidth="200.0" />
                      </children></Pane>
-                  <TabPane fx:id="rightTabs" prefHeight="200.0" prefWidth="756.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="rightTabs" side="LEFT" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                         <Tab id="textureTab" fx:id="textureTab" text="Textures">
                            <content>
-                              <ScrollPane id="style-3" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                              <ScrollPane id="style-3" fitToWidth="true" hbarPolicy="NEVER">
                                  <content>
-                                    <VBox id="texturesBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="364.0" spacing="20.0">
+                                    <VBox id="texturesBox" alignment="TOP_CENTER" spacing="20.0">
                                        <padding>
                                           <Insets bottom="20.0" top="20.0" />
                                        </padding>
                                        <children>
                                           <Label id="color" styleClass="head-label" text="Color Textures:" />
-                                          <ScrollPane id="texturesColored" fx:id="texturesScrollC" hbarPolicy="NEVER" minHeight="250.0" prefHeight="500.0" prefWidth="200.0">
+                                          <ScrollPane id="texturesColored" fx:id="texturesScrollC" hbarPolicy="NEVER" minHeight="110.0">
                                              <content>
-                                                <FlowPane id="texturesFlowC" fx:id="texturesFlowC" hgap="10.0" prefHeight="100.0" prefWidth="300.0" vgap="10.0">
+                                                <FlowPane id="texturesFlowC" fx:id="texturesFlowC" hgap="10.0" vgap="10.0">
                                                    <children>
                                                       <Button id="texturesColoredAdd" fx:id="texturesButtonCA" mnemonicParsing="false" onAction="#addColorTexture" prefHeight="80.0" prefWidth="80.0" text="Add&#10;Image" textAlignment="CENTER" />
                                                    </children>
@@ -112,14 +112,14 @@
                                                 </FlowPane>
                                              </content>
                                              <VBox.margin>
-                                                <Insets left="25.0" right="50.0" />
+                                                <Insets left="25.0" right="25.0" />
                                              </VBox.margin>
                                           </ScrollPane>
-                                          <Separator id="style-5" prefWidth="200.0" />
+                                          <Separator id="style-5" />
                                           <Label id="gray" styleClass="head-label" text="Grayscale Textures:" />
-                                          <ScrollPane id="texturesGrayscale" fx:id="texturesScrollG" hbarPolicy="NEVER" layoutX="42.0" layoutY="67.0" minHeight="250.0" prefHeight="500.0" prefWidth="200.0">
+                                          <ScrollPane id="texturesGrayscale" fx:id="texturesScrollG" hbarPolicy="NEVER" layoutX="42.0" layoutY="67.0" minHeight="110.0">
                                              <content>
-                                                <FlowPane id="texturesFlowG" fx:id="texturesFlowG" hgap="10.0" prefHeight="100.0" prefWidth="300.0" vgap="10.0">
+                                                <FlowPane id="texturesFlowG" fx:id="texturesFlowG" hgap="10.0" vgap="10.0">
                                                    <children>
                                                       <Button id="texturesGrayscaleAdd" fx:id="texturesButtonGA" mnemonicParsing="false" onAction="#addGrayTexture" prefHeight="80.0" prefWidth="80.0" text="Add&#10;Image" textAlignment="CENTER" />
                                                    </children>
@@ -129,7 +129,7 @@
                                                 </FlowPane>
                                              </content>
                                              <VBox.margin>
-                                                <Insets left="25.0" right="50.0" />
+                                                <Insets left="25.0" right="25.0" />
                                              </VBox.margin>
                                           </ScrollPane>
                                        </children>
@@ -140,9 +140,9 @@
                         </Tab>
                       <Tab id="terrainTab" fx:id="terrainTab" text="Terrain">
                            <content>
-                              <ScrollPane id="style-3" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                              <ScrollPane id="style-3" fitToWidth="true" hbarPolicy="NEVER">
                                  <content>
-                                    <VBox id="terrainBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="364.0" spacing="20.0">
+                                    <VBox id="terrainBox" alignment="TOP_CENTER" spacing="20.0">
                                        <padding>
                                           <Insets bottom="20.0" top="20.0" />
                                        </padding>
@@ -152,7 +152,7 @@
                                              <children>
                                                 <Label id="width" styleClass="medium-label" text=" Width:" />
                                                 <Button id="left" fx:id="terrainButtonVRWD" mnemonicParsing="false" onAction="#decrementTerrainVertexWidth" />
-                                                <TextField id="terrainVertexWidth" fx:id="terrainTextVRW" alignment="CENTER_RIGHT" prefWidth="75.0" text="50" />
+                                                <TextField id="terrainVertexWidth" fx:id="terrainTextVRW" alignment="CENTER_RIGHT" maxWidth="100.0" minWidth="50.0" prefWidth="75.0" text="50" />
                                                 <Button id="right" fx:id="terrainButtonVRWI" mnemonicParsing="false" onAction="#incrementTerrainVertexWidth" />
                                              </children>
                                           </HBox>
@@ -160,15 +160,15 @@
                                              <children>
                                                 <Label id="depth" styleClass="medium-label" text=" Depth:" />
                                                 <Button id="left" fx:id="terrainButtonVRDD" mnemonicParsing="false" onAction="#decrementTerrainVertexDepth" />
-                                                <TextField id="terrainVertexDepth" fx:id="terrainTextVRD" alignment="CENTER_RIGHT" prefWidth="75.0" text="50" />
+                                                <TextField id="terrainVertexDepth" fx:id="terrainTextVRD" alignment="CENTER_RIGHT" maxWidth="100.0" minWidth="50.0" prefWidth="75.0" text="50" />
                                                 <Button id="right" fx:id="terrainButtonVRDI" mnemonicParsing="false" onAction="#incrementTerrainVertexDepth" />
                                              </children>
                                           </HBox>
-                                          <Separator id="style-5" prefWidth="200.0" />
+                                          <Separator id="style-5" />
                                           <HBox id="terrainBoxDM" alignment="CENTER" spacing="10.0">
                                              <children>
                                                 <Label id="displacement" styleClass="medium-label" text=" Displacement Map:" />
-                                                <ComboBox id="terrainDisplacement" fx:id="terrainComboDM" onAction="#changeDisplacement" prefWidth="150.0" />
+                                                <ComboBox id="terrainDisplacement" fx:id="terrainComboDM" maxWidth="200.0" minWidth="100.0" onAction="#changeDisplacement" prefWidth="150.0" />
                                              </children>
                                           </HBox>
                                           <ImageView id="terrainImageDM" fx:id="terrainImageDM" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
@@ -178,27 +178,27 @@
                                                 <Slider id="terrainStrength" fx:id="terrainSliderDMS" minorTickCount="1" showTickLabels="true" value="50.0" />
                                              </children>
                                           </HBox>
-                                          <Separator id="style-5" prefWidth="200.0" />
+                                          <Separator id="style-5" />
                                           <HBox id="terrainBoxT" alignment="CENTER" layoutX="10.0" layoutY="18.0" spacing="10.0">
                                              <children>
                                                 <Label id="diffuse" styleClass="medium-label" text="Diffuse Map:" />
-                                                <ComboBox id="terrainDiffuse" fx:id="terrainComboDM2" onAction="#changeTerrainDiffuse" prefWidth="150.0" />
+                                                <ComboBox id="terrainDiffuse" fx:id="terrainComboDM2" maxWidth="200.0" minWidth="100.0" onAction="#changeTerrainDiffuse" prefWidth="150.0" />
                                              </children>
                                           </HBox>
                                           <ImageView id="terrainImageT" fx:id="terrainImageT" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Separator id="style-5" prefWidth="200.0" />
+                                          <Separator id="style-5" />
                                           <HBox id="terrainBoxBM" alignment="CENTER" layoutX="10.0" layoutY="380.0" spacing="10.0">
                                              <children>
                                                 <Label id="bump" styleClass="medium-label" text=" Bump Map:" />
-                                                <ComboBox id="terrainBump" fx:id="terrainComboBM" onAction="#changeTerrainBump" prefWidth="150.0" />
+                                                <ComboBox id="terrainBump" fx:id="terrainComboBM" maxWidth="200.0" minWidth="100.0" onAction="#changeTerrainBump" prefWidth="150.0" />
                                              </children>
                                           </HBox>
                                           <ImageView id="terrainImageBM" fx:id="terrainImageBM" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Separator id="style-5" layoutX="10.0" layoutY="520.0" prefWidth="200.0" />
+                                          <Separator id="style-5" layoutX="10.0" layoutY="520.0" />
                                           <HBox id="terrainBoxSM" alignment="CENTER" layoutX="10.0" layoutY="380.0" spacing="10.0">
                                              <children>
                                                 <Label id="specular" styleClass="medium-label" text=" Specular Map:" />
-                                                <ComboBox id="terrainSpecular" fx:id="terrainComboSM" onAction="#changeTerrainSpecular" prefWidth="150.0" />
+                                                <ComboBox id="terrainSpecular" fx:id="terrainComboSM" maxWidth="200.0" minWidth="100.0" onAction="#changeTerrainSpecular" prefWidth="150.0" />
                                              </children>
                                           </HBox>
                                           <ImageView id="terrainImageSM" fx:id="terrainImageSM" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="588.0" pickOnBounds="true" preserveRatio="true" />
@@ -212,15 +212,15 @@
                      <content>
                </content>
                            <content>
-                              <ScrollPane id="style-3" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0">
+                              <ScrollPane id="style-3" fitToWidth="true" hbarPolicy="NEVER">
                                  <content>
-                                    <VBox id="populationBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="364.0" spacing="20.0">
+                                    <VBox id="populationBox" alignment="TOP_CENTER" spacing="20.0">
                                        <padding>
                                           <Insets bottom="20.0" top="20.0" />
                                        </padding>
                                        <children>
                                           <Label id="population" styleClass="head-label" text=" Populations:" />
-                                          <ChoiceBox id="populationsChosen" fx:id="populationChoiceP" prefWidth="150.0" />
+                                          <ChoiceBox id="populationsChosen" fx:id="populationChoiceP" maxWidth="200.0" minWidth="100.0" prefWidth="150.0" />
                                           <HBox id="populationBoxPB" alignment="CENTER" spacing="10.0">
                                              <children>
                                                 <Button id="populationsNew" fx:id="populationButtonPN" mnemonicParsing="false" onAction="#createPopulation" text="New" />
@@ -228,19 +228,19 @@
                                                 <Button id="populationsDelete" fx:id="populationButtonPD" disable="true" layoutX="192.0" layoutY="10.0" mnemonicParsing="false" onAction="#deletePopulation" text="Delete" />
                                              </children>
                                           </HBox>
-                                          <Separator id="style-5" prefWidth="200.0" />
+                                          <Separator id="style-5" />
                                           <HBox id="populationBoxPl" alignment="CENTER" layoutX="10.0" layoutY="642.0" spacing="10.0">
                                              <children>
                                                 <Label id="placement" styleClass="medium-label" text="Placement:" />
-                                                <ComboBox id="populationsPlacement" fx:id="populationComboP" disable="true" onAction="#changePlacement" prefWidth="150.0" />
+                                                <ComboBox id="populationsPlacement" fx:id="populationComboP" disable="true" maxWidth="200.0" minWidth="100.0" onAction="#changePlacement" prefWidth="150.0" />
                                              </children>
                                           </HBox>
                                           <ImageView id="populationImagePl" fx:id="populationImageP" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Separator id="style-5" layoutX="10.0" layoutY="157.0" prefWidth="200.0" />
+                                          <Separator id="style-5" layoutX="10.0" layoutY="157.0" />
                                           <HBox id="populationBoxS" alignment="CENTER" layoutX="10.0" layoutY="180.0" spacing="10.0">
                                              <children>
                                                 <Label id="shift" styleClass="medium-label" text=" Shift:" />
-                                                <ComboBox id="populationsShift" fx:id="populationComboS" disable="true" onAction="#changeShift" prefWidth="150.0" />
+                                                <ComboBox id="populationsShift" fx:id="populationComboS" disable="true" maxWidth="200.0" minWidth="100.0" onAction="#changeShift" prefWidth="150.0" />
                                              </children>
                                           </HBox>
                                           <ImageView id="populationImageS" fx:id="populationImageS" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
@@ -260,13 +260,13 @@
                                              </children>
                                           </HBox>
                                           <ImageView id="populationImageSH" fx:id="populationImageSH" fitHeight="75.0" fitWidth="100.0" layoutX="142.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Separator id="style-5" layoutX="10.0" layoutY="320.0" prefWidth="200.0" />
+                                          <Separator id="style-5" layoutX="10.0" layoutY="320.0" />
                                           <Label id="vertex" styleClass="head-label" text=" Vertex Dimensions:" />
                                           <HBox fx:id="populationBoxVDW" alignment="CENTER" spacing="10.0">
                                              <children>
                                                 <Label id="width" styleClass="medium-label" text=" Width:" />
                                                 <Button id="left" fx:id="populationButtonVRWD" disable="true" mnemonicParsing="false" onAction="#decrementPopulationVertexWidth" />
-                                                <TextField id="populationsVertexWidth" fx:id="populationTextVRW" alignment="CENTER_RIGHT" disable="true" prefWidth="50.0" text="5" />
+                                                <TextField id="populationsVertexWidth" fx:id="populationTextVRW" alignment="CENTER_RIGHT" disable="true" maxWidth="75.0" minWidth="25.0" prefWidth="50.0" text="5" />
                                                 <Button id="right" fx:id="populationButtonVRWI" disable="true" mnemonicParsing="false" onAction="#incrementPopulationVertexWidth" />
                                              </children>
                                           </HBox>
@@ -274,7 +274,7 @@
                                              <children>
                                                 <Label id="height" styleClass="medium-label" text="Height:" />
                                                 <Button id="left" fx:id="populationButtonVRHD" disable="true" mnemonicParsing="false" onAction="#decrementPopulationVertexHeight" />
-                                                <TextField id="populationsVertexHeight" fx:id="populationTextVRH" alignment="CENTER_RIGHT" disable="true" prefWidth="50.0" text="5" />
+                                                <TextField id="populationsVertexHeight" fx:id="populationTextVRH" alignment="CENTER_RIGHT" disable="true" maxWidth="75.0" minWidth="25.0" prefWidth="50.0" text="5" />
                                                 <Button id="right" fx:id="populationButtonVRHI" disable="true" mnemonicParsing="false" onAction="#incrementPopulationVertexHeight" />
                                              </children>
                                           </HBox>
@@ -282,13 +282,13 @@
                                           <Label id="displacement" styleClass="head-label" text=" Displacement Range:" />
                                           <HBox id="populationBoxDRC" fx:id="populationBoxDR" alignment="CENTER" layoutX="10.0" layoutY="344.0" spacing="10.0">
                                              <children>
-                                                <ComboBox id="populationsDisplacement" fx:id="populationComboDR1" disable="true" onAction="#changeFirstDisplacement" prefWidth="150.0" />
+                                                <ComboBox id="populationsDisplacement" fx:id="populationComboDR1" disable="true" maxWidth="150.0" minWidth="100.0" onAction="#changeFirstDisplacement" prefWidth="125.0" />
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@icons/rightArrow.png" />
                                                    </image>
                                                 </ImageView>
-                                                <ComboBox id="populationsDisplacement" fx:id="populationComboDR2" disable="true" layoutX="178.0" layoutY="10.0" onAction="#changeSecondDisplacement" prefWidth="150.0" />
+                                                <ComboBox id="populationsDisplacement" fx:id="populationComboDR2" disable="true" layoutX="178.0" layoutY="10.0" maxWidth="150.0" minWidth="100.0" onAction="#changeSecondDisplacement" prefWidth="125.0" />
                                              </children>
                                           </HBox>
                                           <HBox id="populationBoxDRC" alignment="CENTER" spacing="10.0">
@@ -308,27 +308,27 @@
                                                 <Slider id="populationsStrength" fx:id="populationSliderDRS" blockIncrement="1.0" disable="true" majorTickUnit="5.0" max="20.0" minorTickCount="1" showTickLabels="true" value="3.0" />
                                              </children>
                                           </HBox>
-                                          <Separator id="style-5" prefWidth="200.0" />
+                                          <Separator id="style-5" />
                                           <HBox id="populationBoxT" alignment="CENTER" spacing="10.0">
                                              <children>
                                                 <Label id="diffuse" styleClass="medium-label" text="Diffuse Map:" />
-                                                <ComboBox id="populationsDiffuse" fx:id="populationComboDM" disable="true" onAction="#changePopulationDiffuse" prefWidth="150.0" />
+                                                <ComboBox id="populationsDiffuse" fx:id="populationComboDM" disable="true" maxWidth="200.0" minWidth="100.0" onAction="#changePopulationDiffuse" prefWidth="150.0" />
                                              </children>
                                           </HBox>
                                           <ImageView id="populationImageT" fx:id="populationImageT" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Separator id="style-5" prefWidth="200.0" />
+                                          <Separator id="style-5" />
                                           <HBox id="populationBoxBM" alignment="CENTER" spacing="10.0">
                                              <children>
                                                 <Label id="bump" styleClass="medium-label" text=" Bump Map:" />
-                                                <ComboBox id="populationsBump" fx:id="populationComboBM" disable="true" onAction="#changePopulationBump" prefWidth="150.0" />
+                                                <ComboBox id="populationsBump" fx:id="populationComboBM" disable="true" maxWidth="200.0" minWidth="100.0" onAction="#changePopulationBump" prefWidth="150.0" />
                                              </children>
                                           </HBox>
                                           <ImageView id="populationImageBM" fx:id="populationImageBM" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Separator id="style-5" prefWidth="200.0" />
+                                          <Separator id="style-5" />
                                           <HBox id="populationBoxSM" alignment="CENTER" spacing="10.0">
                                              <children>
                                                 <Label id="specular" styleClass="medium-label" text=" Specular Map:" />
-                                                <ComboBox id="populationsSpecular" fx:id="populationComboSM" disable="true" onAction="#changePopulationSpecular" prefWidth="150.0" />
+                                                <ComboBox id="populationsSpecular" fx:id="populationComboSM" disable="true" maxWidth="200.0" minWidth="100.0" onAction="#changePopulationSpecular" prefWidth="150.0" />
                                              </children>
                                           </HBox>
                                           <ImageView id="populationImageSM" fx:id="populationImageSM" fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
