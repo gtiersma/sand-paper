@@ -351,196 +351,208 @@
                     <tabs>
                       <Tab id="renderTab" fx:id="renderTab" text="Render">
                            <content>
-                              <HBox id="renderBox" alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
-                                 <padding>
-                                    <Insets left="20.0" right="20.0" />
-                                 </padding>
-                                 <children>
-                                    <VBox id="renderBoxR" fx:id="renderBoxR" alignment="CENTER" spacing="10.0">
-                                       <children>
-                                          <Label id="resolution" styleClass="head-label" text="  Resolution:" />
-                                          <HBox id="renderBoxRW" alignment="CENTER" spacing="5.0">
-                                             <children>
-                                                <Label id="width" styleClass="medium-label" text=" Width:" />
-                                                <Spinner id="renderResolution" fx:id="renderSpinnerRW" editable="true" initialValue="1920" max="99999" min="10" prefWidth="100.0" />
-                                                <Label id="medium-label" styleClass="medium-label" text="px" />
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <HBox id="renderBoxRH" alignment="CENTER" layoutX="10.0" layoutY="57.0" spacing="5.0">
-                                             <children>
-                                                <Label id="height" styleClass="medium-label" text=" Height:" />
-                                                <Spinner id="renderResolution" fx:id="renderSpinnerRH" editable="true" initialValue="1080" max="99999" min="10" prefWidth="100.0" />
-                                                <Label id="medium-label" styleClass="medium-label" text="px" />
-                                             </children>
-                                          </HBox>
-                                       </children>
+                              <ScrollPane fitToHeight="true" vbarPolicy="NEVER">
+                                 <content>
+                                    <HBox id="renderBox" alignment="CENTER_LEFT" spacing="20.0">
                                        <padding>
-                                          <Insets bottom="10.0" right="20.0" />
+                                          <Insets left="20.0" right="20.0" />
                                        </padding>
-                                    </VBox>
-                                    <Separator id="style-5" orientation="VERTICAL" />
-                                    <VBox id="renderBoxR" alignment="CENTER" layoutX="30.0" layoutY="10.0" spacing="10.0">
                                        <children>
-                                          <Label id="color" styleClass="head-label" text=" Background Color:" />
-                                          <ColorPicker id="renderColor" fx:id="renderColorBC" />
+                                          <VBox id="renderBoxR" fx:id="renderBoxR" alignment="CENTER" spacing="10.0">
+                                             <children>
+                                                <Label id="resolution" styleClass="head-label" text="  Resolution:" />
+                                                <HBox id="renderBoxRW" alignment="CENTER" spacing="5.0">
+                                                   <children>
+                                                      <Label id="width" styleClass="medium-label" text=" Width:" />
+                                                      <Spinner id="renderResolution" fx:id="renderSpinnerRW" editable="true" initialValue="1920" max="99999" min="10" prefWidth="100.0" />
+                                                      <Label id="medium-label" styleClass="medium-label" text="px" />
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </HBox>
+                                                <HBox id="renderBoxRH" alignment="CENTER" layoutX="10.0" layoutY="57.0" spacing="5.0">
+                                                   <children>
+                                                      <Label id="height" styleClass="medium-label" text=" Height:" />
+                                                      <Spinner id="renderResolution" fx:id="renderSpinnerRH" editable="true" initialValue="1080" max="99999" min="10" prefWidth="100.0" />
+                                                      <Label id="medium-label" styleClass="medium-label" text="px" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" right="20.0" />
+                                             </padding>
+                                          </VBox>
+                                          <Separator id="style-5" orientation="VERTICAL" />
+                                          <VBox id="renderBoxR" alignment="CENTER" layoutX="30.0" layoutY="10.0" spacing="10.0">
+                                             <children>
+                                                <Label id="color" styleClass="head-label" text=" Background Color:" />
+                                                <ColorPicker id="renderColor" fx:id="renderColorBC" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="20.0" right="20.0" />
+                                             </padding>
+                                          </VBox>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="10.0" left="20.0" right="20.0" />
-                                       </padding>
-                                    </VBox>
-                                 </children>
-                              </HBox>
+                                    </HBox>
+                                 </content>
+                              </ScrollPane>
                            </content>
                       </Tab>
                       <Tab id="cameraTab" fx:id="cameraTab" text="Camera">
                           <content>
               </content>
                            <content>
-                              <HBox id="cameraBox" alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
-                                 <padding>
-                                    <Insets left="20.0" right="20.0" />
-                                 </padding>
-                                 <children>
-                                    <VBox id="CameraBoxA" alignment="CENTER" spacing="10.0">
+                              <ScrollPane fitToHeight="true" vbarPolicy="NEVER">
+                                 <content>
+                                    <HBox id="cameraBox" alignment="CENTER_LEFT" spacing="20.0">
                                        <padding>
-                                          <Insets bottom="10.0" right="20.0" />
+                                          <Insets left="20.0" right="20.0" />
                                        </padding>
                                        <children>
-                                          <Label id="angle" styleClass="head-label" text=" Angle:" />
-                                          <HBox id="cameraBoxAH" alignment="CENTER" spacing="10.0">
+                                          <VBox id="CameraBoxA" alignment="CENTER" spacing="10.0">
+                                             <padding>
+                                                <Insets bottom="10.0" right="20.0" />
+                                             </padding>
                                              <children>
-                                                <Label id="width" styleClass="medium-label" text=" Horizontal:" />
-                                                <Slider id="cameraHorizontal" fx:id="cameraSliderAH" blockIncrement="5.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" prefWidth="300.0" showTickLabels="true" />
+                                                <Label id="angle" styleClass="head-label" text=" Angle:" />
+                                                <HBox id="cameraBoxAH" alignment="CENTER" spacing="10.0">
+                                                   <children>
+                                                      <Label id="width" styleClass="medium-label" text=" Horizontal:" />
+                                                      <Slider id="cameraHorizontal" fx:id="cameraSliderAH" blockIncrement="5.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" prefWidth="300.0" showTickLabels="true" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox id="cameraBoxAV" alignment="CENTER" layoutX="10.0" layoutY="72.0" spacing="10.0">
+                                                   <children>
+                                                      <Label id="height" styleClass="medium-label" text="Vertical:" />
+                                                      <Slider id="cameraVertical" fx:id="cameraSliderAV" blockIncrement="5.0" majorTickUnit="30.0" max="90.0" minorTickCount="1" prefWidth="150.0" showTickLabels="true" value="45.0" />
+                                                   </children>
+                                                </HBox>
                                              </children>
-                                          </HBox>
-                                          <HBox id="cameraBoxAV" alignment="CENTER" layoutX="10.0" layoutY="72.0" spacing="10.0">
+                                          </VBox>
+                                          <Separator id="style-5" orientation="VERTICAL" />
+                                          <HBox id="cameraBoxPA" alignment="CENTER" spacing="10.0">
                                              <children>
-                                                <Label id="height" styleClass="medium-label" text="Vertical:" />
-                                                <Slider id="cameraVertical" fx:id="cameraSliderAV" blockIncrement="5.0" majorTickUnit="30.0" max="90.0" minorTickCount="1" prefWidth="150.0" showTickLabels="true" value="45.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                    <Separator id="style-5" orientation="VERTICAL" />
-                                    <HBox id="cameraBoxPA" alignment="CENTER" spacing="10.0">
-                                       <children>
-                                          <VBox id="cameraBoxPAL" alignment="CENTER_RIGHT" spacing="14.0">
-                                             <children>
-                                                <Label id="width" styleClass="medium-label" text="X:" />
-                                                <Label id="height" styleClass="medium-label" text="Y:" />
-                                                <Label id="zoom" styleClass="medium-label" text=" Z:" />
+                                                <VBox id="cameraBoxPAL" alignment="CENTER_RIGHT" spacing="14.0">
+                                                   <children>
+                                                      <Label id="width" styleClass="medium-label" text="X:" />
+                                                      <Label id="height" styleClass="medium-label" text="Y:" />
+                                                      <Label id="zoom" styleClass="medium-label" text=" Z:" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets top="5.0" />
+                                                   </padding>
+                                                </VBox>
+                                                <VBox id="cameraBoxPAS" alignment="CENTER" spacing="10.0">
+                                                   <children>
+                                                      <Spinner id="cameraX" fx:id="cameraSpinnerPAH" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                                      <Spinner id="cameraY" fx:id="cameraSpinnerPAV" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                                      <Spinner id="cameraZ" fx:id="cameraSpinnerPAZ" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                                   </children>
+                                                </VBox>
                                              </children>
                                              <padding>
-                                                <Insets top="5.0" />
+                                                <Insets bottom="10.0" right="20.0" />
                                              </padding>
-                                          </VBox>
-                                          <VBox id="cameraBoxPAS" alignment="CENTER" spacing="10.0">
+                                          </HBox>
+                                          <Separator id="style-5" layoutX="229.0" layoutY="10.0" orientation="VERTICAL" />
+                                          <VBox id="cameraBoxFOV" alignment="CENTER" layoutX="255.0" layoutY="10.0" spacing="10.0">
+                                             <padding>
+                                                <Insets bottom="10.0" left="20.0" />
+                                             </padding>
                                              <children>
-                                                <Spinner id="cameraX" fx:id="cameraSpinnerPAH" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
-                                                <Spinner id="cameraY" fx:id="cameraSpinnerPAV" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
-                                                <Spinner id="cameraZ" fx:id="cameraSpinnerPAZ" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                                <Label id="view" styleClass="head-label" text=" Field of View:" />
+                                                <HBox id="cameraBoxFOVD" alignment="CENTER" spacing="10.0">
+                                                   <children>
+                                                      <Label id="angle" styleClass="medium-label" text="Degrees:" />
+                                                      <Slider id="fieldOfViewDegrees" fx:id="cameraSliderFOVD" blockIncrement="20.0" majorTickUnit="20.0" max="90.0" min="10.0" minorTickCount="1" showTickLabels="true" value="30.0" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox id="cameraBoxFOVHV" fx:id="cameraBoxFOVHV" alignment="CENTER" layoutX="10.0" layoutY="53.0" spacing="10.0">
+                                                   <children>
+                                                      <RadioButton id="fieldOfViewOrientation" fx:id="cameraRadioFOVH" mnemonicParsing="false" selected="true" text=" Horizontal" />
+                                                      <RadioButton id="fieldOfViewOrientation" fx:id="cameraRadioFOVV" layoutX="71.0" layoutY="10.0" mnemonicParsing="false" text="Vertical" />
+                                                   </children>
+                                                </HBox>
                                              </children>
                                           </VBox>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="10.0" right="20.0" />
-                                       </padding>
                                     </HBox>
-                                    <Separator id="style-5" layoutX="229.0" layoutY="10.0" orientation="VERTICAL" />
-                                    <VBox id="cameraBoxFOV" alignment="CENTER" layoutX="255.0" layoutY="10.0" spacing="10.0">
-                                       <padding>
-                                          <Insets bottom="10.0" left="20.0" />
-                                       </padding>
-                                       <children>
-                                          <Label id="view" styleClass="head-label" text=" Field of View:" />
-                                          <HBox id="cameraBoxFOVD" alignment="CENTER" spacing="10.0">
-                                             <children>
-                                                <Label id="angle" styleClass="medium-label" text="Degrees:" />
-                                                <Slider id="fieldOfViewDegrees" fx:id="cameraSliderFOVD" blockIncrement="20.0" majorTickUnit="20.0" max="90.0" min="10.0" minorTickCount="1" showTickLabels="true" value="30.0" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="cameraBoxFOVHV" fx:id="cameraBoxFOVHV" alignment="CENTER" layoutX="10.0" layoutY="53.0" spacing="10.0">
-                                             <children>
-                                                <RadioButton id="fieldOfViewOrientation" fx:id="cameraRadioFOVH" mnemonicParsing="false" selected="true" text=" Horizontal" />
-                                                <RadioButton id="fieldOfViewOrientation" fx:id="cameraRadioFOVV" layoutX="71.0" layoutY="10.0" mnemonicParsing="false" text="Vertical" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
+                                 </content>
+                              </ScrollPane>
                            </content>
                       </Tab>
                       <Tab id="lightTab" fx:id="lightTab" text="Light">
                            <content>
-                              <HBox id="cameraBox" alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
-                                 <padding>
-                                    <Insets left="20.0" right="20.0" />
-                                 </padding>
-                                 <children>
-                                    <VBox id="LightBoxL" alignment="CENTER" spacing="10.0">
+                              <ScrollPane fitToHeight="true" vbarPolicy="NEVER">
+                                 <content>
+                                    <HBox id="cameraBox" alignment="CENTER_LEFT" spacing="20.0">
                                        <padding>
-                                          <Insets bottom="10.0" right="20.0" />
+                                          <Insets left="20.0" right="20.0" />
                                        </padding>
                                        <children>
-                                          <Label id="lights" styleClass="head-label" text="Lights" />
-                                          <ChoiceBox id="lightsChosen" fx:id="lightChoiceL" disable="true" prefWidth="150.0" />
-                                          <HBox id="lightBoxAH" alignment="CENTER" spacing="10.0">
+                                          <VBox id="LightBoxL" alignment="CENTER" spacing="10.0">
+                                             <padding>
+                                                <Insets bottom="10.0" right="20.0" />
+                                             </padding>
                                              <children>
-                                                <Button id="lightsNew" fx:id="lightButtonLN" mnemonicParsing="false" onAction="#createLight" text="New" />
-                                                <Button id="lightsDelete" fx:id="lightButtonLD" disable="true" layoutX="10.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteLight" text="Delete" />
+                                                <Label id="lights" styleClass="head-label" text="Lights" />
+                                                <ChoiceBox id="lightsChosen" fx:id="lightChoiceL" disable="true" prefWidth="150.0" />
+                                                <HBox id="lightBoxAH" alignment="CENTER" spacing="10.0">
+                                                   <children>
+                                                      <Button id="lightsNew" fx:id="lightButtonLN" mnemonicParsing="false" onAction="#createLight" text="New" />
+                                                      <Button id="lightsDelete" fx:id="lightButtonLD" disable="true" layoutX="10.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteLight" text="Delete" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                          <Separator id="style-5" orientation="VERTICAL" />
+                                          <Label id="placement" styleClass="head-label" text="Position:" />
+                                          <HBox id="lightLabelP2" alignment="CENTER" spacing="10.0">
+                                             <children>
+                                                <VBox id="lightBoxPD" alignment="CENTER_RIGHT" spacing="12.0">
+                                                   <children>
+                                                      <Label id="width" styleClass="medium-label" text=" X:" />
+                                                      <Label id="height" layoutX="10.0" layoutY="13.0" styleClass="medium-label" text="Y:" />
+                                                      <Label id="depth" styleClass="medium-label" text=" Z:" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets top="5.0" />
+                                                   </padding>
+                                                </VBox>
+                                                <VBox id="lightBoxPS" alignment="CENTER" spacing="10.0">
+                                                   <children>
+                                                      <Spinner id="lightsX" fx:id="lightSpinnerPX" disable="true" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                                      <Spinner id="lightsY" fx:id="lightSpinnerPY" disable="true" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                                      <Spinner id="lightsZ" fx:id="lightSpinnerPZ" disable="true" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox id="lightBoxPP" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="25.0">
+                                                   <children>
+                                                      <Label id="medium-label" styleClass="medium-label" text="\%" />
+                                                      <Label id="medium-label" layoutX="10.0" layoutY="13.0" styleClass="medium-label" text="\%" />
+                                                      <Label id="medium-label" styleClass="medium-label" text="\%" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets top="3.0" />
+                                                   </padding>
+                                                </VBox>
                                              </children>
                                           </HBox>
-                                       </children>
-                                    </VBox>
-                                    <Separator id="style-5" orientation="VERTICAL" />
-                                    <Label id="placement" styleClass="head-label" text="Position:" />
-                                    <HBox id="lightLabelP2" alignment="CENTER" spacing="10.0">
-                                       <children>
-                                          <VBox id="lightBoxPD" alignment="CENTER_RIGHT" spacing="12.0">
+                                          <Separator id="style-5" layoutX="229.0" layoutY="10.0" orientation="VERTICAL" />
+                                          <VBox id="lightBoxC" alignment="CENTER" prefHeight="200.0" spacing="10.0">
                                              <children>
-                                                <Label id="width" styleClass="medium-label" text=" X:" />
-                                                <Label id="height" layoutX="10.0" layoutY="13.0" styleClass="medium-label" text="Y:" />
-                                                <Label id="depth" styleClass="medium-label" text=" Z:" />
+                                                <Label id="color" styleClass="head-label" text=" Color:" />
+                                                <ColorPicker id="lightsColor" fx:id="lightColorC" disable="true" />
                                              </children>
                                              <padding>
-                                                <Insets top="5.0" />
-                                             </padding>
-                                          </VBox>
-                                          <VBox id="lightBoxPS" alignment="CENTER" spacing="10.0">
-                                             <children>
-                                                <Spinner id="lightsX" fx:id="lightSpinnerPX" disable="true" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
-                                                <Spinner id="lightsY" fx:id="lightSpinnerPY" disable="true" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
-                                                <Spinner id="lightsZ" fx:id="lightSpinnerPZ" disable="true" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
-                                             </children>
-                                          </VBox>
-                                          <VBox id="lightBoxPP" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="25.0">
-                                             <children>
-                                                <Label id="medium-label" styleClass="medium-label" text="\%" />
-                                                <Label id="medium-label" layoutX="10.0" layoutY="13.0" styleClass="medium-label" text="\%" />
-                                                <Label id="medium-label" styleClass="medium-label" text="\%" />
-                                             </children>
-                                             <padding>
-                                                <Insets top="3.0" />
+                                                <Insets bottom="10.0" left="20.0" right="20.0" />
                                              </padding>
                                           </VBox>
                                        </children>
                                     </HBox>
-                                    <Separator id="style-5" layoutX="229.0" layoutY="10.0" orientation="VERTICAL" />
-                                    <VBox id="lightBoxC" alignment="CENTER" prefHeight="200.0" spacing="10.0">
-                                       <children>
-                                          <Label id="color" styleClass="head-label" text=" Color:" />
-                                          <ColorPicker id="lightsColor" fx:id="lightColorC" disable="true" />
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="10.0" left="20.0" right="20.0" />
-                                       </padding>
-                                    </VBox>
-                                 </children>
-                              </HBox>
+                                 </content>
+                              </ScrollPane>
                            </content>
                         </Tab>
                     </tabs>
