@@ -426,7 +426,7 @@
     -fx-graphic: url("/icons/leftArrow.png");
 }
 
-#lightTab .tab-label, #light
+#lightTab .tab-label, #lights
 {
     -fx-graphic: url("/icons/lights.png");
 }
