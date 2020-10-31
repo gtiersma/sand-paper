@@ -84,7 +84,7 @@
          <items>
             <SplitPane dividerPositions="0.67" prefHeight="300.0" prefWidth="200.0">
               <items>
-                  <Pane fx:id="previewContainer">
+                  <Pane fx:id="previewContainer" minHeight="50.0" minWidth="50.0">
                      <children>
                         <Pane prefHeight="200.0" prefWidth="200.0" />
                      </children></Pane>
