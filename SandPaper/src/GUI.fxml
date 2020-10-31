@@ -88,7 +88,7 @@
                      <children>
                         <Pane prefHeight="200.0" prefWidth="200.0" />
                      </children></Pane>
-                  <TabPane fx:id="rightTabs" side="LEFT" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="rightTabs" minWidth="400.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                         <Tab id="textureTab" fx:id="textureTab" text="Textures">
                            <content>
