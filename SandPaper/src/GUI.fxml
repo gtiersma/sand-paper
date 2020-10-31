@@ -27,7 +27,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="mainPane" fx:id="everything" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<VBox id="mainPane" fx:id="everything" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <MenuBar id="style-1">
         <menus>
@@ -347,7 +347,7 @@
             </SplitPane>
             <SplitPane dividerPositions="0.83" maxHeight="1.7976931348623157E308">
               <items>
-                  <TabPane fx:id="bottomTabs" maxHeight="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="bottomTabs" maxHeight="1.7976931348623157E308" minHeight="200.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab id="renderTab" fx:id="renderTab" text="Render">
                            <content>
@@ -540,7 +540,7 @@
                                              </children>
                                           </HBox>
                                           <Separator id="style-5" layoutX="229.0" layoutY="10.0" orientation="VERTICAL" />
-                                          <VBox id="lightBoxC" alignment="CENTER" prefHeight="200.0" spacing="10.0">
+                                          <VBox id="lightBoxC" alignment="CENTER" spacing="10.0">
                                              <children>
                                                 <Label id="color" styleClass="head-label" text=" Color:" />
                                                 <ColorPicker id="lightsColor" fx:id="lightColorC" disable="true" />
