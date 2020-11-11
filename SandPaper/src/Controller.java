@@ -34,7 +34,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -537,7 +536,8 @@ public class Controller
             if (listen)
             {
                 int validValue = validateSpinner(false,
-                        ligTab.getActiveLight().getPercentageZ(), lightSpinnerPZ);
+                        ligTab.getActiveLight().getPercentageZ(),
+                        lightSpinnerPZ);
             
                 ligTab.setActiveLightZ(validValue);
             }
@@ -616,6 +616,20 @@ public class Controller
                 
                 populationTextVRH.setText(String.valueOf(height));
             }
+        });
+        
+        //----------------------------------------------------------------------
+        // Pane resize listeners for the preview
+        //----------------------------------------------------------------------
+        previewContainer.widthProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            recenterCamera();
+        });
+        previewContainer.heightProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            recenterCamera();
         });
         
         //----------------------------------------------------------------------
@@ -2051,7 +2065,7 @@ public class Controller
         
         // Zoom the camera so that approximately the same content visible in the
         // preview is visible in the render
-        camTab.zoomForRender(cameraSpinnerPAZ.getValue(),
+        camTab.zoomForResize(cameraSpinnerPAZ.getValue(),
                 renTab.getDimensionAverage());
         
         // Resize the preview to match the size of the render
@@ -2081,6 +2095,25 @@ public class Controller
         refreshPreview();
         preview.setCamera(camTab.getCamera());
         preview.setFill(renTab.getBackColor());
+    }
+    
+    /**
+     * Re-centers the camera on the terrain
+     */
+    private void recenterCamera()
+    {
+        // The average of the preview pane's width and height
+        double previewAverage;
+        double previewWidth = previewContainer.getWidth();
+        double previewHeight = previewContainer.getHeight();
+        
+        previewAverage = (previewWidth + previewHeight) / 2;
+        
+        // Center the terrain in the preview
+        camTab.setCameraOffset(previewWidth / 2, previewHeight / 2);
+        
+        // Zoom the camera in or out if needed
+        camTab.zoomForResize(cameraSpinnerPAZ.getValue(), previewAverage);
     }
     
     /**
@@ -2355,7 +2388,8 @@ public class Controller
     {
         // To be centered, the terrain must be adjusted by half of the preview's
         // size
-        camTab.setCameraOffset(DEFAULT_PREVIEW_WIDTH / 2, DEFAULT_PREVIEW_HEIGHT / 2);
+        camTab.setCameraOffset(DEFAULT_PREVIEW_WIDTH / 2, DEFAULT_PREVIEW_HEIGHT
+                / 2);
         
         camTab.setZoom(cameraSpinnerPAZ.getValue());
         

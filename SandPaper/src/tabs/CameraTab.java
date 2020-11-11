@@ -45,10 +45,6 @@ public class CameraTab
     private int originY;
     private int originZ;
     
-    // How far the camera's position should be adjusted to center the mesh
-    private int xOffset;
-    private int yOffset;
-    
     // User-defined amounts to adjust the camera's position
     private int xAdjustment;
     private int yAdjustment;
@@ -58,6 +54,10 @@ public class CameraTab
     
     // How far the camera should be zoomed in or out
     private int zoom;
+    
+    // How far the camera's position should be adjusted to center the mesh
+    private double xOffset;
+    private double yOffset;
     
     // The camera
     private PerspectiveCamera camster;
@@ -148,7 +148,7 @@ public class CameraTab
      * 
      * @return The amount to zoom for rendering an image
      */
-    private int getRenderZoom(int resolutionAverage)
+    private int getRenderZoom(double resolutionAverage)
     {
         // The index of the render-zoom-per-pixel array that will contain the
         // amount the camera is to zoom per pixel of the dimension average
@@ -278,7 +278,7 @@ public class CameraTab
      * @param y How far the camera should be adjusted on the y scale to center
      *          the mesh
      */
-    public void setCameraOffset(int x, int y)
+    public void setCameraOffset(double x, double y)
     {
         // Making these values negative allows for a positive parameter given in
         // this function to move the camera in the correct direction
@@ -410,14 +410,14 @@ public class CameraTab
     }
     
     /**
-     * Zooms the camera either in or out for the creation of a render image
+     * Zooms the camera either in or out for when the preview is resized
      * 
      * @param zoomster How far to zoom the camera in. A negative value will zoom
      *                 the camera out.
      * @param dimensionAverage The average of the width and height that is set
      *                          to be the image's dimensions
      */
-    public void zoomForRender(int zoomster, int dimensionAverage)
+    public void zoomForResize(int zoomster, double dimensionAverage)
     {
         int extraZoom = getRenderZoom(dimensionAverage);
         
