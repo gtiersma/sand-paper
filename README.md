@@ -61,7 +61,6 @@ This tutorial is also accessible from within the program. It can be found on the
 
 * Create an intermediate and advanced tutorial
 * Create a complete manual
-* Make stage/panes resizable
 * Finish shortcuts, hot-keys, keyboard controls, tab-order on controls
 * Create a project file format, allowing users to save and load all of the values set in the controls
 * Ability to remove imported textures

@@ -32,7 +32,7 @@ public class CameraTab
     
     // There should be a formula to calculate these values, but it has not been
     // developed yet, so until then, these constants are used.
-    final private double[] RENDER_ZOOM_PER_PIXEL = {-6, -1, 0, 0.5, 1, 1, 1,
+    final private double[] RESIZE_ZOOM_PER_PIXEL = {-6, -1, 0, 0.5, 1, 1, 1,
             1.2, 1.3, 1.4, 1.4, 1.5};
     
     // The angle to which the mesh should be rotating (simulating the effect of
@@ -141,36 +141,64 @@ public class CameraTab
     }
     
     /**
-     * Gets the amount that is needed to zoom in or out for creating a render
+     * Gets the amount to zoom in or out for when the preview is resized
      * 
-     * @param dimensionAverage The average of the width and height that is set
-     *                         to be the image's dimensions
+     * @param dimensionAverage The average of the width and height of the new
+     *                         size
      * 
-     * @return The amount to zoom for rendering an image
+     * @return The additional amount to zoom for preview's new size
      */
-    private int getRenderZoom(double resolutionAverage)
+    private int getResizeZoom(double dimensionAverage)
     {
-        // The index of the render-zoom-per-pixel array that will contain the
-        // amount the camera is to zoom per pixel of the dimension average
-        byte zoomIndex = (byte)(resolutionAverage / ZOOM_PIXEL_RANGE);
+        // The indices of the RESIZE_ZOOM_PER_PIXEL array that will point to the
+        // values that make up the range to determine how far to zoom per pixel.
+        // These 2 indices will always be adjacent in the array, and the value
+        // to zoom per pixel will almost always be somewhere between the 2
+        // values.
+        byte zoomBeginIndex = (byte)(dimensionAverage / ZOOM_PIXEL_RANGE);
+        byte zoomEndIndex = (byte)(zoomBeginIndex + 1);
         
-        // The additional amount for the camera to zoom
+        // The total additional amount for the camera to zoom
         int extraZoom;
         
         // The amount the camera is to zoom per pizel of the dimension average
         double zoomPerPixel;
         
-        // If the calculated index is not within the array's size...
-        if (zoomIndex >= RENDER_ZOOM_PER_PIXEL.length)
+        // If the calculated index is out of bounds...
+        if (zoomBeginIndex >= RESIZE_ZOOM_PER_PIXEL.length)
         {
-            // ...make it the last index of the array.
-            zoomIndex = (byte)(RENDER_ZOOM_PER_PIXEL.length - 1);
+            // ...make it the last index.
+            zoomBeginIndex = (byte)(RESIZE_ZOOM_PER_PIXEL.length - 1);
         }
         
-        zoomPerPixel = RENDER_ZOOM_PER_PIXEL[zoomIndex];
+        // Initialize the amount to zoom per pixel to the lowest value in the
+        // range of possible values
+        zoomPerPixel = RESIZE_ZOOM_PER_PIXEL[zoomBeginIndex];
+        
+        // As long as the ending index points to an index actually within the
+        // array's bounds...
+        if (zoomEndIndex < RESIZE_ZOOM_PER_PIXEL.length)
+        {
+            // Get the remainder of the calculation that was used to find the
+            // indices
+            double sizeRemainder = dimensionAverage % ZOOM_PIXEL_RANGE;
+            
+            // Find the percentage of how far the remainder was to causing an
+            // increment in the indices
+            double remainderZoomPercentage = sizeRemainder / ZOOM_PIXEL_RANGE;
+            // Get the range
+            double zoomDifference = RESIZE_ZOOM_PER_PIXEL[zoomEndIndex]
+                    - zoomPerPixel;
+            // Find the additional amount to be zoomed per pixel from the
+            // remainder
+            double zoomFromRemainder = zoomDifference * remainderZoomPercentage;
+            
+            // Add the remainder zoom to the amount to zoom per pixel
+            zoomPerPixel = zoomPerPixel + zoomFromRemainder;
+        }
         
         // Calculate the total zoom amount
-        extraZoom = (int)(resolutionAverage * zoomPerPixel);
+        extraZoom = (int)(dimensionAverage * zoomPerPixel);
         
         return extraZoom;
     }
@@ -419,7 +447,7 @@ public class CameraTab
      */
     public void zoomForResize(int zoomster, double dimensionAverage)
     {
-        int extraZoom = getRenderZoom(dimensionAverage);
+        int extraZoom = getResizeZoom(dimensionAverage);
         
         // Zoom the regular amount in addition to the zoom adjustment for the
         // render
