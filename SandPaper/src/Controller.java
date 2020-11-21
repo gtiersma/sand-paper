@@ -837,6 +837,8 @@ public class Controller
     @FXML
     private void addColorTexture()
     {
+        everything.setDisable(true);
+        
         // If the user successfully supplied an image...
         if (texTab.addTexture(true))
         {
@@ -864,6 +866,8 @@ public class Controller
             // Begin listening to action events again
             listen = true;
         }
+        
+        everything.setDisable(false);
     }
     
     /**
@@ -872,6 +876,8 @@ public class Controller
     @FXML
     private void addGrayTexture()
     {
+        everything.setDisable(true);
+        
         // If the user successfully supplied an image...
         if (texTab.addTexture(false))
         {
@@ -893,6 +899,8 @@ public class Controller
             // Begin listening to action events again
             listen = true;
         }
+        
+        everything.setDisable(false);
     }
     
     /**
