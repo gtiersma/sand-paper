@@ -48,6 +48,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -241,6 +242,17 @@ public class Controller
         
         
         
+        //----------------------------------------------------------------------
+        // Texture Tab Listeners
+        //----------------------------------------------------------------------
+        texturesFlowC.addEventHandler(MouseEvent.MOUSE_CLICKED, evster ->
+        {
+            refreshTextureButton(true, texturesButtonCA);
+        });
+        texturesFlowG.addEventHandler(MouseEvent.MOUSE_CLICKED, evster ->
+        {
+            refreshTextureButton(false, texturesButtonGA);
+        });
         //----------------------------------------------------------------------
         // Terrain Tab Listeners
         //----------------------------------------------------------------------
@@ -2173,6 +2185,38 @@ public class Controller
         preview.setRoot(previewItems);
         
         addPopulationsToPreview(previewItems);
+    }
+    
+    /**
+     * Checks whether or not a button on the texture tab should be used to add
+     * or remove textures. More specifically, it checks to see if there are 
+     * currently any textures selected. If there are, the button will remove the
+     * selected textures when clicked. If there aren't, the button will add a
+     * texture when clicked.
+     * 
+     * @param color Whether or not the button is used for colored textures or 
+     *              not
+     * @param textureButton The button used to add or remove textures
+     */
+    private void refreshTextureButton(boolean color, Button textureButton)
+    {
+        final String BUTTON_TEXT_ADD = "Add Image";
+        final String BUTTON_TEXT_REMOVE = "Remove Selected Textures";
+        
+        // If there is a texture selected of the same type belonging to the
+        // given button...
+        if (texTab.isTextureSelected(color))
+        {
+            // ...the button's text will indicate that it will remove the 
+            // selected textures.
+            textureButton.setText(BUTTON_TEXT_REMOVE);
+        }
+        // ...otherwise, if no textures are selected...
+        else
+        {
+            // ...the button's text will indicate that it will add a texture.
+            textureButton.setText(BUTTON_TEXT_ADD);
+        }
     }
     
     /**

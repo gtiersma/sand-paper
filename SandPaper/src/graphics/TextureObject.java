@@ -3,9 +3,11 @@ package graphics;
 
 import java.io.File;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 /**
@@ -15,12 +17,24 @@ import javafx.scene.paint.Color;
  */
 public class TextureObject
 {
+    // The size of the shadow surrounding a texture when it is currently
+    // selected
+    final private byte SELECT_SHADOW_SIZE = 15;
+    
     // The size of the image view
     final private int VIEW_SIZE = 80;
-   
+    
+    // The color of the shadow surrounding a texture when is selected
+    final private String SELECT_COLOR = "0xFF0000";
+    
     // Names of images used for unassigned textures
     final private String[] EMPTY_NAMES = {"unassignedGray.png",
         "unassignedWhite.png"};
+    
+    // Whether or not this texture is currently selected in the texture tab
+    private boolean selected;
+    // Whether or not the ImageView has been initialized
+    private boolean viewInitialized;
     
     // The path to the texture
     private String path;
@@ -42,6 +56,9 @@ public class TextureObject
      */
     public TextureObject(File fileFile)
     {
+        selected = false;
+        viewInitialized = false;
+        
         filster = fileFile;
         path = fileFile.toString();
         name = path.substring(path.lastIndexOf("\\") + 1, path.indexOf("."));
@@ -49,9 +66,6 @@ public class TextureObject
         pixster = imster.getPixelReader();
         
         viewster = new ImageView();
-        viewster.setImage(imster);
-        viewster.setFitWidth(VIEW_SIZE);
-        viewster.setFitHeight(VIEW_SIZE);
     }
     
     /**
@@ -59,6 +73,9 @@ public class TextureObject
      */
     public TextureObject()
     {
+        selected = false;
+        viewInitialized = false;
+        
         // When no parameter is given, the blank texture is assigned
         filster = new File("src/graphics/" + EMPTY_NAMES[1]);
         path = filster.toString();
@@ -67,9 +84,16 @@ public class TextureObject
         pixster = imster.getPixelReader();
         
         viewster = new ImageView();
-        viewster.setImage(imster);
-        viewster.setFitWidth(VIEW_SIZE);
-        viewster.setFitHeight(VIEW_SIZE);
+    }
+    
+    /**
+     * Deselects this texture in the texture tab
+     */
+    public void deselect()
+    {
+        // Remove the selection effect
+        viewster.setEffect(null);
+        selected = false;
     }
     
     /**
@@ -160,6 +184,14 @@ public class TextureObject
      */
     public ImageView getView()
     {
+        // If the ImageView has yet to be initialized...
+        if (!viewInitialized)
+        {
+            // ...get it ready for use.
+            initializeView();
+            viewInitialized = true;
+        }
+        
         return viewster;
     }
     
@@ -187,6 +219,42 @@ public class TextureObject
         String incrementedString = Integer.toString(number);
         
         return incrementedString;
+    }
+    
+    /**
+     * Initializes the ImageView for this texture (Gets it ready for use)
+     */
+    private void initializeView()
+    {
+        viewster.setImage(imster);
+        // Set the size for it to be displayed in the texture tab's flex pane
+        viewster.setFitWidth(VIEW_SIZE);
+        viewster.setFitHeight(VIEW_SIZE);
+        
+        // When the ImageView is clicked...
+        viewster.addEventHandler(MouseEvent.MOUSE_CLICKED, evster ->
+        {
+            // ...if this texture is currently not selected...
+            if (!selected)
+            {
+                // ...select it.
+                select();
+            }
+            // ...otherwise...
+            else
+            {
+                // ...deselect it.
+                deselect();
+            }
+        });
+    }
+    
+    /**
+     * Gets whether or not this texture is currently selected in the texture tab
+     */
+    public boolean isSelected()
+    {
+        return selected;
     }
     
     /**
@@ -268,5 +336,18 @@ public class TextureObject
                 i = -1;
             }
         }
+    }
+    
+    /**
+     * Selects this texture in the textures tab
+     */
+    public void select()
+    {
+        // The shadow to be used as an effect when this texture is selected
+        DropShadow shadster = new DropShadow(SELECT_SHADOW_SIZE,
+                Color.web(SELECT_COLOR));
+        
+        viewster.setEffect(shadster);
+        selected = true;
     }
 }

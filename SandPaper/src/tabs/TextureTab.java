@@ -339,4 +339,53 @@ public class TextureTab
         
         return obster;
     }
+    
+    /**
+     * Gets whether or not there is a texture currently selected of the given
+     * type
+     * 
+     * @param color Whether or not the colored texture type is to be checked
+     * 
+     * @return Whether or not a texture is selected
+     */
+    public boolean isTextureSelected(boolean color)
+    {
+        boolean textureSelected = false;
+        
+        // Number of textures
+        int texturesAmount;
+        
+        // The texture object array to be checked
+        TextureObject[] texsters;
+        
+        // If the colored textures are to be checked...
+        if (color)
+        {
+            // ...get them.
+            texsters = colorTextures;
+        }
+        // ...otherwise...
+        else
+        {
+            // ...get the gray ones.
+            texsters = grayTextures;
+        }
+        
+        texturesAmount = texsters.length;
+            
+        // For each texture...
+        for (int i = 0; i < texturesAmount; i++)
+        {
+            // ...if it is selected...
+            if (colorTextures[i].isSelected())
+            {
+                // ...a selected texture has been found.
+                textureSelected = true;
+                // Exit the loop
+                i = texturesAmount;
+            }
+        }
+        
+        return textureSelected;
+    }
 }
