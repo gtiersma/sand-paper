@@ -31,6 +31,8 @@ public class TextureObject
     final private String[] EMPTY_NAMES = {"unassignedGray.png",
         "unassignedWhite.png"};
     
+    // Whether or not this texture has color
+    private boolean colored;
     // Whether or not this texture is currently selected in the texture tab
     private boolean selected;
     // Whether or not the ImageView has been initialized
@@ -56,6 +58,7 @@ public class TextureObject
      */
     public TextureObject(File fileFile)
     {
+        colored = true;
         selected = false;
         viewInitialized = false;
         
@@ -73,6 +76,7 @@ public class TextureObject
      */
     public TextureObject()
     {
+        colored = true;
         selected = false;
         viewInitialized = false;
         
@@ -87,13 +91,68 @@ public class TextureObject
     }
     
     /**
+     * Applies or removes certain effects from the ImageView
+     * 
+     * @param grayscale Whether or not the ImageView is to have a grayscale
+     *                  effect
+     * @param highlight Whether or not the ImageView is to have have a glow
+     *                  around it
+     */
+    private void applyEffects(boolean grayscale, boolean highlight)
+    {
+        // If the ImageView is to be grayscale...
+        if (grayscale)
+        {
+            // ...prepare the grayscale effect.
+            ColorAdjust decolor = new ColorAdjust();
+            decolor.setSaturation(-1);
+            
+            // If it is to also have a glow...
+            if (highlight)
+            {
+                // ...prepare the glow.
+                DropShadow glow = new DropShadow(SELECT_SHADOW_SIZE,
+                    Color.web(SELECT_COLOR));
+                
+                // Inject the grayscale effect into the glow effect
+                glow.setInput(decolor);
+                viewster.setEffect(glow);
+            }
+            // ...otherwise, it is to be only grayscale, so...
+            else
+            {
+                // ...apply only that effect.
+                viewster.setEffect(decolor);
+            }
+        }
+        // ...otherwise, it is to be colored, so...
+        else
+        {
+            // ...if it is to have only a glow...
+            if (highlight)
+            {
+                // ...create the glow effect.
+                DropShadow glow = new DropShadow(SELECT_SHADOW_SIZE,
+                    Color.web(SELECT_COLOR));
+                
+                viewster.setEffect(glow);
+            }
+            // ...otherwise, it is to have no effects, so...
+            else
+            {
+                // ...apply an empty value as an effect to it.
+                viewster.setEffect(null);
+            }
+        }
+    }
+    
+    /**
      * Deselects this texture in the texture tab
      */
     public void deselect()
     {
-        // Remove the selection effect
-        viewster.setEffect(null);
         selected = false;
+        applyEffects(!colored, selected);
     }
     
     /**
@@ -251,6 +310,8 @@ public class TextureObject
     
     /**
      * Gets whether or not this texture is currently selected in the texture tab
+     * 
+     * @return Whether or not this texture is selected
      */
     public boolean isSelected()
     {
@@ -273,9 +334,8 @@ public class TextureObject
      */
     public void removeColor()
     {
-        ColorAdjust grayscale = new ColorAdjust();
-        grayscale.setSaturation(-1);
-        viewster.setEffect(grayscale);
+        colored = false;
+        applyEffects(!colored, selected);
     }
     
     /**
@@ -343,11 +403,7 @@ public class TextureObject
      */
     public void select()
     {
-        // The shadow to be used as an effect when this texture is selected
-        DropShadow shadster = new DropShadow(SELECT_SHADOW_SIZE,
-                Color.web(SELECT_COLOR));
-        
-        viewster.setEffect(shadster);
         selected = true;
+        applyEffects(!colored, selected);
     }
 }
