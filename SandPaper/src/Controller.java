@@ -8,6 +8,7 @@ import graphics.Terrain;
 import graphics.TextureObject;
 import helpBox.Adviser;
 import java.io.IOException;
+import java.util.ArrayList;
 import tabs.TextureTab;
 import tabs.TerrainTab;
 import tabs.RenderTab;
@@ -247,11 +248,11 @@ public class Controller
         //----------------------------------------------------------------------
         texturesFlowC.addEventHandler(MouseEvent.MOUSE_CLICKED, evster ->
         {
-            refreshTextureButton(true, texturesButtonCA);
+            refreshTextureButton(true);
         });
         texturesFlowG.addEventHandler(MouseEvent.MOUSE_CLICKED, evster ->
         {
-            refreshTextureButton(false, texturesButtonGA);
+            refreshTextureButton(false);
         });
         //----------------------------------------------------------------------
         // Terrain Tab Listeners
@@ -832,78 +833,6 @@ public class Controller
     }
     
     /**
-     * Gets a colored texture from the user through a file chooser
-     */
-    @FXML
-    private void addColorTexture()
-    {
-        everything.setDisable(true);
-        
-        // If the user successfully supplied an image...
-        if (texTab.addTexture(true))
-        {
-            // ...stop listening for action events.
-            listen = false;
-            
-            // Add the texture that the user just chose to the pane
-            texturesFlowC.getChildren().add(texTab.getLastView(true));
-        
-            // Create a list of the names of the color textures imported so far
-            ObservableList<String> obster = texTab.getTextureNames(true);
-            
-            // Set the list to the combo boxes for maps
-            terrainComboDM2.setItems(obster);
-            terrainComboDM.setItems(obster);
-            terrainComboBM.setItems(obster);
-            terrainComboSM.setItems(obster);
-            populationComboS.setItems(obster);
-            populationComboDR1.setItems(obster);
-            populationComboDR2.setItems(obster);
-            populationComboDM.setItems(obster);
-            populationComboBM.setItems(obster);
-            populationComboSM.setItems(obster);
-            
-            // Begin listening to action events again
-            listen = true;
-        }
-        
-        everything.setDisable(false);
-    }
-    
-    /**
-     * Gets a grayscale texture from the user through a file chooser
-     */
-    @FXML
-    private void addGrayTexture()
-    {
-        everything.setDisable(true);
-        
-        // If the user successfully supplied an image...
-        if (texTab.addTexture(false))
-        {
-            // ...stop listening for action events.
-            listen = false;
-            
-            // Add the texture that the user just chose to the pane
-            texturesFlowG.getChildren().add(texTab.getLastView(false));
-            
-            // Create a list of the names of the grayscale textures imported so
-            // far
-            ObservableList<String> obster = texTab.getTextureNames(false);
-            
-            // Set the list to the combo boxes for maps
-            populationComboP.setItems(obster);
-            populationComboSW.setItems(obster);
-            populationComboSH.setItems(obster);
-            
-            // Begin listening to action events again
-            listen = true;
-        }
-        
-        everything.setDisable(false);
-    }
-    
-    /**
      * Adds all of the Population objects to the preview
      * 
      * @param previewItems A group containing all objects to be used in the
@@ -970,6 +899,39 @@ public class Controller
         {
             // ...re-enable all of the controls
             everything.setDisable(false);
+        }
+    }
+    
+    /**
+     * Displays the "import texture" dialog box and imports the texture of the
+     * user's choosing into Sand Paper's system
+     * 
+     * @param color Whether or not a colored texture should be imported
+     */
+    private void addTexture(boolean color)
+    {
+        // If the user chooses a texture in the dialog...
+        if (texTab.addTexture(color))
+        {
+            // ...stop listening for action events.
+            listen = false;
+            
+            everything.setDisable(true);
+        
+            // Add the texture to the correct FlowPane
+            if (color)
+            {
+                texturesFlowC.getChildren().add(texTab.getLastView(color));
+            }
+            else
+            {
+                texturesFlowG.getChildren().add(texTab.getLastView(color));
+            }
+            
+            everything.setDisable(false);
+            
+            // Begin listening to action events again
+            listen = true;
         }
     }
     
@@ -1336,6 +1298,34 @@ public class Controller
         
             refreshPreview();
         }
+    }
+    
+    /**
+     * The actions performed for when the user clicks the button in the colored
+     * textures FlowPane
+     */
+    @FXML
+    private void colorTextureButtonClick()
+    {
+        // Whether or not the textures being dealt with have color
+        final boolean COLOR = true;
+        
+        textureButtonClick(COLOR);
+       
+        // Create a list of the names of the color textures imported so far
+        ObservableList<String> obster = texTab.getTextureNames(COLOR);
+        
+        // Set the list to the combo boxes for maps
+        terrainComboDM2.setItems(obster);
+        terrainComboDM.setItems(obster);
+        terrainComboBM.setItems(obster);
+        terrainComboSM.setItems(obster);
+        populationComboS.setItems(obster);
+        populationComboDR1.setItems(obster);
+        populationComboDR2.setItems(obster);
+        populationComboDM.setItems(obster);
+        populationComboBM.setItems(obster);
+        populationComboSM.setItems(obster);
     }
     
     /**
@@ -1729,6 +1719,27 @@ public class Controller
         validator.formatNumericSpinner(lightSpinnerPX);
         validator.formatNumericSpinner(lightSpinnerPY);
         validator.formatNumericSpinner(lightSpinnerPZ);
+    }
+    
+    /**
+     * The actions performed for when the user clicks the button in the 
+     * grayscale textures FlowPane
+     */
+    @FXML
+    private void grayTextureButtonClick()
+    {
+        // Whether or not the textures being dealt with have color
+        boolean COLOR = false;
+        
+        textureButtonClick(COLOR);
+       
+        // Create a list of the names of the color textures imported so far
+        ObservableList<String> obster = texTab.getTextureNames(COLOR);
+            
+        // Set the list to the combo boxes for maps
+        populationComboP.setItems(obster);
+        populationComboSW.setItems(obster);
+        populationComboSH.setItems(obster);
     }
     
     /**
@@ -2204,16 +2215,25 @@ public class Controller
      * 
      * @param color Whether or not the button is used for colored textures or 
      *              not
-     * @param textureButton The button used to add or remove textures
      */
-    private void refreshTextureButton(boolean color, Button textureButton)
+    private void refreshTextureButton(boolean color)
     {
         final String BUTTON_TEXT_ADD = "Add Image";
         final String BUTTON_TEXT_REMOVE = "Remove Selected Textures";
         
-        // If there is a texture selected of the same type belonging to the
-        // given button...
-        if (texTab.isTextureSelected(color))
+        // The texture button being dealt with. Initialized to the button in the
+        // grayscale textures box.
+        Button textureButton = texturesButtonGA;
+        
+        // If the texture box the button belongs to is for colored textures..,
+        if (color)
+        {
+            // ...set it to the button for colored textures.
+            textureButton = texturesButtonCA;
+        }
+        
+        // If there is a texture selected of the indicated color orientation...
+        if (!texTab.getSelectedIndices(color).isEmpty())
         {
             // ...the button's text will indicate that it will remove the 
             // selected textures.
@@ -2241,6 +2261,45 @@ public class Controller
                 terTab.getTerrain().getPoints());
         
         refreshPreview();
+    }
+    
+    /**
+     * Removes the texture ImageViews of the given indices from the correct
+     * FlowPane
+     * 
+     * @param color Whether or not to remove colored or colorless textures
+     * @param indicesToRemove The indices indicating which ImageViews to remove
+     *                        from the FlowPane
+     */
+    private void removeTextures(boolean color, ArrayList<Short> indicesToRemove)
+    {
+        int lastIndex = indicesToRemove.size() - 1;
+            
+        // For each index (in reverse order to prevent the ArrayList's resizing
+        // from throwing off the loop)...
+        for (int i = lastIndex; i >= 0; i--)
+        {
+            // ...get it.
+            short currentIndex = indicesToRemove.get(i);
+                
+            ImageView currentView = texTab.getImageView(color, currentIndex);
+                
+            // Remove it from the FlowPane
+            if (color)
+            {
+                texturesFlowC.getChildren().remove(currentView);
+            }
+            else
+            {
+                texturesFlowG.getChildren().remove(currentView);
+            }
+                
+            texTab.deleteTexture(color, currentIndex);
+        }
+            
+        // No texture should be selected now, so the button will need to change
+        // its text back
+        refreshTextureButton(color);
     }
     
     /**
@@ -2620,6 +2679,31 @@ public class Controller
         // Sets the icon of the dialog box
         ((Stage)dister.getScene().getWindow()).getIcons().add(
                 new Image("icons/icon.png"));
+    }
+    
+    /**
+     * Performs the necessary actions for when a button in 1 of the FlowPanes on
+     * the texture tab is clicked
+     * 
+     * @param color Whether or not the button clicked is for colored or
+     *              colorless textures.
+     */
+    private void textureButtonClick(boolean color)
+    {
+        ArrayList<Short> selectedTextures = texTab.getSelectedIndices(true);
+        
+        // If there are no selected textures in the correct FlowPane...
+        if (selectedTextures.isEmpty())
+        {
+            // ...then the button must be used for importing a texture.
+            addTexture(color);
+        }
+        // ...otherwise...
+        else
+        {
+            // ...the button must be used for removing textures.
+            removeTextures(color, selectedTextures);
+        }
     }
     
     /**

@@ -3,6 +3,7 @@ package tabs;
 
 import graphics.TextureObject;
 import java.io.File;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -23,9 +24,9 @@ public class TextureTab
     private String previousDirectory;
     
     // The colored textures
-    private TextureObject[] colorTextures;
+    private ArrayList<TextureObject> colorTextures;
     // The grayscale textures
-    private TextureObject[] grayTextures;
+    private ArrayList<TextureObject> grayTextures;
     
     /**
      * CONSTRUCTOR
@@ -34,23 +35,23 @@ public class TextureTab
     {
         previousDirectory = System.getProperty("user.home");
         
-        colorTextures = new TextureObject[0];
-        grayTextures = new TextureObject[0];
+        colorTextures = new ArrayList<>();
+        grayTextures = new ArrayList<>();
     }
     
     /**
      * Gets a texture from the user through a file chooser and adds it to an
-     * array of textures
+     * ArrayList of textures
      * 
      * @param color Whether or not the texture is colored or grayscale
      * 
      * @return Whether or not a texture was successfully added to a texture
-     * array
+     *         ArrayList
      */
     public boolean addTexture(boolean color)
     {
         // Whether or not a texture has been successfully added to a texture
-        // array
+        // ArrayList
         boolean textureAdded = false;
         
         // The file retrieved from the file chooser
@@ -84,9 +85,9 @@ public class TextureTab
                 // As long as the file being read is a valid image file...
                 if (texster.isValid())
                 {
-                    // ...get the array of TextureObjects to which it will
+                    // ...get the ArrayList of TextureObjects to which it will
                     // belong.
-                    TextureObject[] texsters = getTextures(color);
+                    ArrayList<TextureObject> texsters = getTextures(color);
         
                     // Change its name if the name already exists
                     checkForDuplicateName(texster, texsters);
@@ -94,15 +95,15 @@ public class TextureTab
                     // If the new texture is to be colored...
                     if (color)
                     {
-                        // ...add it to that array.
-                        colorTextures = addToArray(texster, texsters);
+                        // ...add it to that ArrayList.
+                        colorTextures.add(texster);
                     }
                     // ...otherwise, it is to be gray...
                     else
                     {
                         // ...remove its color.
                         texster.removeColor();
-                        grayTextures = addToArray(texster, texsters);
+                        grayTextures.add(texster);
                     }
 
                     // The texture has been successfully added
@@ -128,49 +129,23 @@ public class TextureTab
     }
     
     /**
-     * Adds a texture object to an array
-     * 
-     * @param texster The texture object to be added to the array
-     * @param texsters The array of texture objects
-     * 
-     * @return The array of texture objects with the new texture object
-     */
-    private TextureObject[] addToArray(TextureObject texster,
-            TextureObject[] texsters)
-    {
-        // The current size
-        int size = texsters.length;
-        
-        // A new array with room for another texture object
-        TextureObject[] newTexsters = new TextureObject[size + 1];
-        
-        // Transfer all of the texture objects to the new array
-        System.arraycopy(texsters, 0, newTexsters, 0, size);
-        
-        // Add the new texture object
-        newTexsters[size] = texster;
-        
-        return newTexsters;
-    }
-    
-    /**
      * Checks if the given TextureObject has a name that matches a texture that
-     * is already present in the given array. It changes the given
+     * is already present in the given ArrayList. It changes the given
      * TextureObject's name if a match is found.
      * 
      * @param texster The TextureObject which may need to have its name changed
-     * @param texsters The array of TextureObjects to compare names from
+     * @param texsters The ArrayList of TextureObjects to compare names from
      */
     private void checkForDuplicateName(TextureObject texster,
-            TextureObject[] texsters)
+            ArrayList<TextureObject> texsters)
     {
         String name = texster.getName();
         
-        // For each TextureObject in the array...
-        for (int i = 0; i < texsters.length; i++)
+        // For each TextureObject in the ArrayList...
+        for (int i = 0; i < texsters.size(); i++)
         {
             // ...get its name.
-            String existingName = texsters[i].getName();
+            String existingName = texsters.get(i).getName();
                 
             // If the name matches...
             if (existingName.equals(name))
@@ -182,9 +157,23 @@ public class TextureTab
                 checkForDuplicateName(texster, texsters);
                     
                 // Exit the loop
-                i = texsters.length;
+                i = texsters.size();
             }
         }
+    }
+    
+    /**
+     * Deletes an indicated texture.
+     * 
+     * It does not remove the texture's ImageView control. Make sure that is
+     * removed first before the texture is deleted.
+     * 
+     * @param color Whether to delete a colored or a colorless texture
+     * @param index The index of which texture to delete
+     */
+    public void deleteTexture(boolean color, short index)
+    {
+        getTextures(color).remove(index);
     }
     
     /**
@@ -235,13 +224,49 @@ public class TextureTab
      */
     public ImageView getLastView(boolean color)
     {
+        int textureAmount;
+        
         ImageView viewster;
         
-        TextureObject[] texsters = getTextures(color);
+        ArrayList<TextureObject> texsters = getTextures(color);
         
-        viewster = texsters[texsters.length - 1].getView();
+        textureAmount = texsters.size();
+        
+        viewster = texsters.get(textureAmount - 1).getView();
         
         return viewster;
+    }
+    
+    /**
+     * Gets the indexes of the textures selected by the user 
+     * 
+     * @param color Whether to retrieve the indexes of the colored or the
+     *              colorless textures
+     * 
+     * @return The indices of the selected textures
+     */
+    public ArrayList<Short> getSelectedIndices(boolean color)
+    {
+        // Number of textures
+        int texturesAmount;
+        
+        ArrayList<Short> selectedIndices = new ArrayList<>();
+        ArrayList<TextureObject> texsters = getTextures(color);
+        
+        texturesAmount = texsters.size();
+        
+        // For each texture...
+        for (short i = 0; i < texturesAmount; i++)
+        {
+            // ...if it is selected...
+            if (texsters.get(i).isSelected())
+            {
+                // ...get its index.
+                selectedIndices.add(i);
+            }
+        }
+        
+        return selectedIndices;
     }
     
     /**
@@ -258,18 +283,21 @@ public class TextureTab
         
         TextureObject texster = new TextureObject();
         
-        TextureObject[] texsters = getTextures(color);
+        ArrayList<TextureObject> texsters = getTextures(color);
         
-        textureAmount = texsters.length;
+        textureAmount = texsters.size();
         
         // For each TextureObject...
         for (int i = 0; i < textureAmount; i++)
         {
-            // ...if that TextureObject's name matches...
-            if (texsters[i].getName().equals(name))
+            // ...get it.
+            TextureObject possibleMatch = texsters.get(i);
+            
+            // If that TextureObject's name matches...
+            if (possibleMatch.getName().equals(name))
             {
                 // ...get it.
-                texster = texsters[i];
+                texster = possibleMatch;
                     
                 // Exit the loop
                 i = textureAmount;
@@ -292,9 +320,9 @@ public class TextureTab
         
         String[] names;
         
-        TextureObject[] texsters = getTextures(color);
+        ArrayList<TextureObject> texsters = getTextures(color);
         
-        textureAmount = texsters.length;
+        textureAmount = texsters.size();
         
         // Make enough room in the array for each name
         names = new String[textureAmount];
@@ -302,7 +330,7 @@ public class TextureTab
         // Get each name
         for (int i = 0; i < textureAmount; i++)
         {
-            names[i] = texsters[i].getName();
+            names[i] = texsters.get(i).getName();
         }
         
         // Turn the array into an observable list
@@ -320,10 +348,10 @@ public class TextureTab
      * 
      * @return The indicated array of TextureObjects
      */
-    private TextureObject[] getTextures(boolean color)
+    private ArrayList<TextureObject> getTextures(boolean color)
     {
         // The texture object array to be checked
-        TextureObject[] texsters;
+        ArrayList<TextureObject> texsters;
         
         // If the colored textures are to be checked...
         if (color)
@@ -342,37 +370,18 @@ public class TextureTab
     }
     
     /**
-     * Gets whether or not there is a texture currently selected of the given
-     * type
+     * Gets an ImageView of a texture
      * 
-     * @param color Whether or not the colored texture type is to be checked
+     * @param color Whether an ImageView of a colored or a colorless texture is
+     *              being retrieved
+     * @param index The index of the texture to be retrieved
      * 
-     * @return Whether or not a texture is selected
+     * @return The ImageView of a texture
      */
-    public boolean isTextureSelected(boolean color)
+    public ImageView getImageView(boolean color, short index)
     {
-        boolean textureSelected = false;
+        ArrayList<TextureObject> texsters = getTextures(color);
         
-        // Number of textures
-        int texturesAmount;
-        
-        TextureObject[] texsters = getTextures(color);
-        
-        texturesAmount = texsters.length;
-            
-        // For each texture...
-        for (int i = 0; i < texturesAmount; i++)
-        {
-            // ...if it is selected...
-            if (texsters[i].isSelected())
-            {
-                // ...a selected texture has been found.
-                textureSelected = true;
-                // Exit the loop
-                i = texturesAmount;
-            }
-        }
-        
-        return textureSelected;
+        return texsters.get(index).getView();
     }
 }
