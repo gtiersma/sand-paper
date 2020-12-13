@@ -2286,7 +2286,8 @@ public class Controller
             // ...get it.
             short currentIndex = indicesToRemove.get(i);
                 
-            ImageView currentView = texTab.getImageView(color, currentIndex);
+            ImageView currentView =
+                    texTab.getTexture(color, currentIndex).getView();
                 
             // Remove it from the FlowPane
             if (color)

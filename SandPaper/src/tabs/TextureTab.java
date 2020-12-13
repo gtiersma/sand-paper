@@ -270,7 +270,20 @@ public class TextureTab
     }
     
     /**
-     * Gets a TextureObject
+     * Gets an TextureObject by index
+     * 
+     * @param color Whether or not it is a colored image
+     * @param index The index of the texture to be retrieved
+     * 
+     * @return The TextureObject
+     */
+    public TextureObject getTexture(boolean color, short index)
+    {
+        return getTextures(color).get(index);
+    }
+    
+    /**
+     * Gets a TextureObject by name
      * 
      * @param color Whether or not it is a colored image
      * @param name The name of the TextureObject to be returned
@@ -367,21 +380,5 @@ public class TextureTab
         }
         
         return texsters;
-    }
-    
-    /**
-     * Gets an ImageView of a texture
-     * 
-     * @param color Whether an ImageView of a colored or a colorless texture is
-     *              being retrieved
-     * @param index The index of the texture to be retrieved
-     * 
-     * @return The ImageView of a texture
-     */
-    public ImageView getImageView(boolean color, short index)
-    {
-        ArrayList<TextureObject> texsters = getTextures(color);
-        
-        return texsters.get(index).getView();
     }
 }
