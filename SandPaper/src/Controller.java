@@ -910,15 +910,14 @@ public class Controller
      */
     private void addTexture(boolean color)
     {
+        // Disable everything on the GUI to focus the user's attention entirely
+        // on the dialog that's about to appear.
+        everything.setDisable(true);
+            
         // If the user chooses a texture in the dialog...
         if (texTab.addTexture(color))
         {
-            // ...stop listening for action events.
-            listen = false;
-            
-            everything.setDisable(true);
-        
-            // Add the texture to the correct FlowPane
+            // ...add the texture to the correct FlowPane
             if (color)
             {
                 texturesFlowC.getChildren().add(texTab.getLastView(color));
@@ -927,12 +926,9 @@ public class Controller
             {
                 texturesFlowG.getChildren().add(texTab.getLastView(color));
             }
-            
-            everything.setDisable(false);
-            
-            // Begin listening to action events again
-            listen = true;
         }
+        
+        everything.setDisable(false);
     }
     
     /**
@@ -1310,6 +1306,8 @@ public class Controller
         // Whether or not the textures being dealt with have color
         final boolean COLOR = true;
         
+        listen = false;
+        
         textureButtonClick(COLOR);
        
         // Create a list of the names of the color textures imported so far
@@ -1326,6 +1324,8 @@ public class Controller
         populationComboDM.setItems(obster);
         populationComboBM.setItems(obster);
         populationComboSM.setItems(obster);
+        
+        listen = true;
     }
     
     /**
@@ -1731,6 +1731,8 @@ public class Controller
         // Whether or not the textures being dealt with have color
         boolean COLOR = false;
         
+        listen = false;
+        
         textureButtonClick(COLOR);
        
         // Create a list of the names of the color textures imported so far
@@ -1740,6 +1742,8 @@ public class Controller
         populationComboP.setItems(obster);
         populationComboSW.setItems(obster);
         populationComboSH.setItems(obster);
+        
+        listen = true;
     }
     
     /**
