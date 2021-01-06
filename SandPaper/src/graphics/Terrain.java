@@ -1,7 +1,5 @@
 package graphics;
 
-import javafx.scene.image.Image;
-
 
 /**
  * The 3D object designed from the materials imported from the user
@@ -10,6 +8,11 @@ import javafx.scene.image.Image;
  */
 public class Terrain extends MeshObject
 {
+    private TextureObject displacementTexture;
+    private TextureObject diffuseTexture;
+    private TextureObject bumpTexture;
+    private TextureObject specularTexture;
+    
     /**
      * CONSTRUCTOR
      * 
@@ -22,9 +25,25 @@ public class Terrain extends MeshObject
      * @param dister The displacement map
      */
     public Terrain(short fSize, short widthster, short depthster,
-            int strengthster, Image dister)
+            int strengthster, TextureObject dister)
     {
-        super(fSize, fSize, widthster, depthster, strengthster, dister);
+        super(fSize, fSize, widthster, depthster, strengthster,
+                dister.getImage());
+        
+        displacementTexture = dister;
+        diffuseTexture = new TextureObject();
+        bumpTexture = new TextureObject();
+        specularTexture = new TextureObject();
+    }
+    
+    /**
+     * Gets the bump map
+     * 
+     * @return The bump map
+     */
+    public TextureObject getBump()
+    {
+        return bumpTexture;
     }
     
     /**
@@ -95,6 +114,16 @@ public class Terrain extends MeshObject
     }
     
     /**
+     * Gets the diffuse map
+     * 
+     * @return The diffuse map
+     */
+    public TextureObject getDiffuse()
+    {
+        return diffuseTexture;
+    }
+    
+    /**
      * Gets 0 if an 'x' is given, 1 for a 'y' and 2 for a 'z'
      * 
      * @param dimension The dimension of which to return a value (x, y or z)
@@ -115,6 +144,16 @@ public class Terrain extends MeshObject
         }
         
         return value;
+    }
+    
+    /**
+     * Gets the displacement map
+     * 
+     * @return The displacement map
+     */
+    public TextureObject getDisplacement()
+    {
+        return displacementTexture;
     }
     
     /**
@@ -208,6 +247,16 @@ public class Terrain extends MeshObject
     }
     
     /**
+     * Gets the specular map
+     * 
+     * @return The specular map
+     */
+    public TextureObject getSpecular()
+    {
+        return specularTexture;
+    }
+    
+    /**
      * Gets the width of the terrain (Measured in vertices)
      * 
      * @return The width of the terrain (Measured in vertices)
@@ -215,5 +264,53 @@ public class Terrain extends MeshObject
     public short getWidth()
     {
         return width;
+    }
+    
+    /**
+     * Sets the bump map
+     * 
+     * @param bumpster The new bump map
+     */
+    public void setBump(TextureObject bumpster)
+    {
+        bumpTexture = bumpster;
+        
+        setBump(bumpster.getImage());
+    }
+    
+    /**
+     * Sets the diffuse map
+     * 
+     * @param difster The new diffuse map
+     */
+    public void setDiffuse(TextureObject diffster)
+    {
+        diffuseTexture = diffster;
+        
+        setDiffuse(diffster.getImage());
+    }
+    
+    /**
+     * Sets the displacement map
+     * 
+     * @param difster The new displacement map
+     */
+    public void setDisplacement(TextureObject dister)
+    {
+        displacementTexture = dister;
+        
+        setDisplacement(dister.getImage());
+    }
+    
+    /**
+     * Sets the specular map
+     * 
+     * @param difster The new specular map
+     */
+    public void setSpecular(TextureObject specster)
+    {
+        specularTexture = specster;
+        
+        setDisplacement(specster.getImage());
     }
 }

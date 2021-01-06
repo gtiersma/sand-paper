@@ -944,13 +944,13 @@ public class Controller
             // ...get the selected image name from the combo box.
             String name = terrainComboDM.getValue().toString();
             
-            // Get the image belonging to that name
-            Image imster = texTab.getImageByName(true, name);
+            // Get the texture belonging to that name
+            TextureObject texster = texTab.getTexture(true, name);
             
-            terrainImageDM.setImage(imster);
+            terrainImageDM.setImage(texster.getImage());
 
             // Set the image as the displacement map
-            terTab.getTerrain().setDisplacement(imster);
+            terTab.getTerrain().setDisplacement(texster);
             
             // Populations must be re-positioned since the shape of the terrain
             // has changed
@@ -1060,7 +1060,7 @@ public class Controller
             populationImageBM.setImage(texster.getImage());
             
             // Set the image as the population's bump map
-            popTab.getActivePopulation().setBumpMap(texster);
+            popTab.getActivePopulation().setBump(texster);
         
             refreshPreview();
         }
@@ -1110,7 +1110,7 @@ public class Controller
             populationImageSM.setImage(texster.getImage());
             
             // Set the image as the specular map
-            popTab.getActivePopulation().setSpecularMap(texster);
+            popTab.getActivePopulation().setSpecular(texster);
         
             refreshPreview();
         }
@@ -1136,8 +1136,8 @@ public class Controller
             populationImageDR2.setImage(texster.getImage());
             
             // Set the image as the second of the 2 displacement range maps
-            popTab.getActivePopulation().setSecondDisplacement(texster,
-                    terTab.getTerrain().getPoints());
+            popTab.getActivePopulation().setSecondDisplacement(
+                    terTab.getTerrain().getPoints(), texster);
         
             refreshPreview();
         }
@@ -1180,13 +1180,13 @@ public class Controller
             // ...get the selected image name from the combo box.
             String name = terrainComboBM.getValue().toString();
             
-            // Get the image belonging to that name
-            Image imster = texTab.getImageByName(true, name);
+            // Get the texture belonging to that name
+            TextureObject texster = texTab.getTexture(true, name);
 
-            terrainImageBM.setImage(imster);
+            terrainImageBM.setImage(texster.getImage());
             
             // Set the image as the bump map
-            terTab.getTerrain().setBump(imster);
+            terTab.getTerrain().setBump(texster);
         
             refreshPreview();
         }
@@ -1206,12 +1206,12 @@ public class Controller
             String name = terrainComboDM2.getValue().toString();
             
             // Get the image belonging to that name
-            Image imster = texTab.getImageByName(true, name);
+            TextureObject texster = texTab.getTexture(true, name);
 
-            terrainImageT.setImage(imster);
+            terrainImageT.setImage(texster.getImage());
 
             // Set the image as the diffuse map
-            terTab.getTerrain().setDiffuse(imster);
+            terTab.getTerrain().setDiffuse(texster);
         
             refreshPreview();
         }
@@ -1231,12 +1231,12 @@ public class Controller
             String name = terrainComboSM.getValue().toString();
             
             // Get the image belonging to that name
-            Image imster = texTab.getImageByName(true, name);
+            TextureObject texster = texTab.getTexture(true, name);
             
-            terrainImageSM.setImage(imster);
+            terrainImageSM.setImage(texster.getImage());
             
             // Set the image as the specular map
-            terTab.getTerrain().setSpecular(terrainImageSM.getImage());
+            terTab.getTerrain().setSpecular(texster);
         
             refreshPreview();
         }
@@ -1289,8 +1289,8 @@ public class Controller
             populationImageSW.setImage(texster.getImage());
             
             // Set the image as the population's width determinant
-            popTab.getActivePopulation().setWidth(texster,
-                    terTab.getTerrain().getPoints());
+            popTab.getActivePopulation().setWidth(
+                    terTab.getTerrain().getPoints(), texster);
         
             refreshPreview();
         }
@@ -1861,8 +1861,8 @@ public class Controller
         displacementName1 = activePopulation.getFirstDisplacement().getName();
         displacementName2 = activePopulation.getSecondDisplacement().getName();
         diffuseName = activePopulation.getDiffuse().getName();
-        bumpName = activePopulation.getBumpMap().getName();
-        specularName = activePopulation.getSpecularMap().getName();
+        bumpName = activePopulation.getBump().getName();
+        specularName = activePopulation.getSpecular().getName();
         
         // Get the texure objects for those maps
         TextureObject placementTexture
@@ -2268,6 +2268,145 @@ public class Controller
     }
     
     /**
+     * Removes a specified texture from the terrain and all populations
+     * 
+     * @param color Whether or not the texture being removed is colored or
+     *              colorless
+     * @param index The index in the FlowPane of the texture to remove
+     * @param texster The texture to be removed
+     */
+    private void removeTexture(boolean color, short index,
+            TextureObject texster)
+    {
+        // A blank white image to replace the texture with
+        final TextureObject BLANK_TEXTURE = new TextureObject();
+        
+        String name = texster.getName();
+        
+        float[] terrainPoints;
+        
+        ImageView viewster = texster.getView();
+        
+        Population activePopulation = popTab.getActivePopulation();
+            
+        Terrain terster = terTab.getTerrain();
+        
+        terrainPoints = terster.getPoints();
+            
+        // If it is a colored texture...
+        if (color)
+        {
+            // ...remove it from the FlowPane.
+            texturesFlowC.getChildren().remove(viewster);
+            
+            // If it is currently set as the terrain's displacement map...
+            if (terster.getDisplacement().is(name))
+            {
+                // ...remove the ImageView.
+                terrainImageDM.setImage(null);
+                
+                // Give the terrain a blank displacement map.
+                terster.setDisplacement(BLANK_TEXTURE);
+            }
+            if (terster.getDiffuse().is(name))
+            {
+                terrainImageT.setImage(null);
+                
+                terster.setDiffuse(BLANK_TEXTURE);
+            }
+            if (terster.getBump().is(name))
+            {
+                terrainImageBM.setImage(null);
+                
+                terster.setBump(BLANK_TEXTURE);
+            }
+            if (terster.getSpecular().is(name))
+            {
+                terrainImageT.setImage(null);
+                
+                terster.setSpecular(BLANK_TEXTURE);
+            }
+            
+            // Removing the shift maps that match this texture of any
+            // of the populations, if at least 1 map was removed...
+            if (popTab.removeShift(name))
+            {
+                // ...and if the active population had its shift map removed...
+                if (activePopulation.getShift().is(name))
+                {
+                    // ...clear the population's shift map ImageView.
+                    populationImageS.setImage(null);
+                }
+            }
+            if (popTab.removeFirstDisplacement(name, terrainPoints))
+            {
+                if (activePopulation.getFirstDisplacement().is(name))
+                {
+                    populationImageDR1.setImage(null);
+                }
+            }
+            if (popTab.removeSecondDisplacement(name, terrainPoints))
+            {
+                if (activePopulation.getSecondDisplacement().is(name))
+                {
+                    populationImageDR2.setImage(null);
+                }
+            }
+            if (popTab.removeDiffuse(name))
+            {
+                if (activePopulation.getDiffuse().is(name))
+                {
+                    populationImageT.setImage(null);
+                }
+            }
+            if (popTab.removeBump(name))
+            {
+                if (activePopulation.getBump().is(name))
+                {
+                    populationImageBM.setImage(null);
+                }
+            }
+            if (popTab.removeSpecular(name))
+            {
+                if (activePopulation.getSpecular().is(name))
+                {
+                    populationImageSM.setImage(null);
+                }
+            }
+        }
+        // ...otherwise, the texture to be removed must be grayscale.
+        else
+        {
+            texturesFlowG.getChildren().remove(viewster);
+            
+            if (popTab.removePlacement(name, terrainPoints))
+            {
+                if (activePopulation.getPlacement().is(name))
+                {
+                    populationImageP.setImage(null);
+                }
+            }
+            if (popTab.removeWidth(name, terrainPoints))
+            {
+                if (activePopulation.getWidth().is(name))
+                {
+                    populationImageSW.setImage(null);
+                }
+            }
+            if (popTab.removeHeight(name, terrainPoints))
+            {
+                if (activePopulation.getHeight().is(name))
+                {
+                    populationImageSH.setImage(null);
+                }
+            }
+        }
+        
+        // Remove the texture from the TextureTab's ArrayList
+        texTab.deleteTexture(color, index);
+    }
+    
+    /**
      * Removes the texture ImageViews of the given indices from the correct
      * FlowPane
      * 
@@ -2285,21 +2424,18 @@ public class Controller
         {
             // ...get it.
             short currentIndex = indicesToRemove.get(i);
-                
-            ImageView currentView =
-                    texTab.getTexture(color, currentIndex).getView();
-                
-            // Remove it from the FlowPane
-            if (color)
-            {
-                texturesFlowC.getChildren().remove(currentView);
-            }
-            else
-            {
-                texturesFlowG.getChildren().remove(currentView);
-            }
-                
-            texTab.deleteTexture(color, currentIndex);
+            
+            TextureObject currentTexture
+                    = texTab.getTexture(color, currentIndex);
+            
+            removeTexture(color, currentIndex, currentTexture);
+        }
+            
+        // If there is at least 1 population...
+        if (popTab.populationExists())
+        {
+            // ...reload it.
+            loadPopulation();
         }
             
         // No texture should be selected now, so the button will need to change

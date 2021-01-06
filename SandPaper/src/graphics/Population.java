@@ -533,7 +533,7 @@ public class Population
      * 
      * @return A TextureObject of this Population's bump map
      */
-    public TextureObject getBumpMap()
+    public TextureObject getBump()
     {
         return bump;
     }
@@ -788,7 +788,7 @@ public class Population
      * 
      * @return A TextureObject of the specular map
      */
-    public TextureObject getSpecularMap()
+    public TextureObject getSpecular()
     {
         return specular;
     }
@@ -966,7 +966,7 @@ public class Population
      * 
      * @param bumpster A TextureObject of the bump map
      */
-    public void setBumpMap(TextureObject bumpster)
+    public void setBump(TextureObject bumpster)
     {
         bump = bumpster;
         
@@ -1042,9 +1042,9 @@ public class Population
         
         load(actionDescription, terrainPoints);
         
-        setBumpMap(bump);
+        setBump(bump);
         setDiffuse(diffuse);
-        setSpecularMap(specular);
+        setSpecular(specular);
     }
     
     /**
@@ -1126,12 +1126,12 @@ public class Population
     /**
      * Sets the second displacement map to be used in the displacement range
      * 
-     * @param dister A displacement map
      * @param terrainPoints The point positions used in the creation of the
      *                      terrain's MeshView
+     * @param dister A displacement map
      */
-    public void setSecondDisplacement(TextureObject dister,
-            float[] terrainPoints)
+    public void setSecondDisplacement(float[] terrainPoints,
+            TextureObject dister)
     {
         String actionDescription = "Setting Population Displacement";
         
@@ -1145,7 +1145,7 @@ public class Population
      * 
      * @param specster The specular map
      */
-    public void setSpecularMap(TextureObject specster)
+    public void setSpecular(TextureObject specster)
     {
         specular = specster;
         
@@ -1211,7 +1211,7 @@ public class Population
      * @param terrainPoints The point positions used in the creation of the
      *                      terrain's MeshView
      */
-    public void setWidth(TextureObject widthster, float[] terrainPoints)
+    public void setWidth(float[] terrainPoints, TextureObject widthster)
     {
         String actionDescription = "Setting Population Width";
         

@@ -2,7 +2,7 @@ package tabs;
 
 
 import graphics.Terrain;
-import javafx.scene.image.Image;
+import graphics.TextureObject;
 import javafx.scene.shape.MeshView;
 
 /**
@@ -21,7 +21,7 @@ public class TerrainTab
     // Initial strength of the displacement map
     final int DEFAULT_STRENGTH = 50;
     
-    final Image BLANK_IMAGE = new Image("graphics/unassignedWhite.png");
+    final TextureObject BLANK_TEXTURE = new TextureObject();
     
     Terrain terster;
     
@@ -33,7 +33,7 @@ public class TerrainTab
     public TerrainTab()
     {
         terster = new Terrain(FACE_SIZE, DEFAULT_VERTEX_SIZE,
-                DEFAULT_VERTEX_SIZE, DEFAULT_STRENGTH, BLANK_IMAGE);
+                DEFAULT_VERTEX_SIZE, DEFAULT_STRENGTH, BLANK_TEXTURE);
     }
     
     /**
@@ -71,7 +71,7 @@ public class TerrainTab
      */
     public void prepareTerrain()
     {
-        terster.setDiffuse(BLANK_IMAGE);
+        terster.setDiffuse(BLANK_TEXTURE);
         terster.load();
     }
 }

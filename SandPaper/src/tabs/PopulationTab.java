@@ -1,6 +1,8 @@
 package tabs;
 
 import graphics.Population;
+import graphics.TextureObject;
+import java.io.File;
 import java.util.Optional;
 import javafx.concurrent.Service;
 import javafx.scene.control.Alert;
@@ -21,7 +23,9 @@ public class PopulationTab
     
     final private int DEFAULT_DISPLACEMENT_STRENGTH = 5;
     
-    final Image BLANK_IMAGE = new Image("graphics/unassignedWhite.png");
+    private final TextureObject GRAY_TEXTURE
+            = new TextureObject(new File("src/graphics/unassignedGray.png"));
+    private final TextureObject WHITE_TEXTURE = new TextureObject();
     
     // The Population that the user currently has selected in the Population
     // selection combo box
@@ -362,7 +366,160 @@ public class PopulationTab
      */
     public boolean populationExists()
     {
-        return populations.length == 0;
+        return populations.length > 0;
+    }
+    
+    public boolean removeBump(String name)
+    {
+        boolean removed = false;
+        
+        for (Population popster : populations)
+        {
+            if (popster.getBump().is(name))
+            {
+                popster.setBump(WHITE_TEXTURE);
+                
+                removed = true;
+            }
+        }
+        
+        return removed;
+    }
+    
+    public boolean removeDiffuse(String name)
+    {
+        boolean removed = false;
+        
+        for (Population popster : populations)
+        {
+            if (popster.getDiffuse().is(name))
+            {
+                popster.setDiffuse(WHITE_TEXTURE);
+                
+                removed = true;
+            }
+        }
+        
+        return removed;
+    }
+    
+    public boolean removeFirstDisplacement(String name, float[] terrainPoints)
+    {
+        boolean removed = false;
+        
+        for (Population popster : populations)
+        {
+            if (popster.getFirstDisplacement().is(name))
+            {
+                popster.setFirstDisplacement(terrainPoints, WHITE_TEXTURE);
+                
+                removed = true;
+            }
+        }
+        
+        return removed;
+    }
+    
+    public boolean removeHeight(String name, float[] terrainPoints)
+    {
+        boolean removed = false;
+        
+        for (Population popster : populations)
+        {
+            if (popster.getHeight().is(name))
+            {
+                popster.setHeight(terrainPoints, GRAY_TEXTURE);
+                
+                removed = true;
+            }
+        }
+        
+        return removed;
+    }
+    
+    public boolean removePlacement(String name, float[] terrainPoints)
+    {
+        boolean removed = false;
+        
+        for (Population popster : populations)
+        {
+            if (popster.getPlacement().is(name))
+            {
+                popster.setPlacement(terrainPoints, WHITE_TEXTURE);
+                
+                removed = true;
+            }
+        }
+        
+        return removed;
+    }
+    
+    public boolean removeSecondDisplacement(String name, float[] terrainPoints)
+    {
+        boolean removed = false;
+        
+        for (Population popster : populations)
+        {
+            if (popster.getSecondDisplacement().is(name))
+            {
+                popster.setSecondDisplacement(terrainPoints, WHITE_TEXTURE);
+                
+                removed = true;
+            }
+        }
+        
+        return removed;
+    }
+    
+    public boolean removeShift(String name)
+    {
+        boolean removed = false;
+        
+        for (Population popster : populations)
+        {
+            if (popster.getShift().is(name))
+            {
+                popster.setShift(GRAY_TEXTURE);
+                
+                removed = true;
+            }
+        }
+        
+        return removed;
+    }
+    
+    public boolean removeSpecular(String name)
+    {
+        boolean removed = false;
+        
+        for (Population popster : populations)
+        {
+            if (popster.getSpecular().is(name))
+            {
+                popster.setSpecular(GRAY_TEXTURE);
+                
+                removed = true;
+            }
+        }
+        
+        return removed;
+    }
+    
+    public boolean removeWidth(String name, float[] terrainPoints)
+    {
+        boolean removed = false;
+        
+        for (Population popster : populations)
+        {
+            if (popster.getWidth().is(name))
+            {
+                popster.setWidth(terrainPoints, GRAY_TEXTURE);
+                
+                removed = true;
+            }
+        }
+        
+        return removed;
     }
     
     /**

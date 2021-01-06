@@ -309,6 +309,16 @@ public class TextureObject
     }
     
     /**
+     * Checks whether this TextureObject has the name provided
+     * 
+     * @return Whether or not this TextureObject is the one specified
+     */
+    public boolean is(String namster)
+    {
+        return name.equals(namster);
+    }
+    
+    /**
      * Gets whether or not this texture is currently selected in the texture tab
      * 
      * @return Whether or not this texture is selected

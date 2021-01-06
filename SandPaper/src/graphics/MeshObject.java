@@ -359,7 +359,7 @@ public class MeshObject
      * 
      * @param bumpster The bump map
      */
-    public void setBump(Image bumpster)
+    protected void setBump(Image bumpster)
     {
         texture.setBumpMap(bumpster);
     }
@@ -394,7 +394,7 @@ public class MeshObject
      * 
      * @param difster The diffuse map
      */
-    public void setDiffuse(Image difster)
+    protected void setDiffuse(Image difster)
     {
         texture.setDiffuseMap(difster);
     }
@@ -404,7 +404,7 @@ public class MeshObject
      * 
      * @param dister The displacement map
      */
-    public void setDisplacement(Image dister)
+    protected void setDisplacement(Image dister)
     {
         displacement = dister;
         
@@ -440,7 +440,7 @@ public class MeshObject
      * 
      * @param specster The specular map
      */
-    public void setSpecular(Image specster)
+    protected void setSpecular(Image specster)
     {
         texture.setSpecularMap(specster);
     }

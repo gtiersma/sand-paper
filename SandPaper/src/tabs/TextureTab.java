@@ -201,21 +201,6 @@ public class TextureTab
     }
     
     /**
-     * Gets the image of the texture name provided
-     * 
-     * @param color Whether or not it is a colored texture
-     * @param name The name of the texture to be received
-     * 
-     * @return The image of the texture
-     */
-    public Image getImageByName(boolean color, String name)
-    {
-        TextureObject texster = getTexture(color, name);
-        
-        return texster.getImage();
-    }
-    
-    /**
      * Gets the image view of the last texture imported
      * 
      * @param color Whether or not it is a colored image
@@ -314,6 +299,13 @@ public class TextureTab
                     
                 // Exit the loop
                 i = textureAmount;
+            }
+            // ...otherwise, if none of the TextureObjects had a matching
+            // name...
+            else if (i == textureAmount - 1)
+            {
+                // ...get a blank TextureObject.
+                texster = new TextureObject();
             }
         }
         
