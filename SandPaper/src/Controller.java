@@ -2831,7 +2831,7 @@ public class Controller
      */
     private void textureButtonClick(boolean color)
     {
-        ArrayList<Short> selectedTextures = texTab.getSelectedIndices(true);
+        ArrayList<Short> selectedTextures = texTab.getSelectedIndices(color);
         
         // If there are no selected textures in the correct FlowPane...
         if (selectedTextures.isEmpty())
