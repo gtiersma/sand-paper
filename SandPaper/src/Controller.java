@@ -583,6 +583,8 @@ public class Controller
         {
             if (listen == true)
             {
+                listen = false;
+                
                 // Index of currently selected population
                 int selectedIndex = populationChoiceP.getSelectionModel()
                         .getSelectedIndex();
@@ -590,6 +592,8 @@ public class Controller
                 popTab.setActivePopulation(selectedIndex);
             
                 loadPopulation();
+                
+                listen = true;
             }
         });
         
@@ -1734,10 +1738,10 @@ public class Controller
         listen = false;
         
         textureButtonClick(COLOR);
-       
+        
         // Create a list of the names of the color textures imported so far
         ObservableList<String> obster = texTab.getTextureNames(COLOR);
-            
+        
         // Set the list to the combo boxes for maps
         populationComboP.setItems(obster);
         populationComboSW.setItems(obster);
@@ -1838,8 +1842,6 @@ public class Controller
      */
     private void loadPopulation()
     {
-        listen = false;
-        
         // The names of the maps to load
         String placementName;
         String shiftName;
@@ -1911,8 +1913,6 @@ public class Controller
                 Integer.toString(activePopulation.getVertexHeight()));
         populationTextVRW.setText(
                 Integer.toString(activePopulation.getVertexWidth()));
-        
-        listen = true;
     }
     
     /**
@@ -2845,6 +2845,9 @@ public class Controller
             // ...the button must be used for removing textures.
             removeTextures(color, selectedTextures);
         }
+        
+        // Keeps the SandPaper from hanging if there is a population present
+        refreshPreview();
     }
     
     /**
