@@ -107,7 +107,7 @@
                                              <content>
                                                 <FlowPane id="texturesFlowC" fx:id="texturesFlowC" hgap="10.0" vgap="10.0">
                                                    <children>
-                                                      <Button id="texturesColoredAdd" fx:id="texturesButtonCA" mnemonicParsing="false" onAction="#colorTextureButtonClick" prefHeight="80.0" prefWidth="80.0" text="Add&#10;Image" textAlignment="CENTER" />
+                                                      <Button id="texturesColoredAdd" fx:id="texturesButtonCA" mnemonicParsing="false" onAction="#colorTextureButtonClick" prefHeight="80.0" prefWidth="80.0" text="Import&#10;Image" textAlignment="CENTER" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -121,7 +121,7 @@
                                              <content>
                                                 <FlowPane id="texturesFlowG" fx:id="texturesFlowG" hgap="10.0" vgap="10.0">
                                                    <children>
-                                                      <Button id="texturesGrayscaleAdd" fx:id="texturesButtonGA" mnemonicParsing="false" onAction="#grayTextureButtonClick" prefHeight="80.0" prefWidth="80.0" text="Add&#10;Image" textAlignment="CENTER" />
+                                                      <Button id="texturesGrayscaleAdd" fx:id="texturesButtonGA" mnemonicParsing="false" onAction="#grayTextureButtonClick" prefHeight="80.0" prefWidth="80.0" text="Import&#10;Image" textAlignment="CENTER" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

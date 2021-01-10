@@ -2222,8 +2222,8 @@ public class Controller
      */
     private void refreshTextureButton(boolean color)
     {
-        final String BUTTON_TEXT_ADD = "Add Image";
-        final String BUTTON_TEXT_REMOVE = "Remove Selected Textures";
+        final String BUTTON_TEXT_ADD = "Import\nImage";
+        final String BUTTON_TEXT_REMOVE = "Remove\nImage(s)";
         
         // The texture button being dealt with. Initialized to the button in the
         // grayscale textures box.
