@@ -2416,31 +2416,44 @@ public class Controller
      */
     private void removeTextures(boolean color, ArrayList<Short> indicesToRemove)
     {
-        int lastIndex = indicesToRemove.size() - 1;
-            
-        // For each index (in reverse order to prevent the ArrayList's resizing
-        // from throwing off the loop)...
-        for (int i = lastIndex; i >= 0; i--)
+        // Get the user's confirmation
+        Alert confirmation = new Alert(AlertType.CONFIRMATION);
+        styleDialog(confirmation);
+        confirmation.setTitle("Continue?");
+        confirmation.setHeaderText("Are you sure you want to remove the "
+                + "selected textures?");
+        confirmation.setContentText("They won't being deleted from your "
+                + "computer. They will only be removed from Sand Paper.");
+        Optional<ButtonType> answer = confirmation.showAndWait();
+        
+        // If the user gives the ok...
+        if (answer.get() == ButtonType.OK)
         {
-            // ...get it.
-            short currentIndex = indicesToRemove.get(i);
+            // ...for each index (in reverse order to prevent the ArrayList's
+            // resizing from throwing off the loop)...
+            int lastIndex = indicesToRemove.size() - 1;
+            for (int i = lastIndex; i >= 0; i--)
+            {
+                // ...get it.
+                short currentIndex = indicesToRemove.get(i);
             
-            TextureObject currentTexture
-                    = texTab.getTexture(color, currentIndex);
+                TextureObject currentTexture
+                        = texTab.getTexture(color, currentIndex);
             
-            removeTexture(color, currentIndex, currentTexture);
+                removeTexture(color, currentIndex, currentTexture);
+            }
+            
+            // If there is at least 1 population...
+            if (popTab.populationExists())
+            {
+                // ...reload it.
+                loadPopulation();
+            }
+            
+            // No texture should be selected now, so the button will need to
+            // change its text back
+            refreshTextureButton(color);
         }
-            
-        // If there is at least 1 population...
-        if (popTab.populationExists())
-        {
-            // ...reload it.
-            loadPopulation();
-        }
-            
-        // No texture should be selected now, so the button will need to change
-        // its text back
-        refreshTextureButton(color);
     }
     
     /**
