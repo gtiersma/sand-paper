@@ -175,7 +175,9 @@
                                           <HBox id="terrainBoxDMS" alignment="CENTER" layoutX="10.0" layoutY="18.0" spacing="10.0">
                                              <children>
                                                 <Label id="strength" styleClass="medium-label" text=" Strength:" />
-                                                <Slider id="terrainStrength" fx:id="terrainSliderDMS" minorTickCount="1" showTickLabels="true" value="50.0" />
+                                                <Button id="left" fx:id="terrainButtonDMSD" mnemonicParsing="false" onAction="#decrementTerrainDisplacementStrength" />
+                                                <TextField id="terrainStrength" fx:id="terrainTextDMS" alignment="CENTER_RIGHT" maxWidth="100.0" minWidth="50.0" prefWidth="75.0" text="50" />
+                                                <Button id="right" fx:id="terrainButtonDMSI" mnemonicParsing="false" onAction="#incrementTerrainDisplacementStrength" />
                                              </children>
                                           </HBox>
                                           <Separator id="style-5" />
@@ -305,7 +307,9 @@
                                           <HBox id="populationBoxDMS" alignment="CENTER" spacing="10.0">
                                              <children>
                                                 <Label id="strength" styleClass="medium-label" text=" Strength:" />
-                                                <Slider id="populationsStrength" fx:id="populationSliderDRS" blockIncrement="1.0" disable="true" majorTickUnit="5.0" max="20.0" minorTickCount="1" showTickLabels="true" value="3.0" />
+                                                <Button id="left" fx:id="populationButtonDRSD" mnemonicParsing="false" onAction="#decrementPopulationDisplacementStrength" />
+                                                <TextField id="populationStrength" fx:id="populationTextDRS" alignment="CENTER_RIGHT" maxWidth="100.0" minWidth="50.0" prefWidth="75.0" text="3" />
+                                                <Button id="right" fx:id="populationButtonDRSI" mnemonicParsing="false" onAction="#incrementPopulationDisplacementStrength" />
                                              </children>
                                           </HBox>
                                           <Separator id="style-5" />
@@ -466,6 +470,7 @@
                                                    <children>
                                                       <Label id="angle" styleClass="medium-label" text="Degrees:" />
                                                       <Slider id="fieldOfViewDegrees" fx:id="cameraSliderFOVD" blockIncrement="20.0" majorTickUnit="20.0" max="90.0" min="10.0" minorTickCount="1" showTickLabels="true" value="30.0" />
+                                                      <Spinner id="fieldOfViewDegrees" fx:id="cameraSpinnerFOVD" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
                                                    </children>
                                                 </HBox>
                                                 <HBox id="cameraBoxFOVHV" fx:id="cameraBoxFOVHV" alignment="CENTER" layoutX="10.0" layoutY="53.0" spacing="10.0">
