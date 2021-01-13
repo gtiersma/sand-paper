@@ -2212,18 +2212,25 @@ public class Controller
     
     /**
      * Checks whether or not a button on the texture tab should be used to add
-     * or remove textures. More specifically, it checks to see if there are 
-     * currently any textures selected. If there are, the button will remove the
-     * selected textures when clicked. If there aren't, the button will add a
-     * texture when clicked.
+     * or remove textures and adjusts its text and ID as seen as appropriate.
      * 
      * @param color Whether or not the button is used for colored textures or 
      *              not
      */
     private void refreshTextureButton(boolean color)
     {
-        final String BUTTON_TEXT_ADD = "Import\nImage";
-        final String BUTTON_TEXT_REMOVE = "Remove\nImage(s)";
+        // Parts that are combined to create the correct ID for when the button
+        // is looked-up by the adviser
+        final String ADD = "Add";
+        final String REMOVE = "Remove";
+        final String COLOR = "Colored";
+        final String GRAYSCALE = "Grayscale";
+        
+        final String TEXT_ADD = "Import\nImage";
+        final String TEXT_REMOVE = "Remove\nImage(s)";
+        
+        // The ID always begins with the word "textures"
+        String id = "textures";
         
         // The texture button being dealt with. Initialized to the button in the
         // grayscale textures box.
@@ -2234,6 +2241,14 @@ public class Controller
         {
             // ...set it to the button for colored textures.
             textureButton = texturesButtonCA;
+            // Add the word "Color" to the ID
+            id = id + COLOR;
+        }
+        // ...otherwise...
+        else
+        {
+            // ...add the word "Grayscale" to the ID
+            id = id + GRAYSCALE;
         }
         
         // If there is a texture selected of the indicated color orientation...
@@ -2241,14 +2256,19 @@ public class Controller
         {
             // ...the button's text will indicate that it will remove the 
             // selected textures.
-            textureButton.setText(BUTTON_TEXT_REMOVE);
+            textureButton.setText(TEXT_REMOVE);
+            // Add the word "remove" to the ID
+            id = id + REMOVE;
         }
         // ...otherwise, if no textures are selected...
         else
         {
             // ...the button's text will indicate that it will add a texture.
-            textureButton.setText(BUTTON_TEXT_ADD);
+            textureButton.setText(TEXT_ADD);
+            id = id + ADD;
         }
+        
+        textureButton.setId(id);
     }
     
     /**

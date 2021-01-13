@@ -23,6 +23,12 @@ These textures can be used as shift, diffuse, displacement, bump or specular map
 
 Colored textures can be used as shift, diffuse, displacement, bump or specular maps for the terrain or a population.]]></text>
         </control>
+        <control name="texturesColoredRemove">
+            <title>Removed the selected texture(s)</title>
+            <text><![CDATA[Removes all of the selected textures from the colored textures box.
+
+The image files belonging to the selected textures will not be deleted from your computer. They will only be removed from SandPaper.]]></text>
+        </control>
         <control name="texturesGrayscale">
             <title>The imported colorless textures</title>
             <text><![CDATA[Contains all of the imported textures that have no color.
@@ -34,6 +40,12 @@ These textures can be used as placement, width or height maps for a population.]
             <text><![CDATA[Import a texture to be used as a colorless map.
 
 Colorless maps can be used as placement, width or height maps for a population.]]></text>
+        </control>
+        <control name="texturesGrayscaleRemove">
+            <title>Removed the selected texture(s)</title>
+            <text><![CDATA[Removes all of the selected textures from the grayscale textures box.
+
+The image files belonging to the selected textures will not be deleted from your computer. They will only be removed from SandPaper.]]></text>
         </control>
     </group>
     
