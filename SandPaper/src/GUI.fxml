@@ -469,7 +469,6 @@
                                                 <HBox id="cameraBoxFOVD" alignment="CENTER" spacing="10.0">
                                                    <children>
                                                       <Label id="angle" styleClass="medium-label" text="Degrees:" />
-                                                      <Slider id="fieldOfViewDegrees" fx:id="cameraSliderFOVD" blockIncrement="20.0" majorTickUnit="20.0" max="90.0" min="10.0" minorTickCount="1" showTickLabels="true" value="30.0" />
                                                       <Spinner id="fieldOfViewDegrees" fx:id="cameraSpinnerFOVD" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
                                                    </children>
                                                 </HBox>

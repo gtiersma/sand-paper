@@ -157,6 +157,16 @@ public class Terrain extends MeshObject
     }
     
     /**
+     * Gets the displacement strength
+     * 
+     * @return The set strength of displacement map
+     */
+    public int getDisplacementStrength()
+    {
+        return displacementStrength;
+    }
+    
+    /**
      * Gets the approximate furthest distance of a point of any dimension from
      * the center of the terrain.
      * 

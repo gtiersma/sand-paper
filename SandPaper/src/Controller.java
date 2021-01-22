@@ -162,11 +162,8 @@ public class Controller
     @FXML private ScrollPane texturesScrollC;
     @FXML private ScrollPane texturesScrollG;
     
-    @FXML private Slider terrainSliderDMS;
     @FXML private Slider cameraSliderAH;
     @FXML private Slider cameraSliderAV;
-    @FXML private Slider cameraSliderFOVD;
-    @FXML private Slider populationSliderDRS;
     
     @FXML private Spinner<Integer> renderSpinnerRW;
     @FXML private Spinner<Integer> renderSpinnerRH;
@@ -176,6 +173,7 @@ public class Controller
     @FXML private Spinner<Integer> lightSpinnerPX;
     @FXML private Spinner<Integer> lightSpinnerPY;
     @FXML private Spinner<Integer> lightSpinnerPZ;
+    @FXML private Spinner<Short> cameraSpinnerFOVD;
     
     @FXML private Tab textureTab;
     @FXML private Tab terrainTab;
@@ -191,8 +189,10 @@ public class Controller
     
     @FXML private TextField terrainTextVRW;
     @FXML private TextField terrainTextVRD;
+    @FXML private TextField terrainTextDMS;
     @FXML private TextField populationTextVRW;
     @FXML private TextField populationTextVRH;
+    @FXML private TextField populationTextDRS;
     
     @FXML private VBox everything;
 
@@ -254,6 +254,7 @@ public class Controller
         {
             refreshTextureButton(false);
         });
+        
         //----------------------------------------------------------------------
         // Terrain Tab Listeners
         //----------------------------------------------------------------------
@@ -298,16 +299,22 @@ public class Controller
             }
         });
         
-        terrainSliderDMS.valueProperty().addListener((obster, oldster, newster)
+        terrainTextDMS.textProperty().addListener((obster, oldster, newster) ->
+        {
+            if (listen && !newster.equals(""))
+            {
+                setTerrainDisplacementStrength(Short.parseShort(newster));
+            }
+        });
+        terrainTextDMS.focusedProperty().addListener((obster, oldster, newster)
                 ->
         {
-            terTab.getTerrain().setDisplacementStrength(newster.intValue());
-            
-            popTab.repositionPopulations(terTab.getTerrain().getPoints());
-        
-            recenterOnTerrain();
-            
-            refreshPreview();
+            if (!newster)
+            {
+                int strength = terTab.getTerrain().getDisplacementStrength();
+                
+                terrainTextDMS.setText(String.valueOf(strength));
+            }
         });
         
         //----------------------------------------------------------------------
@@ -456,12 +463,26 @@ public class Controller
             }
         });
         
-        cameraSliderFOVD.valueProperty().addListener((obster, oldster, newster)
-                ->
+        cameraSpinnerFOVD.valueProperty().addListener((obster, oldster,
+                newster) ->
         {
-            camTab.setFieldOfView(newster.byteValue());
+            short degrees = (short)validateSpinner(true,
+                    camTab.getFieldOfView(), cameraSpinnerFOVD);
+            camTab.setFieldOfView(degrees);
             
             preview.setCamera(camTab.getCamera());
+        });
+        cameraSpinnerFOVD.focusedProperty().addListener((obster, oldster,
+                newster) ->
+        {
+            if (listen)
+            {
+                short degrees = (short)validateSpinner(true,
+                        camTab.getFieldOfView(), cameraSpinnerFOVD);
+                camTab.setFieldOfView(degrees);
+            
+                preview.setCamera(camTab.getCamera());
+            }
         });
         
         cameraRadioFOVH.setOnAction((evster) ->
@@ -635,6 +656,28 @@ public class Controller
             }
         });
         
+        populationTextDRS.textProperty().addListener((obster, oldster, newster)
+                ->
+        {
+            if (listen && !newster.equals(""))
+            {
+                popTab.getActivePopulation().setDisplacementStrength(
+                        Short.parseShort(newster),
+                        terTab.getTerrain().getPoints());
+            }
+        });
+        populationTextDRS.focusedProperty().addListener((obster, oldster,
+                newster) ->
+        {
+            if (!newster)
+            {
+                int strength =
+                        popTab.getActivePopulation().getDisplacementStrength();
+                
+                populationTextDRS.setText(String.valueOf(strength));
+            }
+        });
+        
         //----------------------------------------------------------------------
         // Pane resize listeners for the preview
         //----------------------------------------------------------------------
@@ -754,8 +797,8 @@ public class Controller
                 displayHelp(terrainTextVRD));
         terrainComboDM.hoverProperty().addListener((event)->
                 displayHelp(terrainComboDM));
-        terrainSliderDMS.hoverProperty().addListener((event)->
-                displayHelp(terrainSliderDMS));
+        terrainTextDMS.hoverProperty().addListener((event)->
+                displayHelp(terrainTextDMS));
         terrainComboDM2.hoverProperty().addListener((event)->
                 displayHelp(terrainComboDM2));
         terrainComboBM.hoverProperty().addListener((event)->
@@ -787,8 +830,8 @@ public class Controller
                 displayHelp(populationComboDR1));
         populationComboDR2.hoverProperty().addListener((event)->
                 displayHelp(populationComboDR2));
-        populationSliderDRS.hoverProperty().addListener((event)->
-                displayHelp(populationSliderDRS));
+        populationTextDRS.hoverProperty().addListener((event)->
+                displayHelp(populationTextDRS));
         populationComboDM.hoverProperty().addListener((event)->
                 displayHelp(populationComboDM));
         populationComboBM.hoverProperty().addListener((event)->
@@ -813,8 +856,8 @@ public class Controller
                 displayHelp(cameraSpinnerPAV));
         cameraSpinnerPAZ.hoverProperty().addListener((event)->
                 displayHelp(cameraSpinnerPAZ));
-        cameraSliderFOVD.hoverProperty().addListener((event)->
-                displayHelp(cameraSliderFOVD));
+        cameraSpinnerFOVD.hoverProperty().addListener((event)->
+                displayHelp(cameraSpinnerFOVD));
         cameraRadioFOVH.hoverProperty().addListener((event)->
                 displayHelp(cameraRadioFOVH));
         cameraRadioFOVV.hoverProperty().addListener((event)->
@@ -1404,6 +1447,24 @@ public class Controller
     }
     
     /**
+     * Decreases the strength of the displacement of the active population by 1.
+     * The TextField is also updated to reflect the changes.
+     */
+    @FXML
+    private void decrementPopulationDisplacementStrength()
+    {
+        listen = false;
+        
+        short strength = Short.parseShort(populationTextDRS.getText());
+        
+        strength--;
+        
+        setPopulationDisplacementStrength(strength);
+        
+        listen = true;
+    }
+    
+    /**
      * Decreases the height (in vertices) of the active population by 1. The
      * TextField is also updated to reflect the changes.
      */
@@ -1435,6 +1496,24 @@ public class Controller
         width--;
         
         setPopulationVertexWidth(width);
+        
+        listen = true;
+    }
+    
+    /**
+     * Decreases the displacement strength of the terrain by 1. The TextField is
+     * also updated to reflect the changes.
+     */
+    @FXML
+    private void decrementTerrainDisplacementStrength()
+    {
+        listen = false;
+        
+        short strength = Short.parseShort(terrainTextDMS.getText());
+        
+        strength--;
+              
+        setTerrainDisplacementStrength(strength);
         
         listen = true;
     }
@@ -1677,7 +1756,7 @@ public class Controller
         populationButtonVRHI.setDisable(!toEnable);
         populationComboDR1.setDisable(!toEnable);
         populationComboDR2.setDisable(!toEnable);
-        populationSliderDRS.setDisable(!toEnable);
+        populationTextDRS.setDisable(!toEnable);
         populationComboDM.setDisable(!toEnable);
         populationComboBM.setDisable(!toEnable);
         populationComboSM.setDisable(!toEnable);
@@ -1751,6 +1830,24 @@ public class Controller
     }
     
     /**
+     * Increases the strength of the displacement of the active population by 1.
+     * The TextField is also updated to reflect the changes.
+     */
+    @FXML
+    private void incrementPopulationDisplacementStrength()
+    {
+        listen = false;
+        
+        short strength = Short.parseShort(populationTextDRS.getText());
+        
+        strength++;
+        
+        setPopulationDisplacementStrength(strength);
+        
+        listen = true;
+    }
+    
+    /**
      * Increases the height (in vertices) of the active population by 1. The
      * TextField is also updated to reflect the changes.
      */
@@ -1782,6 +1879,24 @@ public class Controller
         width++;
         
         setPopulationVertexWidth(width);
+        
+        listen = true;
+    }
+    
+    /**
+     * Increases the displacement strength of the terrain by 1. The TextField is
+     * also updated to reflect the changes.
+     */
+    @FXML
+    private void incrementTerrainDisplacementStrength()
+    {
+        listen = false;
+        
+        short strength = Short.parseShort(terrainTextDMS.getText());
+        
+        strength++;
+              
+        setTerrainDisplacementStrength(strength);
         
         listen = true;
     }
@@ -1904,11 +2019,9 @@ public class Controller
         populationComboBM.setValue(bumpName);
         populationComboSM.setValue(specularName);
         
-        // Set displacement strength Slider
-        populationSliderDRS.setValue(
-                activePopulation.getDisplacementStrength());
-        
-        // Set vertex dimension TextFields
+        // Set the TextFields
+        populationTextDRS.setText(Integer.toString(
+                activePopulation.getDisplacementStrength()));
         populationTextVRH.setText(
                 Integer.toString(activePopulation.getVertexHeight()));
         populationTextVRW.setText(
@@ -1959,7 +2072,7 @@ public class Controller
         loadTooltip(terrainTextVRW);
         loadTooltip(terrainTextVRD);
         loadTooltip(terrainComboDM);
-        loadTooltip(terrainSliderDMS);
+        loadTooltip(terrainTextDMS);
         loadTooltip(terrainComboDM2);
         loadTooltip(terrainComboBM);
         loadTooltip(terrainComboSM);
@@ -1977,7 +2090,7 @@ public class Controller
         loadTooltip(populationTextVRH);
         loadTooltip(populationComboDR1);
         loadTooltip(populationComboDR2);
-        loadTooltip(populationSliderDRS);
+        loadTooltip(populationTextDRS);
         loadTooltip(populationComboDM);
         loadTooltip(populationComboBM);
         loadTooltip(populationComboSM);
@@ -1993,7 +2106,7 @@ public class Controller
         loadTooltip(cameraSpinnerPAH);
         loadTooltip(cameraSpinnerPAV);
         loadTooltip(cameraSpinnerPAZ);
-        loadTooltip(cameraSliderFOVD);
+        loadTooltip(cameraSpinnerFOVD);
         loadTooltip(cameraRadioFOVH);
         loadTooltip(cameraRadioFOVV);
         
@@ -2563,16 +2676,16 @@ public class Controller
             terrainImageSM.setImage(null);
             
             // Reset sliders
-            terrainSliderDMS.setValue(terTab.getDefaultStrength());
             cameraSliderAH.setValue(camTab.getDefaultHorizontalAngle());
             cameraSliderAV.setValue(camTab.getDefaultVerticalAngle());
-            cameraSliderFOVD.setValue(camTab.getDefaultField());
             
             // Reset spinner settings
             renderSpinnerRW.getValueFactory().setValue(
                     renTab.getDefaultWidth());
             renderSpinnerRH.getValueFactory().setValue(
                     renTab.getDefaultHeight());
+            cameraSpinnerFOVD.getValueFactory().setValue(
+                    camTab.getDefaultField());
             cameraSpinnerPAH.getValueFactory().setValue(0);
             cameraSpinnerPAV.getValueFactory().setValue(0);
             cameraSpinnerPAZ.getValueFactory().setValue(0);
@@ -2582,6 +2695,8 @@ public class Controller
                     String.valueOf(renTab.getDefaultWidth()));
             renderSpinnerRH.getEditor().textProperty().setValue(
                     String.valueOf(renTab.getDefaultHeight()));
+            cameraSpinnerFOVD.getEditor().textProperty().setValue(
+                    String.valueOf(camTab.getDefaultField()));
             cameraSpinnerPAH.getEditor().textProperty().setValue("0");
             cameraSpinnerPAV.getEditor().textProperty().setValue("0");
             cameraSpinnerPAZ.getEditor().textProperty().setValue("0");
@@ -2589,6 +2704,8 @@ public class Controller
             cameraRadioFOVH.setSelected(true);
             
             // Reset text field text
+            terrainTextDMS.setText(Double.toString(
+                    terTab.getDefaultStrength()));
             terrainTextVRD.setText(Integer.toString(terTab.getDefaultSize()));
             terrainTextVRW.setText(Integer.toString(terTab.getDefaultSize()));
             
@@ -2660,7 +2777,8 @@ public class Controller
                 Integer.toString(popTab.getDefaultVertexHeight()));
         populationComboDR1.setValue("");
         populationComboDR2.setValue("");
-        populationSliderDRS.setValue(popTab.getDefaultDisplacementStrength());
+        populationTextDRS.setText(
+                Integer.toString(popTab.getDefaultDisplacementStrength()));
         populationComboDM.setValue("");
         populationComboBM.setValue("");
         populationComboSM.setValue("");
@@ -2720,7 +2838,6 @@ public class Controller
         resetPreviewSize();
     }
     
-    
     /**
      * Scrolls the help box if it currently has a scroll bar
      * 
@@ -2741,6 +2858,25 @@ public class Controller
     }
     
     /**
+     * Sets the displacement strength of the currently-selected population. The
+     * TextField is also updated to reflect the changes.
+     * 
+     * @param strength The height to be set
+     */
+    private void setPopulationDisplacementStrength(short strength)
+    {
+        if (validator.isDisplacementStrengthValid(strength))
+        {
+            popTab.getActivePopulation().setDisplacementStrength(strength,
+                    terTab.getTerrain().getPoints());
+        
+            refreshPreview();
+        
+            populationTextDRS.setText(Short.toString(strength));
+        }
+    }
+    
+    /**
      * Sets the height (in vertices) of the currently-selected population. The
      * TextField is also updated to reflect the changes.
      * 
@@ -2755,7 +2891,7 @@ public class Controller
         
             refreshPreview();
         
-            populationTextVRH.setText(Integer.toString(height));
+            populationTextVRH.setText(Short.toString(height));
         }
     }
     
@@ -2774,7 +2910,29 @@ public class Controller
         
             refreshPreview();
         
-            populationTextVRW.setText(Integer.toString(width));
+            populationTextVRW.setText(Short.toString(width));
+        }
+    }
+    
+    /**
+     * Sets the displacement strength of the terrain. The TextField is also
+     * updated to reflect the changes.
+     * 
+     * @param strength The height to be set
+     */
+    private void setTerrainDisplacementStrength(short strength)
+    {
+        if (validator.isDisplacementStrengthValid(strength))
+        {
+            terTab.getTerrain().setDisplacementStrength(strength);
+            
+            popTab.repositionPopulations(terTab.getTerrain().getPoints());
+        
+            terrainTextDMS.setText(Short.toString(strength));
+        
+            recenterOnTerrain();
+            
+            refreshPreview();
         }
     }
     
@@ -2794,7 +2952,7 @@ public class Controller
             
             ligTab.repositionLights();
                 
-            terrainTextVRD.setText(Integer.toString(depth));
+            terrainTextVRD.setText(Short.toString(depth));
         }
     }
     
@@ -2814,7 +2972,7 @@ public class Controller
             
             ligTab.repositionLights();
                 
-            terrainTextVRW.setText(Integer.toString(width));
+            terrainTextVRW.setText(Short.toString(width));
         }
     }
     
@@ -2884,6 +3042,35 @@ public class Controller
     }
     
     /**
+     * Recreates the populations to accommodate the terrain's new size
+     * 
+     * @param didWidthChange Whether or not the terrain's width was adjusted
+     * @param terrainSize The new size of the terrain
+     */
+    private void updatePopulationsForTerrainSizeChange(boolean didWidthChange,
+            short terrainSize)
+    {
+        // If the terrain's width changed...
+        if (didWidthChange)
+        {
+            // ...update the populations for a width change.
+            popTab.updateForTerrainWidthChange(terrainSize,
+                    terTab.getTerrain().getPoints());
+        }
+        // ...otherwise, the terrain's depth must have changed...
+        else
+        {
+            // ...so update them for a depth change.
+            popTab.updateForTerrainDepthChange(terrainSize,
+                    terTab.getTerrain().getPoints());
+        }
+        
+        recenterOnTerrain();
+        
+        refreshPreview();
+    }
+    
+    /**
      * Gets the value of the provided integer spinner if it validates.
      * Otherwise, it returns the provided old value.
      * 
@@ -2922,34 +3109,5 @@ public class Controller
         }
         
         return validValue;
-    }
-    
-    /**
-     * Recreates the populations to accommodate the terrain's new size
-     * 
-     * @param didWidthChange Whether or not the terrain's width was adjusted
-     * @param terrainSize The new size of the terrain
-     */
-    private void updatePopulationsForTerrainSizeChange(boolean didWidthChange,
-            short terrainSize)
-    {
-        // If the terrain's width changed...
-        if (didWidthChange)
-        {
-            // ...update the populations for a width change.
-            popTab.updateForTerrainWidthChange(terrainSize,
-                    terTab.getTerrain().getPoints());
-        }
-        // ...otherwise, the terrain's depth must have changed...
-        else
-        {
-            // ...so update them for a depth change.
-            popTab.updateForTerrainDepthChange(terrainSize,
-                    terTab.getTerrain().getPoints());
-        }
-        
-        recenterOnTerrain();
-        
-        refreshPreview();
     }
 }

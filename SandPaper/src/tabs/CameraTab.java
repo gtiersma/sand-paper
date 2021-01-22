@@ -10,7 +10,7 @@ import javafx.scene.transform.Rotate;
  */
 public class CameraTab
 {
-    final private byte DEFAULT_FIELD_OF_VIEW = 30;
+    final private short DEFAULT_FIELD_OF_VIEW = 30;
     
     // The number of pixels that are grouped for each zoom-per-pixel bracket.
     // For example, if this is set to 250, an average render image dimension
@@ -35,6 +35,8 @@ public class CameraTab
     final private double[] RESIZE_ZOOM_PER_PIXEL = {-6, -1, 0, 0.5, 1, 1, 1,
             1.2, 1.3, 1.4, 1.4, 1.5};
     
+    // The camera's field of view measured in degrees
+    private short fieldOfView;
     // The angle to which the mesh should be rotating (simulating the effect of
     // the camera orbiting and being rotated around the mesh)
     private short horizontalAngle;
@@ -75,6 +77,8 @@ public class CameraTab
      */
     public CameraTab()
     {
+        fieldOfView = DEFAULT_FIELD_OF_VIEW;
+        
         horizontalAngle = DEFAULT_HORIZONTAL_ANGLE;
         verticalAngle = DEFAULT_VERTICAL_ANGLE;
         
@@ -115,7 +119,7 @@ public class CameraTab
      * 
      * @return The default field-of-view value
      */
-    public double getDefaultField()
+    public short getDefaultField()
     {
         return DEFAULT_FIELD_OF_VIEW;
     }
@@ -138,6 +142,16 @@ public class CameraTab
     public double getDefaultVerticalAngle()
     {
         return DEFAULT_VERTICAL_ANGLE;
+    }
+    
+    /**
+     * Gets the field of view of the camera
+     * 
+     * @return The field of view (measured in degrees)
+     */
+    public short getFieldOfView()
+    {
+        return fieldOfView;
     }
     
     /**
@@ -321,7 +335,7 @@ public class CameraTab
      * 
      * @param degrees The angle of the field of view
      */
-    public void setFieldOfView(byte degrees)
+    public void setFieldOfView(short degrees)
     {
         camster.setFieldOfView(degrees);
     }

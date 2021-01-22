@@ -13,14 +13,20 @@ import javafx.scene.control.TextFormatter;
  */
 public class InputVerifier
 {
-    // The smallest vertex size that the terrain and populations can be
-    final int MIN_MESH_SIZE = 2;
-    
-    final int MAX_TERRAIN_SIZE = 1000;
-    final int MAX_POPULATION_SIZE = 100;
-    
     // The greatest number of digits that a spinner is allowed to have
-    final int MAX_SPINNER_DIGIT_AMOUNT = 5;
+    final byte MAX_SPINNER_DIGIT_AMOUNT = 5;
+    
+    // The smallest vertex size that the terrain and populations can be
+    final short MIN_MESH_SIZE = 2;
+    // The least displaced the vertices in the terrain and populations can be
+    final short MIN_DISPLACEMENT_STRENGTH = 0;
+    
+    // The greatest width or height the terrain and populations can have
+    final short MAX_POPULATION_SIZE = 100;
+    final short MAX_TERRAIN_SIZE = 1000;
+    // The greatest displacement amount that the vertices of the terrain and the
+    // populations can have
+    final short MAX_DISPLACEMENT_STRENGTH = 1000;
     
     // Format that limits the allowed characters to digits and the negative (-)
     // symbol
@@ -69,6 +75,19 @@ public class InputVerifier
     }
     
     /**
+     * Whether or not the value given is permissable as a displacement strength
+     * 
+     * @param strength The displacement strength amount to be checked
+     * 
+     * @return Whether or not the displacement strength is valid
+     */
+    public boolean isDisplacementStrengthValid(short strength)
+    {
+        return (strength <= MAX_DISPLACEMENT_STRENGTH) &&
+                (strength >= MIN_DISPLACEMENT_STRENGTH);
+    }
+    
+    /**
      * Checks if a given vertex size is valid for the terrain or a population
      * 
      * @param maxSize The largest allowed size
@@ -88,7 +107,7 @@ public class InputVerifier
      * 
      * @return Whether or not the size is valid
      */
-    public boolean isPopulationSizeValid(int size)
+    public boolean isPopulationSizeValid(short size)
     {
         return isMeshSizeValid(MAX_POPULATION_SIZE, size);
     }
