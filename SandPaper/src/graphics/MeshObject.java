@@ -29,10 +29,6 @@ public class MeshObject
     // face
     protected final byte INTS_PER_FACE = 6;
     
-    // Multiplied to the user-defined displacement strength variable to increase
-    // distance between vertices
-    protected final int DISPLACEMENT_MULTIPLIER = 10;
-    
     // The size of each side of each face on the mesh when the mesh is not
     // displaced
     protected short faceWidth;
@@ -98,7 +94,7 @@ public class MeshObject
     {
         width = widthster;
         depth = depthster;
-        displacementStrength = strengthster * DISPLACEMENT_MULTIPLIER;
+        displacementStrength = strengthster;
         
         // Calculate number of faces
         facesAmount = (width - 1) * (depth - 1) * 2;
@@ -251,6 +247,11 @@ public class MeshObject
      */
     public void loadPoints()
     {
+        // Multiplied to the user-defined displacement strength variable to
+        // increase the effect of the displacement strength
+        final int DISPLACEMENT_MULTIPLIER = 5;
+        int actualStrength = displacementStrength * DISPLACEMENT_MULTIPLIER;
+        
         // Arraylist of objects that will retrieve the values of the threads
         List<Future<Integer>> threadResults = new ArrayList<>();
         
@@ -265,15 +266,15 @@ public class MeshObject
             {
                 // Thread for finding the x position of the vertex
                 Callable<Integer> xThread = new VertexThread(faceWidth, x,
-                        displacementStrength, 'x', vertexRelatives[x][z]);
+                        actualStrength, 'x', vertexRelatives[x][z]);
                 
                 // Thread for finding the y position of the vertex
                 Callable<Integer> yThread = new VertexThread(0, 0,
-                        displacementStrength, 'y', vertexRelatives[x][z]);
+                        actualStrength, 'y', vertexRelatives[x][z]);
                 
                 // Thread for finding the z position of the vertex
                 Callable<Integer> zThread = new VertexThread(faceDepth, z,
-                        displacementStrength, 'z', vertexRelatives[x][z]);
+                        actualStrength, 'z', vertexRelatives[x][z]);
                 
                 // Get the calculations as they become available
                 Future<Integer> xFuture = exster.submit(xThread);
@@ -426,7 +427,7 @@ public class MeshObject
      */
     public void setDisplacementStrength(int strengthster)
     {
-        displacementStrength = strengthster * DISPLACEMENT_MULTIPLIER;
+        displacementStrength = strengthster;
         
         // Re-initialize and re-calculate the variables that rely on the
         // displacement map's strength in their calculations

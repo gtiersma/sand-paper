@@ -264,8 +264,15 @@ public class Controller
             // text input is not blank...
             if (listen && !newster.equals(""))
             {
-                // ...resize it.
-                setTerrainVertexWidth(Short.parseShort(newster));
+                // ...validate the input.
+                short width = validator.parseTerrainSize(newster);
+                
+                // If it validates...
+                if (width != validator.getParseFailValue())
+                {
+                    // ...set it as the width.
+                    setTerrainVertexWidth(false, width);
+                }
             }
         });
         // This focus listener prevents invalid text from remaining in the
@@ -285,7 +292,12 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                setTerrainVertexDepth(Short.parseShort(newster));
+                short depth = validator.parseTerrainSize(newster);
+                
+                if (depth != validator.getParseFailValue())
+                {
+                    setTerrainVertexDepth(false, depth);
+                }
             }
         });
         terrainTextVRD.focusedProperty().addListener((obster, oldster, newster)
@@ -303,7 +315,12 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                setTerrainDisplacementStrength(Short.parseShort(newster));
+                short strength = validator.parseDisplacementStrength(newster);
+                
+                if (strength != validator.getParseFailValue())
+                {
+                    setTerrainDisplacementStrength(false, strength);
+                }
             }
         });
         terrainTextDMS.focusedProperty().addListener((obster, oldster, newster)
@@ -623,7 +640,12 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                setPopulationVertexWidth(Short.parseShort(newster));
+                short width = validator.parsePopulationSize(newster);
+                
+                if (width != validator.getParseFailValue())
+                {
+                    setPopulationVertexWidth(false, width);
+                }
             }
         });
         populationTextVRW.focusedProperty().addListener((obster, oldster,
@@ -642,7 +664,12 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                setPopulationVertexHeight(Short.parseShort(newster));
+                short height = validator.parsePopulationSize(newster);
+                
+                if (height != validator.getParseFailValue())
+                {
+                    setPopulationVertexHeight(false, height);
+                }
             }
         });
         populationTextVRH.focusedProperty().addListener((obster, oldster,
@@ -661,9 +688,12 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                popTab.getActivePopulation().setDisplacementStrength(
-                        Short.parseShort(newster),
-                        terTab.getTerrain().getPoints());
+                short strength = validator.parseDisplacementStrength(newster);
+                
+                if (strength != validator.getParseFailValue())
+                {
+                    setTerrainVertexDepth(false, strength);
+                }
             }
         });
         populationTextDRS.focusedProperty().addListener((obster, oldster,
@@ -1453,15 +1483,11 @@ public class Controller
     @FXML
     private void decrementPopulationDisplacementStrength()
     {
-        listen = false;
-        
         short strength = Short.parseShort(populationTextDRS.getText());
         
         strength--;
         
-        setPopulationDisplacementStrength(strength);
-        
-        listen = true;
+        setPopulationDisplacementStrength(true, strength);
     }
     
     /**
@@ -1471,15 +1497,11 @@ public class Controller
     @FXML
     private void decrementPopulationVertexHeight()
     {
-        listen = false;
-        
         short height = Short.parseShort(populationTextVRH.getText());
         
         height--;
         
-        setPopulationVertexHeight(height);
-        
-        listen = true;
+        setPopulationVertexHeight(true, height);
     }
     
     /**
@@ -1489,15 +1511,11 @@ public class Controller
     @FXML
     private void decrementPopulationVertexWidth()
     {
-        listen = false;
-        
         short width = Short.parseShort(populationTextVRW.getText());
         
         width--;
         
-        setPopulationVertexWidth(width);
-        
-        listen = true;
+        setPopulationVertexWidth(true, width);
     }
     
     /**
@@ -1507,15 +1525,11 @@ public class Controller
     @FXML
     private void decrementTerrainDisplacementStrength()
     {
-        listen = false;
-        
         short strength = Short.parseShort(terrainTextDMS.getText());
         
         strength--;
               
-        setTerrainDisplacementStrength(strength);
-        
-        listen = true;
+        setTerrainDisplacementStrength(true, strength);
     }
     
     /**
@@ -1525,15 +1539,11 @@ public class Controller
     @FXML
     private void decrementTerrainVertexDepth()
     {
-        listen = false;
-        
         short depth = Short.parseShort(terrainTextVRD.getText());
         
         depth--;
               
-        setTerrainVertexDepth(depth);
-        
-        listen = true;
+        setTerrainVertexDepth(true, depth);
     }
     
     /**
@@ -1543,15 +1553,11 @@ public class Controller
     @FXML
     private void decrementTerrainVertexWidth()
     {
-        listen = false;
-        
         short width = Short.parseShort(terrainTextVRW.getText());
         
         width--;
         
-        setTerrainVertexWidth(width);
-        
-        listen = true;
+        setTerrainVertexWidth(true, width);
     }
     
     /**
@@ -1789,8 +1795,10 @@ public class Controller
      */
     private void formatControls()
     {
+        validator.formatNumericTextField(terrainTextDMS);
         validator.formatNumericTextField(terrainTextVRW);
         validator.formatNumericTextField(terrainTextVRD);
+        validator.formatNumericTextField(populationTextDRS);
         validator.formatNumericTextField(populationTextVRW);
         validator.formatNumericTextField(populationTextVRH);
         
@@ -1836,15 +1844,11 @@ public class Controller
     @FXML
     private void incrementPopulationDisplacementStrength()
     {
-        listen = false;
-        
         short strength = Short.parseShort(populationTextDRS.getText());
         
         strength++;
         
-        setPopulationDisplacementStrength(strength);
-        
-        listen = true;
+        setPopulationDisplacementStrength(true, strength);
     }
     
     /**
@@ -1854,15 +1858,11 @@ public class Controller
     @FXML
     private void incrementPopulationVertexHeight()
     {
-        listen = false;
-        
         short height = Short.parseShort(populationTextVRH.getText());
         
         height++;
         
-        setPopulationVertexHeight(height);
-        
-        listen = true;
+        setPopulationVertexHeight(true, height);
     }
     
     /**
@@ -1872,15 +1872,11 @@ public class Controller
     @FXML
     private void incrementPopulationVertexWidth()
     {
-        listen = false;
-        
         short width = Short.parseShort(populationTextVRW.getText());
         
         width++;
         
-        setPopulationVertexWidth(width);
-        
-        listen = true;
+        setPopulationVertexWidth(true, width);
     }
     
     /**
@@ -1890,15 +1886,11 @@ public class Controller
     @FXML
     private void incrementTerrainDisplacementStrength()
     {
-        listen = false;
-        
         short strength = Short.parseShort(terrainTextDMS.getText());
         
         strength++;
               
-        setTerrainDisplacementStrength(strength);
-        
-        listen = true;
+        setTerrainDisplacementStrength(true, strength);
     }
     
     /**
@@ -1908,15 +1900,11 @@ public class Controller
     @FXML
     private void incrementTerrainVertexDepth()
     {
-        listen = false;
-        
         short depth = Short.parseShort(terrainTextVRD.getText());
         
         depth++;
                 
-        setTerrainVertexDepth(depth);
-        
-        listen = true;
+        setTerrainVertexDepth(true, depth);
     }
     
     /**
@@ -1926,15 +1914,11 @@ public class Controller
     @FXML
     private void incrementTerrainVertexWidth()
     {
-        listen = false;
-        
         short width = Short.parseShort(terrainTextVRW.getText());
         
         width++;
                 
-        setTerrainVertexWidth(width);
-        
-        listen = true;
+        setTerrainVertexWidth(true, width);
     }
     
     /**
@@ -2863,17 +2847,22 @@ public class Controller
      * 
      * @param strength The height to be set
      */
-    private void setPopulationDisplacementStrength(short strength)
+    private void setPopulationDisplacementStrength(boolean updateTextBox,
+            short strength)
     {
-        if (validator.isDisplacementStrengthValid(strength))
+        listen = false;
+        
+        popTab.getActivePopulation().setDisplacementStrength(strength,
+                terTab.getTerrain().getPoints());
+        
+        refreshPreview();
+        
+        if (updateTextBox)
         {
-            popTab.getActivePopulation().setDisplacementStrength(strength,
-                    terTab.getTerrain().getPoints());
-        
-            refreshPreview();
-        
             populationTextDRS.setText(Short.toString(strength));
         }
+        
+        listen = true;
     }
     
     /**
@@ -2882,17 +2871,21 @@ public class Controller
      * 
      * @param height The height to be set
      */
-    private void setPopulationVertexHeight(short height)
+    private void setPopulationVertexHeight(boolean updateTextBox, short height)
     {
-        if (validator.isPopulationSizeValid(height))
+        listen = false;
+        
+        popTab.getActivePopulation().setVertexHeight(height,
+                terTab.getTerrain().getPoints());
+        
+        refreshPreview();
+        
+        if (updateTextBox)
         {
-            popTab.getActivePopulation().setVertexHeight(height,
-                    terTab.getTerrain().getPoints());
-        
-            refreshPreview();
-        
             populationTextVRH.setText(Short.toString(height));
         }
+        
+        listen = true;
     }
     
     /**
@@ -2901,17 +2894,21 @@ public class Controller
      * 
      * @param width The width to be set
      */
-    private void setPopulationVertexWidth(short width)
+    private void setPopulationVertexWidth(boolean updateTextBox, short width)
     {
-        if (validator.isPopulationSizeValid(width))
+        listen = false;
+        
+        popTab.getActivePopulation().setVertexWidth(width,
+                terTab.getTerrain().getPoints());
+        
+        refreshPreview();
+        
+        if (updateTextBox)
         {
-            popTab.getActivePopulation().setVertexWidth(width,
-                    terTab.getTerrain().getPoints());
-        
-            refreshPreview();
-        
             populationTextVRW.setText(Short.toString(width));
         }
+        
+        listen = true;
     }
     
     /**
@@ -2920,20 +2917,25 @@ public class Controller
      * 
      * @param strength The height to be set
      */
-    private void setTerrainDisplacementStrength(short strength)
+    private void setTerrainDisplacementStrength(boolean updateTextBox,
+            short strength)
     {
-        if (validator.isDisplacementStrengthValid(strength))
+        listen = false;
+        
+        terTab.getTerrain().setDisplacementStrength(strength);
+            
+        popTab.repositionPopulations(terTab.getTerrain().getPoints());
+        
+        if (updateTextBox)
         {
-            terTab.getTerrain().setDisplacementStrength(strength);
-            
-            popTab.repositionPopulations(terTab.getTerrain().getPoints());
-        
             terrainTextDMS.setText(Short.toString(strength));
-        
-            recenterOnTerrain();
-            
-            refreshPreview();
         }
+        
+        recenterOnTerrain();
+            
+        refreshPreview();
+        
+        listen = true;
     }
     
     /**
@@ -2942,18 +2944,22 @@ public class Controller
      * 
      * @param depth The depth to be set
      */
-    private void setTerrainVertexDepth(short depth)
+    private void setTerrainVertexDepth(boolean updateTextBox, short depth)
     {
-        if (validator.isTerrainSizeValid(depth))
-        {
-            terTab.getTerrain().setDepth(depth);
+        listen = false;
+        
+        terTab.getTerrain().setDepth(depth);
             
-            updatePopulationsForTerrainSizeChange(false, depth);
+        updatePopulationsForTerrainSizeChange(false, depth);
             
-            ligTab.repositionLights();
+        ligTab.repositionLights();
                 
+        if (updateTextBox)
+        {
             terrainTextVRD.setText(Short.toString(depth));
         }
+        
+        listen = true;
     }
     
     /**
@@ -2962,18 +2968,22 @@ public class Controller
      * 
      * @param width The width to be set
      */
-    private void setTerrainVertexWidth(short width)
+    private void setTerrainVertexWidth(boolean updateTextBox, short width)
     {
-        if (validator.isTerrainSizeValid(width))
+        listen = false;
+        
+        terTab.getTerrain().setWidth(width);
+            
+        updatePopulationsForTerrainSizeChange(true, width);
+            
+        ligTab.repositionLights();
+           
+        if (updateTextBox)
         {
-            terTab.getTerrain().setWidth(width);
-            
-            updatePopulationsForTerrainSizeChange(true, width);
-            
-            ligTab.repositionLights();
-                
             terrainTextVRW.setText(Short.toString(width));
         }
+        
+        listen = true;
     }
     
     /**

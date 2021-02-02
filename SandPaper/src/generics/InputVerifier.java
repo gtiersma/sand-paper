@@ -13,24 +13,24 @@ import javafx.scene.control.TextFormatter;
  */
 public class InputVerifier
 {
-    // The greatest number of digits that a spinner is allowed to have
-    final byte MAX_SPINNER_DIGIT_AMOUNT = 5;
+    private final byte MAX_DISPLACEMENT_STRENGTH_DIGIT_COUNT = 4;
+    private final byte MAX_POPULATION_SIZE_DIGIT_COUNT = 3;
+    private final byte MAX_TERRAIN_SIZE_DIGIT_COUNT = 4;
+    
+    // The maximum number of digits that spinners are allowed to have
+    private final short MAX_SPINNER_DIGIT_AMOUNT = 5;
+    
+    // The value used to represent a failure with parsing or validation
+    private final short PARSE_FAIL = -1;
     
     // The smallest vertex size that the terrain and populations can be
-    final short MIN_MESH_SIZE = 2;
+    private final short MIN_MESH_SIZE = 2;
     // The least displaced the vertices in the terrain and populations can be
-    final short MIN_DISPLACEMENT_STRENGTH = 0;
-    
-    // The greatest width or height the terrain and populations can have
-    final short MAX_POPULATION_SIZE = 100;
-    final short MAX_TERRAIN_SIZE = 1000;
-    // The greatest displacement amount that the vertices of the terrain and the
-    // populations can have
-    final short MAX_DISPLACEMENT_STRENGTH = 1000;
+    private final short MIN_DISPLACEMENT_STRENGTH = 0;
     
     // Format that limits the allowed characters to digits and the negative (-)
     // symbol
-    UnaryOperator<TextFormatter.Change> numericStyle;
+    private UnaryOperator<TextFormatter.Change> numericStyle;
     
     /**
      * CONSTRUCTOR
@@ -75,41 +75,51 @@ public class InputVerifier
     }
     
     /**
-     * Whether or not the value given is permissable as a displacement strength
+     * Gets the value that is used to indicate that a value has failed to parse
+     * or validate
      * 
-     * @param strength The displacement strength amount to be checked
-     * 
-     * @return Whether or not the displacement strength is valid
+     * @return Indication value for a failed parse or validation
      */
-    public boolean isDisplacementStrengthValid(short strength)
+    public byte getParseFailValue()
     {
-        return (strength <= MAX_DISPLACEMENT_STRENGTH) &&
-                (strength >= MIN_DISPLACEMENT_STRENGTH);
+        return PARSE_FAIL;
     }
     
     /**
-     * Checks if a given vertex size is valid for the terrain or a population
+     * Gets whether or not a number (in the form of a string) has a negative
+     * sign in the wrong position
      * 
-     * @param maxSize The largest allowed size
-     * @param size The vertex size
+     * @param number The number in the form of a string to check for a misplaced
+     *               dash
      * 
-     * @return Whether or not the size is valid
+     * @return Whether or not a negative sign is misplaced in the number
      */
-    private boolean isMeshSizeValid(int maxSize, int size)
+    public boolean hasMisplacedDash(String number)
     {
-        return (size <= maxSize) && (size >= MIN_MESH_SIZE);
-    }
-    
-    /**
-     * Checks if a given vertex size is valid for a population
-     * 
-     * @param size The vertex size
-     * 
-     * @return Whether or not the size is valid
-     */
-    public boolean isPopulationSizeValid(short size)
-    {
-        return isMeshSizeValid(MAX_POPULATION_SIZE, size);
+        // The position of the character in the string to begin searching for a
+        // dash. Since the first position (0) is allowed to have a dash, it is
+        // skipped.
+        final byte STARTING_POSITION = 1;
+        
+        boolean foundMisplacedDash = false;
+        
+        int characterAmount = number.length();
+        
+        // For each character (excluding the first one)...
+        for (int i = STARTING_POSITION; i < characterAmount; i++)
+        {
+            // ...if that character is a dash...
+            if (number.charAt(i) == '-')
+            {
+                // ...the number has a misplaced dash.
+                foundMisplacedDash = true;
+                
+                // Exit the loop
+                i = characterAmount;
+            }
+        }
+        
+        return foundMisplacedDash;
     }
     
     /**
@@ -157,14 +167,40 @@ public class InputVerifier
     }
     
     /**
-     * Checks if a given vertex size is valid for the terrain
+     * Parses a certain value
      * 
-     * @param size The vertex size
-     * 
-     * @return Whether or not the size is valid
+     * @return Whether or not a negative sign is misplaced in the number
      */
-    public boolean isTerrainSizeValid(int size)
+    private short parse(short maxDigits, short minValue, String value)
     {
-        return isMeshSizeValid(MAX_TERRAIN_SIZE, size);
+        short parsedValue = PARSE_FAIL;
+        
+        if (value.length() <= maxDigits && !hasMisplacedDash(value))
+        {
+            parsedValue = Short.parseShort(value);
+            
+            if (parsedValue < minValue)
+            {
+                parsedValue = PARSE_FAIL;
+            }
+        }
+        
+        return parsedValue;
+    }
+    
+    public short parseDisplacementStrength(String strength)
+    {
+        return parse(MAX_DISPLACEMENT_STRENGTH_DIGIT_COUNT,
+                MIN_DISPLACEMENT_STRENGTH, strength);
+    }
+    
+    public short parsePopulationSize(String size)
+    {
+        return parse(MAX_POPULATION_SIZE_DIGIT_COUNT, MIN_MESH_SIZE, size);
+    }
+    
+    public short parseTerrainSize(String size)
+    {
+        return parse(MAX_TERRAIN_SIZE_DIGIT_COUNT, MIN_MESH_SIZE, size);
     }
 }

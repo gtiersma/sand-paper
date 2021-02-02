@@ -303,7 +303,7 @@ public class Terrain extends MeshObject
     /**
      * Sets the displacement map
      * 
-     * @param difster The new displacement map
+     * @param dister The new displacement map
      */
     public void setDisplacement(TextureObject dister)
     {
