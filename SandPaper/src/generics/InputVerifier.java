@@ -13,12 +13,13 @@ import javafx.scene.control.TextFormatter;
  */
 public class InputVerifier
 {
+    // The maximum number of digits that the input text for certain TextBoxes
+    // can have
     private final byte MAX_DISPLACEMENT_STRENGTH_DIGIT_COUNT = 4;
     private final byte MAX_POPULATION_SIZE_DIGIT_COUNT = 3;
     private final byte MAX_TERRAIN_SIZE_DIGIT_COUNT = 4;
-    
     // The maximum number of digits that spinners are allowed to have
-    private final short MAX_SPINNER_DIGIT_AMOUNT = 5;
+    private final byte MAX_SPINNER_DIGIT_AMOUNT = 5;
     
     // The value used to represent a failure with parsing or validation
     private final short PARSE_FAIL = -1;
@@ -167,20 +168,32 @@ public class InputVerifier
     }
     
     /**
-     * Parses a certain value
+     * Parses a certain value 
      * 
-     * @return Whether or not a negative sign is misplaced in the number
+     * @param maxDigits The maximum number of digits the value is allowed to
+     *                  have
+     * @param minValue The minimum value that the parsing value is allowed to be
+     * @param value The value to be parsed
+     * 
+     * @return The String value parsed into the form of a short. If any of the
+     *         parsing validation failed, a -1 is returned.
      */
     private short parse(short maxDigits, short minValue, String value)
     {
         short parsedValue = PARSE_FAIL;
         
+        // If the value is does not have too many digits or a negative symbol in
+        // a strange place...
         if (value.length() <= maxDigits && !hasMisplacedDash(value))
         {
+            // ...the string should be able to be parsed into a short, so parse
+            // it.
             parsedValue = Short.parseShort(value);
             
+            // If the parsed value is too small...
             if (parsedValue < minValue)
             {
+                // ...set it back to a parsing-fail value.
                 parsedValue = PARSE_FAIL;
             }
         }
@@ -188,17 +201,41 @@ public class InputVerifier
         return parsedValue;
     }
     
+    /**
+     * Parses a given string of a displacement strength value into a short
+     * 
+     * @param strength The displacement strength to be parsed
+     * 
+     * @return The displacement strength parsed into the form of a short. If any
+     *         of the parsing validation failed, a -1 is returned.
+     */
     public short parseDisplacementStrength(String strength)
     {
         return parse(MAX_DISPLACEMENT_STRENGTH_DIGIT_COUNT,
                 MIN_DISPLACEMENT_STRENGTH, strength);
     }
     
+    /**
+     * Parses a given string of a population width or height value into a short
+     * 
+     * @param size The population's size to be parsed
+     * 
+     * @return The size parsed into the form of a short. If any of the parsing
+     *         validation failed, a -1 is returned.
+     */
     public short parsePopulationSize(String size)
     {
         return parse(MAX_POPULATION_SIZE_DIGIT_COUNT, MIN_MESH_SIZE, size);
     }
     
+    /**
+     * Parses a given string of a terrain width or depth value into a short
+     * 
+     * @param size The terrain's size to be parsed
+     * 
+     * @return The size parsed into the form of a short. If any of the parsing
+     *         validation failed, a -1 is returned.
+     */
     public short parseTerrainSize(String size)
     {
         return parse(MAX_TERRAIN_SIZE_DIGIT_COUNT, MIN_MESH_SIZE, size);

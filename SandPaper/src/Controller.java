@@ -264,10 +264,10 @@ public class Controller
             // text input is not blank...
             if (listen && !newster.equals(""))
             {
-                // ...validate the input.
+                // ...parse the input.
                 short width = validator.parseTerrainSize(newster);
                 
-                // If it validates...
+                // If it was parsed successfully...
                 if (width != validator.getParseFailValue())
                 {
                     // ...set it as the width.
@@ -2845,6 +2845,12 @@ public class Controller
      * Sets the displacement strength of the currently-selected population. The
      * TextField is also updated to reflect the changes.
      * 
+     * @param updateTextBox Whether or not the TextBox should be updated to
+     *                      display the given strength.
+     *                      Updating the TextBox when this method is called from
+     *                      a listener can cause an exception within JavaFX, so
+     *                      it would be a good idea to set this to false if it
+     *                      is not needed.
      * @param strength The height to be set
      */
     private void setPopulationDisplacementStrength(boolean updateTextBox,
@@ -2869,6 +2875,12 @@ public class Controller
      * Sets the height (in vertices) of the currently-selected population. The
      * TextField is also updated to reflect the changes.
      * 
+     * @param updateTextBox Whether or not the TextBox should be updated to
+     *                      display the given strength.
+     *                      Updating the TextBox when this method is called from
+     *                      a listener can cause an exception within JavaFX, so
+     *                      it would be a good idea to set this to false if it
+     *                      is not needed.
      * @param height The height to be set
      */
     private void setPopulationVertexHeight(boolean updateTextBox, short height)
@@ -2892,6 +2904,12 @@ public class Controller
      * Sets the width (in vertices) of the currently-selected population. The
      * TextField is also updated to reflect the changes.
      * 
+     * @param updateTextBox Whether or not the TextBox should be updated to
+     *                      display the given strength.
+     *                      Updating the TextBox when this method is called from
+     *                      a listener can cause an exception within JavaFX, so
+     *                      it would be a good idea to set this to false if it
+     *                      is not needed.
      * @param width The width to be set
      */
     private void setPopulationVertexWidth(boolean updateTextBox, short width)
@@ -2915,6 +2933,12 @@ public class Controller
      * Sets the displacement strength of the terrain. The TextField is also
      * updated to reflect the changes.
      * 
+     * @param updateTextBox Whether or not the TextBox should be updated to
+     *                      display the given strength.
+     *                      Updating the TextBox when this method is called from
+     *                      a listener can cause an exception within JavaFX, so
+     *                      it would be a good idea to set this to false if it
+     *                      is not needed.
      * @param strength The height to be set
      */
     private void setTerrainDisplacementStrength(boolean updateTextBox,
@@ -2942,6 +2966,12 @@ public class Controller
      * Sets the depth (in vertices) of the terrain. The TextField is
      * also updated to reflect the changes.
      * 
+     * @param updateTextBox Whether or not the TextBox should be updated to
+     *                      display the given strength.
+     *                      Updating the TextBox when this method is called from
+     *                      a listener can cause an exception within JavaFX, so
+     *                      it would be a good idea to set this to false if it
+     *                      is not needed.
      * @param depth The depth to be set
      */
     private void setTerrainVertexDepth(boolean updateTextBox, short depth)
@@ -2966,6 +2996,12 @@ public class Controller
      * Sets the width (in vertices) of the terrain. The TextField is
      * also updated to reflect the changes.
      * 
+     * @param updateTextBox Whether or not the TextBox should be updated to
+     *                      display the given strength.
+     *                      Updating the TextBox when this method is called from
+     *                      a listener can cause an exception within JavaFX, so
+     *                      it would be a good idea to set this to false if it
+     *                      is not needed.
      * @param width The width to be set
      */
     private void setTerrainVertexWidth(boolean updateTextBox, short width)
