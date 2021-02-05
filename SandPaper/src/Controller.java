@@ -2200,6 +2200,9 @@ public class Controller
         camTab.zoomForResize(cameraSpinnerPAZ.getValue(),
                 renTab.getDimensionAverage());
         
+        // Unbind the preview from the pane's size
+        preview.heightProperty().unbind();
+        preview.widthProperty().unbind();
         // Resize the preview to match the size of the render
         preview.setWidth(width);
         preview.setHeight(height);
@@ -2212,17 +2215,7 @@ public class Controller
     {
         terTab.prepareTerrain();
         
-        // To be centered, the terrain must be adjusted by half of the preview's
-        // size
-        camTab.setCameraOffset(DEFAULT_PREVIEW_WIDTH / 2, DEFAULT_PREVIEW_HEIGHT
-                / 2);
-        
-        // Force the preview to automatically resize when the user resizes the
-        // adjacent panes
-        preview.heightProperty().bind(previewContainer.heightProperty());
-        preview.widthProperty().bind(previewContainer.widthProperty());
-        
-        recenterOnTerrain();
+        resetPreviewSize();
         
         refreshPreview();
         preview.setCamera(camTab.getCamera());
@@ -2230,7 +2223,8 @@ public class Controller
     }
     
     /**
-     * Re-centers the camera on the terrain
+     * Re-centers the camera on the terrain. For use whenever preview size is
+     * changed.
      */
     private void recenterCamera()
     {
@@ -2780,8 +2774,14 @@ public class Controller
         
         camTab.setZoom(cameraSpinnerPAZ.getValue());
         
-        preview.setWidth(DEFAULT_PREVIEW_WIDTH);
-        preview.setHeight(DEFAULT_PREVIEW_HEIGHT);
+        // Force the preview to automatically resize when the user resizes the
+        // adjacent panes
+        preview.heightProperty().bind(previewContainer.heightProperty());
+        preview.widthProperty().bind(previewContainer.widthProperty());
+        
+        recenterOnTerrain();
+        
+        recenterCamera();
     }
     
     /**
