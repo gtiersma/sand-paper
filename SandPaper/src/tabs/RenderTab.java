@@ -180,8 +180,12 @@ public class RenderTab
             // ...save the image.
             save(writster);
             
-            // Get the directory that the user saved to
+            // Get the image's name & path
             previousDirectory = openedImage.getAbsolutePath();
+            // Remove the name, so that it is only the path to the folder that 
+            // the image was saved to
+            previousDirectory = previousDirectory.substring(0,
+                    previousDirectory.lastIndexOf("\\") + 1);
         }
     }
     
