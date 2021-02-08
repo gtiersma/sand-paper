@@ -170,10 +170,10 @@ public class Controller
     @FXML private Spinner<Integer> cameraSpinnerPAH;
     @FXML private Spinner<Integer> cameraSpinnerPAV;
     @FXML private Spinner<Integer> cameraSpinnerPAZ;
+    @FXML private Spinner<Integer> cameraSpinnerFOVD;
     @FXML private Spinner<Integer> lightSpinnerPX;
     @FXML private Spinner<Integer> lightSpinnerPY;
     @FXML private Spinner<Integer> lightSpinnerPZ;
-    @FXML private Spinner<Short> cameraSpinnerFOVD;
     
     @FXML private Tab textureTab;
     @FXML private Tab terrainTab;
@@ -2682,7 +2682,7 @@ public class Controller
             cameraRadioFOVH.setSelected(true);
             
             // Reset text field text
-            terrainTextDMS.setText(Double.toString(
+            terrainTextDMS.setText(Integer.toString(
                     terTab.getDefaultStrength()));
             terrainTextVRD.setText(Integer.toString(terTab.getDefaultSize()));
             terrainTextVRW.setText(Integer.toString(terTab.getDefaultSize()));

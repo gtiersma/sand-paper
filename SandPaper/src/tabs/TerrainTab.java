@@ -51,7 +51,7 @@ public class TerrainTab
      * 
      * @return The default strength
      */
-    public double getDefaultStrength()
+    public int getDefaultStrength()
     {
         return DEFAULT_STRENGTH;
     }
