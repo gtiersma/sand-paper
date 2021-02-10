@@ -116,6 +116,8 @@ public class Controller
     @FXML private Button populationButtonVRWI;
     @FXML private Button populationButtonVRHD;
     @FXML private Button populationButtonVRHI;
+    @FXML private Button populationButtonDRSD;
+    @FXML private Button populationButtonDRSI;
     
     @FXML private ChoiceBox lightChoiceL;
     @FXML private ChoiceBox populationChoiceP;
@@ -1762,7 +1764,9 @@ public class Controller
         populationButtonVRHI.setDisable(!toEnable);
         populationComboDR1.setDisable(!toEnable);
         populationComboDR2.setDisable(!toEnable);
+        populationButtonDRSD.setDisable(!toEnable);
         populationTextDRS.setDisable(!toEnable);
+        populationButtonDRSI.setDisable(!toEnable);
         populationComboDM.setDisable(!toEnable);
         populationComboBM.setDisable(!toEnable);
         populationComboSM.setDisable(!toEnable);
