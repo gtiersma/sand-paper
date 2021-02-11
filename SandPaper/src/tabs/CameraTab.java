@@ -10,14 +10,13 @@ import javafx.scene.transform.Rotate;
  */
 public class CameraTab
 {
-    final private short DEFAULT_FIELD_OF_VIEW = 30;
-    
     // The number of pixels that are grouped for each zoom-per-pixel bracket.
     // For example, if this is set to 250, an average render image dimension
     // between 0-250 would be the bracket for index 0 of the zoom-per-pixel
     // array, an average dimension between 250-500 would be for index 1, etc.
     final private short ZOOM_PIXEL_RANGE = 250;
     
+    final private int DEFAULT_FIELD_OF_VIEW = 30;
     final private int DEFAULT_HORIZONTAL_ANGLE = 0;
     final private int DEFAULT_VERTICAL_ANGLE = 45;
     final private int DEFAULT_ZOOM = 0;
@@ -119,7 +118,7 @@ public class CameraTab
      * 
      * @return The default field-of-view value
      */
-    public short getDefaultField()
+    public int getDefaultField()
     {
         return DEFAULT_FIELD_OF_VIEW;
     }

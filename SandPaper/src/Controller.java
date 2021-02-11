@@ -60,7 +60,7 @@ import tabs.LightTab;
 import tabs.PopulationTab;
 
 /**
- * This is the controller class for Project Scaper. This class programmatically
+ * This is the controller class for Sand Paper. This class programmatically
  * sets up the part of the scene that the FXML document is unable to. It also
  * uses event listeners and event methods for the controls that need them.
  * 
@@ -989,12 +989,8 @@ public class Controller
      */
     private void addTexture(boolean color)
     {
-        // Disable everything on the GUI to focus the user's attention entirely
-        // on the dialog that's about to appear.
-        everything.setDisable(true);
-            
         // If the user chooses a texture in the dialog...
-        if (texTab.addTexture(color))
+        if (texTab.addTexture(everything.getScene().getWindow(), color))
         {
             // ...add the texture to the correct FlowPane
             if (color)
@@ -1006,8 +1002,6 @@ public class Controller
                 texturesFlowG.getChildren().add(texTab.getLastView(color));
             }
         }
-        
-        everything.setDisable(false);
     }
     
     /**
@@ -2803,7 +2797,7 @@ public class Controller
                 = preview.snapshot(new SnapshotParameters(), null);
         
         // Save the screenshot
-        renTab.save(writster);
+        renTab.save(everything.getScene().getWindow(), writster);
         
         resetPreviewSize();
     }
@@ -2821,7 +2815,7 @@ public class Controller
                 = preview.snapshot(new SnapshotParameters(), null);
         
         // Save the screenshot
-        renTab.saveAs(writster);
+        renTab.saveAs(everything.getScene().getWindow(), writster);
         
         resetPreviewSize();
     }
@@ -3087,7 +3081,7 @@ public class Controller
             removeTextures(color, selectedTextures);
         }
         
-        // Keeps the SandPaper from hanging if there is a population present
+        // Keeps SandPaper from hanging if there is a population present
         refreshPreview();
     }
     

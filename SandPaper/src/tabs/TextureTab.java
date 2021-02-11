@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * Controls the operations for the textures tab
@@ -43,12 +44,13 @@ public class TextureTab
      * Gets a texture from the user through a file chooser and adds it to an
      * ArrayList of textures
      * 
+     * @param mainStage Sand Paper's primary stage
      * @param color Whether or not the texture is colored or grayscale
      * 
      * @return Whether or not a texture was successfully added to a texture
      *         ArrayList
      */
-    public boolean addTexture(boolean color)
+    public boolean addTexture(Window mainStage, boolean color)
     {
         // Whether or not a texture has been successfully added to a texture
         // ArrayList
@@ -74,7 +76,7 @@ public class TextureTab
         try
         {
             // Get the file from the file chooser
-            filster = chooster.showOpenDialog(null);
+            filster = chooster.showOpenDialog(mainStage);
         
             // If a file was retrieved...
             if (filster != null)

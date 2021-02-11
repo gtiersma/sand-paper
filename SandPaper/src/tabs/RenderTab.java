@@ -11,6 +11,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javax.imageio.ImageIO;
 
 /**
@@ -112,9 +113,10 @@ public class RenderTab
      * Saves a rendered image. If the user has yet to choose a file save
      * location, executes the saveAs method instead.
      * 
+     * @param mainStage Sand Paper's primary stage
      * @param writster A snapshot of the preview
      */
-    public void save(WritableImage writster)
+    public void save(Window mainStage, WritableImage writster)
     {
         try
         {
@@ -126,7 +128,7 @@ public class RenderTab
         catch (IllegalArgumentException ex)
         {
             // ...execute saveAs instead.
-            saveAs(writster);
+            saveAs(mainStage, writster);
         }
         // If the last image cannot be over-written...
         catch (IOException ex)
@@ -155,9 +157,10 @@ public class RenderTab
      * Saves a rendered image to the location chosen by the user in a file
      * chooser.
      * 
+     * @param mainStage Sand Paper's primary stage
      * @param writster A snapshot of the preview
      */
-    public void saveAs(WritableImage writster)
+    public void saveAs(Window mainStage, WritableImage writster)
     {
         // Set up the file chooser
         FileChooser chooster = new FileChooser();
@@ -172,13 +175,13 @@ public class RenderTab
         chooster.getExtensionFilters().add(allExtensions);
         
         // Get the file settings from the chooser
-        openedImage = chooster.showSaveDialog(null);
+        openedImage = chooster.showSaveDialog(mainStage);
         
         // As long as the user actually chose to save somewhere...
         if (openedImage != null)
         {
             // ...save the image.
-            save(writster);
+            save(mainStage, writster);
             
             // Get the image's name & path
             previousDirectory = openedImage.getAbsolutePath();
