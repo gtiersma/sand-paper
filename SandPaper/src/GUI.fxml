@@ -469,7 +469,7 @@
                                                 <HBox id="cameraBoxFOVD" alignment="CENTER" spacing="10.0">
                                                    <children>
                                                       <Label id="angle" styleClass="medium-label" text="Degrees:" />
-                                                      <Spinner id="fieldOfViewDegrees" fx:id="cameraSpinnerFOVD" editable="true" initialValue="0" max="99999" min="-99999" prefWidth="100.0" />
+                                                      <Spinner id="fieldOfViewDegrees" fx:id="cameraSpinnerFOVD" editable="true" initialValue="30" max="99999" min="-99999" prefWidth="100.0" />
                                                    </children>
                                                 </HBox>
                                                 <HBox id="cameraBoxFOVHV" fx:id="cameraBoxFOVHV" alignment="CENTER" layoutX="10.0" layoutY="53.0" spacing="10.0">
