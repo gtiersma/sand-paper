@@ -306,10 +306,16 @@ public class LightTab
         boolean duplicate = false;
         
         // For each light...
-        for (LightObject light : lights)
+        for (int i = 0; i < lights.length; i++)
         {
-            // ...if the its name matches, it's a duplicate.
-            duplicate = light.getName().equals(name);
+            // ...if the name matches...
+            if (lights[i].getName().equals(name))
+            {
+                // ...it's a duplicate.
+                duplicate = true;
+                // Exit the loop
+                i = lights.length;
+            }
         }
         
         return duplicate;

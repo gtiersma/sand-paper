@@ -350,10 +350,16 @@ public class PopulationTab
         boolean duplicate = false;
         
         // For each population...
-        for (Population population : populations)
+        for (int i = 0; i < populations.length; i++)
         {
-            // ...if its name matches, it's a duplicate.
-            duplicate = population.getName().equals(name);
+            // ...if the name matches...
+            if (populations[i].getName().equals(name))
+            {
+                // ...it's a duplicate.
+                duplicate = true;
+                // Exit the loop
+                i = populations.length;
+            }
         }
         
         return duplicate;
