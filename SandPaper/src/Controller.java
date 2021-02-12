@@ -2685,6 +2685,8 @@ public class Controller
             terrainTextVRD.setText(Integer.toString(terTab.getDefaultSize()));
             terrainTextVRW.setText(Integer.toString(terTab.getDefaultSize()));
             
+            renderColorBC.setValue(renTab.getDefaultBackColor());
+            
             // Clear light tab
             lightChoiceL.getItems().clear();
             resetLightControls();

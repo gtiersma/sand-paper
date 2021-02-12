@@ -24,6 +24,8 @@ public class RenderTab
     final private int DEFAULT_WIDTH = 1920;
     final private int DEFAULT_HEIGHT = 1080;
     
+    final private Color DEFAULT_BACKGROUND_COLOR = Color.WHITE;
+    
     private int width;
     private int height;
     
@@ -57,6 +59,17 @@ public class RenderTab
     public Color getBackColor()
     {
         return backColor;
+    }
+    
+    /**
+     * Gets the background color the preview has when Sand Paper is first
+     * launched
+     * 
+     * @return The initial background color
+     */
+    public Color getDefaultBackColor()
+    {
+        return DEFAULT_BACKGROUND_COLOR;
     }
     
     /**
