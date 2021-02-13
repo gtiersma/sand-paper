@@ -694,7 +694,7 @@ public class Controller
                 
                 if (strength != validator.getParseFailValue())
                 {
-                    setTerrainVertexDepth(false, strength);
+                    setPopulationDisplacementStrength(false, strength);
                 }
             }
         });
