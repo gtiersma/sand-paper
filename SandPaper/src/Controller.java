@@ -266,8 +266,8 @@ public class Controller
             // text input is not blank...
             if (listen && !newster.equals(""))
             {
-                // ...parse the input.
-                short width = validator.parseTerrainSize(newster);
+                // ...parse and validate the input.
+                short width = validator.parsidateTerrainSize(newster);
                 
                 // If it was parsed successfully...
                 if (width != validator.getParseFailValue())
@@ -294,7 +294,7 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                short depth = validator.parseTerrainSize(newster);
+                short depth = validator.parsidateTerrainSize(newster);
                 
                 if (depth != validator.getParseFailValue())
                 {
@@ -317,7 +317,8 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                short strength = validator.parseDisplacementStrength(newster);
+                short strength =
+                        validator.parsidateDisplacementStrength(newster);
                 
                 if (strength != validator.getParseFailValue())
                 {
@@ -642,7 +643,7 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                short width = validator.parsePopulationSize(newster);
+                short width = validator.parsidatePopulationSize(newster);
                 
                 if (width != validator.getParseFailValue())
                 {
@@ -666,7 +667,7 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                short height = validator.parsePopulationSize(newster);
+                short height = validator.parsidatePopulationSize(newster);
                 
                 if (height != validator.getParseFailValue())
                 {
@@ -690,7 +691,8 @@ public class Controller
         {
             if (listen && !newster.equals(""))
             {
-                short strength = validator.parseDisplacementStrength(newster);
+                short strength =
+                        validator.parsidateDisplacementStrength(newster);
                 
                 if (strength != validator.getParseFailValue())
                 {
@@ -1316,34 +1318,6 @@ public class Controller
     }
     
     /**
-     * Gets the terrain depth from the text field and applies it. For use when
-     * the user changes the value in the text field.
-     */
-    @FXML
-    private void changeTerrainVertexDepth()
-    {
-        short depth = Short.parseShort(terrainTextVRD.getText());
-                
-        terTab.getTerrain().setDepth(depth);
-            
-        updatePopulationsForTerrainSizeChange(false, depth);
-    }
-    
-    /**
-     * Gets the terrain width from the text field and applies it. For use when
-     * the user changes the value in the text field.
-     */
-    @FXML
-    private void changeTerrainVertexWidth()
-    {
-        short width = Short.parseShort(terrainTextVRW.getText());
-                
-        terTab.getTerrain().setWidth(width);
-            
-        updatePopulationsForTerrainSizeChange(true, width);
-    }
-    
-    /**
      * Changes the currently-selected population's width image to what is
      * currently set in the population tab's width combo box
      */
@@ -1479,11 +1453,18 @@ public class Controller
     @FXML
     private void decrementPopulationDisplacementStrength()
     {
-        short strength = Short.parseShort(populationTextDRS.getText());
+        // Get and parse the displacement strength
+        short strength = validator.parseDisplacementStrength(
+                populationTextDRS.getText());
         
-        strength--;
-        
-        setPopulationDisplacementStrength(true, strength);
+        // If the displacement strength was parsed successfully and the
+        // decremented strength validates...
+        if (strength != validator.getParseFailValue() && 
+                validator.validateDisplacementStrength(strength--))
+        {
+            // ...set the decremented value as the new displacement strength.
+            setPopulationDisplacementStrength(true, strength--);
+        }
     }
     
     /**
@@ -1493,11 +1474,14 @@ public class Controller
     @FXML
     private void decrementPopulationVertexHeight()
     {
-        short height = Short.parseShort(populationTextVRH.getText());
+        short height = validator.parsePopulationSize(
+                populationTextVRH.getText());
         
-        height--;
-        
-        setPopulationVertexHeight(true, height);
+        if (height != validator.getParseFailValue() &&
+                validator.validateSize(height--))
+        {
+            setPopulationVertexHeight(true, height--);
+        }
     }
     
     /**
@@ -1507,11 +1491,14 @@ public class Controller
     @FXML
     private void decrementPopulationVertexWidth()
     {
-        short width = Short.parseShort(populationTextVRW.getText());
+        short width = validator.parsePopulationSize(
+                populationTextVRW.getText());
         
-        width--;
-        
-        setPopulationVertexWidth(true, width);
+        if (width != validator.getParseFailValue() &&
+                validator.validateSize(width--))
+        {
+            setPopulationVertexWidth(true, width--);
+        }
     }
     
     /**
@@ -1521,11 +1508,14 @@ public class Controller
     @FXML
     private void decrementTerrainDisplacementStrength()
     {
-        short strength = Short.parseShort(terrainTextDMS.getText());
+        short strength = validator.parseDisplacementStrength(
+                terrainTextDMS.getText());
         
-        strength--;
-              
-        setTerrainDisplacementStrength(true, strength);
+        if (strength != validator.getParseFailValue() &&
+                validator.validateDisplacementStrength(strength--))
+        {
+            setTerrainDisplacementStrength(true, strength--);
+        }
     }
     
     /**
@@ -1535,11 +1525,13 @@ public class Controller
     @FXML
     private void decrementTerrainVertexDepth()
     {
-        short depth = Short.parseShort(terrainTextVRD.getText());
+        short depth = validator.parseTerrainSize(terrainTextVRD.getText());
         
-        depth--;
-              
-        setTerrainVertexDepth(true, depth);
+        if (depth != validator.getParseFailValue() &&
+                validator.validateSize(depth--))
+        {
+            setTerrainVertexDepth(true, depth--);
+        }
     }
     
     /**
@@ -1549,11 +1541,13 @@ public class Controller
     @FXML
     private void decrementTerrainVertexWidth()
     {
-        short width = Short.parseShort(terrainTextVRW.getText());
+        short width = validator.parseTerrainSize(terrainTextVRW.getText());
         
-        width--;
-        
-        setTerrainVertexWidth(true, width);
+        if (width != validator.getParseFailValue() &&
+                validator.validateSize(width--))
+        {
+            setTerrainVertexWidth(true, width--);
+        }
     }
     
     /**
@@ -1842,11 +1836,14 @@ public class Controller
     @FXML
     private void incrementPopulationDisplacementStrength()
     {
-        short strength = Short.parseShort(populationTextDRS.getText());
+        short strength = validator.parseDisplacementStrength(
+                populationTextDRS.getText());
         
-        strength++;
-        
-        setPopulationDisplacementStrength(true, strength);
+        if (strength != validator.getParseFailValue() &&
+                validator.validateDisplacementStrength(strength++))
+        {
+            setPopulationDisplacementStrength(true, strength++);
+        }
     }
     
     /**
@@ -1856,11 +1853,14 @@ public class Controller
     @FXML
     private void incrementPopulationVertexHeight()
     {
-        short height = Short.parseShort(populationTextVRH.getText());
+        short height = validator.parsePopulationSize(
+                populationTextVRH.getText());
         
-        height++;
-        
-        setPopulationVertexHeight(true, height);
+        if (height != validator.getParseFailValue() &&
+                validator.validateSize(height++))
+        {
+            setPopulationVertexHeight(true, height++);
+        }
     }
     
     /**
@@ -1870,11 +1870,14 @@ public class Controller
     @FXML
     private void incrementPopulationVertexWidth()
     {
-        short width = Short.parseShort(populationTextVRW.getText());
+        short width = validator.parsePopulationSize(
+                populationTextVRW.getText());
         
-        width++;
-        
-        setPopulationVertexWidth(true, width);
+        if (width != validator.getParseFailValue() &&
+                validator.validateSize(width++))
+        {
+            setPopulationVertexWidth(true, width++);
+        }
     }
     
     /**
@@ -1884,11 +1887,14 @@ public class Controller
     @FXML
     private void incrementTerrainDisplacementStrength()
     {
-        short strength = Short.parseShort(terrainTextDMS.getText());
+        short strength = validator.parseDisplacementStrength(
+                terrainTextDMS.getText());
         
-        strength++;
-              
-        setTerrainDisplacementStrength(true, strength);
+        if (strength != validator.getParseFailValue() &&
+                validator.validateDisplacementStrength(strength++))
+        {
+            setTerrainDisplacementStrength(true, strength++);
+        }
     }
     
     /**
@@ -1898,11 +1904,13 @@ public class Controller
     @FXML
     private void incrementTerrainVertexDepth()
     {
-        short depth = Short.parseShort(terrainTextVRD.getText());
+        short depth = validator.parseTerrainSize(terrainTextVRD.getText());
         
-        depth++;
-                
-        setTerrainVertexDepth(true, depth);
+        if (depth != validator.getParseFailValue() &&
+                validator.validateSize(depth++))
+        {
+            setTerrainVertexDepth(true, depth++);
+        }
     }
     
     /**
@@ -1912,11 +1920,13 @@ public class Controller
     @FXML
     private void incrementTerrainVertexWidth()
     {
-        short width = Short.parseShort(terrainTextVRW.getText());
+        short width = validator.parseTerrainSize(terrainTextVRW.getText());
         
-        width++;
-                
-        setTerrainVertexWidth(true, width);
+        if (width != validator.getParseFailValue() &&
+                validator.validateSize(width++))
+        {
+            setTerrainVertexWidth(true, width++);
+        }
     }
     
     /**

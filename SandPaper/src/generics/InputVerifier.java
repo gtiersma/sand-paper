@@ -22,7 +22,7 @@ public class InputVerifier
     private final byte MAX_SPINNER_DIGIT_AMOUNT = 5;
     
     // The value used to represent a failure with parsing or validation
-    private final short PARSE_FAIL = -1;
+    private final short FAIL_VALUE = -1;
     
     // The smallest vertex size that the terrain and populations can be
     private final short MIN_MESH_SIZE = 2;
@@ -83,7 +83,7 @@ public class InputVerifier
      */
     public byte getParseFailValue()
     {
-        return PARSE_FAIL;
+        return FAIL_VALUE;
     }
     
     /**
@@ -168,19 +168,18 @@ public class InputVerifier
     }
     
     /**
-     * Parses a certain value 
+     * Parses a string into a short
      * 
      * @param maxDigits The maximum number of digits the value is allowed to
      *                  have
-     * @param minValue The minimum value that the parsing value is allowed to be
      * @param value The value to be parsed
      * 
      * @return The String value parsed into the form of a short. If any of the
      *         parsing validation failed, a -1 is returned.
      */
-    private short parse(short maxDigits, short minValue, String value)
+    private short parse(short maxDigits, String value)
     {
-        short parsedValue = PARSE_FAIL;
+        short parsedValue = FAIL_VALUE;
         
         // If the value is does not have too many digits or a negative symbol in
         // a strange place...
@@ -189,16 +188,73 @@ public class InputVerifier
             // ...the string should be able to be parsed into a short, so parse
             // it.
             parsedValue = Short.parseShort(value);
-            
-            // If the parsed value is too small...
-            if (parsedValue < minValue)
-            {
-                // ...set it back to a parsing-fail value.
-                parsedValue = PARSE_FAIL;
-            }
         }
         
         return parsedValue;
+    }
+    
+    /**
+     * Parses and validates a string of a displacement strength value
+     * 
+     * @param strength The displacement strength
+     * 
+     * @return The String value parsed into the form of a short. If the value
+     *         failed its validation or it failed to be parsed, a -1 is
+     *         returned.
+     */
+    public short parsidateDisplacementStrength(String strength)
+    {
+        short parsidatedStrength = parseDisplacementStrength(strength);
+        
+        if (!validateDisplacementStrength(parsidatedStrength))
+        {
+            parsidatedStrength = FAIL_VALUE;
+        }
+        
+        return parsidatedStrength;
+    }
+    
+    /**
+     * Parses and validates a string of the vertex width or height of a
+     * population
+     * 
+     * @param size The width or height of a population
+     * 
+     * @return The String value parsed into the form of a short. If the value
+     *         failed its validation or it failed to be parsed, a -1 is
+     *         returned.
+     */
+    public short parsidatePopulationSize(String size)
+    {
+        short parsidatedSize = parsePopulationSize(size);
+        
+        if (!validateSize(parsidatedSize))
+        {
+            parsidatedSize = FAIL_VALUE;
+        }
+        
+        return parsidatedSize;
+    }
+    
+    /**
+     * Parses and validates a string of the width or depth of the terrain
+     * 
+     * @param size The width or depth of the terrain
+     * 
+     * @return The String value parsed into the form of a short. If the value
+     *         failed its validation or it failed to be parsed, a -1 is
+     *         returned.
+     */
+    public short parsidateTerrainSize(String size)
+    {
+        short parsidatedSize = parseTerrainSize(size);
+        
+        if (!validateSize(parsidatedSize))
+        {
+            parsidatedSize = FAIL_VALUE;
+        }
+        
+        return parsidatedSize;
     }
     
     /**
@@ -211,8 +267,7 @@ public class InputVerifier
      */
     public short parseDisplacementStrength(String strength)
     {
-        return parse(MAX_DISPLACEMENT_STRENGTH_DIGIT_COUNT,
-                MIN_DISPLACEMENT_STRENGTH, strength);
+        return parse(MAX_DISPLACEMENT_STRENGTH_DIGIT_COUNT, strength);
     }
     
     /**
@@ -225,7 +280,7 @@ public class InputVerifier
      */
     public short parsePopulationSize(String size)
     {
-        return parse(MAX_POPULATION_SIZE_DIGIT_COUNT, MIN_MESH_SIZE, size);
+        return parse(MAX_POPULATION_SIZE_DIGIT_COUNT, size);
     }
     
     /**
@@ -238,6 +293,32 @@ public class InputVerifier
      */
     public short parseTerrainSize(String size)
     {
-        return parse(MAX_TERRAIN_SIZE_DIGIT_COUNT, MIN_MESH_SIZE, size);
+        return parse(MAX_TERRAIN_SIZE_DIGIT_COUNT, size);
+    }
+    
+    /**
+     * Validates whether or not a value for the width, height or depth of the
+     * terrain or a population is too small
+     * 
+     * @param size The width, height or depth of the terrain or a population
+     * 
+     * @return Whether or not the given size is large enough
+     */
+    public boolean validateSize(short size)
+    {
+        return size > MIN_MESH_SIZE;
+    }
+    
+    /**
+     * Validates whether or not a value for the displacement strength of the
+     * terrain or a population is too small
+     * 
+     * @param strength The displacement strength of the terrain or a population
+     * 
+     * @return Whether or not the given displacement strength is large enough
+     */
+    public boolean validateDisplacementStrength(short strength)
+    {
+        return strength > MIN_DISPLACEMENT_STRENGTH;
     }
 }
