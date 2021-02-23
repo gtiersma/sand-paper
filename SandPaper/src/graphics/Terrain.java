@@ -315,12 +315,12 @@ public class Terrain extends MeshObject
     /**
      * Sets the specular map
      * 
-     * @param difster The new specular map
+     * @param specster The new specular map
      */
     public void setSpecular(TextureObject specster)
     {
         specularTexture = specster;
         
-        setDisplacement(specster.getImage());
+        setSpecular(specster.getImage());
     }
 }
