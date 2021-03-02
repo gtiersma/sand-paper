@@ -308,7 +308,7 @@
                                              <children>
                                                 <Label id="strength" styleClass="medium-label" text=" Strength:" />
                                                 <Button id="left" fx:id="populationButtonDRSD" disable="true" mnemonicParsing="false" onAction="#decrementPopulationDisplacementStrength" />
-                                                <TextField id="populationStrength" fx:id="populationTextDRS" alignment="CENTER_RIGHT" disable="true" maxWidth="100.0" minWidth="50.0" prefWidth="75.0" text="3" />
+                                                <TextField id="populationsStrength" fx:id="populationTextDRS" alignment="CENTER_RIGHT" disable="true" maxWidth="100.0" minWidth="50.0" prefWidth="75.0" text="3" />
                                                 <Button id="right" fx:id="populationButtonDRSI" disable="true" mnemonicParsing="false" onAction="#incrementPopulationDisplacementStrength" />
                                              </children>
                                           </HBox>
