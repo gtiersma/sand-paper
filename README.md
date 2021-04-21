@@ -56,6 +56,13 @@ This tutorial is also accessible from within the program. It can be found on the
     * a progress bar dialog appears during tasks that may take more than a second
     * all of the controls have their input validated
     * many major and minor bug fixes
+
+* v0.8 (4/20/2021)
+    * a help box has been created to provide useful information on whichever control the cursor hovers over
+    * the stage and panes can be resized responsively
+    * imported textures can be removed
+    * minor improvements to the UI
+    * minor bug fixes
   
 # To-Do List
 
@@ -63,10 +70,9 @@ This tutorial is also accessible from within the program. It can be found on the
 * Create a complete manual
 * Finish shortcuts, hot-keys, keyboard controls, tab-order on controls
 * Create a project file format, allowing users to save and load all of the values set in the controls
-* Ability to remove imported textures
 * Have Sand Paper occasionally check imported textures for changes, so that the user will not have to re-import textures every time they make a change
 * Fix the delay that can occur after the progress dialog closes and before the stage becomes active
-* Replace a few of the sliders with spinners
+* Have a warning appear when unusually large numbers have been entered
 
 # Copyright
 

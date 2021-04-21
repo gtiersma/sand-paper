@@ -48,7 +48,7 @@ public class SandPaper extends Application
             // Prepare the stage
             stagester.setMinHeight(MIN_WINDOW_SIZE);
             stagester.setMinWidth(MIN_WINDOW_SIZE);
-            stagester.setTitle("Sand Paper v0.7");
+            stagester.setTitle("Sand Paper v0.8");
             stagester.getIcons().add(icon);
             stagester.setScene(scenster);
             stagester.show();

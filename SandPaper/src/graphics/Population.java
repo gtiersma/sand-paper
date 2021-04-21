@@ -977,6 +977,21 @@ public class Population
     }
     
     /**
+     * Sets the diffuse map
+     * 
+     * @param difster A diffuse map
+     */
+    public void setDiffuse(TextureObject difster)
+    {
+        diffuse = difster;
+        
+        for (Individual individual : individuals)
+        {
+            individual.setDiffuse(diffuse.getImage());
+        }
+    }
+    
+    /**
      * Sets the displacement strength
      * 
      * @param strength The displacement strength
@@ -1152,21 +1167,6 @@ public class Population
         for (Individual individual : individuals)
         {
             individual.setSpecular(specular.getImage());
-        }
-    }
-    
-    /**
-     * Sets the diffuse map
-     * 
-     * @param difster A diffuse map
-     */
-    public void setDiffuse(TextureObject difster)
-    {
-        diffuse = difster;
-        
-        for (Individual individual : individuals)
-        {
-            individual.setDiffuse(diffuse.getImage());
         }
     }
     
