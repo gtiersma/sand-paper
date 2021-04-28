@@ -21,7 +21,7 @@ public class TerrainTab
     // Initial strength of the displacement map
     final int DEFAULT_STRENGTH = 50;
     
-    final TextureObject BLANK_TEXTURE = new TextureObject();
+    final TextureObject BLANK_TEXTURE = new TextureObject(1);
     
     Terrain terster;
     

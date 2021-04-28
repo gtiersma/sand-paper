@@ -281,7 +281,7 @@ public class TextureTab
     {
         int textureAmount;
         
-        TextureObject texster = new TextureObject();
+        TextureObject texster = new TextureObject(1);
         
         ArrayList<TextureObject> texsters = getTextures(color);
         
@@ -307,7 +307,7 @@ public class TextureTab
             else if (i == textureAmount - 1)
             {
                 // ...get a blank TextureObject.
-                texster = new TextureObject();
+                texster = new TextureObject(1);
             }
         }
         

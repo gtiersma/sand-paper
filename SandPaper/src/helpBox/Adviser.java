@@ -40,7 +40,7 @@ public class Adviser
             "help menu.";
     final private String SCROLL_INSTRUCTIONS = "Use ctrl+up and ctrl+down to " +
             "scroll through this help box.";
-    final private String XML_PATH = "src/helpBox/help.xml";
+    final private String XML_PATH = "helpBox/help.xml";
     
     // The description for each control (organized in groups for faster access)
     private Map<String, String> textures;
@@ -295,8 +295,8 @@ public class Adviser
             Map<String, String> currentMap = textures;
                 
             // Open the XML
-            readster = facster.createXMLEventReader(
-                    new FileInputStream(XML_PATH));
+            readster = facster.createXMLEventReader(getClass().getClassLoader()
+                    .getResourceAsStream(XML_PATH));
             
             // For each event in the XML...
             while (readster.hasNext())
@@ -353,10 +353,6 @@ public class Adviser
             }
             
             readster.close();
-        }
-        catch (FileNotFoundException ex)
-        {
-            System.out.println("ERROR: Help XML file not found");
         }
         catch (XMLStreamException ex)
         {

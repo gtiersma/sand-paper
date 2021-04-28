@@ -2,6 +2,7 @@ package graphics;
 
 
 import java.io.File;
+import java.io.InputStream;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -35,6 +36,9 @@ public class TextureObject
     private boolean colored;
     // Whether or not this texture is currently selected in the texture tab
     private boolean selected;
+    // Whether or not this texture is currently one of the internal unassigned
+    // images
+    private boolean unassigned;
     // Whether or not the ImageView has been initialized
     private boolean viewInitialized;
     
@@ -54,16 +58,17 @@ public class TextureObject
     /**
      * CONSTRUCTOR
      * 
-     * @param fileFile The file to the texture
+     * @param externalFile The path to an external texture
      */
-    public TextureObject(File fileFile)
+    public TextureObject(File externalFile)
     {
         colored = true;
         selected = false;
+        unassigned = false;
         viewInitialized = false;
         
-        filster = fileFile;
-        path = fileFile.toString();
+        filster = externalFile;
+        path = externalFile.getPath();
         name = path.substring(path.lastIndexOf("\\") + 1, path.indexOf("."));
         imster = new Image("file:" + path);
         pixster = imster.getPixelReader();
@@ -73,18 +78,23 @@ public class TextureObject
     
     /**
      * CONSTRUCTOR
+     * 
+     * @param blankNum The number for which blank texture should be loaded. 0 is
+     * for the gray texture. 1 is for the white texture.
      */
-    public TextureObject()
+    public TextureObject(int blankNum)
     {
         colored = true;
         selected = false;
+        unassigned = true;
         viewInitialized = false;
         
         // When no parameter is given, the blank texture is assigned
-        filster = new File("src/graphics/" + EMPTY_NAMES[1]);
+        filster = new File("src/graphics/" + EMPTY_NAMES[blankNum]);
         path = filster.toString();
         name = path.substring(path.lastIndexOf("\\") + 1, path.indexOf("."));
-        imster = new Image("file:" + path);
+        imster = new Image(getClass().getClassLoader()
+                .getResourceAsStream("graphics/" + EMPTY_NAMES[blankNum]));
         pixster = imster.getPixelReader();
         
         viewster = new ImageView();
@@ -166,6 +176,35 @@ public class TextureObject
     public Color getColor(int x, int y)
     {
         return pixster.getColor(x, y);
+    }
+    
+    /**
+     * Gets a copy of this TextureObject
+     * 
+     * @return A copy of this TextureObject
+     */
+    public TextureObject getCopy()
+    {
+        // Initialize to the gray blank texture
+        TextureObject copy = new TextureObject(0);
+        // If this TextureObject is using a blank texture...
+        if (unassigned)
+        {
+            // ...and if it is using the white blank texture...
+            if (path.equals("src\\graphics\\" + EMPTY_NAMES[1]))
+            {
+                // ...set that to its texture.
+                copy = new TextureObject(1);
+            }
+        }
+        // ...otherwise, if it is not blank...
+        else
+        {
+            // ...create a new TextureObject with that texture.
+            copy = new TextureObject(filster);
+        }
+        
+        return copy;
     }
     
     /**
@@ -326,6 +365,16 @@ public class TextureObject
     public boolean isSelected()
     {
         return selected;
+    }
+    
+    /**
+     * Gets whether or not this texture is currently a blank unassigned image
+     * 
+     * @return Whether or not this texture is an unassigned image
+     */
+    public boolean isUnassigned()
+    {
+        return unassigned;
     }
     
     /**

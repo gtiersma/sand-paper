@@ -31,9 +31,9 @@ public class Terrain extends MeshObject
                 dister.getImage());
         
         displacementTexture = dister;
-        diffuseTexture = new TextureObject();
-        bumpTexture = new TextureObject();
-        specularTexture = new TextureObject();
+        diffuseTexture = new TextureObject(1);
+        bumpTexture = new TextureObject(1);
+        specularTexture = new TextureObject(1);
     }
     
     /**

@@ -77,7 +77,7 @@ This tutorial is also accessible from within the program. It can be found on the
 # Copyright
 
 Sand Paper 3D Modeling Solution (formerly tentatively titled, "Project Scaper")
-Copyright (C) 2019-2020 George Tiersma
+Copyright (C) 2019-2021 George Tiersma
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 

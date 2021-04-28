@@ -1,3 +1,5 @@
+package core;
+
 
 
 import static com.sun.javafx.PlatformUtil.isWindows;
@@ -974,6 +976,7 @@ public class Controller
                 
         // Apply the content to the preview pane
         preview.setRoot(previewItems);
+        
 
         // If all of the populations Services are finished...
         if (!popTab.isServicePrepared())
@@ -2398,7 +2401,7 @@ public class Controller
             TextureObject texster)
     {
         // A blank white image to replace the texture with
-        final TextureObject BLANK_TEXTURE = new TextureObject();
+        final TextureObject BLANK_TEXTURE = new TextureObject(1);
         
         String name = texster.getName();
         

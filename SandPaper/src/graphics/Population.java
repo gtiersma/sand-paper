@@ -2,7 +2,6 @@ package graphics;
 
 import generics.DeepCloner;
 import generics.ProgressBarDialog;
-import java.io.File;
 import java.util.Random;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -29,9 +28,8 @@ public class Population
     private final short SIZE_DIVIDER = 3;
     
     // Default textures to use for when no maps have been selected by the user
-    private final TextureObject GRAY_TEXTURE
-            = new TextureObject(new File("src/graphics/unassignedGray.png"));
-    private final TextureObject WHITE_TEXTURE = new TextureObject();
+    private final TextureObject GRAY_TEXTURE = new TextureObject(0);
+    private final TextureObject WHITE_TEXTURE = new TextureObject(1);
     
     // Whether or not the service is ready to be used
     private boolean servicePrepared;
@@ -262,13 +260,14 @@ public class Population
         short faceHeight;
              
         int pointIndex = getBasePointIndex(locationX, locationY, terrainWidth);
+            
                     
         // The position of the point on the terrain to which this
         // new Individual will belong
         int x = (int)terrainPoints[pointIndex];
         int y = (int)terrainPoints[pointIndex + 1];
         int z = (int)terrainPoints[pointIndex + 2];
-                    
+             
         // Get the correct pixel colors for this Individual
         Color shiftColor = getPixelColor(locationX, locationY, xShiftSpace,
                 yShiftSpace, shiftster);
@@ -350,12 +349,12 @@ public class Population
         final double Y_HEIGHT_SPACE = getUVSpacing(height.getHeight(),
                 TERRAIN_DEPTH);
         
-        final TextureObject BUMP = new TextureObject(bump.getFile());
-        final TextureObject SHIFT = new TextureObject(shift.getFile());
-        final TextureObject SPECULAR = new TextureObject(specular.getFile());
-        final TextureObject DIFFUSE = new TextureObject(diffuse.getFile());
-        final TextureObject WIDTH = new TextureObject(width.getFile());
-        final TextureObject HEIGHT = new TextureObject(height.getFile());
+        final TextureObject BUMP = bump.getCopy();
+        final TextureObject SHIFT = shift.getCopy();
+        final TextureObject SPECULAR = specular.getCopy();
+        final TextureObject DIFFUSE = diffuse.getCopy();
+        final TextureObject WIDTH = width.getCopy();
+        final TextureObject HEIGHT = height.getCopy();
         
         final float[] TERRAIN_POINTS = cloner.clone(terrainPoints);
         
@@ -395,6 +394,7 @@ public class Population
                                 // ...if an Individual is to be created there...
                                 if (LOCATIONS[i][j])
                                 {
+                                    
                                     // ...create a new Individual.
                                     Individual newIndividual =
                                             createIndividual(i, j,
@@ -413,7 +413,7 @@ public class Population
                                                     DIFFUSE, SHIFT, SPECULAR,
                                                     WIDTH, HEIGHT,
                                                     DISPLACEMENT_RANGE);
-        
+                                    
                                     // Add the new Individual to the new array
                                     newIndividuals[currentIndex] =
                                             newIndividual;
@@ -425,7 +425,7 @@ public class Population
                                 progress++;
                             }
                         }
-                
+             
                         return newIndividuals;
                     }
                 };

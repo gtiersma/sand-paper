@@ -23,9 +23,8 @@ public class PopulationTab
     
     final private int DEFAULT_DISPLACEMENT_STRENGTH = 5;
     
-    private final TextureObject GRAY_TEXTURE
-            = new TextureObject(new File("src/graphics/unassignedGray.png"));
-    private final TextureObject WHITE_TEXTURE = new TextureObject();
+    private final TextureObject GRAY_TEXTURE = new TextureObject(0);
+    private final TextureObject WHITE_TEXTURE = new TextureObject(1);
     
     // The Population that the user currently has selected in the Population
     // selection combo box

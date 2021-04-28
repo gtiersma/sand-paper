@@ -63,7 +63,7 @@ public class DeepCloner
         
         for (int i = 0; i < source.length; i++)
         {
-            copy[i] = new TextureObject(source[i].getFile());
+            copy[i] = source[i].getCopy();
         }
         
         return copy;

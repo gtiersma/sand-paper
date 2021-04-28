@@ -1,3 +1,5 @@
+package core;
+
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -21,6 +23,16 @@ import javafx.stage.Stage;
 public class SandPaper extends Application
 {
     /**
+     * MAIN METHOD
+     * 
+     * @param args Does nothing
+     */
+    public static void main(System[] args)
+    {
+        launch();
+    }
+    
+    /**
      * Starts the program
      * 
      * @param stagester The main stage
@@ -36,7 +48,7 @@ public class SandPaper extends Application
         {
             // The icon for Sand Paper's title bar
             Image icon = new Image(
-                    SandPaper.class.getResourceAsStream("icons/icon.png"));
+                    SandPaper.class.getResourceAsStream("/icons/icon.png"));
             
             Parent parster
                     = FXMLLoader.load(getClass().getResource("GUI.fxml"));
@@ -76,15 +88,5 @@ public class SandPaper extends Application
         alster.setGraphic(new ImageView("/icons/icon.png"));
         
         alster.showAndWait();
-    }
-    
-    /**
-     * MAIN METHOD
-     * 
-     * @param args Does nothing
-     */
-    public static void main(System[] args)
-    {
-        launch();
     }
 }
