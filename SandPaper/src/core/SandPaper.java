@@ -55,7 +55,7 @@ public class SandPaper extends Application
     
             Scene scenster = new Scene(parster, WINDOW_WIDTH, WINDOW_HEIGHT);
         
-            scenster.getStylesheets().add("design.css");
+            scenster.getStylesheets().add("core/design.css");
         
             // Prepare the stage
             stagester.setMinHeight(MIN_WINDOW_SIZE);

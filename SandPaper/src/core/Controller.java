@@ -469,7 +469,7 @@ public class Controller
             int validValue = validateSpinner(false, (int)camTab.getZoom(),
                     cameraSpinnerPAZ);
             
-            camTab.setZoom(validValue);
+            recenterCamera();
             preview.setCamera(camTab.getCamera());
         });
         cameraSpinnerPAZ.focusedProperty().addListener(
@@ -477,10 +477,9 @@ public class Controller
         {
             if (newster == false)
             {
-                int validValue = validateSpinner(false, (int)camTab.getZoom(),
-                        cameraSpinnerPAZ);
+                validateSpinner(false, (int)camTab.getZoom(), cameraSpinnerPAZ);
             
-                camTab.setZoom(validValue);
+                recenterCamera();
                 preview.setCamera(camTab.getCamera());
             }
         });
@@ -2248,7 +2247,6 @@ public class Controller
         
         // Center the terrain in the preview
         camTab.setCameraOffset(previewWidth / 2, previewHeight / 2);
-        
         // Zoom the camera in or out if needed
         camTab.zoomForResize(cameraSpinnerPAZ.getValue(), previewAverage);
     }

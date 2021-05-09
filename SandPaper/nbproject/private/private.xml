@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Myself/Desktop/SandPaper/src/Controller.java</file>
-            <file>file:/C:/Users/Myself/Desktop/SandPaper/src/graphics/Population.java</file>
-            <file>file:/C:/Users/Myself/Desktop/SandPaper/src/graphics/MeshObject.java</file>
+            <file>file:/E:/Documents/GitHub/project-scaper/SandPaper/src/tabs/CameraTab.java</file>
+            <file>file:/E:/Documents/GitHub/project-scaper/SandPaper/src/core/Controller.java</file>
+            <file>file:/E:/Documents/GitHub/project-scaper/SandPaper/src/tabs/RenderTab.java</file>
+            <file>file:/E:/Documents/GitHub/project-scaper/SandPaper/src/core/SandPaper.java</file>
+            <file>file:/E:/Documents/GitHub/project-scaper/SandPaper/src/core/GUI.fxml</file>
         </group>
     </open-files>
 </project-private>
