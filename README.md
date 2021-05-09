@@ -63,6 +63,9 @@ This tutorial is also accessible from within the program. It can be found on the
     * imported textures can be removed
     * minor improvements to the UI
     * minor bug fixes
+
+* v0.81 (5/9/2021)
+    * hotfix of camera's zoom occasionally malfunctioning
   
 # To-Do List
 

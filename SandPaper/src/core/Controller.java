@@ -2129,7 +2129,7 @@ public class Controller
         alster.setContentText("Sand Paper is a 3D modeling software solution "
                 + "for graphic designers that have limited knowledge with 3D "
                 + "modeling.\n\n"
-                + "version 0.8\n\n"
+                + "version 0.8a\n\n"
                 + "Copyright (C) 2019-2021 George Tiersma\n\n"
                 + "This program is free software: you can redistribute it "
                 + "and/or modify it under the terms of the GNU General Public "
